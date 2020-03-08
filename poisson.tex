@@ -1,0 +1,501 @@
+\documentclass{book}
+\usepackage[utf8]{inputenc}
+\usepackage[czech]{babel}
+\usepackage{amsmath}
+\usepackage{tikz}
+
+\newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\grad}{\mathrm{grad}}
+\newcommand{\diverg}{\mathrm{div}}
+\newcommand{\rot}{\mathrm{rot}}
+
+\title{Poissonova parciální diferenciální rovnice [draft]}
+\author{Petr Ležák}
+
+\begin{document}
+\maketitle
+
+Poissonova parciální diferenciální rovnice má velké využití v technické praxi, protože pomocí ní lze modelovat mnoho důležitých jevů:
+elektrické pole stacionárních nábojů
+magnetické pole neměnných elektrických proudů
+ustálený tok teplatt
+tok mechanického napětí v materiálu
+difuze
+proud v odporovém materiálu
+Základní vlastnosti
+
+\section{Vektorová analýza}
+
+Skalární funkcí (polem) \(u(x, y)\) respektive \(u(x, y, z)\) rozumíme funkci přiřazující každému bodu v~rovině respektive v~prostoru skalární hodnotu. Příkladem takovéto funkce je například pole teploty nebo tlaku.
+
+
+Vektorovou funkcí (polem) \(\vect{u}(x, y)\) respektive \(\vect{u}(x, y, z)\) rozumíme funkci přiřazující každému bodu v~rovině respektive v~prostoru vektorovou hodnotu. Příkladem takovéto funkce je například pole rychlosti proudění kapaliny. Funkci můžeme zapsat ve složkovém tvaru \(\vect{u}=(u_1(x, y, z), u_2(x, y, z), u_3(x, y, z))\).
+
+\subsection{Křivkový integrál}
+Pokud máme orientovanou po částech hladkou křivku v~prostoru definovanou parametricky pomocí rovnice \eqref{eq:krivkovy_integral_krivka} a vektorové pole \(\vect{v}\), pak křivkový integrál definujeme rovnicí \eqref{eq:krivkovy_integral_definice}.
+
+\begin{equation}
+\label{eq:krivkovy_integral_krivka}
+\Gamma = (\Gamma_x(t), \Gamma_y(t), \Gamma_z(t)), t \in <t_1, t_2>
+\end{equation}
+
+\begin{equation}
+\label{eq:krivkovy_integral_definice}
+\begin{split}
+\int_\Gamma \vect{v} \cdot d\vect{l}
+\end{split}
+\end{equation}
+
+Protože \(\frac{d\vect{l}}{dt} = \left(\frac{d \Gamma_x}{dt}, \frac{d \Gamma_y}{dt}, \frac{d \Gamma_z}{dt} \right)\), tak pro parametrickou křivku
+\(\Gamma\) platí vztah \eqref{eq:krivkovy_integral_vypocet}.
+
+\begin{equation}
+\label{eq:krivkovy_integral_vypocet}
+\begin{split}
+\int_\Gamma \vect{v} \cdot d\vect{l} =
+\int_{t_1}^{t_2} \left(v_x(\Gamma(t)) \cdot \frac{d \Gamma_x}{dt} + v_y(\Gamma(t)) \cdot \frac{d \Gamma_y}{dt} + v_z(\Gamma(t)) \cdot \frac{d \Gamma_z}{dt} \right) dt
+\end{split}
+\end{equation}
+Obdobně je definován křivkový integrál v rovině, pouze vynecháme souřadnici \(z\).
+
+Je-li křivka uzavřená (její počáteční a koncový bod jsou shodné), toto zdůrazníme kroužkem přes symbol integrálu, tedy \(\oint_\Gamma \vect{v} \cdot d\vect{l}\), a říkáme mu cirkulace vektoru po uzavřené smyčce.
+
+Z definice \eqref{eq:krivkovy_integral_definice} plyne, že integrujeme skalární součin hodnoty pole \(v\) a elementu dráhy \(dl\),
+tedy součin průmětu pole do dráhy a elementu dráhy. Křivkový integrál proto lze použít pro výpočet práce, energie a podobně.
+
+
+\subsubsection{Příklad}
+
+Elektrické pole má intenzitu \(E = \left(-\frac{y}{x^2+y^2}, \frac{x}{x^2+y^2}\right) \frac{\mathrm{N}}{\mathrm{C}}\). Jakou práci pole vykoná na jednotkovém náboji, který se pohybuje po dráze \(\Gamma(t) = (1, t), t \in <-1, 1>\)?
+
+
+\begin{tikzpicture}
+\draw[->] (-2.5, 0) -- (2.5, 0) node[anchor=south east]{x};
+\draw[->] (0, -2.5) -- (0, 2.5) node[anchor=north west]{y};
+
+\foreach \r in {0.3679, 0.6065, 1, 1.6487}
+	\draw[->, thin] (\r, 0) arc (0:360:\r);
+	
+\draw (1.65, 0) node[anchor=south west]{\(\vect{E}\)};
+	
+\draw[->, thick] (1, -1) -- (1, 1) node[anchor=north west]{\(\Gamma\)};
+\end{tikzpicture}
+
+
+Elektrické pole působí na náboj \(Q\) silou \(\vect{F} = \vect{E} \cdot Q\). Práce vykonaná přesunutím náboje \(Q\) po dráze \(\vect{ds}\) je tedy \(dW = \vect{F} \cdot \vect{ds} = \vect{E} \cdot Q \cdot \vect{ds}\) a pro jednotkový náboj \(dW = \vect{E} \cdot \vect{ds}\). Celková práce je tedy
+
+\[
+W = \int_{-1}^1 \left (\frac{-t}{1 + t^2} \cdot 0 + \frac{1}{1 + t^2} \cdot 1 \right) = \left[\mathrm{arctg} \ t\right]_{-1}^1 = \frac{\pi}{2} \mathrm{J}
+\]
+
+
+\subsection{Plošný integrál}
+
+Je-li \(S = \left(S_x(t, u), S_y(t, u), S_z(t, u)\right)\) po částech hladká plocha s jednotkovou normálou \(\vect{n}\) a \(\vect{v}\) je vektorové pole,
+pak křivkový integrál definujeme rovnicí \eqref{eq:plosny_integral_definice}. Říkáme mu tok vektoru \(v\) plochou \(S\).
+
+
+\begin{equation}
+\label{eq:plosny_integral_definice}
+\begin{split}
+\int_S \vect{v} \cdot d\vect{s} = \int_S \vect{v} \cdot \vect{n} ds
+\end{split}
+\end{equation}
+
+
+Povšimněme si, že vektory \(\frac{\partial S}{\partial t}\) a \(\frac{\partial S}{\partial u}\) jsou (v daném bodě) tečné k ploše \(S\). Proto vektorový součin \(\frac{\partial S}{\partial t} \times \frac{\partial S}{\partial u}\) má směr normály. Ne však nutně shodnou orientaci. Navíc \(\frac{\partial S}{\partial t} \times \frac{\partial S}{\partial u} dt \ du\) má velikot splošného elementu \(ds\). Proto lze plošný integrál až na znaménko spočítat pomocí vztahu \eqref{eq:plosny_integral_vypocet}.
+
+\begin{equation}
+\label{eq:plosny_integral_vypocet}
+\begin{split}
+\int_S \vect{v} \cdot \vect{n} ds = \iint_S \vect{v} \cdot \left (\frac{\partial S}{\partial t} \times \frac{\partial S}{\partial u}\right) dt \ du
+\end{split}
+\end{equation}
+
+Je-li plocha uzavřená, pak toto zdůrazníme kroužkem přes symbol integrálu, tedy \(\oint_S \vect{v} \cdot d\vect{s}\). Podle konvence pak normála \(n\) míří vně z plochy.
+
+\subsubsection{Příklad}
+
+Rychlost kapaliny je popsána vztahem \(v = \)
+
+
+
+\begin{tikzpicture}
+\draw (-1, -1) -- (-1, 1) -- (1, 1) -- (1, -1) -- (-1, -1);
+\draw[->] (1, 0) -- (2, 0);
+\draw[->] (-1, 0) -- (-2, 0);
+\draw[->] (0, 1) -- (0, 2);
+\draw[->] (0, -1) -- (0, -2);
+\filldraw (0, 0) circle (1pt) node[anchor=south]{[x, y]};
+\draw (0, -1) node[anchor=south]{dx};
+\draw (1, 0) node[anchor=east]{dy};
+\draw (1, 0) node[anchor=south west]{\(d_y \cdot u_x(x + \frac{dx}{2}, y)\)};
+\draw (-1, 0) node[anchor=south east]{\(-d_y \cdot u_x(x - \frac{dx}{2}, y)\)};
+\draw (0, 1) node[anchor=south west]{\(d_x \cdot u_y(x, y + \frac{dy}{2})\)};
+\draw (0, -1) node[anchor=north west]{\(-d_x \cdot u_y(x, y - \frac{dy}{2})\)};
+\end{tikzpicture}
+
+
+Gradient skalárního pole \(\varphi\) je vektorové pole \(\vect{v}\), které má v~každém bodě směr nejvyššího přírůstku skalárního pole. Je definován vztahem
+\[
+\vect{v} = \grad \ \varphi = \left(\frac{\partial \varphi}{x}, \frac{\partial \varphi}{y}, \frac{\partial \varphi}{z}\right)
+\].
+
+Divergence vektorového pole \(\vect{v}\) je skalární pole \(k\), které má v~každém bodě hodnotu celkového výtoku z~infinitezimálního objemu okolo daného bodu. Je definována vztahem \(\diverg \ \vect{u} = \diverg (u_x(x, y, z), u_y(x, y, z), u_z(x, y, z)) = \left(\frac{\partial u_x}{\partial x}, \frac{\partial u_y}{\partial y}, \frac{\partial u_z}{\partial z}\right)\).
+
+Rotace vektorového pole \(\vect{v}\) je vektorové pole pole \(v\). Je definována vztahem \(\rot \ \vect{u} = \rot \ (u_x(x, y, z), u_y(x, y, z), u_z(x, y, z)) = \left(\frac{\partial u_z}{\partial y} - \frac{\partial u_y}{\partial z}, \frac{\partial u_x}{\partial z} - \frac{\partial u_z}{\partial x}, \frac{\partial u_y}{\partial x} - \frac{\partial u_x}{\partial y}\right)\).
+
+Laplaceův operátor \(\Delta\) přiřazuje skalárnímu poli \(\varphi\) skalární pole \(k\) podle vztahu \(\Delta \varphi = \diverg \ \grad \ \varphi = \left(\frac{\partial^2 \varphi}{\partial x^2}, \frac{\partial^2 \varphi}{\partial y^2}, \frac{\partial^2 \varphi}{\partial z^2}\right)\). Operátor může působit i na vektorové pole, v tom případě působí na každou složku zvlášť.
+
+
+Gradient, divergence, rotace i aplikace laplaceova operátoru jsou lineární operace. Nechť \(\alpha\) a \(\beta\) jsou konstanty, \(\varphi\) a \(rho\) skalární pole a \(u\) a \(v\) vektorová pole. Pak platí tyto vztahy:
+\[
+\grad(\alpha \cdot \varphi + \beta \cdot \rho) = \alpha \cdot \grad \ \varphi + \beta \cdot \grad \ \rho
+\]
+\[
+\diverg(\alpha \cdot \vect{u} + \beta \cdot \vect{v}) = \alpha \cdot \diverg \ \vect{u} + \beta \cdot \diverg \ \vect{v}
+\]
+\[
+\rot(\alpha \cdot \vect{u} + \beta \cdot \vect{v}) = \alpha \cdot \rot \ \vect{u} + \beta \cdot \rot \ \vect{v}
+\]
+
+Tyto vztahy lze jednoduše ověřit dosazením do jejich definic.
+
+
+\begin{tikzpicture}
+\draw (-1, -1) -- (-1, 1) -- (1, 1) -- (1, -1) -- (-1, -1);
+\draw[->] (1, 0) -- (2, 0);
+\draw[->] (-1, 0) -- (-2, 0);
+\draw[->] (0, 1) -- (0, 2);
+\draw[->] (0, -1) -- (0, -2);
+\filldraw (0, 0) circle (1pt) node[anchor=south]{[x, y]};
+\draw (0, -1) node[anchor=south]{dx};
+\draw (1, 0) node[anchor=east]{dy};
+\draw (1, 0) node[anchor=south west]{\(d_y \cdot u_x(x + \frac{dx}{2}, y)\)};
+\draw (-1, 0) node[anchor=south east]{\(-d_y \cdot u_x(x - \frac{dx}{2}, y)\)};
+\draw (0, 1) node[anchor=south west]{\(d_x \cdot u_y(x, y + \frac{dy}{2})\)};
+\draw (0, -1) node[anchor=north west]{\(-d_x \cdot u_y(x, y - \frac{dy}{2})\)};
+\end{tikzpicture}
+
+\subsection{Gaussův teorém}
+
+\begin{equation}
+\int_V \diverg \ u \ dV = \oint_{\partial V} \vect{u} \cdot \vect{n} ds
+\end{equation}
+
+
+Greenův teorém:
+
+\begin{equation}
+\int_S \diverg \ u \ dV = \oint_{\partial S} \vect{u} \cdot \vect{n} dl
+\end{equation}
+
+
+\section{Řešení Poissonovy rovnice bez okrajových podmínek}
+
+Pokud řešíme Poissonovu rovnici na nekonečné rovině nebo v nekonečném prostoru, pak zde nejsou zadané žádné okrajové podmínky. Začneme odvozením
+potenciálu bodového zdroje.
+
+\subsection{Potenciál kruhového disku v rovině}
+
+Mějme kruhový disk o~poloměru \(R\) s konstantním buzením \(f\). Chceme vypočítat potenciál \(\varphi\). Konfigurace je rotačně symetrická vůči středu
+disku, proto i řešení rovnice je rotačně symetrické. Potenciál proto závisí pouze na vzdálenosti od středu disku \(r\).
+
+
+\begin{tikzpicture}
+\draw (0, 0) circle(1);
+\draw[->] (0, 0) -- (1, 0);
+\draw (0.5, 0) node[anchor=south]{R};
+
+\draw[dashed] (0, 0) circle(2);
+\draw[->] (0, 0) -- (0, 2);
+\draw (0, 1) node[anchor=south west]{r};
+
+\end{tikzpicture}
+
+
+\begin{equation}
+\begin{split}
+\diverg \ \grad \varphi = f
+\end{split}
+\end{equation}
+
+Na rovnici aplikujeme Greenův teorém.
+
+\begin{equation}
+\begin{split}
+\int_S f \ ds = \int_S \diverg \ \grad \varphi \ ds = \int_{\partial S} (\grad \varphi) \cdot \vect{n} \ dl
+\end{split}
+\end{equation}
+
+Protože potenciál závisí pouze na \(r\), tak složka gradientu kolmá na poloměr je nulová. Proto \((\grad \varphi) \cdot \vect{n} = \frac{d \varphi}{dr}\).
+Získáme tak rovnici \eqref{eq:potencial_disku_obecne}.
+
+\begin{equation}
+\label{eq:potencial_disku_obecne}
+\begin{split}
+\int_S f \ ds = \int_{\partial S} \frac{d \varphi}{dr} \ dl = 2 \pi r \frac{d \varphi}{dr}
+\end{split}
+\end{equation}
+
+Označme celkové buzení \(F = \pi R^2 f\).
+Potenciál uvnitř a vně disku vyřešíme odděleně.
+
+\subsubsection{Potenciál vně disku}
+
+Tato situace nastává pokud \(r \geq R\). Uvnitř plochy \(S\) se proto nachází celý disk. Rovnici \eqref{eq:potencial_disku_obecne} proto můžeme updavit na tvar \eqref{eq:potencial_disku_vne_0}.
+
+\begin{equation}
+\label{eq:potencial_disku_vne_0}
+\begin{split}
+F = 2 \pi r \frac{d \varphi}{dr}
+\end{split}
+\end{equation}
+
+To je obyčejná diferenciální rovnice se separovatelnými proměnnými:
+
+\begin{equation}
+\label{eq:potencial_disku_vne_1}
+\begin{split}
+d \varphi = \frac{F}{2 \pi r} dr \\
+\int d \varphi = \int \frac{F}{2 \pi r} dr \\
+\varphi = \frac{F}{2 \pi} \cdot \mathrm{ln} \ r + C_1 \\
+\end{split}
+\end{equation}
+
+Konstantu \(C_1\) jsme zvolíme 0 a získáme tak rovnici \eqref{eq:potencial_disku_vne_2}. Tuto rovnici můžeme využít i pro bodový zdroj, kdy \(R \rightarrow 0\).
+
+\begin{equation}
+\label{eq:potencial_disku_vne_2}
+\varphi = \frac{F}{2 \pi} \cdot \mathrm{ln} \ r
+\end{equation}
+
+\subsubsection{Potenciál uvnitř disku}
+
+Tato situace nastává pokud \(r \leq R\). Uvnitř plochy \(S\) se proto nachází pouze část disku - celá plocha je vyplněna diskem.
+
+Vyjádříme \(f\) podle \(F\).
+
+\begin{equation}
+f = \frac{F}{\pi R^2}
+\end{equation}
+
+Integrál na levé straně rovnice \eqref{eq:potencial_disku_obecne} nahradíme vztahem pro obsah kruhu a dosadíme za \(f\).
+
+\begin{equation}
+\begin{split}
+\pi r^2 f = 2 \pi r \frac{d \varphi}{dr} \\
+\pi r^2 \cdot \frac{F}{\pi R^2} = 2 \pi r \frac{d \varphi}{dr} \\
+F \cdot \frac{r^2}{R^2} = 2 \pi r \frac{d \varphi}{dr}
+\end{split}
+\end{equation}
+
+To je obyčejná diferenciální rovnice se separovatelnými proměnnými:
+
+\begin{equation}
+\label{eq:potencial_disku_uvnitr}
+\begin{split}
+d \varphi = F \cdot \frac{r}{2 \pi R^2} dr \\
+\int d \varphi = \int F \cdot \frac{r}{2 \pi R^2} dr \\
+\varphi = F \cdot \frac{r^2}{4 \pi R^2} + C_2
+\end{split}
+\end{equation}
+
+Konstantu \(C_2\) určíme tak, aby potenciál na okraji disku (\(r = R\)) navazoval na potenciál vně disku:
+
+\begin{equation}
+\begin{split}
+F \cdot \frac{R^2}{4 \pi R^2} + C_2 = \frac{F}{2 \pi} \cdot \mathrm{ln} \ R \\
+C_2 = \frac{F}{2 \pi} \cdot \mathrm{ln} \ R - \frac{F}{4 \pi}
+\end{split}
+\end{equation}
+
+Potenciál uvnitř disku je tedy
+
+\begin{equation}
+\begin{split}
+\varphi = F \cdot \frac{r^2}{4 \pi R^2} + \frac{F}{2 \pi} \cdot \mathrm{ln} \ R - \frac{F}{4 \pi} \\
+\varphi = \frac{F}{4 \pi} \cdot \left (\frac{r^2}{R^2} + 2 \cdot \mathrm{ln} \ R - 1 \right)
+\end{split}
+\end{equation}
+
+
+\subsection{Potenciál koule v prostoru}
+
+Mějme kouli o~poloměru \(R\) s konstantním buzením \(f\). Chceme vypočítat potenciál \(\varphi\). Konfigurace je rotačně symetrická vůči středu
+koule, proto i řešení rovnice je rotačně symetrické. Potenciál proto závisí pouze na vzdálenosti od středu koule \(r\).
+
+
+\begin{tikzpicture}
+\draw (0, 0) circle(1);
+\draw[->] (0, 0) -- (1, 0);
+\draw (0.5, 0) node[anchor=south]{R};
+
+\draw[dashed] (0, 0) circle(2);
+\draw[->] (0, 0) -- (0, 2);
+\draw (0, 1) node[anchor=south west]{r};
+
+\end{tikzpicture}
+
+
+\begin{equation}
+\begin{split}
+\diverg \ \grad \varphi = f
+\end{split}
+\end{equation}
+
+Na rovnici aplikujeme Gaussův teorém.
+
+\begin{equation}
+\begin{split}
+\int_V f \ ds = \int_V \diverg \ \grad \varphi \ ds = \int_{\partial V} (\grad \varphi) \cdot \vect{n} \ ds
+\end{split}
+\end{equation}
+
+Protože potenciál závisí pouze na \(r\), tak složka gradientu kolmá na poloměr je nulová. Proto \((\grad \varphi) \cdot \vect{n} = \frac{d \varphi}{dr}\).
+Získáme tak rovnici \eqref{eq:potencial_koule_obecne}.
+
+\begin{equation}
+\label{eq:potencial_koule_obecne}
+\begin{split}
+\int_V f \ ds = \int_{\partial V} \frac{d \varphi}{dr} \ dl = 4 \pi r^2 \frac{d \varphi}{dr}
+\end{split}
+\end{equation}
+
+Označme celkové buzení \(F = \frac{4}{3} \pi R^3 f\).
+Potenciál uvnitř a vně koule vyřešíme odděleně.
+
+\subsubsection{Potenciál vně koule}
+
+Tato situace nastává pokud \(r \geq R\). Uvnitř objemu \(V\) se proto nachází celá koule. Rovnici \eqref{eq:potencial_koule_obecne} proto můžeme updavit na tvar \eqref{eq:potencial_koule_vne_0}.
+
+\begin{equation}
+\label{eq:potencial_koule_vne_0}
+\begin{split}
+F = 4 \pi r^2 \frac{d \varphi}{dr}
+\end{split}
+\end{equation}
+
+To je obyčejná diferenciální rovnice se separovatelnými proměnnými:
+
+\begin{equation}
+\label{eq:potencial_koule_vne_1}
+\begin{split}
+d \varphi = \frac{F}{4 \pi r^2} dr \\
+\int d \varphi = \int \frac{F}{4 \pi r^2} dr \\
+\varphi = -\frac{F}{4 \pi r} + C_1 \\
+\end{split}
+\end{equation}
+
+Konstantu \(C_1\) jsme zvolíme 0 a získáme tak rovnici \eqref{eq:potencial_kould_vne_2}. Touto volbou zajistíme, že potenciál v nekonečnu je nulový. Konstantu lze ale zvolit jakkoli. Rovnici \eqref{eq:potencial_kould_vne_2} můžeme využít i pro bodový zdroj, kdy \(R \rightarrow 0\).
+
+\begin{equation}
+\label{eq:potencial_koule_vne_2}
+\varphi = -\frac{F}{4 \pi r}
+\end{equation}
+
+\subsubsection{Potenciál uvnitř koule}
+
+Tato situace nastává pokud \(r \leq R\). Uvnitř objemu \(V\) se proto nachází pouze část koule - celý objem je vyplněn koulí.
+
+Vyjádříme \(f\) podle \(F\).
+
+\begin{equation}
+f = \frac{3}{4 \pi R^3}
+\end{equation}
+
+Integrál na levé straně rovnice \eqref{eq:potencial_koule_obecne} nahradíme vztahem pro objem koule a dosadíme za \(f\).
+
+\begin{equation}
+\begin{split}
+\frac{4}{3} \pi r^3 f = 4 \pi r^2 \frac{d \varphi}{dr} \\
+\frac{4}{3} \pi r^3 \frac{3}{4 \pi R^3} F = 4 \pi r^2 \frac{d \varphi}{dr} \\
+\frac{r^3}{R^3} F = 4 \pi r^2 \frac{d \varphi}{dr} \\
+\frac{r}{R^3} F = 4 \pi \frac{d \varphi}{dr}
+\end{split}
+\end{equation}
+
+To je obyčejná diferenciální rovnice se separovatelnými proměnnými:
+
+\begin{equation}
+\label{eq:potencial_disku_uvnitr}
+\begin{split}
+d \varphi = \frac{r}{4 \pi R^3} F \ dr \\
+\varphi = \frac{r^2}{8 \pi R^3} F + C_2
+\end{split}
+\end{equation}
+
+Konstantu \(C_2\) určíme tak, aby potenciál na okraji koule (\(r = R\)) navazoval na potenciál vně koule:
+
+\begin{equation}
+\begin{split}
+\frac{R^2}{8 \pi R^3} F + C_2 = -\frac{F}{4 \pi R} \\
+C_2 = -\frac{F}{4 \pi R} - \frac{R^2}{8 \pi R^3} F \\
+C_2 = -F \cdot \frac{3}{8 \pi R}
+\end{split}
+\end{equation}
+
+Potenciál uvnitř koule je tedy
+
+\begin{equation}
+\begin{split}
+\varphi = \frac{r^2}{8 \pi R^3} F - F \cdot \frac{3}{8 \pi R} \\
+\varphi = \frac{F}{8 \pi R} \cdot \left(\frac{r^2}{R^2} - 3 \right) \\
+\end{split}
+\end{equation}
+
+
+\subsection{Potenciál v nekonečné rovině bez okrajových podmínek}
+
+Rovnici \eqref{eq:potencial_disku_vne_2} lze využít pro výpočet potenciálu obecného rozložení zdrojů v nekonečné rovině.
+
+Mějme rozdělení hustoty zdrojů \(f(\vect{A})\). Integrováním rovnice \eqref{eq:potencial_disku_vne_2} pak získáme rovnici \eqref{eq:potencial_v_nekonecne_rovine}.
+
+\begin{equation}
+\label{eq:potencial_v_nekonecne_rovine}
+\varphi(\vect{B}) = \frac{1}{2 \pi} \cdot \int f(\vect{A}) \mathrm{ln} |\vect{A} - \vect{B}| \ d\vect{A}
+\end{equation}
+
+\subsection{Potenciál v nekonečném prostoru bez okrajových podmínek}
+
+Rovnici \eqref{eq:potencial_koule_vne_2} lze využít pro výpočet potenciálu obecného rozložení zdrojů v nekonečném prostoru.
+
+Mějme rozdělení hustoty zdrojů \(f(\vect{A})\). Integrováním rovnice \eqref{eq:potencial_koule_vne_2} pak získáme rovnici \eqref{eq:potencial_v_nekonecnem_prostoru}.
+
+\begin{equation}
+\label{eq:potencial_v_nekonecnem_prostoru}
+\varphi(\vect{B}) = -\frac{1}{4 \pi} \int \frac{f(\vect{A})}{|\vect{A} - \vect{B}|} \ d\vect{A}
+\end{equation}
+
+
+Poissonova rovnice
+
+Lagrangeova rovnice
+
+Linearita
+
+Invariance vůči posunutí a pootočení
+
+Okrajové podmínky
+
+Řešení rovnice na přímce
+
+Řešení Lagrangeovy rovnice uvnitř obecné smyčky
+
+Přílohy
+
+Tabulka integrálů
+
+Odvození integrálů
+
+\begin{thebibliography}{9}
+
+\bibitem{pum1}
+Karel Rektoris a spolupracovníci,
+\textit{Přehled užité matematiky I},
+Prometheus,
+ISBN 80-7196-180-9
+\end{thebibliography}
+
+\end{document}
+
