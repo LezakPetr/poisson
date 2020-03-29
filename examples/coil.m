@@ -1,7 +1,7 @@
 
 R1 = 10e-3;
-R2 = 15e-3;
-S = 20e-3;
+R2 = 11e-3;
+S = 10e-3;
 N = 1000;
 mu = 4e-7 * pi;
 
@@ -42,7 +42,7 @@ endfor
 L2 = (N^2 * mu * diff2) / (2 * (R2 - R1)^2 * S^2) * sum2;
 L2
 
-# Uplny vypocet integralu
+# Slouceny 2 podelne integrace
 diff3 = (S / steps) * ((R2 - R1) / steps)^2 * (2 * pi / steps);
 sum3 = 0;
 
@@ -66,4 +66,28 @@ endfor
 
 L3 = (N^2 * mu * diff3) / ((R2 - R1)^2 * S^2) * sum3;
 L3
+
+# Provedena podelna integrace
+diff4 = ((R2 - R1) / steps)^2 * (2 * pi / steps);
+sum4 = 0;
+
+for iRa = seq
+	Ra = R1 + (0.5 + iRa) / steps * (R2 - R1);
+	
+	for iRb = seq
+		Rb = R1 + (0.5 + iRb) / steps * (R2 - R1);
+		
+		for iAlpha = seq
+			alpha = (0.5 + iAlpha) / steps * 2 * pi;
+			
+			r2 = sqrt(S^2 + (Rb - Ra * cos(alpha))^2 + (Ra * sin(alpha))^2);
+			r1 = sqrt((Rb - Ra * cos(alpha))^2 + (Ra * sin(alpha))^2);
+			
+			sum4 += -Ra * Rb * (r2 - r1 - S * (log(S + r2) - log(r1)));
+		endfor
+	endfor
+endfor
+
+L4 = (N^2 * mu * diff4) / ((R2 - R1)^2 * S^2) * sum4;
+L4
 
