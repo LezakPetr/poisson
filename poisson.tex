@@ -475,12 +475,14 @@ Mějme rozdělení hustoty zdrojů \(f(\vect{A})\). Integrováním rovnice \eqre
 
 \subsubsection{Příklad - vzájemná indukčnost válcových cívek}
 
-Mějme 2 souosé hustě vinuté válcové cívky A a B mající \(N_A\) a \(N_B\) závitů. Cívky jsou na ose mezi souřadnicemi \(x_{A1}\) až \(x_{A2}\) a \(x_{B1}\) až \(x_{B2}\) a na poloměrech \(R_{A1}\) až \(R_{A2}\) a \(R_{B1}\) až \(R_{B2}\). Cívkou \(A\) protéká časově proměnný proud \(i(t)\) který v prostoru vyvolá magnetické pole. Toto magnetické pole indukuje v cívce B časově proměnné napětí \(u(t)\). Vzájemná indukčnost je definována vztahem \eqref{eq:definice_m}.
+Mějme 2 souosé hustě vinuté válcové cívky \(L_1\) a \(L_2\) mající \(N_1\) a \(N_2\) závitů. Cívky jsou na ose mezi souřadnicemi \(x_{11}\) až \(x_{12}\) a \(x_{21}\) až \(x_{22}\) a na poloměrech \(R_{11}\) až \(R_{12}\) a \(R_{21}\) až \(R_{22}\). Cívkou \(L_1\) protéká časově proměnný proud \(i_1(t)\) který v prostoru vyvolá magnetické pole. Toto magnetické pole indukuje v cívce \(L_2\) časově proměnné napětí \(u_2(t)\). Vzájemná indukčnost je definována vztahem \eqref{eq:definice_m}.
 
 \begin{equation}
 \label{eq:definice_m}
-u = M \cdot \frac{di}{dt}
+u_2 = M \cdot \frac{di_1}{dt}
 \end{equation}
+
+Pokud bychom chtěli spočítat vlastní indukčnost \(L\), pak stačí zvolit obě cívky shodné, tedy \(L_1 = L_2\).
 
 
 \begin{tikzpicture}
@@ -495,9 +497,26 @@ u = M \cdot \frac{di}{dt}
 \filldraw[color=black, fill=gray] (6, 1) -- (6, 2) -- (8, 2) -- (8, 1) -- (6, 1);
 \filldraw[color=black, fill=gray] (6, -1) -- (6, -2) -- (8, -2) -- (8, -1) -- (6, -1);
 
-
 \end{tikzpicture}
 
+Podle indukčního zákona platí vztah \eqref{eq:indukcni_zakon}.
+
+\begin{equation}
+\label{eq:indukcni_zakon}
+u_2 = \frac{d\Phi_2}{dt}
+\end{equation}
+
+Sloučením vztahů \label{eq:definice_m} a \eqref{eq:indukcni_zakon} získáme vztah \eqref{eq:vypocet_m_obecne}.
+
+\begin{equation}
+\label{eq:vypocet_m_obecne}
+\begin{split}
+M \cdot \frac{di_1}{dt} = \frac{d\Phi_2}{dt} \\
+M = \frac{\Phi_2}{i_1} = \frac{\int_{S_2} \vect{B} \cdot {n} ds}{i_1}
+\end{split}
+\end{equation}
+
+Plocha \(S_2\) je libovolná plocha ohraničená vodičem cívky \(L_2\), pro všechny plochy ohraničené stejným vodičem vyjde integrál stejný.
 
 
 Poissonova rovnice
