@@ -473,6 +473,32 @@ Mějme rozdělení hustoty zdrojů \(f(\vect{A})\). Integrováním rovnice \eqre
 \varphi(\vect{B}) = -\frac{1}{4 \pi} \int \frac{f(\vect{A})}{|\vect{A} - \vect{B}|} \ d\vect{A}
 \end{equation}
 
+\subsubsection{Příklad - vzájemná indukčnost válcových cívek}
+
+Mějme 2 souosé hustě vinuté válcové cívky A a B mající \(N_A\) a \(N_B\) závitů. Cívky jsou na ose mezi souřadnicemi \(x_{A1}\) až \(x_{A2}\) a \(x_{B1}\) až \(x_{B2}\) a na poloměrech \(R_{A1}\) až \(R_{A2}\) a \(R_{B1}\) až \(R_{B2}\). Cívkou \(A\) protéká časově proměnný proud \(i(t)\) který v prostoru vyvolá magnetické pole. Toto magnetické pole indukuje v cívce B časově proměnné napětí \(u(t)\). Vzájemná indukčnost je definována vztahem \eqref{eq:definice_m}.
+
+\begin{equation}
+\label{eq:definice_m}
+u = M \cdot \frac{di}{dt}
+\end{equation}
+
+
+\begin{tikzpicture}
+\draw[dashdotted] (0, 0) -- (10, 0);
+\draw (1, 0.5) -- (1, -0.5);
+\draw (4, 0.5) -- (4, -0.5);
+\filldraw[color=black, fill=gray] (1, 0.5) -- (1, 1) -- (4, 1) -- (4, 0.5) -- (1, 0.5);
+\filldraw[color=black, fill=gray] (1, -0.5) -- (1, -1) -- (4, -1) -- (4, -0.5) -- (1, -0.5);
+
+\draw (6, 1) -- (6, -1);
+\draw (8, 1) -- (8, -1);
+\filldraw[color=black, fill=gray] (6, 1) -- (6, 2) -- (8, 2) -- (8, 1) -- (6, 1);
+\filldraw[color=black, fill=gray] (6, -1) -- (6, -2) -- (8, -2) -- (8, -1) -- (6, -1);
+
+
+\end{tikzpicture}
+
+
 
 Poissonova rovnice
 
