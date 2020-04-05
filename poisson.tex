@@ -518,6 +518,37 @@ M = \frac{\Phi_2}{i_1} = \frac{\int_{S_2} \vect{B} \cdot {n} ds}{i_1}
 
 Plocha \(S_2\) je libovolná plocha ohraničená vodičem cívky \(L_2\), pro všechny plochy ohraničené stejným vodičem vyjde integrál stejný.
 
+Cívku \(L_2\) si zjednodušíme jako \(N_2\) kruhových závitů ležících v rovinách kolmých na osu cívky. Protože je cívka hustě vinutá, tak je závitů mnoho a jsou po cívce rovnoměrně rozděleny. Proto si můžeme dovolit namísto počítání jednotlivých závitů zvlášť považovat závity za kontinuum. Závity proložíme kruhy, které jsou kolmé na osu cívky. Proto nás bude zajímat pouze složka indukčnosti rovnoběžná s osou cívky. Tok magnetické indukčnosti kruhy ohraničenými závity cívky nahradíme cirkulací magnetického potenciálu závity. Získáme tak vztah \eqref{eq:aproximace_plochy}. Zde \(\varphi\) je složka magnetického potenciálu rovnoběžná s kruhovým závitem. Díky rotační symetrii úlohy předpokládáme, že tato složka je po celé délce závitu stejná.
+
+Označme plochy poloviny průřezů \(S_1 = (R_{12} - R_{11}) \cdot (L_{12} - L_{11})\) a \(S_2 = (R_{22} - R_{21}) \cdot (L_{22} - L_{21})\).
+
+\begin{equation}
+\label{eq:aproximace_plochy}
+\begin{split}
+M = \int_{S_2} \vect{B} \cdot {n} \ ds = \int_{\partial S_2} \varphi \ dl_2 \approx \\
+\frac{N_2}{S_2} \int_{R_{21}}^{R_{22}} \int_{L_{21}}^{L_{22}} \int_{0}^{2 \pi} r_2 \varphi \ d\alpha \ dl_2 \ dr_2 = \\
+\frac{N_2}{S_2} \int_{R_{21}}^{R_{22}} \int_{L_{21}}^{L_{22}} 2 \pi r_2 \cdot \varphi(r_2, l_2) \ dl_2 \ dr_2 
+\end{split}
+\end{equation}
+
+Dále musíme vyjádřit magnetický potenciál \(\varphi\):
+
+\begin{equation}
+\label{eq:civky_potencial}
+\begin{split}
+\varphi(r_2, l_2) = \frac{N_1}{S_1} \int_{0}^{2 \pi} \int_{R_{11}}^{R_{12}} \int_{L_{11}}^{L_{12}} \frac{r_1}{4 \pi r}  \ dl_1 \ dr_1 \ d \alpha
+\end{split}
+\end{equation}
+
+Indukčnost je tedy
+
+\begin{equation}
+\label{eq:indukcnost_1}
+\begin{split}
+M = \frac{N_1 N_2}{S_1 S_2} \int_{R_{21}}^{R_{22}} \int_{L_{21}}^{L_{22}} \int_{0}^{2 \pi} \int_{R_{11}}^{R_{12}} \int_{L_{11}}^{L_{12}} \frac{r_1 r_2}{2 r} \ dl_1 \ dr_1 \ d \alpha \ dl_2 \ dr_2
+\end{split}
+\end{equation}
+
 
 Poissonova rovnice
 
