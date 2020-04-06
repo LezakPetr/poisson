@@ -536,19 +536,34 @@ Dále musíme vyjádřit magnetický potenciál \(\varphi\):
 \begin{equation}
 \label{eq:civky_potencial}
 \begin{split}
-\varphi(r_2, l_2) = \frac{N_1}{S_1} \int_{0}^{2 \pi} \int_{R_{11}}^{R_{12}} \int_{L_{11}}^{L_{12}} \frac{r_1}{4 \pi r}  \ dl_1 \ dr_1 \ d \alpha
+\varphi(r_2, l_2) = \frac{N_1 \mu}{S_1} \int_{0}^{2 \pi} \int_{R_{11}}^{R_{12}} \int_{L_{11}}^{L_{12}} \frac{r_1}{4 \pi r}  \ dl_1 \ dr_1 \ d \alpha
 \end{split}
 \end{equation}
+
+\(r\) je vzdálenost elementu cívky \(L_1\) od elementu cívky \(L_2\). Vektor je \(\vect{r} = (l_2 - l_1, r_2 - r_1 \cdot cos \alpha, r1 \cdot sin \alpha)\), proto \(r = \sqrt{(l_2 - l_1)^2 + (r_2 - r_1 \cdot cos \alpha)^2 + r_1^2 \cdot sin^2 \alpha}\).
 
 Indukčnost je tedy
 
 \begin{equation}
 \label{eq:indukcnost_1}
 \begin{split}
-M = \frac{N_1 N_2}{S_1 S_2} \int_{R_{21}}^{R_{22}} \int_{L_{21}}^{L_{22}} \int_{0}^{2 \pi} \int_{R_{11}}^{R_{12}} \int_{L_{11}}^{L_{12}} \frac{r_1 r_2}{2 r} \ dl_1 \ dr_1 \ d \alpha \ dl_2 \ dr_2
+M = \frac{N_1 N_2 \mu}{S_1 S_2} \int_{R_{21}}^{R_{22}} \int_{L_{21}}^{L_{22}} \int_{0}^{2 \pi} \int_{R_{11}}^{R_{12}} \int_{L_{11}}^{L_{12}} \frac{r_1 r_2}{2 r} \ dl_1 \ dr_1 \ d \alpha \ dl_2 \ dr_2
 \end{split}
 \end{equation}
 
+Tento pětinásobný integrál nedokážeme vypočítat analyticky. Můžeme ale alespoň snížit jeho řád, abychom snížili výpočetní náročnost numerické aproximace a zároveň zvýšili přesnost výpočtu.
+
+Označme \(F(a, b) = \int_a^b \int_{R_{21}}^{R_{22}} \int_{0}^{2 \pi} \int_{R_{11}}^{R_{12}} \frac{(1 - t) r_1 r_2}{\sqrt{t^2 + (r_2 - r_1 \cdot cos \alpha)^2 + r_1^2 \cdot sin^2 \alpha}} \ dr_1 \ d \alpha \ dr_2 \ dt\).
+
+Pak \(\frac{N_1 N_2 \mu}{2 S_1 S_2} \left(F(L_{11}, L_{12}) + F(L_{12}, L_{21}) - F(L_{11}, L_{21}) - F(L_{12}, L_{22})\right)\).
+
+Ve funkci \(F\) můžeme vyjádřit integrál podle \(t\). 
+
+\begin{equation}
+\begin{split}
+\int \frac{(1 - t) r_1 r_2}{\sqrt{t^2 + (r_2 - r_1 \cdot cos \alpha)^2 + r_1^2 \cdot sin^2 \alpha}} dt
+\end{split}
+\end{equation}
 
 Poissonova rovnice
 
