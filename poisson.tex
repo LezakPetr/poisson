@@ -21,16 +21,9 @@
 
 \section{Úvod}
 
-Poissonova parciální diferenciální rovnice má velké využití v technické praxi, protože pomocí ní lze modelovat mnoho důležitých jevů:
-elektrické pole stacionárních nábojů
-magnetické pole neměnných elektrických proudů
-ustálený tok teplatt
-tok mechanického napětí v materiálu
-difuze
-proud v odporovém materiálu
-Základní vlastnosti
-
 \section{Vektorová analýza}
+
+Mějme euklidovský prostor. Tělesem \(\Psi\) rozumíme souvislou ohraničenou množinu bodů v tomto prostoru. Hranicí tělesa rozumíme množinu bodů, které sousedí jak s~body tvořícími těleso tak i~s~body netvořícími těleso. Hranici označujeme \(\partial \Psi\). Obdobně definujeme útvar v~rovině nebo úsek na přímce. Těleso, rovinný útvar nebo úsek obecně nazveme oblast. Hranicí tělesa je uzavřená plocha, hranicí plochy je uzavřená křivka a~hranicí úseku jsou 2 body. 
 
 Skalární funkcí (polem) \(u(x, y)\) respektive \(u(x, y, z)\) rozumíme funkci přiřazující každému bodu v~rovině respektive v~prostoru skalární hodnotu. Příkladem takovéto funkce je například pole teploty nebo tlaku.
 
@@ -195,6 +188,58 @@ Greenův teorém:
 \begin{equation}
 \int_S \diverg \ u \ dV = \oint_{\partial S} \vect{u} \cdot \vect{n} dl
 \end{equation}
+
+\section{Rovnice}
+
+Poissonova parciální diferenciální rovnice má velké využití v technické praxi, protože pomocí ní lze modelovat mnoho důležitých jevů.
+Rovnici lze zapsat ve více různých ekvivalentních tvarech zapsaných v~\eqref{eq:poissonova_rovnice_definice}. V~kartézské soustavě souřadnic na přímce má rovnice tvar \eqref{eq:poissonova_rovnice_primka}, v~rovině
+\eqref{eq:poissonova_rovnice_rovina} a~v~prostoru \eqref{eq:poissonova_rovnice_prostor}. Tyto tvary rovnic nazýváme diferenciální.
+
+\begin{equation}
+\label{eq:poissonova_rovnice_definice}
+\begin{split}
+\Delta \varphi = f \\
+\nabla^2 \varphi = f \\
+\diverg \ \grad \ \varphi = f
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:poissonova_rovnice_primka}
+\frac{\partial^2 \varphi}{\partial x^2} = f
+\end{equation}
+
+\begin{equation}
+\label{eq:poissonova_rovnice_rovina}
+\frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} = f
+\end{equation}
+
+\begin{equation}
+\label{eq:poissonova_rovnice_prostor}
+\frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} + \frac{\partial^2 \varphi}{\partial z^2} = f
+\end{equation}
+
+Rovnici by samozřejmě bylo možné zobecnit i~do vícerozměrných prostorů, my se však v dalším výkladu zaměříme pouze na nejvýše tři rozměry.
+Zde \(varphi\) je skalární potenciál. Jedná se o~skalární pole, tedy o~funkci definovanou v~určité oblasti (prostoru, rovině, přímce případně v~jejich částech), která každému bodu této oblasti přiřazuje skalární
+hodnotu. Skalární pole \(f\) je pole zdrojů, někdy též nazývané buzení.
+
+Poissonovu rovnici lze také zapsat v~integrálním tvaru.
+
+\begin{equation}
+\label{eq:poissonova_rovnice_integralni_tvar}
+\begin{split}
+\oint_{\partial V} \grad \ \varphi \cdot \vect{n} ds = \int_V f dV
+\end{split}
+\end{equation}
+
+
+elektrické pole stacionárních nábojů
+magnetické pole neměnných elektrických proudů
+ustálený tok
+tok mechanického napětí v materiálu
+difuze
+proud v odporovém materiálu
+Základní vlastnosti
 
 
 \section{Řešení Poissonovy rovnice bez okrajových podmínek}
@@ -551,20 +596,6 @@ M = \frac{N_1 N_2 \mu}{S_1 S_2} \int_{R_{21}}^{R_{22}} \int_{L_{21}}^{L_{22}} \i
 \end{split}
 \end{equation}
 
-Tento pětinásobný integrál nedokážeme vypočítat analyticky. Můžeme ale alespoň snížit jeho řád, abychom snížili výpočetní náročnost numerické aproximace a zároveň zvýšili přesnost výpočtu.
-
-Označme \(F(a, b) = \int_a^b \int_{R_{21}}^{R_{22}} \int_{0}^{2 \pi} \int_{R_{11}}^{R_{12}} \frac{(1 - t) r_1 r_2}{\sqrt{t^2 + (r_2 - r_1 \cdot cos \alpha)^2 + r_1^2 \cdot sin^2 \alpha}} \ dr_1 \ d \alpha \ dr_2 \ dt\).
-
-Pak \(\frac{N_1 N_2 \mu}{2 S_1 S_2} \left(F(L_{11}, L_{12}) + F(L_{12}, L_{21}) - F(L_{11}, L_{21}) - F(L_{12}, L_{22})\right)\).
-
-Ve funkci \(F\) můžeme vyjádřit integrál podle \(t\). 
-
-\begin{equation}
-\begin{split}
-\int \frac{(1 - t) r_1 r_2}{\sqrt{t^2 + (r_2 - r_1 \cdot cos \alpha)^2 + r_1^2 \cdot sin^2 \alpha}} dt
-\end{split}
-\end{equation}
-
 Poissonova rovnice
 
 Lagrangeova rovnice
@@ -580,10 +611,6 @@ Okrajové podmínky
 Řešení Lagrangeovy rovnice uvnitř obecné smyčky
 
 Přílohy
-
-Tabulka integrálů
-
-Odvození integrálů
 
 \begin{thebibliography}{9}
 
