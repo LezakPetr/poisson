@@ -23,14 +23,24 @@
 
 \section{Vektorová analýza}
 
-Mějme euklidovský prostor. Tělesem \(\Psi\) rozumíme souvislou ohraničenou množinu bodů v tomto prostoru. Hranicí tělesa rozumíme množinu bodů, které sousedí jak s~body tvořícími těleso tak i~s~body netvořícími těleso. Hranici označujeme \(\partial \Psi\). Obdobně definujeme útvar v~rovině nebo úsek na přímce. Těleso, rovinný útvar nebo úsek obecně nazveme oblast. Hranicí tělesa je uzavřená plocha, hranicí plochy je uzavřená křivka a~hranicí úseku jsou 2 body. 
+\subsection{Základní definice}
 
-Skalární funkcí (polem) \(u(x, y)\) respektive \(u(x, y, z)\) rozumíme funkci přiřazující každému bodu v~rovině respektive v~prostoru skalární hodnotu. Příkladem takovéto funkce je například pole teploty nebo tlaku.
+Mějme třírozměrný euklidovský prostor. Tělesem \(\Psi\) rozumíme souvislou ohraničenou množinu bodů v tomto prostoru. Hranicí tělesa rozumíme množinu bodů, které sousedí jak s~body tvořícími těleso tak i~s~body netvořícími těleso. Hranici označujeme \(\partial \Psi\). Obdobně definujeme útvar v~rovině nebo úsek na přímce. Těleso, rovinný útvar nebo úsek obecně nazveme oblast. Hranicí tělesa je uzavřená plocha, hranicí plochy je uzavřená křivka a~hranicí úseku jsou 2 body. 
 
+\begin{tikzpicture}
+\filldraw[lightgray] (0, 0) circle (1);
+\draw (0, 0) circle (1);
+\draw (0, 0) node[anchor=center]{\(\Psi\)};
+\draw (1, 0) node[anchor=west]{\(\partial \Psi\)};
+\end{tikzpicture}
 
-Vektorovou funkcí (polem) \(\vect{u}(x, y)\) respektive \(\vect{u}(x, y, z)\) rozumíme funkci přiřazující každému bodu v~rovině respektive v~prostoru vektorovou hodnotu. Příkladem takovéto funkce je například pole rychlosti proudění kapaliny. Funkci můžeme zapsat ve složkovém tvaru \(\vect{u}=(u_1(x, y, z), u_2(x, y, z), u_3(x, y, z))\).
+Skalární funkcí (polem) \(u(x, y)\) respektive \(u(x, y, z)\) rozumíme funkci přiřazující každému bodu \([x, y]\) v~rovině respektive \([x, y, z]\) v~prostoru skalární hodnotu. Příkladem takovéto funkce je například pole teploty nebo tlaku. Pokud není uvedeno jinak, tak uvažujeme kartézský systém souřadnic. 
+
+Vektorovou funkcí (polem) \(\vect{u}(x, y)\) respektive \(\vect{u}(x, y, z)\) rozumíme funkci přiřazující každému bodu \([x, y]\)
+ v~rovině respektive \([x, y, z]\) v~prostoru vektorovou hodnotu. Příkladem takovéto funkce je například pole rychlosti proudění kapaliny. Funkci můžeme zapsat ve složkovém tvaru \(\vect{u}=(u_x(x, y, z), u_y(x, y, z), u_z(x, y, z))\).
 
 \subsection{Křivkový integrál}
+
 Pokud máme orientovanou po částech hladkou křivku v~prostoru definovanou parametricky pomocí rovnice \eqref{eq:krivkovy_integral_krivka} a vektorové pole \(\vect{v}\), pak křivkový integrál definujeme rovnicí \eqref{eq:krivkovy_integral_definice}.
 
 \begin{equation}
@@ -87,11 +97,17 @@ Elektrické pole působí na náboj \(Q\) silou \(\vect{F} = \vect{E} \cdot Q\).
 W = \int_{-1}^1 \left (\frac{-t}{1 + t^2} \cdot 0 + \frac{1}{1 + t^2} \cdot 1 \right) = \left[\mathrm{arctg} \ t\right]_{-1}^1 = \frac{\pi}{2} \mathrm{J}
 \]
 
+\subsection{Tok vektoru}
 
-\subsection{Plošný integrál}
+Pokud máme vektorové pole definované v~prostoru, tak můžeme určit jeho tok určenou plochou. Obdobně pokud máme vektorové pole definované
+ v~rovině, tak můžeme určit jeho tok určenou křivkou. V~obou případech je tento tok roven integrálu průmětů vektorů pole do normál plochy nebo křivky násobené plochou nebo délkou elelemntu plochy nebo křivky.
+ 
+Pokud vektorové pole představuje rychlost proudění tekutiny, pak tok vektoru představuje celkový průtok této tekutiny plochou nebo křivkou.
+
+\subsubsection{Tok vektoru plochou v prostoru - plošný integrál}
 
 Je-li \(S = \left(S_x(t, u), S_y(t, u), S_z(t, u)\right)\) po částech hladká plocha s jednotkovou normálou \(\vect{n}\) a \(\vect{v}\) je vektorové pole,
-pak křivkový integrál definujeme rovnicí \eqref{eq:plosny_integral_definice}. Říkáme mu tok vektoru \(v\) plochou \(S\).
+pak plošný integrál definujeme rovnicí \eqref{eq:plosny_integral_definice}. Říkáme mu tok vektoru \(v\) plochou \(S\).
 
 
 \begin{equation}
@@ -113,11 +129,11 @@ Povšimněme si, že vektory \(\frac{\partial S}{\partial t}\) a \(\frac{\partia
 
 Je-li plocha uzavřená, pak toto zdůrazníme kroužkem přes symbol integrálu, tedy \(\oint_S \vect{v} \cdot d\vect{s}\). Podle konvence pak normála \(n\) míří vně z plochy.
 
+Například zákon kontinuity toku nestlačitelné kapaliny lze zapsat \(\oint_S \vect{v} \cdot d\vect{s} = 0\). Vyjadřuje fakt, že velkový výtok vektoru rychlosti kapaliny \(v\) jakoukoli uzavřenou plochou \(S\) je nulový, tedy že se kapalina nikde neztrácí, nevyvěrá ani nestlačuje. 
+
 \subsubsection{Příklad}
 
 Rychlost kapaliny je popsána vztahem \(v = \)
-
-
 
 \begin{tikzpicture}
 \draw (-1, -1) -- (-1, 1) -- (1, 1) -- (1, -1) -- (-1, -1);
@@ -133,6 +149,29 @@ Rychlost kapaliny je popsána vztahem \(v = \)
 \draw (0, 1) node[anchor=south west]{\(d_x \cdot u_y(x, y + \frac{dy}{2})\)};
 \draw (0, -1) node[anchor=north west]{\(-d_x \cdot u_y(x, y - \frac{dy}{2})\)};
 \end{tikzpicture}
+
+
+\subsubsection{Tok vektoru křivkou v~rovině}
+
+
+Je-li \(l = \left(l_x(t), l_y(t)\right)\) po částech hladká plocha s jednotkovou normálou \(\vect{n}\) a \(\vect{v}\) je vektorové pole,
+pak tok vektoru \(v\) křivkou \(l\) definujeme rovnicí \eqref{eq:tok_krivkou_definice}.
+
+\begin{equation}
+\label{eq:tok_krivkou_definice}
+\begin{split}
+\int_l \vect{v} \cdot \vect{n} dl
+\end{split}
+\end{equation}
+
+Máme-li vektor \(d \vect{l} = \left(\frac{d l_x}{dt}, \frac{d l_y}{dt}\right)\), pak vektor k~němu kolmý získáme tak, že prohodíme souřadnice a~u~jedné z~nich otočíme znaménko. Proto \(\vect{n} dl = \left(\frac{d l_y}{dt}, -\frac{d l_x}{dt}\right) dt\). Tok vektoru \(v\) křivkou \(l\) proto můžeme až na znaménko vypočítat podle vztahu \eqref{eq:tok_krivkou_vypocet}.
+
+\begin{equation}
+\label{eq:tok_krivkou_vypocet}
+\begin{split}
+\int_{t_1}^{t_2} \left (v_x \cdot \frac{d l_y}{dt} -v_y \cdot \frac{d l_x}{dt} \right) dt
+\end{split}
+\end{equation}
 
 
 Gradient skalárního pole \(\varphi\) je vektorové pole \(\vect{v}\), které má v~každém bodě směr nejvyššího přírůstku skalárního pole. Je definován vztahem
