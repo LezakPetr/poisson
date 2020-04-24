@@ -65,6 +65,7 @@ Protože \(\frac{d\vect{l}}{dt} = \left(\frac{d \Gamma_x}{dt}, \frac{d \Gamma_y}
 \int_{t_1}^{t_2} \left(v_x(\Gamma(t)) \cdot \frac{d \Gamma_x}{dt} + v_y(\Gamma(t)) \cdot \frac{d \Gamma_y}{dt} + v_z(\Gamma(t)) \cdot \frac{d \Gamma_z}{dt} \right) dt
 \end{split}
 \end{equation}
+
 Obdobně je definován křivkový integrál v rovině, pouze vynecháme souřadnici \(z\).
 
 Je-li křivka uzavřená (její počáteční a koncový bod jsou shodné), toto zdůrazníme kroužkem přes symbol integrálu, tedy \(\oint_\Gamma \vect{v} \cdot d\vect{l}\), a říkáme mu cirkulace vektoru po uzavřené smyčce.
@@ -96,6 +97,25 @@ Elektrické pole působí na náboj \(Q\) silou \(\vect{F} = \vect{E} \cdot Q\).
 \[
 W = \int_{-1}^1 \left (\frac{-t}{1 + t^2} \cdot 0 + \frac{1}{1 + t^2} \cdot 1 \right) = \left[\mathrm{arctg} \ t\right]_{-1}^1 = \frac{\pi}{2} \mathrm{J}
 \]
+
+Nyní vyšetřeme vlastnosti křivkového integrálu. Rovnice \eqref{eq:krivkovy_integral_opacny} říká, že křivkový integrál po opačně orientované křivce je opačný. Rovnice \eqref{eq:krivkovy_integral_soucet} udává, že křivkový integrál po křivce, která je rovna součtu dvou křivek, je rovna součtu jejich křivkových integrálů. Oba dva vztahy jsou intuitivní a~lze je snadno ověřit rozepsáním integrálů pomocí vztahu \eqref{eq:krivkovy_integral_vypocet}.
+
+\begin{equation}
+\label{eq:krivkovy_integral_opacny}
+\begin{split}
+\int_{-\Gamma} \vect{v} \cdot d\vect{l} = -\int_{\Gamma} \vect{v} \cdot d\vect{l}
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:krivkovy_integral_soucet}
+\begin{split}
+\int_{\Gamma_1 + \Gamma_2} \vect{v} \cdot d\vect{l} = \int_{\Gamma_1} \vect{v} \cdot d\vect{l} + \int_{\Gamma_2} \vect{v} \cdot d\vect{l}
+\end{split}
+\end{equation}
+
+Máme-li uzavřenou smyčku \(\Gamma_S\), pak ji můžeme rozdělit na dvě smyčky \(\Gamma_1\) a~\(\Gamma_2\) pomocí přepážky \(\Gamma_P\).
+
 
 \section{Tok vektoru}
 
