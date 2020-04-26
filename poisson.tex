@@ -3,6 +3,7 @@
 \usepackage[czech]{babel}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usetikzlibrary{math}
 
 \newcommand{\vect}[1]{\boldsymbol{#1}}
 \newcommand{\grad}{\mathrm{grad}}
@@ -114,8 +115,45 @@ Nyní vyšetřeme vlastnosti křivkového integrálu. Rovnice \eqref{eq:krivkovy
 \end{split}
 \end{equation}
 
-Máme-li uzavřenou smyčku \(\Gamma_S\), pak ji můžeme rozdělit na dvě smyčky \(\Gamma_1\) a~\(\Gamma_2\) pomocí přepážky \(\Gamma_P\).
+Máme-li uzavřenou smyčku \(\Gamma_S\), pak ji můžeme rozdělit na dvě smyčky \(\Gamma_1\) a~\(\Gamma_2\) pomocí libovolně volené přepážky \(\Gamma_P\).
 
+\begin{tikzpicture}
+\tikzmath{ \x = 0; \y = 5; }
+
+\draw[->] (\x + 2, \y) arc (0:360:2 and 1);
+\draw (\x + 2, \y) node[anchor=west]{\(\Gamma_S\)};
+
+\tikzmath{ \x = 0; \y = 2.5; \t = 0.1; }
+
+\draw[->] (\x + \t, \y - 1) arc (-90:90:2 and 1);
+\draw[->] (\x + \t, \y + 1) -- (\x + \t, \y - 0.9);
+
+\draw[->] (\x - \t, \y + 1) arc (90:270:2 and 1);
+\draw[->] (\x - \t, \y - 0.9) -- (\x - \t, \y + 1);
+\draw (\x, \y) node[anchor=west]{\(\Gamma_P\)};
+
+\draw (\x + \t, \y - 0.9) -- (\x - \t, \y - 0.9);
+\draw (\x - \t, \y - 1) -- (\x + \t, \y - 1);
+
+\tikzmath{ \x = 0; \y = 0; \t = 0.1; }
+
+\draw[->] (\x + \t, \y - 1) arc (-90:90:2 and 1);
+\draw[->] (\x + \t, \y + 1) -- (\x + \t, \y - 1);
+\draw (\x - 2, \y + 0) node[anchor=east]{\(\Gamma_1\)};
+
+\draw[->] (\x - \t, \y + 1) arc (90:270:2 and 1);
+\draw[->] (\x - \t, \y - 1) -- (\x - \t, \y + 1);
+\draw (\x + 2, \y) node[anchor=west]{\(\Gamma_2\)};
+\end{tikzpicture}
+
+Přepážka je tvořena dvěma opačně orientovanými částmi křivky, které jsou nekonečně blízké. Proto se jejich příspěvky do cirkulace vyruší a platí proto vztah \eqref{eq:deleni_cirkulace}. Takto lze cirkulaci vektoru podél křivky rozdělit na součet libovolného počtu cirkulací.
+
+\begin{equation}
+\label{eq:deleni_cirkulace}
+\begin{split}
+\oint_{\Gamma_S} \vect{v} \cdot d\vect{l} = \oint_{\Gamma_1} \vect{v} \cdot d\vect{l} + \oint_{\Gamma_2} \vect{v} \cdot d\vect{l}
+\end{split}
+\end{equation}
 
 \section{Tok vektoru}
 
