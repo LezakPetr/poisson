@@ -155,10 +155,17 @@ Přepážka je tvořena dvěma opačně orientovanými částmi křivky, které 
 \end{split}
 \end{equation}
 
+\subsection{Rotace}
+
+Mějme nekonečně malou plochu \(S\) v~prostoru, na ní ležící bod \(P\) a~vektorové pole \(\vect{v}\). 
+
+Rotace vektorového pole \(\vect{v}\) je vektorové pole pole \(v\). Je definována vztahem \(\rot \ \vect{u} = \rot \ (u_x(x, y, z), u_y(x, y, z), u_z(x, y, z)) = \left(\frac{\partial u_z}{\partial y} - \frac{\partial u_y}{\partial z}, \frac{\partial u_x}{\partial z} - \frac{\partial u_z}{\partial x}, \frac{\partial u_y}{\partial x} - \frac{\partial u_x}{\partial y}\right)\).
+
+
 \section{Tok vektoru}
 
 Pokud máme vektorové pole definované v~prostoru, tak můžeme určit jeho tok určenou plochou. Obdobně pokud máme vektorové pole definované
- v~rovině, tak můžeme určit jeho tok určenou křivkou. V~obou případech je tento tok roven integrálu průmětů vektorů pole do normál plochy nebo křivky násobené plochou nebo délkou elelemntu plochy nebo křivky.
+ v~rovině, tak můžeme určit jeho tok určenou křivkou. V~obou případech je tento tok roven integrálu průmětů vektorů pole do normál plochy nebo křivky násobené plochou nebo délkou elementu plochy nebo křivky.
  
 Pokud vektorové pole představuje rychlost proudění tekutiny, pak tok vektoru představuje celkový průtok této tekutiny plochou nebo křivkou.
 
@@ -243,10 +250,6 @@ V rovině je definována vztahem \(\diverg \ \vect{u} = \diverg (u_x(x, y), u_y(
 \draw (0, 1) node[anchor=south west]{\(d_x \cdot u_y(x, y + \frac{dy}{2})\)};
 \draw (0, -1) node[anchor=north west]{\(-d_x \cdot u_y(x, y - \frac{dy}{2})\)};
 \end{tikzpicture}
-
-\subsection{Rotace}
-
-Rotace vektorového pole \(\vect{v}\) je vektorové pole pole \(v\). Je definována vztahem \(\rot \ \vect{u} = \rot \ (u_x(x, y, z), u_y(x, y, z), u_z(x, y, z)) = \left(\frac{\partial u_z}{\partial y} - \frac{\partial u_y}{\partial z}, \frac{\partial u_x}{\partial z} - \frac{\partial u_z}{\partial x}, \frac{\partial u_y}{\partial x} - \frac{\partial u_x}{\partial y}\right)\).
 
 \subsection{Laplaceův operátor}
 
@@ -711,6 +714,13 @@ Karel Rektoris a spolupracovníci,
 \textit{Přehled užité matematiky I},
 Prometheus,
 ISBN 80-7196-180-9
+
+\bibitem{eam}
+Bedřich Sedlák, Ivan Štoll,
+\textit{Elektřina a magnetismus},
+Academia,
+ISBN 80-200-1004-1
+
 \end{thebibliography}
 
 \end{document}
