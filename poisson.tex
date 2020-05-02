@@ -195,6 +195,35 @@ Vyšetřeme nyní první řádek součtu. Ostatní řádky jsou obdobné.
 
 Integrály \(\int_{t_1}^{t_2} \frac{d \Gamma_x}{dt} dt\) a \(\int_{t_1}^{t_2} \Gamma_x(t) \frac{d \Gamma_x}{dt} dt\) jsou integrály typu \(\int_{t_1}^{t_2} \mathrm{f}(\Gamma_x(t)) \frac{d \Gamma_x}{dt} dt\). Zavedeme-li substituci \(x = \Gamma_x\), tak se integrál redukuje na \(\int_{\Gamma_x(t_1)}^{\Gamma_x(t_2)} \mathrm{f}(x) dx\) a protože je smyčka \(\Gamma\) uzavřená, tak jsou obě integrační meze shodné, tedy \(\Gamma_x(t_1) = \Gamma_x(t_2)\). Proto pro uzavřenou smyčku \(\Gamma\) platí \(\int_{t_1}^{t_2} \mathrm{f}(\Gamma_x(t)) \frac{d \Gamma_x}{dt} dt = 0\).
 
+Dále je tu integrál \(\int_{t_1}^{t_2} \Gamma_z(t) \frac{d \Gamma_x}{dt} dt\).
+
+\begin{tikzpicture}
+\draw[->] (0, 0) -- (3, 0);
+\draw (3, 0) node[anchor=north]{z};
+
+\draw[->] (0, 0) -- (0, 3);
+\draw (0, 3) node[anchor=east]{x};
+
+\draw[->] (0, 0) -- (-1, -1);
+\draw (-1, -1) node[anchor=east]{y};
+
+\filldraw[color=black, fill=gray] (0, 1.4) -- (2.25, 1.4) -- (2.25, 1.6) -- (0, 1.6) -- (0, 1.4);
+\draw[->] (1.5, 2.5) arc (90:450:0.75 and 1);
+
+\draw (0, 1.4) -- (-0.3, 1.4);
+\draw (0, 1.6) -- (-0.3, 1.6);
+
+\draw[->] (-0.2, 1.2) -- (-0.2, 1.4);
+\draw (-0.2, 1.4) -- (-0.2, 1.6);
+\draw (-0.2, 1.5) node[anchor=east]{\tiny \(d \Gamma_x\)};
+\draw[->] (-0.2, 1.8) -- (-0.2, 1.6);
+
+\draw (2.25, 1.4) -- (2.25, -0.1);
+\draw (2.25, 0) node[anchor=north west]{\tiny \(\Gamma_y\)};
+
+\end{tikzpicture}
+
+
 Mějme nekonečně malou plochu \(S\) v~prostoru, na ní ležící bod \(P\) a~vektorové pole \(\vect{v}\). 
 
 Rotace vektorového pole \(\vect{v}\) je vektorové pole pole \(v\). Je definována vztahem \(\rot \ \vect{u} = \rot \ (u_x(x, y, z), u_y(x, y, z), u_z(x, y, z)) = \left(\frac{\partial u_z}{\partial y} - \frac{\partial u_y}{\partial z}, \frac{\partial u_x}{\partial z} - \frac{\partial u_z}{\partial x}, \frac{\partial u_y}{\partial x} - \frac{\partial u_x}{\partial y}\right)\).
