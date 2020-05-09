@@ -370,7 +370,7 @@ Další 3 integrály jsou typu \(\oint_S f(y, z) n_x \mathrm{d}s\). Uvažujme pr
 \label{eq:divergence_3}
 \int_S \vect{v} \cdot d\vect{s} = \frac{\partial v_x}{\partial x} V + \frac{\partial v_y}{\partial y} V + \frac{\partial v_z}{\partial z} V = \left(\frac{\partial v_x}{\partial x} + \frac{\partial v_y}{\partial y} + \frac{\partial v_z}{\partial z}\right) V
 \end{equation}
-
+\
 Ve výrazu \eqref{eq:divergence_3} se vyskytuje součet, který je závislý pouze na poli \(v\) a nazveme jej divergence pole \(v\). 
 
 \begin{equation}
@@ -380,8 +380,38 @@ Ve výrazu \eqref{eq:divergence_3} se vyskytuje součet, který je závislý pou
 
 Divergence je definována vztahem \eqref{eq:divergence_definice} a představuje tedy výtok pole \(v\) z nekonečně malého tělesa dělená jeho objemem.
 
-\subsection{Tok vektoru křivkou v~rovině}
+\subsection{Vlastnosti toku pole}
 
+Vyšetřeme nyní, jak se chová tok pole při dělení plochy na menší. Mějme uzavřenou plochu \(S_S\), kterou rozdělíme libovolnou přepážkou \(S_P\) na 2 uzavřené plochy \(S_1\) a \(S_2\). Přepážka je tvořena dvěma opačně orientovanými částmi plochy, které jsou nekonečně blízké. Proto se jejich příspěvky do celkového toku vyruší a platí tak vztah \eqref{eq:deleni_toku}.
+
+\begin{equation}
+\label{eq:deleni_toku}
+\oint_{S_S} \vect{v} \cdot \mathrm{d}\vect{s} = \oint_{S_1} \vect{v} \cdot \mathrm{d}\vect{s} + \oint_{S_2} \vect{v} \cdot \mathrm{d}\vect{s}
+\end{equation}
+
+
+\section{Gaussův teorém}
+
+Ze vztahu \eqref{eq:divergence_3} můžeme odvodit vztah \eqref{eq:gauss_dv} pro výpočet toku pole elementární uzavřenou ploškou \(\partial \mathrm{d}V\).
+
+\begin{equation}
+\label{eq:gauss_dv}
+\int_{\partial \mathrm{d}V} \vect{v} \cdot d\vect{s} = \left(\diverg \ \vect{v} \right) \mathrm{d}V
+\end{equation}
+
+
+Podle vztahu \label{eq:deleni_toku} víme, že se toky sousedními ploškami sčítají, přičemž společné části ploch se vyruší. Proto pokud budeme integrovat
+vztah \eqref{eq:gauss_dv} přes těleso \(V\), tak plošný integrál přejde na plochu po povrchu tělesa \(V\). Získáme tak Gaussův teorém \eqref{eq:gauss}.
+
+\begin{equation}
+\label{eq:gauss}
+\oint_{\partial V} \vect{v} \cdot d\vect{s} = \int_V \left(\diverg \ \vect{v} \right) \mathrm{d}V
+\end{equation}
+
+
+
+
+\subsection{Tok vektoru křivkou v~rovině}
 
 Je-li \(l = \left(l_x(t), l_y(t)\right)\) po částech hladká plocha s jednotkovou normálou \(\vect{n}\) a \(\vect{v}\) je vektorové pole,
 pak tok vektoru \(v\) křivkou \(l\) definujeme rovnicí \eqref{eq:tok_krivkou_definice}.
@@ -449,13 +479,6 @@ Gradient, divergence, rotace i aplikace laplaceova operátoru jsou lineární op
 \]
 
 Tyto vztahy lze jednoduše ověřit dosazením do jejich definic.
-
-
-\section{Gaussův teorém}
-
-\begin{equation}
-\int_V \diverg \ u \ dV = \oint_{\partial V} \vect{u} \cdot \vect{n} ds
-\end{equation}
 
 
 Greenův teorém:
