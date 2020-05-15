@@ -132,7 +132,16 @@ Elektrické pole působí na náboj \(Q\) silou \(\vect{F} = \vect{E} \cdot Q\).
 W = \int_{-1}^1 \left (\frac{-t}{1 + t^2} \cdot 0 + \frac{1}{1 + t^2} \cdot 1 \right) = \left[\mathrm{arctg} \ t\right]_{-1}^1 = \frac{\pi}{2} \mathrm{J}
 \]
 
-Nyní vyšetřeme vlastnosti křivkového integrálu. Rovnice \eqref{eq:krivkovy_integral_opacny} říká, že křivkový integrál po opačně orientované křivce je opačný. Rovnice \eqref{eq:krivkovy_integral_soucet} udává, že křivkový integrál po křivce, která je rovna součtu dvou křivek, je rovna součtu jejich křivkových integrálů. Oba dva vztahy jsou intuitivní a~lze je snadno ověřit rozepsáním integrálů pomocí vztahu \eqref{eq:krivkovy_integral_vypocet}.
+\subsection{Vlastnosti křivkového integrálu}
+
+Nyní vyšetřeme vlastnosti křivkového integrálu. Rovnice \eqref{eq:krivkovy_integral_linearita} udává linearitu křivkového integrálu. Rovnice \eqref{eq:krivkovy_integral_opacny} říká, že křivkový integrál po opačně orientované křivce je opačný. Rovnice \eqref{eq:krivkovy_integral_soucet} udává, že křivkový integrál po křivce, která je rovna součtu dvou křivek, je rovna součtu jejich křivkových integrálů. Oba dva vztahy jsou intuitivní a~lze je snadno ověřit rozepsáním integrálů pomocí vztahu \eqref{eq:krivkovy_integral_vypocet}.
+
+\begin{equation}
+\label{eq:krivkovy_integral_linearita}
+\begin{split}
+\int_{\Gamma} \left(\alpha \vect{u} + \beta \vect{v}\right) \cdot d\vect{l} = \alpha \int_{\Gamma} \vect{u} \cdot d\vect{l} + \beta \int_{\Gamma} \vect{v} \cdot d\vect{l}
+\end{split}
+\end{equation}
 
 \begin{equation}
 \label{eq:krivkovy_integral_opacny}
@@ -147,6 +156,8 @@ Nyní vyšetřeme vlastnosti křivkového integrálu. Rovnice \eqref{eq:krivkovy
 \int_{\Gamma_1 + \Gamma_2} \vect{v} \cdot d\vect{l} = \int_{\Gamma_1} \vect{v} \cdot d\vect{l} + \int_{\Gamma_2} \vect{v} \cdot d\vect{l}
 \end{split}
 \end{equation}
+
+Protože skalární součin nezávisí na volbě soustavy souřadnic, tak ani křivkový integrál definovaný vztahem \eqref{eq:krivkovy_integral_definice} nezávisí na volbě soustavy souřadnic. Pro stejné pole a pro stejnou křivku bude křivkový integrál stejný. Je to patrné i z fyzikálního významu. Pokud bude křivkový integrál představovat celkovou práci, pak ta nezávisí na volbě soustavy souřadnic.
 
 Máme-li uzavřenou smyčku \(\Gamma_S\), pak ji můžeme rozdělit na dvě smyčky \(\Gamma_1\) a~\(\Gamma_2\) pomocí libovolně volené přepážky \(\Gamma_P\).
 
