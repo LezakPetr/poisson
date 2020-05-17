@@ -536,7 +536,7 @@ Vyšetřeme nyní, jak se chová tok pole při dělení plochy na menší. Mějm
 \end{equation}
 
 
-\section{Gaussův teorém}
+\subsection{Gaussův teorém}
 
 Ze vztahu \eqref{eq:divergence_3} můžeme odvodit vztah \eqref{eq:gauss_dv} pro výpočet toku pole elementární uzavřenou ploškou \(\partial \mathrm{d}V\).
 
@@ -578,36 +578,51 @@ Máme-li vektor \(d \vect{l} = \left(\frac{d l_x}{dt}, \frac{d l_y}{dt}\right)\)
 \end{split}
 \end{equation}
 
+\subsection{Greenův teorém}
+
+Obdobou Gaussova teorému v prostoru je Greenův teorém v rovině. Je možné jej odvodit obdobně jako Gaussův teorém.
+
+My jej odvodíme z Gaussova teorému následující úvahou. Nechť je pole \(v\) konstantní ve směru osy \(z\). Těleso \(V\) zvolíme ve formě obecného válce, tedy libovolné podstavy protažené ve směru osy \(z\). Jeho podstavu označme \(S_P\), její hranici \(\partial S_P\) a v výšku válce \(h\).
+
+Vyjděme z Gaussova teorému v rovnici \eqref{eq:green_1}.
+
+\begin{equation}
+\label{eq:green_1}
+\oint_{\partial V} \vect{v} \cdot d\vect{s} = \int_V \left(\diverg \ \vect{v} \right) \mathrm{d}V
+\end{equation}
+
+Tok pole plochou na levé straně rovnice můžeme rozepsat na součet toku pole podstavami a pláštěm válce.
+To pláštěm válce je tok hranicí podstavy násobené výškou válce, protože je pole po celé výšce konstantní. Tok podstavami je nulový, protože je pole konstantní ve směru osy \(z\) a tudíž jeho průmět do normály postavy je nulový.
+
+Stejně tak můžeme nahradit objemový integrál na pravé straně rovnice plošným integrálem násobeným výškou. Získáme tak rovnici \eqref{eq:green_2}.
+
+\begin{equation}
+\label{eq:green_2}
+h \oint_{\partial S_P} \vect{v} \cdot d\vect{l} = h \int_{S_P} \left(\diverg \ \vect{v} \right) \mathrm{d}S
+\end{equation}
+
+Podělíme-li rovnici \eqref{eq:green_2} výškou \(h\) a přejmenujeme plochu, tak získáme rovnici \eqref{eq:greenuv_teorem}. Uvědomme si, že \(\frac{\partial v_z}{\partial z} = 0\).
+Proto divergence v prostoru, se kterou jsme dosud pracovali, je shodná s divergencí v rovině.
+
+\begin{equation}
+\label{eq:greenuv_teorem}
+\oint_{\partial S} \vect{v} \cdot d\vect{l} = h \int_S \left(\diverg \ \vect{v} \right) \mathrm{d}S
+\end{equation}
+
+Uvedený postup je obecně použitelný, pokud máme problém definovaný v prostoru, ale v jedné nebo více os je invariantní vůči posunutí. Můžeme tak snížit
+počet dimenzi problému.
+
+
 \section{Operátory}
 
-\subsection{Gradient}
+Dále se seznámíme s operátory, které působí na pole. Již známe operátory divergence a rotace, oba působí na vektorová pole. Divergence vektorového pole
+je skalární pole, které má v~každém bodě hodnotu celkového výtoku z~infinitezimálního objemu okolo daného bodu. Rotace je vektorového pole je vektorové
+pole, které v každém bodě definuje cirkulaci z nekonečně malých smyček.
 
-Gradient skalárního pole \(\varphi\) je vektorové pole \(\vect{v}\), které má v~každém bodě směr nejvyššího přírůstku skalárního pole. Je definován vztahem
+Další operátor je gradient. Gradient skalárního pole \(\varphi\) je vektorové pole \(\vect{v}\), které má v~každém bodě směr nejvyššího přírůstku skalárního pole, a velikost rovnou derivaci pole v tomto směru. Je definován vztahem
 \[
 \vect{v} = \grad \ \varphi = \left(\frac{\partial \varphi}{x}, \frac{\partial \varphi}{y}, \frac{\partial \varphi}{z}\right)
 \].
-
-\subsection{Divergence}
-
-Divergence vektorového pole \(\vect{v}\) je skalární pole \(k\), které má v~každém bodě hodnotu celkového výtoku z~infinitezimálního objemu okolo daného bodu. V prostoru je definována vztahem \(\diverg \ \vect{u} = \diverg (u_x(x, y, z), u_y(x, y, z), u_z(x, y, z)) = \frac{\partial u_x}{\partial x} + \frac{\partial u_y}{\partial y} + \frac{\partial u_z}{\partial z}\).
-V rovině je definována vztahem \(\diverg \ \vect{u} = \diverg (u_x(x, y), u_y(x, y)) = \frac{\partial u_x}{\partial x} + \frac{\partial u_y}{\partial y}\).
- 
-\begin{tikzpicture}
-\draw (-1, -1) -- (-1, 1) -- (1, 1) -- (1, -1) -- (-1, -1);
-\draw[->] (1, 0) -- (2, 0);
-\draw[->] (-1, 0) -- (-2, 0);
-\draw[->] (0, 1) -- (0, 2);
-\draw[->] (0, -1) -- (0, -2);
-\filldraw (0, 0) circle (1pt) node[anchor=south]{[x, y]};
-\draw (0, -1) node[anchor=south]{dx};
-\draw (1, 0) node[anchor=east]{dy};
-\draw (1, 0) node[anchor=south west]{\(d_y \cdot u_x(x + \frac{dx}{2}, y)\)};
-\draw (-1, 0) node[anchor=south east]{\(-d_y \cdot u_x(x - \frac{dx}{2}, y)\)};
-\draw (0, 1) node[anchor=south west]{\(d_x \cdot u_y(x, y + \frac{dy}{2})\)};
-\draw (0, -1) node[anchor=north west]{\(-d_x \cdot u_y(x, y - \frac{dy}{2})\)};
-\end{tikzpicture}
-
-\subsection{Laplaceův operátor}
 
 Laplaceův operátor \(\Delta\) přiřazuje skalárnímu poli \(\varphi\) skalární pole \(k\) podle vztahu \(\Delta \varphi = \diverg \ \grad \ \varphi = \left(\frac{\partial^2 \varphi}{\partial x^2}, \frac{\partial^2 \varphi}{\partial y^2}, \frac{\partial^2 \varphi}{\partial z^2}\right)\). Operátor může působit i na vektorové pole, v tom případě působí na každou složku zvlášť.
 
@@ -627,11 +642,6 @@ Gradient, divergence, rotace i aplikace laplaceova operátoru jsou lineární op
 Tyto vztahy lze jednoduše ověřit dosazením do jejich definic.
 
 
-Greenův teorém:
-
-\begin{equation}
-\int_S \diverg \ u \ dV = \oint_{\partial S} \vect{u} \cdot \vect{n} dl
-\end{equation}
 
 \chapter{Rovnice}
 
