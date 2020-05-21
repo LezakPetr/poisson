@@ -641,7 +641,113 @@ Gradient, divergence, rotace i aplikace laplaceova operátoru jsou lineární op
 
 Tyto vztahy lze jednoduše ověřit dosazením do jejich definic.
 
+\section{Potenciální pole}
 
+Mějme pole \(v\), které má v uvažované oblasti nulovou rotaci. Pak podle Stokesovy věty cirkulace vektoru \(v\) všemi uzavřenými smyčkami v uvažované
+oblasti je nulová. Mějme v oblasti 2 body A a B. Dále mějme 2 křivky \(\Gamma_1\) a \(\Gamma_2\) které obě začínají v bodě A a končí v bodě B. Pak musí platit rovnost \eqref{eq:potencial_1}. Plyne to z faktu, že otočíme-li jednu z křivek, pak jejich spojením získáme smyčku, která musí mít nulovou cirkulaci.
+
+\begin{equation}
+\label{eq:potencial_1}
+\int_{\Gamma_1} \vect{v} \cdot d\vect{l} = \int_{\Gamma_2} \vect{v} \cdot d\vect{l}
+\end{equation}
+
+To ale znamená, že křivkový integrál potenciálního pole závisí pouze na počátečním a koncovém bodu, ne na tvaru křivky. Dále platí, že křivkové integrály po navazujících křivkách se sčítají. To nám umožňuje zavést skalární pole - potenciál \(\varphi\) splňující podmínku \eqref{eq:potencial_2}.
+
+\begin{equation}
+\label{eq:potencial_2}
+\int_{AB} \vect{v} \cdot d\vect{l} = \varphi(\vect{B}) - \varphi(\vect{A})
+\end{equation}
+
+Vyšetřeme, jaký je vztah mezi potenciálem \(\varphi\) a polem \(\vect{v}\). Nechť bod \(\vect{B}\) leží v infinitizimálně malé vzdálenosti \(dx\) od bodu
+\(\vect{A}\) ve směru osy \(x\). Křivka \(AB\) bude úsečka mezi body \(\vect{A}\) a \(\vect{B}\), má tedy směr osy \(x\). Vztah \eqref{eq:potencial_2} proto lze přepsat do tvaru \eqref{eq:potencial_3}.
+
+\begin{equation}
+\label{eq:potencial_3}
+\begin{split}
+v_x \cdot dx = \varphi(\vect{A} + (dx, 0, 0)) - \varphi(\vect{A}) \\
+v_x = \frac{\varphi(\vect{A} + (dx, 0, 0)) - \varphi(\vect{A})}{dx}
+\end{split}
+\end{equation}
+
+Pro \(dx \rightarrow 0\) získáme vztah \eqref{eq:potencial_4}.
+
+\begin{equation}
+\label{eq:potencial_4}
+v_x = \frac{\partial \varphi}{\partial x}
+\end{equation}
+
+Stejně budeme postupovat pro osy \(y\) a \(z\). Získáme tak vztah \eqref{eq:potencial_5}.
+
+\begin{equation}
+\label{eq:potencial_5}
+\vect{v} = \left(\frac{\partial \varphi}{\partial x}, \frac{\partial \varphi}{\partial y}, \frac{\partial \varphi}{\partial z}\right) = \grad \ \varphi
+\end{equation}
+
+Vidíme tedy, že pole s nulovou rotací lze zapsat jako gradient skalárního potenciálu. Ověřme, že nulová rotace je podmínkou nutnou a postačující pro existenci
+potenciálu. Snažíme se tedy dokázat, že pro dané vektorové pole \(v\) existuje potenciál \(\varphi\) takový, že \(\vect{v} = \grad \ \varphi\) tehdy a jen tehdy
+pokud \(\rot \ \vect{v} = \vect{0}\).
+
+Podmínku \(\rot \ \vect{v} = \vect{0}\) můžeme rozepsat na \(\frac{\partial v_x}{\partial y} = \frac{\partial v_y}{\partial x}\), \(\frac{\partial v_x}{\partial z} = \frac{\partial v_z}{\partial x}\) a \(\frac{\partial v_y}{\partial z} = \frac{\partial v_z}{\partial y}\).
+
+Že se jedná o podmínku nutnou ověříme snadno. Z definice gradientu plyne \(v_x = \frac{\partial \varphi}{\partial x}\) a \(v_y = \frac{\partial \varphi}{\partial y}\). První rovnici zderivujeme podle \(y\) a získáme \(\frac{\partial v_x}{\partial y} = \frac{\partial^2 \varphi}{\partial x y}\). Druhou rovnici
+zderivujeme podle \(x\) a získáme \(\frac{\partial v_y}{\partial x} = \frac{\partial^2 \varphi}{\partial y x}\). Srovnáme-li pravé strany těchto rovnic, pak
+díky nezávislosti pořadí derivování jsou shodné. Proto musí platit \(\frac{\partial v_x}{\partial y} = \frac{\partial v_y}{\partial x}\). Obdobně můžeme
+postupovat pro ostatní kombinace x-z a y-z a získáme tak zbylé podmínky.
+
+Ověřit, že se jedná o podmínku postačující je poněkud složitější. Rovnice \eqref{eq:potencial_2} nám dává návod, jak potenciál určit. Zvolíme si pevný bod
+v oblasti \(A\), v něm zvolíme potenciál \(\varphi_0\). Od tohoto bodu vedeme libovolnou křivku do bodu \(B\), kde hledáme potenciál. Potenciál v něm
+pak spočítáme podle vztahu \eqref{eq:potencial_6}. Potenciál \(\varphi\) je tak až na konstantu \(\varphi_0\) plně určen polem \(v\).
+
+\begin{equation}
+\label{eq:potencial_6}
+\varphi(\vect{B}) = \varphi_0 + \int_{AB} \vect{v} \cdot d\vect{l}
+\end{equation}
+
+Abychom ověřili, že tímto postupem skutečně dostaneme potenciál pole \(v\), tak zvolíme takovou křivku \(AB\), která nám umožní snadno spočítat gradient
+potenciálu. Za bod \(A\) zvolíme počátek souřadnicového systému. Křivku \(AB\)) vedeme z počátku po ose \(x\) do vzdálenosti \(B_x\), pak ve směru osy
+\(y\) do vzdálenosti \(B_y\) a nakonec ve směru osy \(z\) do vzdálenosti \(B_z\), tedy do bodu \(B\). Potenciál je tak určen vztahem \eqref{eq:potencial_7}.
+
+\begin{equation}
+\label{eq:potencial_7}
+\varphi(\vect{B}) = \varphi_0 + \int_0^{B_x} v_x(x, 0, 0) dx + \int_0^{B_y} v_y(B_x, y, 0) dy  + \int_0^{B_z} v_z(B_x, B_y, z) dz
+\end{equation}
+
+Spočítejme nyní parciální derivace potenciálu \(\varphi\). Začněme derivací podle \(z\), přesněji \(B_z\). Na \(B_z\) závisí pouze poslední integrál
+integrující podle \(dz\), \(B_z\) se vyskytuje v horní integrační mezi. Derivováním tohoto integrálu proto získáme vztah \eqref{eq:potencial_vz}.
+
+\begin{equation}
+\label{eq:potencial_vz}
+\frac{\partial \varphi}{B_z} = v_z(B_x, B_y, B_z)
+\end{equation}
+
+Pokračujme derivací podle \(y\). \(B_y\) se vyskytuje v horní mezi druhého integrálu a dále ve třetím integrálu. Získáme tak vztah \label{eq:potencial_vy}.
+Při jeho úpravě využijeme předpoklad \(\frac{\partial v_y}{\partial z} = \frac{\partial v_z}{\partial y}\).
+
+\begin{equation}
+\label{eq:potencial_vy}
+\begin{split}
+\frac{\partial \varphi}{B_y} = v_y(B_x, B_y, 0) + \int_0^{B_z} \frac{\partial v_z(B_x, B_y, z)}{B_y} dz = \\
+v_y(B_x, B_y, 0) + \int_0^{B_z} \frac{\partial v_y(B_x, B_y, z)}{B_z} dz = \\
+v_y(B_x, B_y, 0) + v_y(B_x, B_y, B_z) - v_y(B_x, B_y, 0) dz = \\
+v_y(B_x, B_y, B_z)
+\end{split}
+\end{equation}
+
+Nakonec spočítáme derivací podle \(x\). \(B_x\) se vyskytuje v horní mezi prvního integrálu a dále ve druhém a třetím integrálu. Získáme tak vztah \eqref{eq:potencial_vx}. Při jeho úpravě využijeme předpoklady \(\frac{\partial v_x}{\partial z} = \frac{\partial v_z}{\partial x}\) a
+\(\frac{\partial v_x}{\partial y} = \frac{\partial v_y}{\partial x}\).
+
+\begin{equation}
+\label{eq:potencial_vx}
+\begin{split}
+\frac{\partial \varphi}{B_x} = v_x(B_x, 0, 0) + \int_0^{B_y} \frac{\partial v_y(B_x, y, 0)}{B_x} dy + \int_0^{B_z} \frac{\partial v_z(B_x, B_y, z)}{B_x} dz = \\
+v_x(B_x, 0, 0) + \int_0^{B_y} \frac{\partial v_x(B_x, y, 0)}{B_y} dy + \int_0^{B_z} \frac{\partial v_x(B_x, B_y, z)}{B_z} dz = \\
+v_x(B_x, 0, 0) + v_x(B_x, B_y, 0) - v_x(B_x, 0, 0) + v_x(B_x, B_y, B_z) - v_x(B_x, B_y, 0) = \\
+v_x(B_x, B_y, B_z)
+\end{split}
+\end{equation}
+
+Vidíme, že všechny parciální derivace potenciálu odpovídají složkám gradientu. Dokázali jsme tak, že má-li pole \(v\) nulovou rotaci, můžeme zavést jeho
+potenciál vztahem \eqref{eq:potencial_7} a díky vztahu \eqref{eq:potencial_1} obecně vztahem \eqref{eq:potencial_6}.
 
 \chapter{Rovnice}
 
