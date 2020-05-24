@@ -624,7 +624,16 @@ Další operátor je gradient. Gradient skalárního pole \(\varphi\) je vektoro
 \vect{v} = \grad \ \varphi = \left(\frac{\partial \varphi}{x}, \frac{\partial \varphi}{y}, \frac{\partial \varphi}{z}\right)
 \].
 
-Laplaceův operátor \(\Delta\) přiřazuje skalárnímu poli \(\varphi\) skalární pole \(k\) podle vztahu \(\Delta \varphi = \diverg \ \grad \ \varphi = \left(\frac{\partial^2 \varphi}{\partial x^2}, \frac{\partial^2 \varphi}{\partial y^2}, \frac{\partial^2 \varphi}{\partial z^2}\right)\). Operátor může působit i na vektorové pole, v tom případě působí na každou složku zvlášť.
+Laplaceův operátor \(\Delta\) přiřazuje skalárnímu poli \(\varphi\) skalární pole \(k\) podle vztahu \(\Delta \varphi = \diverg \ \grad \ \varphi = \frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} + \frac{\partial^2 \varphi}{\partial z^2}\). Operátor může působit i na vektorové pole, v tom případě působí na každou složku zvlášť. Tedy \(\Delta \ \vect{v} = \left(\Delta \ v_x, \Delta \ v_y, \Delta \ v_z \right) = \left(\frac{\partial^2 v_x}{\partial x^2} + \frac{\partial^2 v_x}{\partial y^2} + \frac{\partial^2 v_x}{\partial z^2},
+\frac{\partial^2 v_y}{\partial x^2} + \frac{\partial^2 v_y}{\partial y^2} + \frac{\partial^2 v_y}{\partial z^2},
+\frac{\partial^2 v_z}{\partial x^2} + \frac{\partial^2 v_z}{\partial y^2} + \frac{\partial^2 v_z}{\partial z^2} \right)\).
+
+Vektorový Laplaceův operátor je také možné rozepsat na součet vírového a zřídlového pole jak ukazuje rovnice \eqref{eq:vect_laplace_rozepsany}.
+
+\begin{equation}
+\label{eq:vect_laplace_rozepsany}
+\Delta \ \vect{v} = \grad \ \diverg \ \vect{v} - \rot \ \rot \vect{v} 
+\end{equation}
 
 \subsection{Vztahy mezi operátory}
 
@@ -641,7 +650,20 @@ Gradient, divergence, rotace i aplikace laplaceova operátoru jsou lineární op
 
 Tyto vztahy lze jednoduše ověřit dosazením do jejich definic.
 
-\section{Potenciální pole}
+Dále jsou důležité následující vztahy mezi operátory.
+
+\begin{equation}
+\label{eq:div_rot}
+\diverg \ \rot \ \vect{u} = 0
+\end{equation}
+
+\begin{equation}
+\label{eq:rot_grad}
+\rot \ \grad \ \varphi = \vect{0}
+\end{equation}
+
+
+\section{Pole zřídlová}
 
 Mějme pole \(v\), které má v uvažované oblasti nulovou rotaci. Pak podle Stokesovy věty cirkulace vektoru \(v\) všemi uzavřenými smyčkami v uvažované
 oblasti je nulová. Mějme v oblasti 2 body A a B. Dále mějme 2 křivky \(\Gamma_1\) a \(\Gamma_2\) které obě začínají v bodě A a končí v bodě B. Pak musí platit rovnost \eqref{eq:potencial_1}. Plyne to z faktu, že otočíme-li jednu z křivek, pak jejich spojením získáme smyčku, která musí mít nulovou cirkulaci.
@@ -651,7 +673,7 @@ oblasti je nulová. Mějme v oblasti 2 body A a B. Dále mějme 2 křivky \(\Gam
 \int_{\Gamma_1} \vect{v} \cdot d\vect{l} = \int_{\Gamma_2} \vect{v} \cdot d\vect{l}
 \end{equation}
 
-To ale znamená, že křivkový integrál potenciálního pole závisí pouze na počátečním a koncovém bodu, ne na tvaru křivky. Dále platí, že křivkové integrály po navazujících křivkách se sčítají. To nám umožňuje zavést skalární pole - potenciál \(\varphi\) splňující podmínku \eqref{eq:potencial_2}.
+To ale znamená, že křivkový integrál potenciálního pole závisí pouze na počátečním a koncovém bodu, ne na tvaru křivky. Dále platí, že křivkové integrály po navazujících křivkách se sčítají. To nám umožňuje zavést skalární pole - potenciál \(\varphi\) splňující podmínku \eqref{eq:potencial_2}. Takováto pole nazýváme zřídlová, potenciální nebo také bezvírová.
 
 \begin{equation}
 \label{eq:potencial_2}
@@ -749,6 +771,64 @@ v_x(B_x, B_y, B_z)
 Vidíme, že všechny parciální derivace potenciálu odpovídají složkám gradientu. Dokázali jsme tak, že má-li pole \(v\) nulovou rotaci, můžeme zavést jeho
 potenciál vztahem \eqref{eq:potencial_7} a díky vztahu \eqref{eq:potencial_1} obecně vztahem \eqref{eq:potencial_6}.
 
+\section{Pole vírová}
+
+Vektorová pole \(\vect{v}\) mající v celé uvažované oblasti nulovou divergenci nazýváme pole vírová. Takováto pole můžeme zapsat ve formě 
+\eqref{eq:virova_pole_definice}. Veličinu \(\vect{\psi}\) nazýváme vektorovým potenciálem pole \(\vect{v}\).
+
+\begin{equation}
+\label{eq:virova_pole_definice}
+\vect{v} = \rot \ \vect{\psi}
+\end{equation}
+
+Ze vztahu \eqref{eq:div_rot} je zřejmé, že nulová divergence pole \(\vect{v}\) je podmínkou nutnou pro existenci vektorového potenciálu. Že se jedná o podmínku postačující a jak potenciál určit uvidíme dále.
+
+Z rovnice \eqref{eq:virova_pole_nejednoznacnost} je vidět, že vektorový potenciál není polem \(\vect{v}\) určen jednoznačně.
+Můžeme k němu přičíst libovolné pole s nulovou rotací, tedy libovolné potenciální pole, a rovnice \eqref{eq:virova_pole_definice}
+zůstane v platnosti.
+
+\begin{equation}
+\label{eq:virova_pole_nejednoznacnost}
+\rot \left(\vect{\psi} + \grad \varphi \right) = \rot \ \vect{\psi} + \rot \ \grad \varphi =
+\rot \ \vect{\psi} + \vect{0} = \rot \ \vect{\psi}
+\end{equation}
+
+Speciálním případem je situace, kdy \(\varphi\) zvolíme tak, že \(\diverg \vect{\psi} + \diverg \grad \varphi = 0\). To bude splněno pokud
+\(-\diverg \vect{\psi} = \diverg \grad \varphi = 0\). Pravá strana rovnice představuje Poissonovu rovnici bez okrajových podmínek.
+Její řešení je uvedeno dále, ale nyní je podstatná pouze jeho existence. Důsledkem tedy je, že existuje-li pole \(\vect{\psi}\) řešící
+rovnici \eqref{eq:virova_pole_definice}, pak existuje \(\vect{\psi}\) takové, že má nulovou divergenci, tedy vírové pole.
+
+Vyjdeme z rovnice \eqref{eq:virova_pole_definice}. Beze ztráty na obecnosti můžeme potenciál \(\varphi\) považovat za vírové pole.
+Zaveďme tedy potenciál \(\vect{\rho}\) vztahem \(\vect{\psi} = \rot \ \vect{\rho}\). Abychom určili potenciál \(\vect{\rho}\), tak tedy
+potřebujeme vyřešit rovnici \eqref{eq:virova_pole_potencial_1}.
+
+\begin{equation}
+\label{eq:virova_pole_potencial_1}
+\vect{v} = \rot \ \rot \ \vect{\rho}
+\end{equation}
+
+Jak jsme viděli výše, tak můžeme zavést podmínku \(\diverg \ \vect{\rho} = 0\). Pak ale můžeme k rovnici \eqref{eq:virova_pole_potencial_1}
+přičíst \(\grad \ \diverg \ \vect{\rho}\), který je nulový. Dále ještě rovnici invertujeme. Získáme tak rovnici \eqref{eq:virova_pole_potencial_2}.
+
+\begin{equation}
+\label{eq:virova_pole_potencial_2}
+-\vect{v} = \grad \ \diverg \ \vect{\rho} - \rot \ \rot \ \vect{\rho}
+\end{equation}
+
+Pravou stranu rovnice můžeme přepsat podle vztahu \eqref{eq:vect_laplace_rozepsany}, získáme tak rovnici \eqref{eq:virova_pole_potencial_3}.
+
+\begin{equation}
+\label{eq:virova_pole_potencial_3}
+-\vect{v} = \Delta \ \vect{\rho}
+\end{equation}
+
+To je vektorová Poissonova rovnice bez okrajových podmínek. Jak uvidíme dále, tak tato rovnice má řešení. Proto vírová pole \(v\) lze vyjádřit
+pomocí pomocí rovnice \eqref{eq:virova_pole_definice} a to tak, že vyřešíme rovnici \eqref{eq:virova_pole_potencial_3} a dopočítáme \(\vect{psi} = \rot \ \vect{rho}\).
+
+
+\label{eq:vect_laplace_rozepsany}
+
+
 \chapter{Rovnice}
 
 Poissonova parciální diferenciální rovnice má velké využití v technické praxi, protože pomocí ní lze modelovat mnoho důležitých jevů.
@@ -780,8 +860,7 @@ Rovnici lze zapsat ve více různých ekvivalentních tvarech zapsaných v~\eqre
 \end{equation}
 
 Rovnici by samozřejmě bylo možné zobecnit i~do vícerozměrných prostorů, my se však v dalším výkladu zaměříme pouze na nejvýše tři rozměry.
-Zde \(varphi\) je skalární potenciál. Jedná se o~skalární pole, tedy o~funkci definovanou v~určité oblasti (prostoru, rovině, přímce případně v~jejich částech), která každému bodu této oblasti přiřazuje skalární
-hodnotu. Skalární pole \(f\) je pole zdrojů, někdy též nazývané buzení.
+Zde \(varphi\) je skalární potenciál. Skalární pole \(f\) je pole zdrojů, někdy též nazývané buzení.
 
 Poissonovu rovnici lze také zapsat v~integrálním tvaru.
 
@@ -791,6 +870,7 @@ Poissonovu rovnici lze také zapsat v~integrálním tvaru.
 \oint_{\partial V} \grad \ \varphi \cdot \vect{n} ds = \int_V f dV
 \end{split}
 \end{equation}
+
 
 
 elektrické pole stacionárních nábojů
