@@ -872,7 +872,6 @@ Rovnici lze zapsat ve více různých ekvivalentních tvarech zapsaných v~\eqre
 \label{eq:poissonova_rovnice_definice}
 \begin{split}
 \Delta \varphi = f \\
-\nabla^2 \varphi = f \\
 \diverg \ \grad \ \varphi = f
 \end{split}
 \end{equation}
@@ -893,32 +892,28 @@ Rovnici lze zapsat ve více různých ekvivalentních tvarech zapsaných v~\eqre
 \end{equation}
 
 Rovnici by samozřejmě bylo možné zobecnit i~do vícerozměrných prostorů, my se však v dalším výkladu zaměříme pouze na nejvýše tři rozměry.
-Zde \(varphi\) je skalární potenciál. Skalární pole \(f\) je pole zdrojů, někdy též nazývané buzení.
+Zde \(\varphi\) je skalární potenciál. Skalární pole \(f\) je pole zdrojů, někdy též nazývané buzení.
 
-Poissonovu rovnici lze také zapsat v~integrálním tvaru.
+Poissonovu rovnici lze také zapsat v~integrálním tvaru. Rovnici \eqref{eq:poissonova_rovnice_integralni_tvar} lze z rovnice \eqref{eq:poissonova_rovnice_definice} odvodit Gaussovým teorémem.
 
 \begin{equation}
 \label{eq:poissonova_rovnice_integralni_tvar}
 \begin{split}
-\oint_{\partial V} \grad \ \varphi \cdot \vect{n} ds = \int_V f dV
+\oint_{\partial V} \left( \grad \ \varphi \right) \cdot \vect{n} ds = \int_V f dV
 \end{split}
 \end{equation}
 
 
+\chapter{Využití symetrie}
 
-elektrické pole stacionárních nábojů
-magnetické pole neměnných elektrických proudů
-ustálený tok
-tok mechanického napětí v materiálu
-difuze
-proud v odporovém materiálu
-Základní vlastnosti
+Operátory pracující s poli jsou definovány tak, že nezávisí na soustavě souřadnic, a proto zachovávají symetrii. Proto pokud máme parciální diferenciální rovnici, která je definovaná pomocí
+těchto operátorů, její zdroje jsou symetricky rozloženy a i okrajové podmínky jsou symetrické, pak musí být symetrické i řešení této rovnice. To nám umožňuje v některých případech
+řešit rovnice poměrně jednoduše analyticky. Fyzikální interpretace této skutečnosti je, že vesmír nemá žádný souřadnicový systém, ten je pouze myšlený. Proto řešení rovnice, která popisuje
+nějaký fyzikální proces, nemůže záviset na volbě souřadnicového systému. Je-li konfigurace fyzikálních objektů symetrická, pak zde neexistuje nic, co by zapřičinilo porušení této symetrie
+v řešení rovnice.
 
-
-\chapter{Řešení Poissonovy rovnice bez okrajových podmínek}
-
-Pokud řešíme Poissonovu rovnici na nekonečné rovině nebo v nekonečném prostoru, pak zde nejsou zadané žádné okrajové podmínky. Začneme odvozením
-potenciálu bodového zdroje.
+V této kapitole odvodíme potenciál kruhového disku v rovině a koule v prostoru. Budeme je potřebovat pro výpočet potenciálu bodového zdroje, který je nutný znát pro řešení Poissonovy rovnice
+bez okrajových podmínek. Dále si spíše ze zajímavosti odvodíme indukčnost toroidní cívky.
 
 \section{Potenciál kruhového disku v rovině}
 
@@ -1168,6 +1163,16 @@ Potenciál uvnitř koule je tedy
 \end{split}
 \end{equation}
 
+\section{Indukčnost toroidní cívky}
+
+Toroidní cívka je cívka s jádrem ve tvaru prstence. Průřezem tohoto prstence je obvykle kruh, ale může být i jiný. Na tomto jádru je navinuto jedno nebo více vinutí. Předpokládáme,
+že závity vinutí jsou kladeny rovnoměrně a dostatečně hustě na to, aby bylo možné vinutí považovat za objemový proud.
+
+
+\chapter{Řešení Poissonovy rovnice bez okrajových podmínek}
+
+Pokud řešíme Poissonovu rovnici na nekonečné rovině nebo v nekonečném prostoru, pak zde nejsou zadané žádné okrajové podmínky. Začneme odvozením
+potenciálu bodového zdroje.
 
 \section{Potenciál v nekonečné rovině bez okrajových podmínek}
 
