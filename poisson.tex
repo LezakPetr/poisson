@@ -1166,8 +1166,86 @@ Potenciál uvnitř koule je tedy
 \section{Indukčnost toroidní cívky}
 
 Toroidní cívka je cívka s jádrem ve tvaru prstence. Průřezem tohoto prstence je obvykle kruh, ale může být i jiný. Na tomto jádru je navinuto jedno nebo více vinutí. Předpokládáme,
-že závity vinutí jsou kladeny rovnoměrně a dostatečně hustě na to, aby bylo možné vinutí považovat za objemový proud.
+že závity vinutí jsou kladeny rovnoměrně a dostatečně hustě na to, aby bylo možné vinutí považovat za objemový proud. Chceme určit vzájemnou indukčnost mezi dvěma cívkami s \(N_1\)
+a \(N_2\) závity. Pokud bychom chtěli spočítat vlastní indukčnost, tak zvolíme \(N_1 = N_2\). Cívky jsou navinuty na jádru o obsahu průřezu \(S\) a permeabilitě \(\mu\).
 
+Předpokládáme, že cívkou \(L_1\) s \(N_1\) závity protéká proud \(I\). Nejdříve určíme intenzitu magnetického pole \(H\) na prstenci o poloměru \(r\), který obepíná \(N_1\) závitů cívky.
+
+\begin{tikzpicture}
+\label{img:mg_pole_toroidu}
+
+\filldraw[color=black, fill=gray] (0, 0) circle[radius=3.2];
+\filldraw[color=black, fill=white] (0, 0) circle[radius=3];
+
+\filldraw[color=black, fill=gray] (0, 0) circle[radius=2];
+\filldraw[color=black, fill=white] (0, 0) circle[radius=1.8];
+
+\foreach \r in {2.2, 2.4, 2.6, 2.8}
+	\draw[->, color=lightgray] (\r, 0) arc (0:360:\r);
+
+\draw[dashdotted] (0, 0) circle[radius=2.5];
+
+\draw[->] (0, 0) -- (0, 2.5);
+\draw (0, 1) node[anchor=west]{R};
+
+\draw[->] (4.7, 0.5) -- (3.7, 0.5) -- (3.2, 0);
+\draw (3.7, 0.5) node[anchor=south west]{\(L_1, L_2\)};
+
+\draw (-2.7, 0) node[anchor=center]{H};
+
+\end{tikzpicture}
+
+Vyjdeme z Ampérova zákona zapsaného v rovnici \eqref{eq:toroid_1}.
+
+\begin{equation}
+\label{eq:toroid_1}
+\oint_{\partial P} \vect{H} \cdot d\vect{l} = \int_P \vect{j} \cdot \vect{n}
+\end{equation}
+
+Nás zajímá složka intenuity magnetického pole ve směru prstence. Označme ji \(H\). Ostatní složky jsou nulové, ale i kdyby nebyli, tak nebudou přispívat k magnetické indukci. Díky rotační symetrii je po celé délce prstence
+intenzita magnetického pole stejná. Proto můžeme levou stranu rovnice \eqref{eq:toroid_1} vypočítat pomocí obvodu kruhu. Pravá strana rovnice je rovna součinu proudu a počtu závitů které prstenec obepíná.
+Uvedenými úpravami získáme rovnici \label{eq:toroid_2}. Z ní lze intenzitu magnetického pole vypočítat podle vztahu \eqref{eq:toroid_3}.
+
+\begin{equation}
+\label{eq:toroid_2}
+2 \pi r H = N_1 I_1
+\end{equation}
+
+\begin{equation}
+\label{eq:toroid_3}
+H = \frac{N_1 I_1}{2 \pi r}
+\end{equation}
+
+Pouze prstence uvnitř cívky \(L_1\) obepínají nenulový počet závitů. Vně cívek, potažmo jádra, je proto intenzita magnetického pole nulová. To je na toroidních cívkách výhodné, magnetické pole neuniká
+vně cívky a naruší případné okolní obvody.
+
+Celkový magnetický indukční tok jádrem je pak dán vztahem \eqref{eq:toroid_4}.
+
+\begin{equation}
+\label{eq:toroid_4}
+\Phi = \int_S B d\vect{s} = \int_S \mu H d\vect{s} = \int_S \frac{\mu N_1 I_1}{2 \pi r} d\vect{s}
+\end{equation}
+
+Průměr prstence \(r\) se obecně mění s polohou v jádře. Je-li poloměr prstence dostatečně velký oproti rozměrům průřezu, pak jej můžeme považovat za konstantní a nahradit jej středním poloměrem prstence \(R\).
+
+\begin{equation}
+\label{eq:toroid_5}
+\Phi \approx \frac{\mu N_1 I_1 S}{2 \pi R}
+\end{equation}
+
+Tento magnetický indukční tok prochází \(N_2\) závity cívky \(L_2\). Proto magnetický indukční tok, který prochází plochou obepnutou cívkou \(L_2\) je určen vztahem \eqref{eq:toroid_6}.
+
+\begin{equation}
+\label{eq:toroid_6}
+\Phi_2 = N_2 \Phi \approx \frac{\mu N_1 N_2 I S}{2 \pi R}
+\end{equation}
+
+Vzájemná indukčnost je pak určena vztahem \eqref{eq:toroid_7}.
+
+\begin{equation}
+\label{eq:toroid_7}
+M_{12} = \frac{\Phi_2}{I_1} \approx \frac{\mu N_1 N_2 S}{2 \pi R}
+\end{equation}
 
 \chapter{Řešení Poissonovy rovnice bez okrajových podmínek}
 
