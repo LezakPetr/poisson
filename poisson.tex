@@ -903,6 +903,45 @@ Poissonovu rovnici lze také zapsat v~integrálním tvaru. Rovnici \eqref{eq:poi
 \end{split}
 \end{equation}
 
+Speciálním případem Poissonovy rovnice bez zdrojů je rovnice Laplaceova. V uvažované oblasti je \(f = 0\), rovnice má tvar \eqref{eq:laplaceova_rovnice_definice}. Obdobně integrální tvar rovnice má tvar \eqref{eq:laplaceova_rovnice_integralni_tvar}.
+
+\begin{equation}
+\label{eq:laplaceova_rovnice_definice}
+\begin{split}
+\Delta \varphi = f \\
+\diverg \ \grad \ \varphi = 0
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:laplaceova_rovnice_integralni_tvar}
+\begin{split}
+\oint_{\partial V} \left( \grad \ \varphi \right) \cdot \vect{n} ds = \int_V f dV
+\end{split}
+\end{equation}
+
+\chapter{Řešení Poissonovy rovnice na přímce}
+
+Nejdříve si ukážeme, jak lze řešit Poissonovu rovnici na přímce. Tu dokážeme řešit analyticky, a ukážeme si, jak bude řešení probíhat.
+Začněme tím, jak bude vypadat řešení rovnice.
+
+Pokud budeme integrovat rovnici \eqref{eq:reseni_primka_1}, získáme rovnici \eqref{eq:reseni_primka_2}. Druhou integrací získáme obecné
+řešení \eqref{eq:reseni_primka_3}.
+
+\begin{equation}
+\label{eq:reseni_primka_1}
+\frac{\partial^2 \varphi}{\partial x^2} = f
+\end{equation}
+
+\begin{equation}
+\label{eq:reseni_primka_2}
+\frac{\partial \varphi}{\partial x} = \int f dx + C_1
+\end{equation}
+
+\begin{equation}
+\label{eq:reseni_primka_3}
+\frac{\partial \varphi}{\partial x} = \iint f dx + C_1 x + C2
+\end{equation}
 
 \chapter{Využití symetrie}
 
