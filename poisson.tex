@@ -925,23 +925,102 @@ Speciálním případem Poissonovy rovnice bez zdrojů je rovnice Laplaceova. V 
 Nejdříve si ukážeme, jak lze řešit Poissonovu rovnici na přímce. Tu dokážeme řešit analyticky, a ukážeme si, jak bude řešení probíhat.
 Začněme tím, jak bude vypadat řešení rovnice.
 
-Pokud budeme integrovat rovnici \eqref{eq:reseni_primka_1}, získáme rovnici \eqref{eq:reseni_primka_2}. Druhou integrací získáme obecné
-řešení \eqref{eq:reseni_primka_3}.
+Poissonovu rovnici můžeme zapsat ve tvaru \eqref{eq:reseni_primka_1a} a \eqref{eq:reseni_primka_1b}. V podstatě jsme jen zavedli označení pro první derivaci potenciálu.
 
 \begin{equation}
-\label{eq:reseni_primka_1}
-\frac{\partial^2 \varphi}{\partial x^2} = f
+\label{eq:reseni_primka_1a}
+\frac{\mathrm{d} \Phi}{\mathrm{d} x} = f(x) \\
 \end{equation}
 
 \begin{equation}
+\label{eq:reseni_primka_1b}
+\frac{\mathrm{d} \varphi}{\mathrm{d} x} = \Phi(x)
+\end{equation}
+
+
+Pokud budeme integrovat rovnici \eqref{eq:reseni_primka_1a} od \(0\) do \(t\), získáme rovnici \eqref{eq:reseni_primka_2}, přesunutím členu pak rovnici \eqref{eq:reseni_primka_3}.
+
+\begin{equation}
 \label{eq:reseni_primka_2}
-\frac{\partial \varphi}{\partial x} = \int f dx + C_1
+\Phi(t) - \Phi(0) = \int_0^t f(x) \mathrm{d}x
 \end{equation}
 
 \begin{equation}
 \label{eq:reseni_primka_3}
-\frac{\partial \varphi}{\partial x} = \iint f dx + C_1 x + C2
+\Phi(t) = \Phi(0) + \int_0^t f(x) \mathrm{d}x
 \end{equation}
+
+Integrováním rovnice \eqref{eq:reseni_primka_1b} od \(0\) do \(s\) \eqref{eq:reseni_primka_3} získáme rovnici \eqref{eq:reseni_primka_4}.
+
+\begin{equation}
+\label{eq:reseni_primka_4}
+\varphi(x) - \varphi(0) = \int_0^x \Phi(s) \mathrm{d}s
+\end{equation}
+
+Nyní do rovnice \eqref{eq:reseni_primka_4} dosadíme rovnici \eqref{eq:reseni_primka_3} a získáme rovnici \eqref{eq:reseni_primka_5}. Z ní pak vyjádříme
+\(\varphi(x)\) a získáme rovnici \eqref{eq:reseni_primka_6}.
+
+\begin{equation}
+\label{eq:reseni_primka_5}
+\varphi(x) - \varphi(0) = \int_0^x \left( \Phi(0) + \int_0^s f(t) \mathrm{d}t \right) \mathrm{d}s = x \cdot \Phi(0) + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s
+\end{equation}
+
+\begin{equation}
+\label{eq:reseni_primka_6}
+\varphi(x) = \varphi(0) + x \cdot \Phi(0) + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s
+\end{equation}
+
+V této rovnici vystupují 2 parametry - potenciál na počátku \(\varphi(0)\) a derivace potenciálu na počátku \(\Phi(0)\). Rovnice \eqref{eq:reseni_primka_6} tak umožňuje
+řešit Poissonovu rovnici s podmínkami, že potenciál na počátku nabývá hodnoty \(\varphi(0)\) a jeho první derivace hodnoty \(\Phi(0)\). Tyto podmínky nazýváme Cauchyovskými počátečními podmínkami.
+
+Uvažujme nyní řešení na intervalu (0, \(L\)). Do rovnice \eqref{eq:reseni_primka_6} můžeme dosadit \(t = L\) a vyjádřit \(\Phi(0)\).
+Získáme tak rovnici \eqref{eq:reseni_primka_7}.
+
+\begin{equation}
+\label{eq:reseni_primka_7}
+\Phi(0) = \frac{\varphi(L) - \varphi(0) - \int_0^L \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s}{L}
+\end{equation}
+
+Dosadíme-li ji do rovnice \eqref{eq:reseni_primka_6} získáme rovnici \eqref{eq:reseni_primka_8}.
+
+\begin{equation}
+\label{eq:reseni_primka_8}
+\varphi(x) = \varphi(0) + \frac{x}{L} \left( \varphi(L) - \varphi(0) - \int_0^L \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s \right) + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s
+\end{equation}
+
+V rovnici \eqref{eq:reseni_primka_8} vystupují parametry \(\varphi(0)\) a \(\varphi(L)\), tedy potenciál na počátku a na konci intervalu. Rovnice \eqref{eq:reseni_primka_8} tak umožňuje
+řešit Poissonovu rovnici s podmínkami, že potenciál na počátku intervalu nabývá hodnoty \(\varphi(0)\) a na konci intervalu hodnoty \(\varphi(L)\). Takovéto podmínky, které ohraničují sledovanou oblast, nazýváme okrajovými.
+Okrajovou podmínku, která určuje hodnotu potenciálu, nazýváme Dirichletovu, rovnice \eqref{eq:reseni_primka_8} je proto řešení Poissonovy rovnice se dvěma Dirichletovými podmínkami.
+
+Rovnice \eqref{eq:reseni_primka_8} nám umožňuje vypočítat řešení na intervalu \(x \in < 0; L >\). Proto všechny integrály v rovnici \eqref{eq:reseni_primka_8} budou probíhat uvnitř tohoto intervalu, není tak potřeba
+znát \(f\) mimo interval. To platí obecně - pro řešení parciálních diferenciálních rovnic v utčité oblasti musíme znát zdroje v této oblasti a okrajové podmínky po kraji uvažované oblasti. Případné zdroje
+mimo oblast jsou už "započítány" v okrajových podmínkách.
+
+Dále můžeme upravit rovnici \eqref{eq:reseni_primka_2} tak, že dosadíme \(t = L\) a vyjádříme \(\Phi(0)\). Získáme tak rovnici \eqref{eq:reseni_primka_9}.
+
+\begin{equation}
+\label{eq:reseni_primka_9}
+\Phi(0) = \Phi(L) - \int_0^L f(x) \mathrm{d}x
+\end{equation}
+
+Dosadíme-li ji do rovnice \eqref{eq:reseni_primka_6} získáme rovnici \eqref{eq:reseni_primka_10}.
+
+\begin{equation}
+\label{eq:reseni_primka_10}
+\begin{split}
+\varphi(x) = \varphi(0) + x \cdot \left( \Phi(L) - \int_0^L f(x) \mathrm{d}x \right) + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s = \\
+\varphi(0) + x \cdot \Phi(L) - x \cdot \int_0^L f(x) \mathrm{d}x + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s
+\end{split}
+\end{equation}
+
+V rovnici \eqref{eq:reseni_primka_10} vystupují parametry \(\varphi(0)\) a \(\Phi(L)\), tedy potenciál na počátku a derivace potenciálu na konci intervalu. Rovnice \eqref{eq:reseni_primka_10} tak umožňuje
+řešit Poissonovu rovnici s podmínkami, že potenciál na počátku intervalu nabývá hodnoty \(\varphi(0)\) a jeho první derivace na konci intervalu hodnoty \(\Phi(L)\).
+Okrajovou podmínku, která určuje první derivaci potenciálu, nazýváme Neumannovou.
+
+Mohli bychom i řešit rovnici, kde na počátku intervalu bude zadaná Neumannova podmínka a na konci Dirichletova podmínka. Tuto možnost zde nebudeme rozebírat, stačí totiž otočit zadání a použít rovnici \eqref{eq:reseni_primka_10}.
+Dále by nás mohlo napadnout řešit rovnici se dvěma Neumannovými podmínkami. Podle rovnice \eqref{eq:reseni_primka_9} však tyto podmínky nebudou nezávislé, ve skutečnosti budeme mít pouze jednu Neumannovu podmínku a ta nám neurčí
+potenciál \(\varphi\) jednoznačně. Bude-li totiž \(\varphi\) řešením Poissonovy rovnice, pak i \(\varphi + C\) bude jejím řešením. Potřebujeme proto určit hodnotu potenciálu alespoň v jednom budě - potřebujeme alespoň
+jednu Dirichletovu okrajovou podmínku.
 
 \chapter{Využití symetrie}
 
