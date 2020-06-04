@@ -1022,6 +1022,41 @@ Dále by nás mohlo napadnout řešit rovnici se dvěma Neumannovými podmínkam
 potenciál \(\varphi\) jednoznačně. Bude-li totiž \(\varphi\) řešením Poissonovy rovnice, pak i \(\varphi + C\) bude jejím řešením. Potřebujeme proto určit hodnotu potenciálu alespoň v jednom budě - potřebujeme alespoň
 jednu Dirichletovu okrajovou podmínku.
 
+Výše uvedený postup řešil Poissonovu rovnici na přímce jako obyčejnou diferenciální rovnici. Jeho výsledkem je jednoduché analytické řešení. Tento postup bohužel nelze zobecnit na více rozměrů. Proto si nyní ukážeme 
+jiný způsob jak Poissonovu rovnici na přímce řešit. Tento postup půjde do určité míry zobecnit do více rozměrů.
+
+Začněme určením potenciálu násobku Diracova pulsu. Mějme zdroj \(f\) definaný tak, že je nenulový pouze nekonečně blízko počátku \(x = 0\), a \(\int_{-\infty}^{+\infty} f(x) dx = F\). Integrováním rovnice
+\eqref{eq:reseni_primka_1a} od \(-t\) do \(t\) získáme rovnici \eqref{eq:reseni_primka_bodove_1}. Využíváme přitom faktu, že pro \(t > 0\) interval \(<-t; t>\) obsahuje celý zdroj \(F\).
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_1}
+\Phi(t) - \Phi(-t) = \int_{-t}^{t} f(x) dx = F
+\end{equation}
+
+Pokud je zdroj symetrický, což můžeme u nekonečně tenkého pulsu předpokládat, pak musí být symetrický i potenciál. Proto můžeme předpokládat \(\Phi(-t) = -\Phi(t)\). Získáme tak rovnici
+\eqref{eq:reseni_primka_bodove_2}. Jejím integrováním získáme rovici \eqref{eq:reseni_primka_bodove_3}.
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_2}
+\frac{\mathrm{d} \varphi}{\mathrm{d} x} = \Phi(t) = \frac{F}{2}
+\end{equation}
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_3}
+\varphi(x) = \int \frac{F}{2} dx = \frac{F}{2} x + C
+\end{equation}
+
+Rovnice \eqref{eq:reseni_primka_bodove_3} platí pro \(x >= 0\). Potenciál musí být symetrický, proto integrační konstantu zvolíme \(C = 0\) a symetričnost zajistíme použitím absolutní hodnoty. Potenciál
+\(F\)-násobku Diracova pulsu je proto určen rovnicí \eqref{eq:reseni_primka_bodove_4}.
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_4}
+\varphi(x) = \frac{F}{2} | x |
+\end{equation}
+
+Obecné rozložení můžeme chápat
+
+
 \chapter{Využití symetrie}
 
 Operátory pracující s poli jsou definovány tak, že nezávisí na soustavě souřadnic, a proto zachovávají symetrii. Proto pokud máme parciální diferenciální rovnici, která je definovaná pomocí
