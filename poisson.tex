@@ -3,6 +3,7 @@
 \usepackage[czech]{babel}
 \usepackage{amsmath}
 \usepackage{tikz}
+\usepackage{siunitx}
 \usetikzlibrary{math}
 
 \newcommand{\vect}[1]{\boldsymbol{#1}}
@@ -1022,6 +1023,30 @@ Dále by nás mohlo napadnout řešit rovnici se dvěma Neumannovými podmínkam
 potenciál \(\varphi\) jednoznačně. Bude-li totiž \(\varphi\) řešením Poissonovy rovnice, pak i \(\varphi + C\) bude jejím řešením. Potřebujeme proto určit hodnotu potenciálu alespoň v jednom budě - potřebujeme alespoň
 jednu Dirichletovu okrajovou podmínku.
 
+\subsection{Příklad}
+
+Dva tranzistory jsou umístěny na hliníkový pásek o rozměrech 8cm x 1.5cm x 3mm. Konce pásku jsou připevněny
+na chladič, který má pokojovou teplotu 20\si{\degree}C. Každý tranzistor produkuje ztrátový výkon \(P_T = 10\mathrm{W}\) o kterém předpokládáme,
+že je rovnoměrně rozložen na celé jejich šířce 1cm. Tranzistory jsou od sebe a od okraje pásku vzdáleny 2cm.
+Tepelná vodivost hliníku je \(\lambda = 237 W m^{-1} K^{-1}\). Na jakou teplotu se tranzistory zahřejí?
+
+Pásek má průřez \(S = 1.5 \cdot 10^{-2} \cdot 3 \cdot 10^{-3} = 4.5 \cdot 10^-5 \mathrm{m^2}\).
+
+Máme-li na pásku dva průřezy ve vzdálenosti \(\mathrm{d}x\) s teplotním rozdílem \(\mathrm{d}T\), pak mezi nimi bude proudit
+tepelný tok \(P = -\lambda S \frac{\mathrm{d}t}{\mathrm{d}x}\). Záporné znaménko značí, že směr proudu tepla je opačný než směr růstu
+teploty - teplo proudí z místa s vyšší teplotou do místa s nižší teplotou.
+
+Zároveň platí zákon zachování energie, v tomto případě zákon zachování tepla. Máme-li úsek pásku o délce \(L\), pak
+v ustáleném stavu musí být celkový tepelný tok tímto úsekem nulový, jinak by se úsek zahříval nebo ochlazoval.
+Tepelný tok do pásku vstupuje jednak přes jeho krajní průřezy od okolních částí pásku, jednak tepelný tok \(p_T(x)\) od tranzistorů.
+
+Zapsáno matematicky \(P_{x+L} - P_{x} = \int_{x}^{x+L} p_T dt\). Derivováním tohoto vztahu podle \(x\) získáme vztah
+\(\frac{\mathrm{d}P}{\mathrm{d}x} = p_T\) platný pro každý bod pásku.
+
+Spojením výše uvedených vztahů získáme vztah \(P = -\lambda S \frac{\mathrm{d}^2 t}{\mathrm{d}x^2}\), neboli \(\frac{\mathrm{d}^2 t}{\mathrm{d}x^2} = -\frac{P}{\lambda S}\).
+
+\subsection{Řešení integrací zdrojů}
+
 Výše uvedený postup řešil Poissonovu rovnici na přímce jako obyčejnou diferenciální rovnici. Jeho výsledkem je jednoduché analytické řešení. Tento postup bohužel nelze zobecnit na více rozměrů. Proto si nyní ukážeme 
 jiný způsob jak Poissonovu rovnici na přímce řešit. Tento postup půjde do určité míry zobecnit do více rozměrů.
 
@@ -1055,7 +1080,8 @@ Rovnice \eqref{eq:reseni_primka_bodove_3} platí pro \(x >= 0\). Potenciál mus�
 \end{equation}
 
 Obecné rozložení můžeme chápat jako sérii posunutých násobků Diracových pulsů. Příspěvek od jendoho elementárního zdroje proto určuje rovnice \eqref{eq:reseni_primka_bodove_5}, její integrací získáme
-rovnici \eqref{eq:reseni_primka_bodove_6}, která představuje řešení Poissonovy rovnice na přímce bez okrajových podmínek.
+rovnici \eqref{eq:reseni_primka_bodove_6}, která představuje řešení Poissonovy rovnice na přímce bez okrajových podmínek. Toto řešení není určeno jednoznačně - můžeme k němu přičíst libovolnou
+funkci s nulovou druhou derivací a získáme jiné řešení rovnice.
 
 \begin{equation}
 \label{eq:reseni_primka_bodove_5}
@@ -1066,6 +1092,19 @@ d \varphi = \frac{f(t)}{2} | x - t| dt
 \label{eq:reseni_primka_bodove_6}
 \varphi(x) = \frac{1}{2} \int_{-\infty}^{+\infty} f(t) | x - t| dt
 \end{equation}
+
+\section{Řešení Laplaceovy rovnice na úsečce}
+
+Připomeňme si, že Laplaceova rovnice je Poissonova rovnice bez zdrojů. Na přímce je její rovnice \eqref{eq:laplace_primka_1}. Vidíme, že jejím řešením je jakákoli funkce s nulovou druhou derivací,
+tedy lineární funkce. Laplaceovu rovnici proto nemá smysl řešit bez okrajových podmínek, jakákoli lineární funkce by jí vyhověla.
+
+\begin{equation}
+\label{eq:laplace_primka_1}
+\frac{\mathrm{d}^2 \varphi}{\mathrm{d}x^2} = 0
+\end{equation}
+
+Chceme-li řešit Laplaceovu rovnici na intervalu \(<0; L>\) s Dirichletovými nebo Neumannovými okrajovými podmínkami, musíme najít lineární funkci, která bude okrajovým podmínkám vyhovovat.
+
 
 \chapter{Využití symetrie}
 
