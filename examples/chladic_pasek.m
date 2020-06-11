@@ -31,6 +31,8 @@ ptx = [
   8e-2, 0
 ];
 
+ptx = populate_function(ptx, 1e-3);
+
 % Obsah prurezu pasku [m^2]
 S = b * c;
 
@@ -54,5 +56,9 @@ for i = 1:n
 	temp(i, 2) = T1 + coeff * (T2 - T1 - temp(i, 1)) + int2(i, 2);
 endfor
 
-temp
+plot(ptx(:, 1), ptx(:, 2));
+print("chladic_pasek_1.png");
+
+plot(temp(:, 1), temp(:, 2));
+print("chladic_pasek_2.png");
 
