@@ -1,3 +1,7 @@
+
+% Funkce interpoluje zadanou funkci "func" tak, ze maximalni odstup dvou po sobe
+% jdoucich bodu bude max_dx. Vsechny body funkce "func" budou i ve vysledku.
+% Funkce i vysledek jsou ve forme matice [x1, y1; x2, y2; ...; xn, yn], pricemz xi <= x(i+1). Lze mit xi = x(i+1) a ve funkci tak udelat skok.
 function res = populate_function(func, max_dx)
 	res = func(1, :);
 	

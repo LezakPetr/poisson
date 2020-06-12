@@ -1043,7 +1043,9 @@ Tepelný tok do pásku vstupuje jednak přes jeho krajní průřezy od okolních
 Zapsáno matematicky \(P_{x+L} - P_{x} = \int_{x}^{x+L} p_T dt\). Derivováním tohoto vztahu podle \(x\) získáme vztah
 \(\frac{\mathrm{d}P}{\mathrm{d}x} = p_T\) platný pro každý bod pásku.
 
-Spojením výše uvedených vztahů získáme vztah \(P = -\lambda S \frac{\mathrm{d}^2 t}{\mathrm{d}x^2}\), neboli \(\frac{\mathrm{d}^2 t}{\mathrm{d}x^2} = -\frac{P}{\lambda S}\).
+Spojením výše uvedených vztahů získáme vztah \(p_T = -\lambda S \frac{\mathrm{d}^2 t}{\mathrm{d}x^2}\), neboli \(\frac{\mathrm{d}^2 t}{\mathrm{d}x^2} = -\frac{p_T}{\lambda S}\). Do je Poissonova rovnice s Dirichletovými okrajovými podmínkami. Obrázek \ref{img:pasek_vykon} ukazuje průběh tepelného toku
+od tranzistorů. Řešení rovnice je na obrázku \ref{img:pasek_teplota}. Maximální teplota pásku je 43.4\si{\degree}C, tranzistory mohou mít teplotu vyšší
+kvůli tepelnému odporu mezi nimi a páskem.
 
 \begin{figure}
 	\includegraphics[width=\linewidth]{examples/chladic_pasek_1.png}
