@@ -4,12 +4,17 @@
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{siunitx}
+\usepackage{environ}
 \usetikzlibrary{math}
 
 \newcommand{\vect}[1]{\boldsymbol{#1}}
 \newcommand{\grad}{\mathrm{grad}}
 \newcommand{\diverg}{\mathrm{div}}
 \newcommand{\rot}{\mathrm{rot}}
+
+\NewEnviron{fact}{%
+	\fbox{\parbox{\textwidth}{\BODY}}
+}
 
 \newcommand{\drawaxestar}[6]{   -- x, y, dx, dy, dz, param
 }
@@ -921,6 +926,11 @@ Speciálním případem Poissonovy rovnice bez zdrojů je rovnice Laplaceova. V 
 \end{split}
 \end{equation}
 
+\begin{fact}
+Rovnicím bez zdrojů říkáme homogenní. Rovnicím se zdroji říkáme nehomogenní. Laplaceova rovnice je tedy homogenní rovnice, Poissonova
+nehomogenní.
+\end{fact}
+
 \chapter{Řešení Poissonovy rovnice na přímce}
 
 Nejdříve si ukážeme, jak lze řešit Poissonovu rovnici na přímce. Tu dokážeme řešit analyticky, a ukážeme si, jak bude řešení probíhat.
@@ -1111,14 +1121,79 @@ d \varphi = \frac{f(t)}{2} | x - t| dt
 
 Připomeňme si, že Laplaceova rovnice je Poissonova rovnice bez zdrojů. Na přímce je její rovnice \eqref{eq:laplace_primka_1}. Vidíme, že jejím řešením je jakákoli funkce s nulovou druhou derivací,
 tedy lineární funkce. Laplaceovu rovnici proto nemá smysl řešit bez okrajových podmínek, jakákoli lineární funkce by jí vyhověla.
+Obecně tedy bude řešení Laplaceovy rovnice vypadat podle vztahu \eqref{eq:laplace_primka_2}. Řešení (přímku) jsme zapsali jako lineární kombinaci
+funkcí, které vyhovují Laplaceově rovnici. Zde máme takové funkce 2 - \(1 - \frac{x}{L}\) a \(\frac{x}{L}\). Funkce byli zvoleny tak, že nabývají
+hodnoty 0 na jednom kraji intervalu a 1 na druhém. To nicméně není nutné, usnadní nám to ale řešení soustavy rovnic.
 
 \begin{equation}
 \label{eq:laplace_primka_1}
 \frac{\mathrm{d}^2 \varphi}{\mathrm{d}x^2} = 0
 \end{equation}
 
-Chceme-li řešit Laplaceovu rovnici na intervalu \(<0; L>\) s Dirichletovými nebo Neumannovými okrajovými podmínkami, musíme najít lineární funkci, která bude okrajovým podmínkám vyhovovat.
+\begin{equation}
+\label{eq:laplace_primka_2}
+\varphi = a (1 - \frac{x}{L}) + b \frac{x}{L}
+\end{equation}
 
+Chceme-li řešit Laplaceovu rovnici na intervalu \(<0; L>\) s Dirichletovými nebo Neumannovými okrajovými podmínkami, musíme najít lineární funkci,
+která bude okrajovým podmínkám vyhovovat. Abychom sjednotili Direchletovy a Neumannovy podmínky sjednotili, tak zavedeme lineární
+okrajovou podmínku \eqref{eq:linearni_podminka}. Rozepíšeme-li ji na oba okraje úsečky, tak získáme soustavu rovnic \eqref{eq:linearni_podminka_2}.
+V první rovnici jsme ještě otočili znaménko u Neumannovy podmínky, aby význam byla derivace směrem ven z intervalu.
+Vyjádřením hodnot a derivací z rovnice \eqref{eq:laplace_primka_2} a dosazením získáme rovnici \eqref{eq:linearni_podminka_3}. Zavedli jsme při tom
+označení \(n_0 = \frac{N_0}{L}\) a \(n_L = \frac{N_L}{L}\).
+To je soustava 2 rovnic o 2 neznámých která má řešení \eqref{eq:linearni_podminka_4}.
+
+\begin{equation}
+\label{eq:linearni_podminka}
+D \cdot \varphi + N \cdot \varphi' = H
+\end{equation}
+
+\begin{equation}
+\label{eq:linearni_podminka_2}
+\begin{split}
+D_0 \cdot \varphi(0) - N_0 \cdot \varphi'(0) = H_0 \\
+D_L \cdot \varphi(L) + N_L \cdot \varphi'(L) = H_L
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:linearni_podminka_3}
+\begin{split}
+D_0 \cdot a + n_0 \cdot (b - a) = H_0 \\
+D_L \cdot b + n_L \cdot (b - a) = H_L
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:linearni_podminka_4}
+\begin{split}
+a = \frac{H_0 D_L + H_L n_0 + H_0 n_l}{D_0 D_L + n_0 D_L + D_0 n_L} \\
+b = \frac{H_L D_0 + H_L n_0 + H_0 n_l}{D_0 D_L + n_0 D_L + D_0 n_L}
+\end{split}
+\end{equation}
+
+\begin{fact}
+Díky linearitě Laplaceovy rovnice můžeme řešení zapsat jako lineární kombinaci funkcí, které rovnici vyhovují, a hledat
+koeficienty této lineární kombinace.
+\end{fact}
+
+\section{Řešení Poissonovy rovnice na úsečce}
+
+Shrňme si fakta o Poissonově a Laplaceově rovnici na přímce. Metodou zdrojů umíme řešit Poissonovu rovnici bez okrajových podmínek. Její řešení
+zůstává v platnosti pokud k němu přičteme lineární funkci. Řešením Laplaceovy rovnice je lineární funkce.
+
+Z toho nám vyplývá následující postup řešení Poissonovy rovnice na úsečce:
+
+\begin{itemize}
+\item Vyřešíme Poissonovu rovnici na celé přímce bez okrajových podmínek. Můžeme (ale nemusíme) při tom ignorovat zdroje mimo interval \(<0; L>\).
+Označme toto řešení \(\varphi_P\).
+
+\item Upravíme okrajové podmínky tak, že zohledníme příspěvek od \(\varphi_P\).
+
+\item Vyřešíme Laplaceovu rovnici pro upravené okrajové podmínky. Označme její řešení \(\varphi_L\).
+
+\item Řešením Poissonovy rovnice na intervalu \(<0; L>\) je \(\varphi = \varphi_P + \varphi_L\).
+\end{itemize}
 
 \chapter{Využití symetrie}
 
