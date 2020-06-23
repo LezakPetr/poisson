@@ -1096,6 +1096,7 @@ potenciál \(\varphi\) jednoznačně. Bude-li totiž \(\varphi\) řešením Pois
 jednu Dirichletovu okrajovou podmínku.
 
 \subsection{Příklad}
+\label{sec:priklad_chladic_pasek}
 
 Dva tranzistory jsou umístěny na hliníkový pásek o rozměrech 8cm x 1.5cm x 3mm. Konce pásku jsou připevněny
 na chladič, který má pokojovou teplotu 20\si{\degree}C. Každý tranzistor produkuje ztrátový výkon \(P_T = 10\mathrm{W}\) o kterém předpokládáme,
@@ -1256,6 +1257,13 @@ Označme toto řešení \(\varphi_P\).
 
 \item Řešením Poissonovy rovnice na intervalu \(<0; L>\) je \(\varphi = \varphi_P + \varphi_L\).
 \end{itemize}
+
+\subsection{Příklad}
+
+Vyřešme příklad \eqref{sec:priklad_chladic_pasek} metodou integrace zdrojů. Při jeho řešení jsme odvodili rovnici \(\frac{\mathrm{d}^2 t}{\mathrm{d}x^2} = -\frac{p_T}{\lambda S}\). Funkce \(f(x) = -\frac{p_T(x)}{\lambda S}\) je po částech lineární funkce.
+Řešení Poissonovy rovnice je \(\varphi_P(x) = \frac{1}{2} \int_{-\infty}^{+\infty} f(s) | x - s| ds\). Integrál můžeme rozepsat na součet dvou integrálů
+a zbavit se tak absolutní hodnoty. Získáme tak řešení \(\varphi_P(x) = \frac{1}{2} \left(\int_{-\infty}^{x} f(s) (x - s) ds - \int_{x}^{+\infty} f(s) (x - s) ds \right)\).
+
 
 \chapter{Využití symetrie}
 

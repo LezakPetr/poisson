@@ -82,6 +82,9 @@ for i = 1:count
 	phi(i, 2) = 0.5 * sum;
 end
 
+% Reseni Laplaceovy rovnice
+temp = zeros(count, 2);
+
 H1 = T1 - phi(1, 2);
 H2 = T2 - phi(count, 2);
 
@@ -89,9 +92,13 @@ for i = 1:count
 	x = phi(i, 1);
 	t = x / phi(count, 1);
 	
-	phi(i, 2) += H1 * (1 - t) + H2 * t;
+	temp(i, 1) = x;
+	temp(i, 2) = phi(i, 2) + H1 * (1 - t) + H2 * t;
 end
 
 plot(phi(:, 1), phi(:, 2));
-print("chladic_pasek_integrace_zdroju.png");
+print("chladic_pasek_integrace_zdroju_1.png");
+
+plot(temp(:, 1), temp(:, 2));
+print("chladic_pasek_integrace_zdroju_2.png");
 
