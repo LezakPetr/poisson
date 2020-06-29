@@ -1262,7 +1262,20 @@ Označme toto řešení \(\varphi_P\).
 
 Vyřešme příklad \eqref{sec:priklad_chladic_pasek} metodou integrace zdrojů. Při jeho řešení jsme odvodili rovnici \(\frac{\mathrm{d}^2 t}{\mathrm{d}x^2} = -\frac{p_T}{\lambda S}\). Funkce \(f(x) = -\frac{p_T(x)}{\lambda S}\) je po částech lineární funkce.
 Řešení Poissonovy rovnice je \(\varphi_P(x) = \frac{1}{2} \int_{-\infty}^{+\infty} f(s) | x - s| ds\). Integrál můžeme rozepsat na součet dvou integrálů
-a zbavit se tak absolutní hodnoty. Získáme tak řešení \(\varphi_P(x) = \frac{1}{2} \left(\int_{-\infty}^{x} f(s) (x - s) ds - \int_{x}^{+\infty} f(s) (x - s) ds \right)\).
+a zbavit se tak absolutní hodnoty. Získáme tak řešení \(\varphi_P(x) = \frac{1}{2} \left(\int_{-\infty}^{x} f(s) (x - s) ds - \int_{x}^{+\infty} f(s) (x - s) ds \right)\). Pokud je funkce \(f\) dostatečně jednoduchá, tak můžeme tento integrál vypočítat analyticky. 
+
+Je-li funkce \(f\) po částech lineární funkce, tedy funkce, která v bodech \(s_i\) nabývá hodnoty \(y_i\) a mezi sousedními body je lineární, tak můžeme
+integrál přepsat na součet integrálů lineárních úseků \(\int_{s_1}^{s_n} f(s) (x - s) ds = \sum_{i=1}^{n-1} \int_{s_i}^{s_i} f(s) (x - s) ds\).
+Integrál přes jeden úsek můžeme vyjádřit \(\int_{s_i}^{s_i} f(s) (x - s) ds = (s_{i+1} - s_i) \cdot \left(\frac{1}{2} \cdot (x - s_i) \cdot (y_{i+1} + y_i) - (s_{i+1} - s_i) \cdot (\frac{y_{i+1}}{3} + \frac{y_{i}}{6} \right)\). Odvození nechám na čtenáři.
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{examples/chladic_pasek_integrace_zdroju_1.png}
+	\caption{Řešení bez okrajových podmínek}
+	\label{img:pasek_integrace_zdroju_1}
+\end{figure}
+
+
+
 
 
 \chapter{Využití symetrie}
