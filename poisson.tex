@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[czech]{babel}
 \usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage{tikz}
 \usepackage{siunitx}
 \usepackage{environ}
@@ -123,7 +124,50 @@ Jakékoli řešení nehomogenní lineární diferenciální rovnice můžeme zí
 a přičteme k němu vhodné řešení odpovídající homogenní rovnice.
 \end{fact}
 
-\chapter{Vektorová analýza}
+\chapter{Popis veličin v prostoru}
+
+\section{pseudometrický prostor, metrický prostor}
+
+Mějme množinu prvků \(M\) a funkci \(d: M \times M \rightarrow \mathbb{R}\), která určuje vzdálenost dvou prvků z \(M\).
+
+\begin{equation}
+\label{eq:pseudometricky_prostor_definice_1}
+\forall u \in M : d(u, u) = 0
+\end{equation}
+
+\begin{equation}
+\label{eq:pseudometricky_prostor_definice_2}
+\forall u, v \in M : d(u, v) = d(v, u)
+\end{equation}
+
+\begin{equation}
+\label{eq:pseudometricky_prostor_definice_3}
+\forall u, v, w \in M : d(u, v) \leq d(u, w) + d(w, v)
+\end{equation}
+
+Pokud funkce \(d\) splňuje podmínky \eqref{eq:pseudometricky_prostor_definice_1} - \eqref{eq:pseudometricky_prostor_definice_3}, pak se nazývá pseudometrika a dvojice \((M, d)\) pseudometrický prostor.
+
+Podmínka \eqref{eq:pseudometricky_prostor_definice_1} říká, že vzdálenost totožných prvků je nulová. Podmínka \eqref{eq:pseudometricky_prostor_definice_2} znamená symetrii vzdálenosti a \eqref{eq:pseudometricky_prostor_definice_3} je trojúhelníková nerovnost.
+
+Provedeme-li v rovnici \eqref{eq:pseudometricky_prostor_definice_3} subsstituci \(u = v = x, w = y\), a využijeme podmínky \eqref{eq:pseudometricky_prostor_definice_1} a \eqref{eq:pseudometricky_prostor_definice_2},
+tak odvodíme nezápornost vzdálenosti.
+
+\begin{equation}
+\begin{split}
+\forall x, y \in M : d(x, x) \leq d(x, y) + d(y, x) \\
+\forall x, y \in M : 0 \leq 2 \cdot d(x, y) \\
+\forall x, y \in M : d(x, y) \geq 0
+\end{split}
+\end{equation}
+
+\section{Euklidovský prostor, kartézský systém souřadnic}
+
+\(n\)-rozměrný Euklidovský prostor \(E_n\) je prostor, jehož prvky jsou body, a v němž platí Pythagorova věta. Každému bodu tohoto prostoru
+je možné přiřadit unikátní \(n\)-tici reálných čísel, takovémuto přiřazení říkáme souřadnicový systém. 
+
+
+
+
 
 \section{Základní definice}
 
