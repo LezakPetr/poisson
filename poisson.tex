@@ -160,10 +160,22 @@ tak odvodíme nezápornost vzdálenosti.
 \end{split}
 \end{equation}
 
+Pokud pseudometrický prostor splňuje navíc podmínku \eqref{eq:metricky_prostor_definice_1}, pak jej nazýváme metrickým prostorem.
+
+\begin{equation}
+\label{eq:metricky_prostor_definice_1}
+\forall u, v \in M : d(u, v) = 0 \rightarrow u = v
+\end{equation}
+
+V~pseudometrickém prostoru tedy mohou existovat různé prvky s~nulovovou vzdáleností, v~metrickém prostoru je to vyloučeno.
+
 \section{Euklidovský prostor, kartézský systém souřadnic}
 
-\(n\)-rozměrný Euklidovský prostor \(E_n\) je prostor, jehož prvky jsou body, a v němž platí Pythagorova věta. Každému bodu tohoto prostoru
-je možné přiřadit unikátní \(n\)-tici reálných čísel, takovémuto přiřazení říkáme souřadnicový systém. 
+\(n\)-rozměrný Euklidovský prostor \(E_n\) je metrický prostor, jehož prvky jsou body, a v němž platí Pythagorova věta. Každému bodu tohoto prostoru
+je možné přiřadit unikátní \(n\)-tici reálných čísel, takovémuto přiřazení říkáme souřadnicový systém.
+
+Jedním ze způsobů, jak v~Euklidovském prostoru zavést souřadnicový systém, je zvolit v~něm bod odpovídající počátku souřadnicového systému a~z něj vést \(n\) vzájemně kolmých souřadnicových os. Souřadnice jekéhokoli
+bodu je pak \(n\)-tice čísel odpovídajících orientovaným vzdálenostem průmětu bodu do jednotlivých souřadnicových os. Metrika je pak \(d(u, v) = \sqrt{\sum_{i=1}^n (u_i - v_i)^2}\).
 
 
 
