@@ -9,6 +9,8 @@
 \usetikzlibrary{math}
 
 \newcommand{\vect}[1]{\boldsymbol{#1}}
+\newcommand{\unitvect}[1]{\hat{\boldsymbol{#1}}}
+\newcommand{\vectpoints}[1]{\overrightarrow{#1}}
 \newcommand{\grad}{\mathrm{grad}}
 \newcommand{\diverg}{\mathrm{div}}
 \newcommand{\rot}{\mathrm{rot}}
@@ -171,13 +173,316 @@ V~pseudometrickém prostoru tedy mohou existovat různé prvky s~nulovovou vzdá
 
 \section{Euklidovský prostor, kartézský systém souřadnic}
 
+Začněme definicí Euklidovského prostoru.
+
+\begin{fact}
+Definice: Euklidovský prostor \(E_n\) je metrický prostor, jehož prvky jsou body, v~němž můžeme zavést kartézský systém souřadnic a~v~němž platí metrika daná vztahem \eqref{eq:euklidovsky_prostor_metrika}.
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_metrika}
+d(A, B) = \sqrt{\sum_{i=1}^{n} (B_i - A_i)^2}
+\end{equation}
+\end{fact}
+
+Euklidovský prostor je tedy prostor tvořený body. Můžeme zde zavést kartézský systém souřadnic, který každému bodu \(X\) přiřazuje \(n\)-tici reálných čísel \(X_i\). Říkáme, že se jedná o~\(n\)-rozměrný prostor.
+Kartézský systém souřadnic není jediný možný, později si ukážeme, jak zavést jiné systémy souřadnic. Je pravděpodobné, že čtenář je s~kartézskou soustavou souřadnic podrobně seznámen. Předpokládejme ale nyní,
+že o~ní nic nevíme a~ukážeme si, co vše lze z~rovnice \eqref{eq:euklidovsky_prostor_metrika} odvodit.
+
+Především si všimněme, že ve vztahu \eqref{eq:euklidovsky_prostor_metrika} vystupují pouze rozdíly souřadnic. To znamená, že máme-li soustavu bodů,
+pak přičtením konstantní \(n\)-tice ke všem jejich souřadnicím se vzájemné vzdálenosti bodů nezmění. Můžeme tedy soustavu bodů libovolně posunout a~jejich vzájemná poloha zůstane nezměněna. Toto je vlastnost Euklidovského
+prostoru jako takového, ne jen soustavy souřadnic. To se může zdát samozřejmé, ale například teorie relativity předpokládá, že prostor může být deformovaný a~tuto vlastnost nemá. Tím jsme odvodili první fakt:
+
+\begin{fact}
+Euklidovský prostor \(E_n\) je invariantní vůči posunutí.
+\end{fact}
+
+Zavedeme označení
+\eqref{eq:vektor_rozdil_bodu} a~veličinu \(\vectpoints{AB}\) nazveme vektorem. Vektor se v~některé literatuře označuje tučně, v~některé šipkou nad vektorem. V~této knize budeme vektory označovat tučně s~výjimkou vektoru
+utvořeného jako rozdíl dvou bodů - ten označíme šipkou nad oněmi dvěma body. Pokud je daný vektor jednotkový (jeho velikost je rovna 1), pak nad ním
+nakreslíme stříšku.
+
+Velikost vektoru definujeme pomocí vztahu \eqref{eq:vektor_velikost}. Tím se nám definice \eqref{eq:euklidovsky_prostor_metrika} zjednoduší na \eqref{eq:euklidovsky_prostor_metrika_vektor}.
+
+\begin{equation}
+\label{eq:vektor_rozdil_bodu}
+\vectpoints{AB} = (B_1 - A_1, B_2 - A_2, ..., B_n - A_n)
+\end{equation}
+
+\begin{equation}
+\label{eq:vektor_velikost}
+|\vect{u}| = \sqrt{\sum_{i=1}^{n} u_i^2}
+\end{equation}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_metrika_vektor}
+d(A, B) = |\vectpoints{AB}|
+\end{equation}
+
+Graficky budeme vektor reprezentovat pomocí šipky vedoucí od počátečního ke koncovému bodu, jak je vidět na obrázku~\ref{img:vektor_graficky}.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\draw[->] (0, 0) -- (2, 2);
+\draw (0, 0) node[anchor=east]{A};
+\draw (2, 2) node[anchor=west]{B};
+\draw (1, 1) node[anchor=south east]{\(\vectpoints{AB}\)};
+\end{tikzpicture}
+\caption{Vektor}
+\label{img:vektor_graficky}
+\end{figure}
+
+Mějme 3 body - A, B, C. Vidíme, že \(i\)-tá souřadnice vektoru \(\vectpoints{AB}\) je \(\vectpoints{AB}_i = B_i - A_i\), \(i\)-tá souřadnice vektoru \(\vectpoints{BC}\) je \(\vectpoints{BC}_i = C_i - B_i\) a~\(i\)-tá souřadnice vektoru \(\vectpoints{AC}\) je \(\vectpoints{AC}_i = C_i - A_i = (B_i - A_i) + (C_i - B_i) = \vectpoints{AB}_i + \vectpoints{BC}_i\). Můžeme proto zavést sčítání vektorů vztahem \eqref{eq:euklidovsky_prostor_vektor_soucet}.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\draw[->] (0, 0) -- (2, 2);
+\draw[->] (2, 2) -- (3, 1);
+\draw[->] (0, 0) -- (3, 1);
+\draw (0, 0) node[anchor=east]{A};
+\draw (2, 2) node[anchor=south]{B};
+\draw (3, 1) node[anchor=west]{C};
+\draw (1, 1) node[anchor=south east]{\(\vectpoints{AB}\)};
+\draw (2.5, 1.5) node[anchor=south west]{\(\vectpoints{BC}\)};
+\draw (1.5, 0.5) node[anchor=south]{\(\vectpoints{AC}\)};
+\end{tikzpicture}
+\caption{Součet vektorů}
+\label{img:soucet_vektoru}
+\end{figure}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_vektor_soucet}
+\vect{u} + \vect{v} = (u_1 + v_1, u_2 + v_2, ..., u_n + v_n)
+\end{equation}
+
+Dále definujme nulový vektor \(\vect{0}\) tak, že pokud jej přičteme k~libovolnému vektoru \(\vect{u}\), tak se nezmění. Tedy:
+
+\begin{equation}
+\begin{split}
+\vect{u} + \vect{0} = \vect{u} \\
+(u_1 + 0_1, u_2 + 0_2, ..., u_n + 0_n) = (u_1, u_2, ..., u_n ) \\
+\vect{0} = (0, 0, ...)
+\end{split}
+\end{equation}
+
+Vidíme, že nulový vektor má všechny složky nulové. Dosadíme-li jej do definice velikosti vektoru \eqref{eq:vektor_velikost}, tak vidíme, že \(|\vect{0}| = 0\). Navíc vidíme, že se jedná o~jediný vektor s~nulovou velikostí. Ve vztahu \eqref{eq:vektor_velikost} se totiž vyskytuje součet druhých mocnin složek vektoru. Aby tento součet mohl být nulový, tak každá složka musí být nulová. Také to tedy znamená, že nulovou metriku mohou mít jen stejné body Euklidovského prostoru. Dokázali jsme tak platnost podmínky \eqref{eq:metricky_prostor_definice_1}.
+
+Opačný vektor \(-\vect{u}\) zavedeme jako vektor, který když přičteme k~vektoru \(\vect{u}\), tak získáme nulový vektor. Takto to bude odpovídat běžné algebře:
+
+\begin{equation}
+\begin{split}
+\vect{u} + (-\vect{u}) = \vect{0} \\
+(u_1 + (-\vect{u})_1, u_2 + (-\vect{u})_2, ..., u_n + (-\vect{u})_n) = (0, 0, ...) \\
+-\vect{u} = (-u_1, -u_2, ..., -u_n)
+\end{split}
+\end{equation}
+
+Rozdíl vektorů zavedeme jako přičtení opačného vektoru vztahem \eqref{eq:euklidovsky_prostor_vektor_rozdil}. Takto to bude odpovídat běžným pravidlům algebry.
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_vektor_rozdil}
+\vect{u} - \vect{v} = \vect{u} + (-\vect{v})= (u_1 - v_1, u_2 - v_2, ..., u_n - v_n)
+\end{equation}
+
+Přirozeně můžeme zavést násobení vektoru skalárem, aby odpovídalo sčítání příslušného počtu shodných vektorů. Získáme tak vztah \eqref{eq:euklidovsky_prostor_vektor_nasobeni}, který je kompatibilní se sčítáním a odečítáním vektorů:
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_vektor_nasobeni}
+\alpha \cdot \vect{u} = (\alpha \cdot u_1, \alpha \cdot u_2, ..., \alpha \cdot u_n)
+\end{equation}
+
+
+Protože jsme zavedli operace s~vektory tak, že provádíme běžné algebraické operace s~\(n\)-ticemi čísel po jednotlivých složkách, tak běžná pravidla algebry budou platit i~pro operace s~vektory. Neměla by nás proto překvapit následující pravidla. Čtenář si je může ověřit sám rozepsáním jednotlivých operací:
+
+\begin{fact}
+\begin{equation}
+\label{eq:euklidovsky_prostor_definice_nuloveho_vektoru}
+\vect{u} + \vect{0} = \vect{u}
+\end{equation}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_definice_opacneho_vektoru}
+\vect{u} + (-\vect{u}) = \vect{0}
+\end{equation}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_definice_odecitani_vektoru}
+\vect{u} - \vect{v} = \vect{u} + (-\vect{v})
+\end{equation}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_vektor_asociativita_scitani}
+\vect{u} + (\vect{v} + \vect{w}) = (\vect{u} + \vect{v}) + \vect{w}
+\end{equation}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_definice_nasobeni}
+\sum_{i=1}^n \vect{u} = n \cdot \vect{u}
+\end{equation}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_vektor_opacny}
+-\vect{u} = (-1) \cdot \vect{u}
+\end{equation}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_vektor_distribuce_scitani}
+\alpha \vect{u} + \beta \vect{u} = (\alpha + \beta) \cdot \vect{u}
+\end{equation}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_vektor_distribuce_nasobeni}
+\alpha \vect{u} + \alpha \vect{v} = \alpha \cdot (\vect{u} + \vect{v})
+\end{equation}
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_asociativita_nasobeni}
+\alpha (\beta \vect{u}) = (\alpha \beta) \vect{u}
+\end{equation}
+\end{fact}
+
+Každý nenulový vektor můžeme tzv. normalizovat - podělit jej jeho velikostí. Získáme tak jednotkový vektor \(\unitvect{u} = \frac{\vect{u}}{|\vect{u}|}\). Nebo jinak, každý nenulový vektor můžeme zapsat ve tvaru \(\vect{u} = |\vect{u}| \cdot \unitvect{u}\). Vektor \(\vect{u}\) jsme tak rozdělili na složku určující jeho velikost a~na složku určující jeho směr.
+
+Ukazuje se, že ve výpočtech se často vyskytuje výraz  \(\sum_{i=1}^{n} u_i \cdot v_i\).
+Nazveme jej skalárním součinem vektorů \(\vect{u}\) a \(\vect{v}\) a~označíme ho \(\vect{u} \cdot \vect{v}\).
+Pokud jsou vektory nenulové, pak je můžeme normalizovat: \(\unitvect{u} = \frac{\vect{u}}{|\vect{u}|}\), \(\unitvect{v} = \frac{\vect{v}}{|\vect{v}|}\).
+
+Prozkoumejme, jakých hodnot může nabývat skalární součin \(\unitvect{u} \cdot \unitvect{v}\). Ve vztahu \eqref{eq:skalarni_soucin_1} jsme skalární součin
+vyjádřili pomocí sumy, kterou jsme dále upravovali. Využili jsme faktu, že \(\sum_{i=1}^{n} \hat{u}_i^2 = \sum_{i=1}^{n} \hat{v}_i^2 = 1\), protože vektory
+\(\unitvect{u}\) a \(\unitvect{v}\) jsou jednotkové. Všimněme si, že \(\sum_{i=1}^{n} (\hat{u}_i + \hat{v}_i)^2\) je součet druhých mocnin členů
+\(\hat{u}_i + \hat{v}_i\), proto je určitě nezáporný. Výraz \eqref{eq:skalarni_soucin_1} nabývá minimální hodnoty \(-1\) pouze pokud je suma nulová, tedy pokud každý je nulový, tedy pokud
+\(\hat{u}_i = -\hat{v}_i\). Proto pro skalární součin (obecně nejednotkových) vektorů platí \(\vect{u} \cdot \vect{v} = |\vect{u}| \cdot \unitvect{u} \cdot |\vect{v}| \cdot \unitvect{v} \geq -|\vect{u}| \cdot |\vect{v}|\)
+a~minimální hodnoty \(-|\vect{u}| \cdot |\vect{v}|\) nabývá právě tehdy pokud \(\unitvect{u} = -\unitvect{v}\), tedy pokud vektory \(\vect{u}\) a \(\vect{v}\) mají opačný směr.
+
+\begin{equation}
+\label{eq:skalarni_soucin_1}
+\begin{split}
+\unitvect{u} \cdot \unitvect{v} = \sum_{i=1}^{n} \hat{u}_i \cdot \hat{v}_i = \frac{1}{2} \sum_{i=1}^{n} 2 \cdot \hat{u}_i \cdot \hat{v}_i = \\
+\frac{1}{2} \sum_{i=1}^{n} \left(\hat{u}_i^2 + 2 \cdot \hat{u}_i \cdot \hat{v}_i + \hat{v}_i^2 - \hat{u}_i^2 - \hat{v}_i^2 \right) = \\
+\frac{1}{2} \sum_{i=1}^{n} (\hat{u}_i + \hat{v}_i)^2 - \frac{1}{2} \sum_{i=1}^{n} \hat{u}_i^2 - \frac{1}{2} \hat{v}_i^2 = \\
+\frac{1}{2} \sum_{i=1}^{n} (\hat{u}_i + \hat{v}_i)^2 - \frac{1}{2} - \frac{1}{2} =  \\
+\frac{1}{2} \sum_{i=1}^{n} (\hat{u}_i + \hat{v}_i)^2 - 1 \geq -1
+\end{split}
+\end{equation}
+
+Skalární součin můžeme vyjádřit také pomocí vztahu \eqref{eq:skalarni_soucin_2}. Postupovali jsme obdobně jako v~minulém případě, ale tentokrát
+vidíme, že skalární součin jednotkových vektorů nabývá maximální hodnoty \(1\) pouze pokud \(\hat{u}_i = \hat{v}_i\). Proto pro skalární součin (obecně nejednotkových) vektorů platí \(\vect{u} \cdot \vect{v} = |\vect{u}| \cdot \unitvect{u} \cdot |\vect{v}| \cdot \unitvect{v} \leq |\vect{u}| \cdot |\vect{v}|\)
+a~maximální hodnoty \(|\vect{u}| \cdot |\vect{v}|\) nabývá právě tehdy pokud \(\unitvect{u} = \unitvect{v}\), tedy pokud vektory \(\vect{u}\) a \(\vect{v}\) mají stejný směr.
+
+\begin{equation}
+\label{eq:skalarni_soucin_2}
+\begin{split}
+\unitvect{u} \cdot \unitvect{v} = \sum_{i=1}^{n} \hat{u}_i \cdot \hat{v}_i = -\frac{1}{2} \sum_{i=1}^{n} -2 \cdot \hat{u}_i \cdot \hat{v}_i = \\
+-\frac{1}{2} \sum_{i=1}^{n} \left(\hat{u}_i^2 - 2 \cdot \hat{u}_i \cdot \hat{v}_i + \hat{v}_i^2 - \hat{u}_i^2 - \hat{v}_i^2 \right) = \\
+-\frac{1}{2} \sum_{i=1}^{n} (\hat{u}_i - \hat{v}_i)^2 + \frac{1}{2} \sum_{i=1}^{n} \hat{u}_i^2 + \frac{1}{2} \hat{v}_i^2 = \\
+-\frac{1}{2} \sum_{i=1}^{n} (\hat{u}_i + \hat{v}_i)^2 + \frac{1}{2} + \frac{1}{2} =  \\
+-\frac{1}{2} \sum_{i=1}^{n} (\hat{u}_i - \hat{v}_i)^2 + 1 \leq 1
+\end{split}
+\end{equation}
+
+
+Souřadnice bodů a~vektorů jsou pro nás zatím jen \(n\)-tice čísel, nevíme, co si před nimi představit. Musíme nějakým způsobem definovat přímku a~úhly.
+
+Zamysleme se nejdříve jak zavést obecnou definici úsečky tak, aby obstála i~v~zakřiveném prostoru. Představme si, že bychom zedníkovi vytyčili 2 body tak, že bychom do země zatloukly 2 kolíky, a~chtěli po něm, aby mezi nimi vytyčil
+úsečku. Vzal by provaz, napnul by ho mezi kolíky a~řekl by nám, že provaz tvoří úsečku. Důležité je právě to, že by provaz napnul - tím by zajistil, že ze všech možných drah mezi oběma kolíky povede po dráze, která má
+nejkratší vzdálenost. Takto můžeme zavést definici úsečky v~jakémkoli pseudoprostoru. Přesnou definici křivky si nechme na později.
+
+\begin{fact}
+Úsečka je křivka mezi dvěma body, která má ze všech možných křivek minimální délku.
+\end{fact}
+
+Abychom zjistili, kdy tento případ nastává, tak se podívejme na velikost součtu 2 vektorů.
+
+\begin{equation}
+\label{eq:delka_souctu_vektoru}
+|\vect{u} + \vect{v}|^2 = \sum_{i=1}^{n} (u_i + v_i)^2 = \sum_{i=1}^{n} u_i^2 + 2 \sum_{i=1}^{n} u_i \cdot v_i + \sum_{i=1}^{n} v_i^2 = 
+|\vect{u}|^2 + 2 \cdot \vect{u} \cdot \vect{v} + |\vect{v}|^2
+\end{equation}
+
+
+Dosadíme-li tyto meze skalárního součinu do vztahu \eqref{eq:delka_souctu_vektoru}, tak vidíme, že 
+\(|\vect{u}|^2 - 2 |\vect{u}| \cdot |\vect{v}| + |\vect{v}|^2 \leq |\vect{u} + \vect{v}|^2 \leq
+|\vect{u}|^2 + 2 |\vect{u}| \cdot |\vect{v}| + |\vect{v}|^2\), neboli
+ \((|\vect{u}| - |\vect{v}|)^2 \leq |\vect{u} + \vect{v}|^2 \leq
+|(\vect{u}|+ |\vect{v}|)^2\) a~tedy
+ \(||\vect{u}| - |\vect{v}|| \leq |\vect{u} + \vect{v}| \leq
+|\vect{u}|+ |\vect{v}|\).
+
+Vidíme, že je splněna podmínka \eqref{eq:pseudometricky_prostor_definice_3}, kterou jsme kladli na metriku v~pseudometrickém prostoru. Splnění ostatních podmínek nebudeme rozebírat, čtenář si je může triviálně ověřit sám. Dále vidíme, že aby platilo \(|\vect{u} + \vect{v}| = |\vect{u}|+ |\vect{v}|\), tak
+je nutné, aby \(\unitvect{u} = \unitvect{v}\), tedy aby oba vektory měli stejný směr.
+
+
 \(n\)-rozměrný Euklidovský prostor \(E_n\) je metrický prostor, jehož prvky jsou body, a v němž platí Pythagorova věta. Každému bodu tohoto prostoru
 je možné přiřadit unikátní \(n\)-tici reálných čísel, takovémuto přiřazení říkáme souřadnicový systém.
 
 Jedním ze způsobů, jak v~Euklidovském prostoru zavést souřadnicový systém, je zvolit v~něm bod odpovídající počátku souřadnicového systému a~z něj vést \(n\) vzájemně kolmých souřadnicových os. Souřadnice jekéhokoli
-bodu je pak \(n\)-tice čísel odpovídajících orientovaným vzdálenostem průmětu bodu do jednotlivých souřadnicových os. Metrika je pak \(d(u, v) = \sqrt{\sum_{i=1}^n (u_i - v_i)^2}\).
+bodu je pak \(n\)-tice čísel odpovídajících orientovaným vzdálenostem průmětu bodu do jednotlivých souřadnicových os. Ve rovině je zvykem osy a složky souřadnic označovat \(x\) a \(y\), v prostoru \(x\), \(y\) a \(z\).
+
+Kupříkladu na obrázku \ref{img:kartezsky_system_souradnic} jsou dva body: \(A = [2, 1]\) a \(B = [3, 4]\).
+
+\begin{tikzpicture}
+\label{img:kartezsky_system_souradnic}
+\draw[->] (-0.5, 0) -- (4.5, 0);
+\draw (4.5, 0) node[anchor=north]{x};
+
+\foreach \i in {1, 2, 3, 4} {
+	\draw (\i, -0.1) -- (\i, 0.1);
+	\draw (\i, -0.1) node[anchor=north]{\i};
+}
+
+\draw[->] (0, -0.5) -- (0, 4.5);
+\draw (0, 4.5) node[anchor=east]{y};
+
+\foreach \i in {1, 2, 3, 4} {
+	\draw (-0.1, \i) -- (0.1, \i);
+	\draw (-0.1, \i) node[anchor=east]{\i};
+}
+
+\draw (0, 0) node[anchor=north east]{0};
+
+\draw[dashed] (0, 1) -- (2, 1) -- (2, 0);
+\draw (2, 1) node[anchor=west]{A};
+
+\draw[dashed] (0, 4) -- (3, 4) -- (3, 0);
+\draw (3, 4) node[anchor=west]{B};
+
+\draw[->] (2, 1) -- (3, 4);
+\draw (2.5, 2.5) node[anchor=east]{\(\overrightarrow{AB}\)};
+
+\end{tikzpicture}
+
+Máme-li dva body, pak jejich rozdíl je v~Euklidovském prostoru vektorem. Na obrázku \ref{img:kartezsky_system_souradnic} máme zakreslen vektor \(\overrightarrow{AB} = B - A\). Vektor představuje veličinu, která
+má směr a~orientaci. Vektor je v~\(n\)-rozměrném prostoru určen \(n\) složkami. Ty odpovídají jeho průmětům do souřadnicových os. Vektor \(\overrightarrow{AB}\) má tedy složky \(\overrightarrow{AB} = B - A = (3-2, 4-1) = (1, 3)\).
 
 
+
+
+
+V~rovině (dvojrozměrném prostoru) metriku odvodíme podle Pythagorovy věty. Mějme body \(A\) a \(B\). Jejich souřadnice označme \([A_x, A_y]\) a~\([B_x, B_y]\). Pak délku úsečky \(AB\) můžeme vypočítat jeko délku přepony pravoúhlého trojúhelníka, jehož odvěsny mají délku \(B_x - A_x\) a \(B_y - A_y\). Délka přepony a~tedy i~metrika je \(d(A, B) = \sqrt{(B_x - A_x)^2 + (B_y - A_y)^2}\).
+
+
+Pokud bychom měli trojrozměrný prostor,
+pak bychom metriku spočítali jako délku tělesové úhlopříčky hranolu o~stranách \(B_x - A_x\), \(B_y - A_y\) a~\(B_z - A_z\), tedy \(d(A, B) = \sqrt{(B_x - A_x)^2 + (B_y - A_y)^2 + (B_z - A_z)^2}\).
+
+Tento postup můžeme zobecnit. V~obecném \(n\)-rozměrném prostoru je metrika určena vztahem \eqref{eq:euklidovsky_prostor_metrika}. Složky souřadnic v~tomto případě označujeme alternativně pomocí indexů, tedy \([u_1, u_2, ..., u_n]\).
+
+Platnost tohoto vztahu dokážeme matematickou indukcí. Pro \(n = 1\) vztah přejde v~\(d(u, v) = \sqrt{(v_1 - u_1)^2} = |v_1 - u_1|\) a~evidentně platí - určuje vzdálenost bodů na přímce. Teď si představme, že máme \(n-1\) rozměrný
+podprostor a~metrika průmětů bodů \(u\) a~\(v\) do tohoto podprostoru je \(\sqrt{\sum_{i=1}^{n-1} (v_i - u_i)^2}\). To je tedy délka úsečky spojující tyto průměty a~tvoří jednu stranu trojúhelníka. Druhá strana je dlouhá \(v_n - u_n\) a~je na ni kolmá (to si dokážeme později). Metrika je tedy určena jako délka přepony pravoúhlého trojúhelníka podle vztahu \eqref{eq:euklidovsky_prostor_metrika_odvozeni}. Vztah \eqref{eq:euklidovsky_prostor_metrika} platí pro \(n = 1\) a~pokud
+platí pro \(n-1\), pak platí i~pro \(n\). Platí proto pro všechna přirozená čísla \(n \in \mathbb{N}\).
+
+\begin{equation}
+\label{eq:euklidovsky_prostor_metrika_odvozeni}
+\begin{split}
+d(u, v) = \sqrt{\left(\sqrt{\sum_{i=1}^{n-1} (v_i - u_i)^2} \right)^2 + (v_n - u_n)^2} = \\
+\sqrt{\sum_{i=1}^{n-1} (v_i - u_i)^2 + (v_n - u_n)^2} = \\
+\sqrt{\sum_{i=1}^{n} (v_i - u_i)^2}
+\end{split}
+\end{equation}
+
+\section{Křivočaré systémy souřadnic}
+
+Kartézský systém souřadnic není jediný možný.
 
 
 
