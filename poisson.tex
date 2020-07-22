@@ -478,13 +478,9 @@ Speciální případ je, pokud vektory \(\vect{b}\) a~\(\vect{c}\) jsou na sebe 
 2 nenulové vektory \(\vect{b}\) a~\(\vect{c}\) jsou na sebe kolmé tehdy a~jen tehdy pokud \(\vect{b} \cdot \vect{c} = 0\).
 \end{fact}
 
-
-
-\(n\)-rozměrný Euklidovský prostor \(E_n\) je metrický prostor, jehož prvky jsou body, a v němž platí Pythagorova věta. Každému bodu tohoto prostoru
-je možné přiřadit unikátní \(n\)-tici reálných čísel, takovémuto přiřazení říkáme souřadnicový systém.
-
-Jedním ze způsobů, jak v~Euklidovském prostoru zavést souřadnicový systém, je zvolit v~něm bod odpovídající počátku souřadnicového systému a~z něj vést \(n\) vzájemně kolmých souřadnicových os. Souřadnice jekéhokoli
-bodu je pak \(n\)-tice čísel odpovídajících orientovaným vzdálenostem průmětu bodu do jednotlivých souřadnicových os. Ve rovině je zvykem osy a složky souřadnic označovat \(x\) a \(y\), v prostoru \(x\), \(y\) a \(z\).
+Když nyní už máme definovány přímky a~úhly, tak se můžeme podívat, jak vypadá kartézský systém souřadnic. Označme \(\unitvect{i}_i\) jednotkový vektor, který má jedničku v~souřadnici \(i\), tedy v~prostoru \(E_3\) bude \(\unitvect{i}_1 = (1, 0, 0)\), \(\unitvect{i}_2 = (0, 1, 0)\) a~\(\unitvect{i}_3 = (0, 0, 1)\). Pak můžeme libovolný vektor \(v\) zapsat jako \(\vect{v} = \sum_{i=1}^n u_i \cdot \unitvect{A}_i\). Povšimněme si, že \(|\unitvect{A}_i| = 1\) a~\(\unitvect{i}_i \cdot \unitvect{i}_j = 0\) pro každé \(i \neq j\). Vidíme, že vektory \(\unitvect{i}_i\) jsou vzájemně kolmé jednotkové vektory ve směru os souřadného systému.
+Osy jsou vzájemně kolmé přímky procházející počátkem souřadnicového systému (bodem \([0, 0, ..., 0]\)). V~prostoru \(E_3\) má první osa, označovaná \(x\), parametrickou rovnici \(\unitvect{x} = \unitvect{i}_1 \cdot t = (1, 0, 0) \cdot t\), druhá osa, označovaná \(y\), má parametrickou rovnici \(\unitvect{y} = \unitvect{i}_2 \cdot t = (0, 1, 0) \cdot t\), a~třetí osa, označovaná \(z\), má parametrickou rovnici \(\unitvect{z} = \unitvect{i}_3 \cdot t = (0, 0, 1) \cdot t\).
+Souřadnice jekéhokoli bodu je pak \(n\)-tice čísel odpovídajících orientovaným vzdálenostem průmětu bodu do jednotlivých souřadnicových os.
 
 Kupříkladu na obrázku \ref{img:kartezsky_system_souradnic} jsou dva body: \(A = [2, 1]\) a \(B = [3, 4]\).
 
@@ -516,42 +512,32 @@ Kupříkladu na obrázku \ref{img:kartezsky_system_souradnic} jsou dva body: \(A
 
 \draw[->] (2, 1) -- (3, 4);
 \draw (2.5, 2.5) node[anchor=east]{\(\overrightarrow{AB}\)};
-
 \end{tikzpicture}
 
-Máme-li dva body, pak jejich rozdíl je v~Euklidovském prostoru vektorem. Na obrázku \ref{img:kartezsky_system_souradnic} máme zakreslen vektor \(\overrightarrow{AB} = B - A\). Vektor představuje veličinu, která
-má směr a~orientaci. Vektor je v~\(n\)-rozměrném prostoru určen \(n\) složkami. Ty odpovídají jeho průmětům do souřadnicových os. Vektor \(\overrightarrow{AB}\) má tedy složky \(\overrightarrow{AB} = B - A = (3-2, 4-1) = (1, 3)\).
+Viděli jsme, že kartézský systém souřadnic je definován pomocí polohy počátku a~vektorů definujících souřadnicové osy. Zabývejme se nyní otázkou, zda lze zvolit i~jiný počátek a~jiné vektory.
 
-
-
-
-
-V~rovině (dvojrozměrném prostoru) metriku odvodíme podle Pythagorovy věty. Mějme body \(A\) a \(B\). Jejich souřadnice označme \([A_x, A_y]\) a~\([B_x, B_y]\). Pak délku úsečky \(AB\) můžeme vypočítat jeko délku přepony pravoúhlého trojúhelníka, jehož odvěsny mají délku \(B_x - A_x\) a \(B_y - A_y\). Délka přepony a~tedy i~metrika je \(d(A, B) = \sqrt{(B_x - A_x)^2 + (B_y - A_y)^2}\).
-
-
-Pokud bychom měli trojrozměrný prostor,
-pak bychom metriku spočítali jako délku tělesové úhlopříčky hranolu o~stranách \(B_x - A_x\), \(B_y - A_y\) a~\(B_z - A_z\), tedy \(d(A, B) = \sqrt{(B_x - A_x)^2 + (B_y - A_y)^2 + (B_z - A_z)^2}\).
-
-Tento postup můžeme zobecnit. V~obecném \(n\)-rozměrném prostoru je metrika určena vztahem \eqref{eq:euklidovsky_prostor_metrika}. Složky souřadnic v~tomto případě označujeme alternativně pomocí indexů, tedy \([u_1, u_2, ..., u_n]\).
-
-Platnost tohoto vztahu dokážeme matematickou indukcí. Pro \(n = 1\) vztah přejde v~\(d(u, v) = \sqrt{(v_1 - u_1)^2} = |v_1 - u_1|\) a~evidentně platí - určuje vzdálenost bodů na přímce. Teď si představme, že máme \(n-1\) rozměrný
-podprostor a~metrika průmětů bodů \(u\) a~\(v\) do tohoto podprostoru je \(\sqrt{\sum_{i=1}^{n-1} (v_i - u_i)^2}\). To je tedy délka úsečky spojující tyto průměty a~tvoří jednu stranu trojúhelníka. Druhá strana je dlouhá \(v_n - u_n\) a~je na ni kolmá (to si dokážeme později). Metrika je tedy určena jako délka přepony pravoúhlého trojúhelníka podle vztahu \eqref{eq:euklidovsky_prostor_metrika_odvozeni}. Vztah \eqref{eq:euklidovsky_prostor_metrika} platí pro \(n = 1\) a~pokud
-platí pro \(n-1\), pak platí i~pro \(n\). Platí proto pro všechna přirozená čísla \(n \in \mathbb{N}\).
+Definujme souřadnice bodů vztahem \(\vect{p} = \vect{o} + \sum_{i=1}^m p_i \cdot \vect{i}_i\). Pak
 
 \begin{equation}
-\label{eq:euklidovsky_prostor_metrika_odvozeni}
 \begin{split}
-d(u, v) = \sqrt{\left(\sqrt{\sum_{i=1}^{n-1} (v_i - u_i)^2} \right)^2 + (v_n - u_n)^2} = \\
-\sqrt{\sum_{i=1}^{n-1} (v_i - u_i)^2 + (v_n - u_n)^2} = \\
-\sqrt{\sum_{i=1}^{n} (v_i - u_i)^2}
+d^2(a, b) = \left( \left( \vect{o} + \sum_{i=1}^m b_i \cdot \vect{i}_i \right) - \left( \vect{o} + \sum_{i=1}^m a_i \cdot \vect{i}_i \right) \right) \cdot \left(
+\left( \vect{o} + \sum_{i=1}^m b_i \cdot \vect{i}_i \right) - \left( \vect{o} + \sum_{i=1}^m a_i \cdot \vect{i}_i \right) \right) \\
+d^2(a, b) = \left(\sum_{i=1}^m (b_i - a_i) \cdot \vect{i}_i \right) \cdot \left(\sum_{i=1}^m (b_i - a_i) \cdot \vect{i}_i \right) \\
+d^2(a, b) = \sum_{i=1}^m (b_i - a_i)^2 \cdot \vect{i}_i \cdot \vect{i}_i + 2 \cdot \sum_{i=1}^m \sum_{j=i + 1}^m (b_i - a_i) \cdot (b_i - a_i) \cdot \vect{i}_i \cdot \vect{i}_j
 \end{split}
 \end{equation}
+
+Pokud \(\vect{i}_i \cdot \vect{i}_i = 1\), tedy pokud \(|\vect{i}_i| = 1\), a~pokud \(\vect{i}_i \cdot \vect{i}_j = 0\) pro \(i \neq j\), pak se výraz zjednoduší na:
+
+\begin{equation}
+d^2(a, b) = \sum_{i=1}^n (b_i - a_i)^2
+\end{equation}
+
+Vidíme, že za uvedených podmínek platí vztah \eqref{eq:euklidovsky_prostor_metrika} i~pro souřadnice \(p_i\). Proto \(p_i\) jsou souřadnice bodu v~Euklidovském prostoru \(E_m\). Pokud \(m = n\), pak má takto vzniklý Euklidovský prostor stejnou dimenzi jako prostor původní. Pokud \(m < n\), pak se jedná o~podprostor.
 
 \section{Křivočaré systémy souřadnic}
 
 Kartézský systém souřadnic není jediný možný.
-
-
 
 \section{Základní definice}
 
