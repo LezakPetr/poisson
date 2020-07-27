@@ -66,6 +66,21 @@
 	\includegraphics{pic/by-nc-nd-eu.eps}
 \end{figure}
 
+\chapter{Symboly}
+
+V~knize se používají následující symboly:
+\begin{itemize}
+\item \(\vect{u}\) - vektor
+\item \(\unitvect{u}\) - jednotkový vektor
+\item \(A\) - souřadnice bodu
+\item \(\vectpoints{AB}\) - vektor vedoucí z~bodu \(A\) do bodu \(B\)
+\item \(u_{ij}^k\) - složka tenzoru s~kovariantními indexy \(i\) a~\(j\) a~kontravariantním indexem \(k\); speciálním případem jsou složky kovariantních a kontravariantních vektorů
+\item \(u_i\) - složka kovariantního vektoru
+\item \(u^i\) - složka kontravariantního vektoru
+\item \((x)^j\) - \(x\) umocněno na \(j\); závorky jsou nutné, aby se mocnina odlišila od indexu kontravariantního vektoru
+\end{itemize}
+
+
 \chapter{Úvod}
 
 \chapter{Diferenciální rovnice}
@@ -537,7 +552,85 @@ Vidíme, že za uvedených podmínek platí vztah \eqref{eq:euklidovsky_prostor_
 
 \section{Křivočaré systémy souřadnic}
 
-Kartézský systém souřadnic není jediný možný.
+Kartézský systém souřadnic není jediný možný. Z~důvodu geometrie těles nebo symetrie problému může být v~praxi výhodné využít křivočarý systém souřadnic. Také je možné jej využít pokud kartézský systém nelze zavést protože prostor je zakřivený, například v~teorii relativity. Tím se zde však nebudeme zabývat, budeme předpokládat, že prostor je Euklidovský a~křivočarý systém souřadnic zavedeme transformací do kartézského. Mezi často používané křivočaré systémy souřadnic patří polární, cylindrický, sférický a~teorie obsáhne samozřejmě i~kartézský systém souřadnic.
+
+Předpokládejme, že máme prostor \(E_n\), ve kterém máme ne nutně kartézský systém souřadnic s~body určenými souřadnicemi \(P = [P_1, P_2, ..., P_n]\). Chceme zavést jiný systém souřadnic s~body určenými souřadnicemi \(Q = [Q_1, Q_2, ..., Q_n]\). Transformaci mezi souřadnými systémy popisuje sada funkcí \(p_i\):
+
+\begin{equation}
+P_i = p_i(Q_1, Q_2, ..., Q_n)
+\end{equation}
+
+Opačná transformace pak je:
+
+\begin{equation}
+Q_i = q_i(P_1, P_2, ..., P_n)
+\end{equation}
+
+Povšimněme si, že díky obecné nelinearitě funkcí \(p_i\) a~\(q_i\) nelze se souřadnicemi bodů provádět lineární operace. Například jejich sčítání, odečítání a~násobení konstantou nemá žádný geometrický význam. Proto na rozdíl od kartézského systému souřadnic souřadnice bodů ani jejich rozdíl nejsou vektory. Vektory však můžeme zavést tak, že křivočaré souřadnice linearizujeme - budeme uvažovat nekonečně malé vektory.
+
+Máme-li definován souřadnicový systém, tak můžeme zavést funkci, která každému bodu v~prostoru přiřadí určitou hodnotu. Takovou funkci, jejímž definičním oborem je poloha v~prostoru, nazveme polem. 
+
+Začněme tím nejjednodušším - skalárním polem. Skalár je hodnota nezávislá na systému souřadnic. Je vyjádřen jedním reálným nebo komplexním číslem. Jeho hodnota se se změnou souřadného systému nezmění. Příkladem skalárního pole je rozložení teploty v~prostoru. Pokud přejdeme z~jednoho souřadnicového systému do druhého, tak stejnému bodu bude odpovídat stejné číselné vyjádření teploty. Souřadnice bodů se ale změní, proto pole bude vyjádřeno jinou funkcí, teplota v~odpovídajících bodech bude ale vyjádřena stejným číslem. Proto se skaláru také někdy říká invariant. Ne každá funkce přiřazující bodům v~prostoru číslo je skalárním polem. Zavedeme proto tuto definici:
+
+\begin{fact}
+Skalár je číselná hodnota invariantní vůči změně souřadnicového systému. Skalární pole je funkce, která každému bodu v~určité oblasti přiřazuje skalární hodnotu.
+\end{fact}
+
+Uvažujme například souřadný systém definovaný transformací na kartézský souřadný systém vztahy:
+
+\begin{equation}
+\begin{split}
+x = 2 \cdot r \cdot \cos \alpha \\
+y = 3 \cdot r \cdot \sin \alpha
+\end{split}
+\end{equation}
+
+Opačná transformace je možná vztahy
+
+\begin{equation}
+\begin{split}
+r = \sqrt{\frac{x^2}{4} + \frac{y^2}{9}} \\
+\alpha = \mathrm{arctg} \frac{2y}{3x}
+\end{split}
+\end{equation}
+
+Dle předchozího zápisu jsou souřadnice \(P = [x, y]\), \(Q = [r, \alpha]\) a~transformační funkce:
+
+\begin{equation}
+\begin{split}
+x = p_1(r, \alpha) = 2 \cdot r \cdot \cos \alpha \\
+y = p_2(r, \alpha) = 3 \cdot r \cdot \sin \alpha \\
+r = q_1(x, y) = \sqrt{\frac{x^2}{4} + \frac{y^2}{9}} \\
+\alpha = q_2(x, y) = \mathrm{arctg} \frac{2y}{3x}
+\end{split}
+\end{equation}
+
+V~našem příkladě mějme skalární funkci \(\varphi(r, \alpha) = r^2 \cdot \sin 2 \alpha\). Dosadíme-li za souřadnice \(r, \alpha\), získáme \(\phi(x, y) = (\frac{x^2}{4} + \frac{y^2}{9}) \cdot \sin \left(2 \cdot \mathrm{arctg} \frac{2y}{3x} \right)\).
+
+Máme tedy funkci \(\varphi\) v~souřadnicích \(Q\) a~funkci \(\phi\) v~souřadnicích \(P\). Vyjádřeme první derivaci funkce \(\phi\) podle souřadnice \(P_i\). Obecně platí:
+
+\begin{equation}
+\begin{split}
+\frac{\partial \phi}{\partial P_i} = \frac{\partial}{\partial P_i} \varphi (q_1(P_1, ..., P_n), ..., q_n(P_1, ..., P_n)) = \\
+\sum_{j=1}^n \frac{\partial \varphi}{\partial Q_j} (q_1(P_1, ..., P_n), ..., q_n(P_1, ..., P_n)) \cdot \frac{\partial q_j}{\partial P_i} (P_1, ..., P_n) = \\
+\sum_{j=1}^n \frac{\partial \varphi}{\partial Q_j} \cdot \frac{\partial Q_j}{\partial P_i}
+\end{split}
+\end{equation}
+
+Máme-li \(n\)-tici čísel \(\vect{u} = (u_1, u_2, ..., u_n) = \left( \frac{\partial \varphi}{\partial Q_1}, \frac{\partial \varphi}{\partial Q_2}, ..., \frac{\partial \varphi}{\partial Q_n} \right)\) v~soustavě souřadnic \(Q\), tak ji do soustavy souřadnic \(P\) transformujeme vztahem:
+
+\begin{equation}
+\label{eq:kovariantni_vektor}
+v_i = \sum_{j=1}^n \frac{\partial q_j}{\partial P_i} \cdot u_j = \sum_{j=1}^n \frac{\partial Q_j}{\partial P_i} \cdot u_j
+\end{equation}
+
+Každou \(n\)-tici čísel, která se transformuje podle vztahu \eqref{eq:kovariantni_vektor} nazýváme kovariantním vektorem.
+
+
+Uvažujme napřed rozdíl souřadnic dvou nekonečně blízkých bodů.
+
+Ten může vzniknout například tak, že derivujeme souřadnice dráhy podle nezávislé proměnné, například času. Příkladem je tedy rychlost nebo zrychlení.
+
 
 \section{Základní definice}
 
@@ -2169,6 +2262,13 @@ Bedřich Sedlák, Ivan Štoll,
 \textit{Elektřina a magnetismus},
 Academia,
 ISBN 80-200-1004-1
+
+\bibitem{mech}
+Miroslav Brdička, Ladislav Samek, Bruno Sopko,
+\textit{Mechanika kontinua},
+Academia,
+ISBN 80-200-1344-X
+
 
 \end{thebibliography}
 
