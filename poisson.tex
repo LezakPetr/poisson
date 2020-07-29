@@ -576,38 +576,7 @@ Začněme tím nejjednodušším - skalárním polem. Skalár je hodnota nezávi
 Skalár je číselná hodnota invariantní vůči změně souřadnicového systému. Skalární pole je funkce, která každému bodu v~určité oblasti přiřazuje skalární hodnotu.
 \end{fact}
 
-Uvažujme například souřadný systém definovaný transformací na kartézský souřadný systém vztahy:
-
-\begin{equation}
-\begin{split}
-x = 2 \cdot r \cdot \cos \alpha \\
-y = 3 \cdot r \cdot \sin \alpha
-\end{split}
-\end{equation}
-
-Opačná transformace je možná vztahy
-
-\begin{equation}
-\begin{split}
-r = \sqrt{\frac{x^2}{4} + \frac{y^2}{9}} \\
-\alpha = \mathrm{arctg} \frac{2y}{3x}
-\end{split}
-\end{equation}
-
-Dle předchozího zápisu jsou souřadnice \(P = [x, y]\), \(Q = [r, \alpha]\) a~transformační funkce:
-
-\begin{equation}
-\begin{split}
-x = p_1(r, \alpha) = 2 \cdot r \cdot \cos \alpha \\
-y = p_2(r, \alpha) = 3 \cdot r \cdot \sin \alpha \\
-r = q_1(x, y) = \sqrt{\frac{x^2}{4} + \frac{y^2}{9}} \\
-\alpha = q_2(x, y) = \mathrm{arctg} \frac{2y}{3x}
-\end{split}
-\end{equation}
-
-V~našem příkladě mějme skalární funkci \(\varphi(r, \alpha) = r^2 \cdot \sin 2 \alpha\). Dosadíme-li za souřadnice \(r, \alpha\), získáme \(\phi(x, y) = (\frac{x^2}{4} + \frac{y^2}{9}) \cdot \sin \left(2 \cdot \mathrm{arctg} \frac{2y}{3x} \right)\).
-
-Máme tedy funkci \(\varphi\) v~souřadnicích \(Q\) a~funkci \(\phi\) v~souřadnicích \(P\). Vyjádřeme první derivaci funkce \(\phi\) podle souřadnice \(P_i\). Obecně platí:
+Uvažujme funkci \(\varphi\) v~souřadnicích \(Q\) a~odpovídající funkci \(\phi\) v~souřadnicích \(P\). Vyjádřeme první derivaci funkce \(\phi\) podle souřadnice \(P_i\). Obecně platí:
 
 \begin{equation}
 \begin{split}
@@ -626,11 +595,23 @@ v_i = \sum_{j=1}^n \frac{\partial q_j}{\partial P_i} \cdot u_j = \sum_{j=1}^n \f
 
 Každou \(n\)-tici čísel, která se transformuje podle vztahu \eqref{eq:kovariantni_vektor} nazýváme kovariantním vektorem.
 
+Mějme křivku \(Q = \Gamma(t)\) v~souřadnicích \(Q\), která je v souřadnicích \(P\) vyjádřena funkcí \(P = \gamma(t)\). Vyjádřeme první derivace této křivky podle parametru \(t\):
 
-Uvažujme napřed rozdíl souřadnic dvou nekonečně blízkých bodů.
+\begin{equation}
+\begin{split}
+\frac{\partial \gamma_i}{\partial t} = \frac{\partial}{\partial t} p_i(\Gamma_1(t), ..., \Gamma_n(t)) = \sum_{j=1}^n \frac{\partial p_i}{Q_j} (\Gamma_1(t), ..., \Gamma_n(t)) \cdot \frac{\partial \Gamma_j}{\partial t} = \\
+\sum_{j=1}^n \frac{\partial \Gamma_j}{\partial t} \cdot \frac{\partial P_i}{\partial Q_j}
+\end{split}
+\end{equation}
 
-Ten může vzniknout například tak, že derivujeme souřadnice dráhy podle nezávislé proměnné, například času. Příkladem je tedy rychlost nebo zrychlení.
+Vidíme, že máme-li \(n\)-tici čísel \(\vect{u} = (u_1, u_2, ..., u_n) = \left( \frac{\partial \Gamma_1}{\partial t}, \frac{\partial \Gamma_2}{\partial t}, ..., \frac{\partial \Gamma_n}{\partial t} \right)\) v~soustavě souřadnic \(Q\), tak ji do soustavy souřadnic \(P\) transformujeme vztahem:
 
+\begin{equation}
+\label{eq:kontravariantni_vektor}
+v^i = \sum_{j=1}^n \frac{\partial p_i}{\partial Q_j} \cdot u^j = \sum_{j=1}^n \frac{\partial P_i}{\partial Q_j} \cdot u^j
+\end{equation}
+
+Každou \(n\)-tici čísel, která se transformuje podle vztahu \eqref{eq:kontravariantni_vektor} nazýváme kontravariantním vektorem. Všimněme si, že u~kontravariantních vektorů se index složky píše nahoře, aby se kontravariantní vektor odlišil od kovariantního. Nejedná se tedy o~umocňování, pokud bychom chtěli zapsat mocninu, pak mocněnec uzavřeme do závorky: \((u)^i\).
 
 \section{Základní definice}
 
