@@ -11,6 +11,8 @@
 \newcommand{\vect}[1]{\boldsymbol{#1}}
 \newcommand{\unitvect}[1]{\hat{\boldsymbol{#1}}}
 \newcommand{\vectpoints}[1]{\overrightarrow{#1}}
+\newcommand{\kovarvect}[1]{\underrightarrow{#1}}
+\newcommand{\kontravect}[1]{\overrightarrow{#1}}
 \newcommand{\grad}{\mathrm{grad}}
 \newcommand{\diverg}{\mathrm{div}}
 \newcommand{\rot}{\mathrm{rot}}
@@ -74,6 +76,8 @@ V~knize se používají následující symboly:
 \item \(\unitvect{u}\) - jednotkový vektor
 \item \(A\) - souřadnice bodu
 \item \(\vectpoints{AB}\) - vektor vedoucí z~bodu \(A\) do bodu \(B\)
+\item \(\kovarvect{u}\) - kovariantní vektor
+\item \(\kontravect{u}\) - kontravariantní vektor
 \item \(u_{ij}^k\) - složka tenzoru s~kovariantními indexy \(i\) a~\(j\) a~kontravariantním indexem \(k\); speciálním případem jsou složky kovariantních a kontravariantních vektorů
 \item \(u_i\) - složka kovariantního vektoru
 \item \(u^i\) - složka kontravariantního vektoru
@@ -830,6 +834,17 @@ S'^{l...}_{j...} = \sum_{w=1}^n T'^{wl...}_{wj...} = \\
 \tau_P^{P'} (S_{t...}^{v...})
 \end{split}
 \end{equation}
+
+Pokud bychom chtěli sčítat přes dva kovariantní nebo dva kontravariantní indexy, tak by se výsledek netransformoval jako tenzor. Takovéto zůžení tedy nebudeme
+vůbec uvažovat.
+
+Zůžení nám umožňuje definovat skalární součin kovariantního a~kontravariantního vektoru jako zůžení tenzorového součinu těchto vektorů. Zavedeme při tom
+konvenci, že vektor s~šipkou nad symbolem bude kontravariantní a~vektor s~šipkou pod symbolem bude kovaraintní. Pozice šipky tak bude shodná s~pozicí
+indexu ve složkovém zápisu. Dále šipka nad vektorem bude odpovídat vektoru mezi dvěma body, který je také kontravariantní.
+
+\begin{fact}
+Skalární součin \(s = \kovarvect{u} \cdot \kontravect{v}\) vypočítáme podle vztahu \(s = \sum_{i=1}^n u_i \cdot v^i\).
+\end{fact}
 
 \section{Základní definice}
 
