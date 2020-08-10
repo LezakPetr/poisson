@@ -78,6 +78,7 @@ V~knize se používají následující symboly:
 \item \(u_i\) - složka kovariantního vektoru
 \item \(u^i\) - složka kontravariantního vektoru
 \item \((x)^j\) - \(x\) umocněno na \(j\); závorky jsou nutné, aby se mocnina odlišila od indexu kontravariantního vektoru
+\item \(P\), \(P'\) - souřadnice bodu v~původní a~transformované soustavě souřadnic; apostrof nikde v~knize neznačí derivaci
 \end{itemize}
 
 
@@ -554,19 +555,19 @@ Vidíme, že za uvedených podmínek platí vztah \eqref{eq:euklidovsky_prostor_
 
 Kartézský systém souřadnic není jediný možný. Z~důvodu geometrie těles nebo symetrie problému může být v~praxi výhodné využít křivočarý systém souřadnic. Také je možné jej využít pokud kartézský systém nelze zavést protože prostor je zakřivený, například v~teorii relativity. Tím se zde však nebudeme zabývat, budeme předpokládat, že prostor je Euklidovský a~křivočarý systém souřadnic zavedeme transformací do kartézského. Mezi často používané křivočaré systémy souřadnic patří polární, cylindrický, sférický a~teorie obsáhne samozřejmě i~kartézský systém souřadnic.
 
-Předpokládejme, že máme prostor \(E_n\), ve kterém máme ne nutně kartézský systém souřadnic s~body určenými souřadnicemi \(P = [P_1, P_2, ..., P_n]\). Chceme zavést jiný systém souřadnic s~body určenými souřadnicemi \(Q = [Q_1, Q_2, ..., Q_n]\). Transformaci mezi souřadnými systémy popisuje sada funkcí \(p_i\):
+Předpokládejme, že máme prostor \(E_n\), ve kterém máme ne nutně kartézský systém souřadnic s~body určenými souřadnicemi \(P' = [P'_1, P'_2, ..., P'_n]\). Chceme zavést jiný systém souřadnic s~body určenými souřadnicemi \(P = [P_1, P_2, ..., P_n]\). Transformaci mezi souřadnými systémy popisuje sada funkcí \(p_i\):
 
 \begin{equation}
-P_i = p_i(Q_1, Q_2, ..., Q_n)
+P'_i = p'_i(P_1, P_2, ..., P_n)
 \end{equation}
 
 Opačná transformace pak je:
 
 \begin{equation}
-Q_i = q_i(P_1, P_2, ..., P_n)
+P_i = p_i(P'_1, P'_2, ..., P'_n)
 \end{equation}
 
-Povšimněme si, že díky obecné nelinearitě funkcí \(p_i\) a~\(q_i\) nelze se souřadnicemi bodů provádět lineární operace. Například jejich sčítání, odečítání a~násobení konstantou nemá žádný geometrický význam. Proto na rozdíl od kartézského systému souřadnic souřadnice bodů ani jejich rozdíl nejsou vektory. Vektory však můžeme zavést tak, že křivočaré souřadnice linearizujeme - budeme uvažovat nekonečně malé vektory.
+Povšimněme si, že díky obecné nelinearitě funkcí \(p_i\) a~\(p'_i\) nelze se souřadnicemi bodů provádět lineární operace. Například jejich sčítání, odečítání a~násobení konstantou nemá žádný geometrický význam. Proto na rozdíl od kartézského systému souřadnic souřadnice bodů ani jejich rozdíl nejsou vektory. Vektory však můžeme zavést tak, že křivočaré souřadnice linearizujeme - budeme uvažovat nekonečně malé vektory.
 
 Máme-li definován souřadnicový systém, tak můžeme zavést funkci, která každému bodu v~prostoru přiřadí určitou hodnotu. Takovou funkci, jejímž definičním oborem je poloha v~prostoru, nazveme polem. 
 
@@ -576,61 +577,247 @@ Začněme tím nejjednodušším - skalárním polem. Skalár je hodnota nezávi
 Skalár je číselná hodnota invariantní vůči změně souřadnicového systému. Skalární pole je funkce, která každému bodu v~určité oblasti přiřazuje skalární hodnotu.
 \end{fact}
 
-Uvažujme například souřadný systém definovaný transformací na kartézský souřadný systém vztahy:
+Uvažujme funkci \(\varphi\) v~souřadnicích \(P\) a~odpovídající funkci \(\varphi' = \varphi(p_1(P'_1, ..., P'_n), ..., p_n(P'_1, ..., P'_n))\) v~souřadnicích \(P'\). Vyjádřeme první derivaci funkce \(\varphi'\) podle souřadnice \(P'_i\). Obecně platí:
 
 \begin{equation}
 \begin{split}
-x = 2 \cdot r \cdot \cos \alpha \\
-y = 3 \cdot r \cdot \sin \alpha
+\frac{\partial \varphi'}{\partial P'_i} = \frac{\partial}{\partial P'_i} \varphi (p_1(P'_1, ..., P'_n), ..., p_n(P'_1, ..., P'_n)) = \\
+\sum_{j=1}^n \frac{\partial \varphi}{\partial P_j} (p_1(P'_1, ..., P'_n), ..., p_n(P'_1, ..., P'_n)) \cdot \frac{\partial p_j}{\partial P'_i} (P'_1, ..., P'_n) = \\
+\sum_{j=1}^n \frac{\partial \varphi}{\partial P_j} \cdot \frac{\partial P_j}{\partial P'_i}
 \end{split}
 \end{equation}
 
-Opačná transformace je možná vztahy
+Využili jsme pravidlo pro derivování složené funkce \(\frac{\partial}{\partial x} f(g(x, y), h(x, y)) = \frac{\partial f}{\partial G}(g(x, y), h(x, y)) \cdot \frac{\partial g}{\partial x} + \frac{\partial f}{\partial H}(g(x, y), h(x, y)) \cdot \frac{\partial h}{\partial x}\), jen jsme ho zapsali pomocí sumy. Zápisem \(\frac{\partial f}{\partial G}(g(x, y), h(x, y))\) rozumíme derivaci funkce \(f\) podle jejího (prvního) parametru \(G\) vyhodnocená pro parametry \(G = g(x, y)\) a~\(H = h(x, y)\).
 
-\begin{equation}
-\begin{split}
-r = \sqrt{\frac{x^2}{4} + \frac{y^2}{9}} \\
-\alpha = \mathrm{arctg} \frac{2y}{3x}
-\end{split}
-\end{equation}
-
-Dle předchozího zápisu jsou souřadnice \(P = [x, y]\), \(Q = [r, \alpha]\) a~transformační funkce:
-
-\begin{equation}
-\begin{split}
-x = p_1(r, \alpha) = 2 \cdot r \cdot \cos \alpha \\
-y = p_2(r, \alpha) = 3 \cdot r \cdot \sin \alpha \\
-r = q_1(x, y) = \sqrt{\frac{x^2}{4} + \frac{y^2}{9}} \\
-\alpha = q_2(x, y) = \mathrm{arctg} \frac{2y}{3x}
-\end{split}
-\end{equation}
-
-V~našem příkladě mějme skalární funkci \(\varphi(r, \alpha) = r^2 \cdot \sin 2 \alpha\). Dosadíme-li za souřadnice \(r, \alpha\), získáme \(\phi(x, y) = (\frac{x^2}{4} + \frac{y^2}{9}) \cdot \sin \left(2 \cdot \mathrm{arctg} \frac{2y}{3x} \right)\).
-
-Máme tedy funkci \(\varphi\) v~souřadnicích \(Q\) a~funkci \(\phi\) v~souřadnicích \(P\). Vyjádřeme první derivaci funkce \(\phi\) podle souřadnice \(P_i\). Obecně platí:
-
-\begin{equation}
-\begin{split}
-\frac{\partial \phi}{\partial P_i} = \frac{\partial}{\partial P_i} \varphi (q_1(P_1, ..., P_n), ..., q_n(P_1, ..., P_n)) = \\
-\sum_{j=1}^n \frac{\partial \varphi}{\partial Q_j} (q_1(P_1, ..., P_n), ..., q_n(P_1, ..., P_n)) \cdot \frac{\partial q_j}{\partial P_i} (P_1, ..., P_n) = \\
-\sum_{j=1}^n \frac{\partial \varphi}{\partial Q_j} \cdot \frac{\partial Q_j}{\partial P_i}
-\end{split}
-\end{equation}
-
-Máme-li \(n\)-tici čísel \(\vect{u} = (u_1, u_2, ..., u_n) = \left( \frac{\partial \varphi}{\partial Q_1}, \frac{\partial \varphi}{\partial Q_2}, ..., \frac{\partial \varphi}{\partial Q_n} \right)\) v~soustavě souřadnic \(Q\), tak ji do soustavy souřadnic \(P\) transformujeme vztahem:
+Vidíme, že máme-li \(n\)-tici čísel \(\vect{u} = (u_1, u_2, ..., u_n) = \left( \frac{\partial \varphi}{\partial P_1}, \frac{\partial \varphi}{\partial P_2}, ..., \frac{\partial \varphi}{\partial P_n} \right)\) v~soustavě souřadnic \(P\), tak ji do soustavy souřadnic \(P'\) transformujeme vztahem:
 
 \begin{equation}
 \label{eq:kovariantni_vektor}
-v_i = \sum_{j=1}^n \frac{\partial q_j}{\partial P_i} \cdot u_j = \sum_{j=1}^n \frac{\partial Q_j}{\partial P_i} \cdot u_j
+u'_i = \sum_{j=1}^n \frac{\partial p_j}{\partial P'_i} \cdot u_j = \sum_{j=1}^n \frac{\partial P_j}{\partial P'_i} \cdot u_j
 \end{equation}
 
 Každou \(n\)-tici čísel, která se transformuje podle vztahu \eqref{eq:kovariantni_vektor} nazýváme kovariantním vektorem.
 
+Mějme křivku \(P = \Gamma(t)\) v~souřadnicích \(P\), která je v souřadnicích \(P'\) vyjádřena funkcí \(P' = \Gamma'(t) = p'(\Gamma_1(t), ..., \Gamma_n(t))\). Vyjádřeme první derivace souřadnic této křivky podle parametru \(t\):
 
-Uvažujme napřed rozdíl souřadnic dvou nekonečně blízkých bodů.
+\begin{equation}
+\begin{split}
+\frac{\partial \Gamma'_i}{\partial t} = \frac{\partial}{\partial t} p'_i(\Gamma_1(t), ..., \Gamma_n(t)) = \sum_{j=1}^n \frac{\partial p'_i}{P_j} (\Gamma_1(t), ..., \Gamma_n(t)) \cdot \frac{\partial \Gamma_j}{\partial t} = \\
+\sum_{j=1}^n \frac{\partial \Gamma_j}{\partial t} \cdot \frac{\partial P'_i}{\partial P_j}
+\end{split}
+\end{equation}
 
-Ten může vzniknout například tak, že derivujeme souřadnice dráhy podle nezávislé proměnné, například času. Příkladem je tedy rychlost nebo zrychlení.
+Vidíme, že máme-li \(n\)-tici čísel \(\vect{u} = (u_1, u_2, ..., u_n) = \left( \frac{\partial \Gamma_1}{\partial t}, \frac{\partial \Gamma_2}{\partial t}, ..., \frac{\partial \Gamma_n}{\partial t} \right)\) v~soustavě souřadnic \(P\), tak ji do soustavy souřadnic \(P'\) transformujeme vztahem:
 
+\begin{equation}
+\label{eq:kontravariantni_vektor}
+u'^i = \sum_{j=1}^n \frac{\partial p'_i}{\partial P_j} \cdot u^j = \sum_{j=1}^n \frac{\partial P'_i}{\partial P_j} \cdot u^j
+\end{equation}
+
+Každou \(n\)-tici čísel, která se transformuje podle vztahu \eqref{eq:kontravariantni_vektor} nazýváme kontravariantním vektorem. Všimněme si, že u~kontravariantních vektorů se index složky píše nahoře, aby se kontravariantní vektor odlišil od kovariantního. Nejedná se tedy o~umocňování, pokud bychom chtěli zapsat mocninu, pak mocněnec uzavřeme do závorky: \((u)^i\).
+
+V~křivočarých souřadnicích tedy musíme rozlišovat 2 druhy vektorů, protože každý se transformuje jinak. To jsme v~kartézské soustavě souřadnic nemuseli.
+
+Máme-li dva vektory, pak můžeme vytvořit součiny všech možných dvojic složek. Celkem tak získáme \(n^2\) součinů.
+
+Začněme dvěma kovariantními vektory. Máme-li součin \(T_{ij} = u_i \cdot v_j\), pak transformovaný součin bude:
+
+\begin{equation}
+\label{eq:kovariantni_tenzor}
+\begin{split}
+T'_{ij} = u'_i \cdot v'_j = (\sum_{k=1}^n \frac{\partial p_k}{\partial P'_i} \cdot u_k) \cdot (\sum_{l=1}^n \frac{\partial p_l}{\partial P'_j} \cdot v_l) = \\
+\sum_{k=1}^n \sum_{l=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \frac{\partial p_l}{\partial P'_j} \cdot u_k \cdot v_l = \sum_{k=1}^n \sum_{l=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \frac{\partial p_l}{\partial P'_j} \cdot T_{kl}
+\end{split}
+\end{equation}
+
+Součin sum jsme prostě roznásobili. Například \((\sum_{i=1}^3 a_i) \cdot (\sum_{j=1}^3 b_j) = (a_1 + a_2 + a_3) \cdot (b_1 + b_2 + b_3) = a_1 b_1 + a_1 b_2 + a_1 b_3 + a_2 b_1 + a_2 b_2 + a_2 b_3 + a_3 b_1 + a_3 b_2 + a_3 b_3 = \sum_{i=1}^3 \sum_{j=1}^3 a_i b_i\). Každou veličinu \(T_{ij}\), která se transformuje podle vztahu \eqref{eq:kovariantni_tenzor}, nazýváme kovariantním tenzorem druhého řádu.
+
+Máme-li součin dvou kontravariantních vektorů \(T^{ij} = u^i \cdot v^j\), pak transformovaný součin bude:
+
+\begin{equation}
+\label{eq:kontravariantni_tenzor}
+\begin{split}
+T'^{ij} = u'^i \cdot v'^j = (\sum_{k=1}^n \frac{\partial p'_i}{\partial P_k} \cdot u^k) \cdot (\sum_{l=1}^n \frac{\partial p'_j}{\partial P_l} \cdot v^l) = \\
+\sum_{k=1}^n \sum_{l=1}^n \frac{\partial p'_i}{\partial P_k} \cdot \frac{\partial p'_j}{\partial P_l} \cdot u^k \cdot v^l = \sum_{k=1}^n \sum_{l=1}^n \frac{\partial p'_i}{\partial P_k} \cdot \frac{\partial p'_j}{\partial P_k} \cdot T^{kl}\end{split}
+\end{equation}
+
+Každou veličinu \(T^{ij}\), která se transformuje podle vztahu \eqref{eq:kontravariantni_tenzor}, nazýváme kontravariantním tenzorem druhého řádu.
+
+Máme-li součin kovariantního a~kontravariantního \(T_i^j = u_i \cdot v^j\), pak transformovaný součin bude:
+
+\begin{equation}
+\label{eq:smyseny_tenzor}
+\begin{split}
+T'^j_i = u'_i \cdot v'^j = (\sum_{k=1}^n \frac{\partial p_k}{\partial P'_i} \cdot u_k) \cdot (\sum_{l=1}^n \frac{\partial p'_j}{\partial P_l} \cdot v^l) = \\
+\sum_{k=1}^n \sum_{l=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \frac{\partial p'_j}{\partial P_l} \cdot u_k \cdot v^l = \sum_{k=1}^n \sum_{l=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \frac{\partial p'_j}{\partial P_l} \cdot T_k^l
+\end{split}
+\end{equation}
+
+Každou veličinu \(T_i^j\), která se transformuje podle vztahu \eqref{eq:smyseny_tenzor}, nazýváme smýšeným tenzorem druhého řádu.
+
+Vidíme, že se každý index tenzoru transformuje nezávisle na ostatních. To nám umožňuje definovat obecný tenzor:
+
+\begin{fact}
+
+Každou veličinu \(T_{ij...}^{kl...}\), která se transformuje podle vztahu~\eqref{eq:obecny_tenzor}, nazýváme tenzorem.
+
+\begin{equation}
+\label{eq:obecny_tenzor}
+\begin{split}
+T'^{kl...}_{ij...} = \sum_{s=1}^n \sum_{t=1}^n ... \sum_{u=1}^n \sum_{v=1}^n ... \frac{\partial p_s}{\partial P'_i} \cdot \frac{\partial p_t}{\partial P'_j} ... \cdot \frac{\partial p'_k}{\partial P_u} \cdot \frac{\partial p'_l}{\partial P_v} ... \cdot T_{st...}^{uv...} = \\
+\tau_{P}^{P'} (T_{st...}^{uv...})
+\end{split}
+\end{equation}
+
+\end{fact}
+
+Počet indexů určuje řád tenzoru. Tenzor nultého řádu je skalár. Tenzor prvního řádu je kovariantní nebo kontravariantní vektor.
+
+Zavedli jsme označení \(\tau_{P}^{P'}\) pro transformaci tenzoru ze souřadného systému \(P\) do souřadného systému \(P'\). Upozorňuji, že tato transformace není funkce, nepracuje s~jednou složkou tenzoru, ale s~celým tenzorem. Zavedli jsme ji pro zjednodušení zápisu. Povšimněme si, že tato transformace je lineárním tedy:
+
+\begin{equation}
+\label{eq:linearni_transformace_tenzoru}
+\begin{split}
+\alpha \cdot \tau_{P}^{P'}(S_{st...}^{uv...}) + \beta \cdot \tau_{P}^{P'}(T_{st...}^{uv...})) = \tau_{P}^{P'}(\alpha \cdot S_{st...}^{uv...} + \beta \cdot T_{st...}^{uv...})
+\end{split}
+\end{equation}
+
+Prozkoumejme operace, které lze s~tenzory provádět. V~kapitole o~Euklidovském prostoru jsme operace sčítání a~násobení vektorů odvodili geometricky. V~křivočarých souřadnicích však rozdíl souřadnic dvou bodů obecně není vektor, operace s~vektory ani tenzory proto nemůžeme zavést geometricky. Můžeme je však zavést transformací do Euklidovského prostoru.
+
+Víme, že v~Euklidovském prostoru je vztah mezi vektory a~jejich složkami lineární. Tedy že vektor \(\vect{w} = \alpha \cdot \vect{u} + \beta \cdot \vect{v}\) má složky \(w_i = \alpha \cdot u_i + \beta \cdot v_i\). Transformace \(\tau\) je lineární, takže pokud bychom soustavu souřadnic \(P\) zvolili za Euklidovskou, tak i~soustavě souřadnic \(P'\) bude platit lineární vztah mezi vektory a~jeho složkami. Pro skaláry uvedený vztah samozřejmě platí taky. Je tedy celkem přirozené, když linearitu rozšíříme na obecný tenzor:
+
+\begin{equation}
+\label{eq:scitani_a_nasobeni_tenzoru}
+\begin{split}
+U = \alpha \cdot S + \beta \cdot T \Leftrightarrow U_{st...}^{uv...} = \alpha \cdot S_{st...}^{uv...} + \beta \cdot T_{st...}^{uv...}
+\end{split}
+\end{equation}
+
+Sčítat můžeme pouze tenzory stejného druhu, tedy tenzory se stejným počtem kovariantních a~kontravariantních indexů. Násobení tenzorů skalárem a~dříve popsané složkové násobení vektorů můžeme zobecnit na násobení dvou tenzorů. Vytvoříme součiny všech dvojic složek tenzorů:
+
+\begin{equation}
+\label{eq:nasobeni_tenzoru}
+U = S \otimes T \Leftrightarrow U_{st...}^{uv...} = S_{s...}^{u...} \cdot T_{t...}^{v...}
+\end{equation}
+
+Prozkoumejme, jak se bude tento součin transformovat.
+
+\begin{equation}
+\begin{split}
+U'^{kl...}_{ij...} = \tau_{P}^{P'}(S_{s...}^{u...}) \cdot \tau_{P}^{P'}(T_{t...}^{v...}) = \\
+\left( \sum_{s=1}^n ... \sum_{u=1}^n ... \frac{\partial p_s}{\partial P'_i} ... \cdot \frac{\partial p'_k}{\partial P_u} ... \cdot T_{s...}^{u...} \right) \cdot \left( \sum_{t=1}^n ... \sum_{v=1}^n ... \frac{\partial p_t}{\partial P'_j} ... \cdot \frac{\partial p'_l}{\partial P_v} ... \cdot T_{t...}^{v...} \right) = \\
+\sum_{s=1}^n \sum_{t=1}^n ... \sum_{u=1}^n \sum_{v=1}^n ... \frac{\partial p_s}{\partial P'_i} \cdot \frac{\partial p_t}{\partial P'_j} ... \cdot \frac{\partial p'_k}{\partial P_u} \cdot \frac{\partial p'_l}{\partial P_v} ... \cdot T_{s...}^{u...} \cdot T_{t...}^{v...} = \\
+\tau_{P}^{P'}(T_{s...}^{u...} \cdot T_{t...}^{v...})
+\end{split}
+\end{equation}
+
+Vidíme, že se součin tenzorů transformuje jako tenzor a~je tedy tenzorem s~počtem kovariantních indexů rovným součtu počtu kovariantních indexů součinitelů a~s~počtem kontravariantních indexů rovným součtu počtu kontravariantních indexů součinitelů. 
+
+V~Euklidovském prostoru jsme zavedli skalární součin vektorů. Něco obdobného bychom chtěli zavést i~v~křivočarých souřadnicích. Nejdříve však musíme vyjádřit vztah mezi derivacemi souřadnic.
+
+Začněme tím, že vyjádříme reverzibilitu transformace souřadnic. Souřadnice \(P_i\) považujme za závislé na parametru \(t\), \(P\) tedy bude křivka.
+
+\begin{equation}
+p_k(p'_1(P_1(t), ..., P_n(t)), ..., p'_n(P_1(t), ..., P_n(t))) = P_k(t)
+\end{equation}
+
+Zderivujme rovnici podle parametru \(t\):
+
+\begin{equation}
+\label{eq:reverzibilni_derivace}
+\sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \sum_{j=1}^n \frac{\partial p'_i}{\partial P_j} \cdot \frac{\partial P_j}{\partial t} = \frac{\partial P_k}{\partial t}
+\end{equation}
+
+Tato soustava rovnic musí platit pro jakoukoli sadu funkcí \(P_j\), která má definované první derivace. Zvolme tedy jednu konkrétní sadu: \(P_1 = t\), \(P_2, P_3, ..., P_n = 0\) a~vyjádřeme rovnici~\eqref{eq:reverzibilni_derivace} pro \(k = 1\):
+
+\begin{equation}
+\sum_{i=1}^n \frac{\partial p_1}{\partial P'_i} \frac{\partial p'_i}{\partial P_1} = 1
+\end{equation}
+
+Ve vnitřní sumě jsou všechny členy nulové kromě členu \(j = 1\), sumu jsme proto nahradili tímto jedním členem.
+Dále vyjádřeme rovnici~\eqref{eq:reverzibilni_derivace} pro \(k = 2\):
+
+\begin{equation}
+\sum_{i=1}^n \frac{\partial p_2}{\partial P'_i} \frac{\partial p'_i}{\partial P_1} = 0
+\end{equation}
+
+Obdobně budeme postupovat pro ostatní \(k\).
+
+Zvolme dále sadu funkcí: \(P_1 = 0\), \(P_2 = t\), \(P_3, P_4, ..., P_n = 0\) a~vyjádřeme rovnici~\eqref{eq:reverzibilni_derivace} pro \(k = 1\):
+
+\begin{equation}
+\sum_{i=1}^n \frac{\partial p_1}{\partial P'_i} \frac{\partial p'_i}{\partial P_2} = 0
+\end{equation}
+
+Pro \(k = 2\) obdržíme
+
+\begin{equation}
+\sum_{i=1}^n \frac{\partial p_2}{\partial P'_i} \frac{\partial p'_i}{\partial P_2} = 1
+\end{equation}
+
+Vidíme, že obecně pro libovolné \(k\) a~\(j\) musí platit:
+
+\begin{equation}
+\sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \frac{\partial p'_i}{\partial P_j} =
+\begin{cases}
+	1 \text{ pokud } k = j \\
+	0 \text{ pokud } k \neq j
+\end{cases}
+\end{equation}
+
+Celý výpočet si můžeme zjednodušit, pokud zavedeme Kroneckerův symbol delta:
+
+\begin{equation}
+\delta_{ij} =
+\begin{cases}
+	1 \text{ pokud } i = j \\
+	0 \text{ pokud } i \neq j
+\end{cases}
+\end{equation}
+
+Sadu funkcí \(P\) definujeme \(P_j = \delta_{jl} \cdot t\) pro zvolený parametr \(l\). Dosazením do rovnice~\eqref{eq:reverzibilni_derivace} získáme:
+
+\begin{equation}
+\begin{split}
+\sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \sum_{j=1}^n \frac{\partial p'_i}{\partial P_j} \cdot \delta_{jl} = \delta_{kl} \\
+\sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \frac{\partial p'_i}{\partial P_l} = \delta_{kl}
+\end{split}
+\end{equation}
+
+Opět jsme nahradili vnitřní sumu jejím jediným nenulovým prvkem. Nyní můžeme přistoupit k~formulaci zúžení tenzoru. 
+
+\begin{fact}
+Mějme tenzor \(T_{ij...}^{kl...}\) s~libovolným kovariantním indexem \(i\) a~libovolným kontravariantním indexem \(k\). Pak \(S_{j...}^{l...} = \sum_{i=1}^n T_{ij...}^{il...}\) je tenzor.
+\end{fact}
+
+Při zúžení tenzoru tedy vybereme jeden kovariantní a~jeden kontravariantní index a~sečteme složky tenzoru, ve kterých jsou tyto indexy shodné. Získáme tak tenzor o~2 řády nižší.
+
+Dokažme, že získaná veličina je opravdu tenzor tím, že prozkoumáme, jak se transformuje:
+
+\begin{equation}
+\begin{split}
+T'^{kl...}_{ij...} = \tau_P^{P'} (T_{st...}^{uv...}) = \\
+\sum_{s=1}^n \sum_{t=1}^n ... \sum_{u=1}^n \sum_{v=1}^n ... \frac{\partial p_s}{\partial P'_i} \cdot \frac{\partial p_t}{\partial P'_j} ... \cdot \frac{\partial p'_k}{\partial P_u} \cdot \frac{\partial p'_l}{\partial P_v} ... \cdot T_{st...}^{uv...}
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+S_{t...}^{v...} = \sum_{w=1}^n T_{wt...}^{wv...}
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+S'^{l...}_{j...} = \sum_{w=1}^n T'^{wl...}_{wj...} = \\
+\sum_{w=1}^n \sum_{s=1}^n \sum_{t=1}^n ... \sum_{u=1}^n \sum_{v=1}^n ... \frac{\partial p_s}{\partial P'_w} \cdot \frac{\partial p_t}{\partial P'_j} ... \cdot \frac{\partial p'_w}{\partial P_u} \cdot \frac{\partial p'_l}{\partial P_v} ... \cdot T_{st...}^{uv...} = \\
+\sum_{s=1}^n \sum_{t=1}^n ... \sum_{u=1}^n \sum_{v=1}^n ... \frac{\partial p_t}{\partial P'_j} ... \cdot \frac{\partial p'_l}{\partial P_v} ... \cdot T_{st...}^{uv...} \cdot \sum_{w=1}^n \frac{\partial p_s}{\partial P'_w} \cdot \frac{\partial p'_w}{\partial P_u} = \\
+\sum_{s=1}^n \sum_{t=1}^n ... \sum_{u=1}^n \sum_{v=1}^n ... \frac{\partial p_t}{\partial P'_j} ... \cdot \frac{\partial p'_l}{\partial P_v} ... \cdot T_{st...}^{uv...} \cdot \delta_{su} = \\
+\sum_{w=1}^n \sum_{t=1}^n ... \sum_{v=1}^n ... \frac{\partial p_t}{\partial P'_j} ... \cdot \frac{\partial p'_l}{\partial P_v} ... \cdot T_{wt...}^{wv...} = \\
+\sum_{t=1}^n ... \sum_{v=1}^n ... \frac{\partial p_t}{\partial P'_j} ... \cdot \frac{\partial p'_l}{\partial P_v} ... \cdot S_{t...}^{v...} = \\
+\tau_P^{P'} (S_{t...}^{v...})
+\end{split}
+\end{equation}
 
 \section{Základní definice}
 
