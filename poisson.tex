@@ -864,34 +864,34 @@ Vektorovou funkcí (polem) \(\vect{u}(x, y)\) respektive \(\vect{u}(x, y, z)\) r
 
 \section{Křivkový integrál}
 
-Pokud máme orientovanou po částech hladkou křivku v~prostoru definovanou parametricky pomocí rovnice \eqref{eq:krivkovy_integral_krivka} a vektorové pole \(\vect{v}\), pak křivkový integrál definujeme rovnicí \eqref{eq:krivkovy_integral_definice}.
+Pokud máme orientovanou po částech hladkou křivku v~prostoru definovanou parametricky pomocí rovnice \eqref{eq:krivkovy_integral_krivka} a~kovariantní vektorové pole \(\kovarvect{v}\), pak křivkový integrál definujeme rovnicí \eqref{eq:krivkovy_integral_definice}.
 
 \begin{equation}
 \label{eq:krivkovy_integral_krivka}
-\Gamma = (\Gamma_x(t), \Gamma_y(t), \Gamma_z(t)), t \in <t_1, t_2>
+\Gamma = (\Gamma^1(t), \Gamma^2(t), ..., \Gamma^n(t)), t \in <t_1, t_2>
 \end{equation}
 
 \begin{equation}
 \label{eq:krivkovy_integral_definice}
 \begin{split}
-\int_\Gamma \vect{v} \cdot d\vect{l}
+\int_\Gamma \kovarvect{v} \cdot d\kontravect{l}
 \end{split}
 \end{equation}
 
-Protože \(\frac{d\vect{l}}{dt} = \left(\frac{d \Gamma_x}{dt}, \frac{d \Gamma_y}{dt}, \frac{d \Gamma_z}{dt} \right)\), tak pro parametrickou křivku
+Protože \(\frac{d\kontravect{l}}{dt} = \left(\frac{d \Gamma^1}{dt}, \frac{d \Gamma^2}{dt}, ..., \frac{d \Gamma^n}{dt} \right)\), tak pro parametrickou křivku
 \(\Gamma\) platí vztah \eqref{eq:krivkovy_integral_vypocet}.
 
 \begin{equation}
 \label{eq:krivkovy_integral_vypocet}
 \begin{split}
-\int_\Gamma \vect{v} \cdot d\vect{l} =
-\int_{t_1}^{t_2} \left(v_x(\Gamma(t)) \cdot \frac{d \Gamma_x}{dt} + v_y(\Gamma(t)) \cdot \frac{d \Gamma_y}{dt} + v_z(\Gamma(t)) \cdot \frac{d \Gamma_z}{dt} \right) dt
+\int_\Gamma \kovarvect{v} \cdot d\kontravect{l} =
+\int_{t_1}^{t_2} \left(\sum_{i=1}^n v_i(\Gamma(t)) \cdot \frac{d \Gamma^i}{dt} \right) dt
 \end{split}
 \end{equation}
 
-Obdobně je definován křivkový integrál v rovině, pouze vynecháme souřadnici \(z\).
+Vidíme, proč vektorové pole \(\kovarvect{v}\) musí být kovariantní. Protože diferenciály souřadnic křivky tvoří kontravariantní vektor, tak pole \(\kovarvect{v}\) musí být kovariantní, aby jejich skalární součin byl invariantní vůči změně soustavy souřadnic. Křivkový integrál je proto také invariantní vůči změně soustavy souřadnic.
 
-Je-li křivka uzavřená (její počáteční a koncový bod jsou shodné), toto zdůrazníme kroužkem přes symbol integrálu, tedy \(\oint_\Gamma \vect{v} \cdot d\vect{l}\), a říkáme mu cirkulace vektoru po uzavřené smyčce.
+Je-li křivka uzavřená (její počáteční a koncový bod jsou shodné), toto zdůrazníme kroužkem přes symbol integrálu, tedy \(\oint_\Gamma \kovarvect{v} \cdot d\kontravect{l}\), a říkáme mu cirkulace vektoru po uzavřené smyčce.
 
 Z definice \eqref{eq:krivkovy_integral_definice} plyne, že integrujeme skalární součin hodnoty pole \(v\) a elementu dráhy \(dl\),
 tedy součin průmětu pole do dráhy a elementu dráhy. Křivkový integrál proto lze použít pro výpočet práce, energie a podobně.
@@ -928,21 +928,21 @@ Nyní vyšetřeme vlastnosti křivkového integrálu. Rovnice \eqref{eq:krivkovy
 \begin{equation}
 \label{eq:krivkovy_integral_linearita}
 \begin{split}
-\int_{\Gamma} \left(\alpha \vect{u} + \beta \vect{v}\right) \cdot d\vect{l} = \alpha \int_{\Gamma} \vect{u} \cdot d\vect{l} + \beta \int_{\Gamma} \vect{v} \cdot d\vect{l}
+\int_{\Gamma} \left(\alpha \kovarvect{u} + \beta \kovarvect{v}\right) \cdot d\kontravect{l} = \alpha \int_{\Gamma} \kovarvect{u} \cdot d\kontravect{l} + \beta \int_{\Gamma} \kovarvect{v} \cdot d\kontravect{l}
 \end{split}
 \end{equation}
 
 \begin{equation}
 \label{eq:krivkovy_integral_opacny}
 \begin{split}
-\int_{-\Gamma} \vect{v} \cdot d\vect{l} = -\int_{\Gamma} \vect{v} \cdot d\vect{l}
+\int_{-\Gamma} \kovarvect{v} \cdot d\kontravect{l} = -\int_{\Gamma} \kovarvect{v} \cdot d\kontravect{l}
 \end{split}
 \end{equation}
 
 \begin{equation}
 \label{eq:krivkovy_integral_soucet}
 \begin{split}
-\int_{\Gamma_1 + \Gamma_2} \vect{v} \cdot d\vect{l} = \int_{\Gamma_1} \vect{v} \cdot d\vect{l} + \int_{\Gamma_2} \vect{v} \cdot d\vect{l}
+\int_{\Gamma_1 + \Gamma_2} \kovarvect{v} \cdot d\kontravect{l} = \int_{\Gamma_1} \kovarvect{v} \cdot d\kontravect{l} + \int_{\Gamma_2} \kovarvect{v} \cdot d\kontravect{l}
 \end{split}
 \end{equation}
 
@@ -984,7 +984,7 @@ Přepážka je tvořena dvěma opačně orientovanými částmi křivky, které 
 \begin{equation}
 \label{eq:deleni_cirkulace}
 \begin{split}
-\oint_{\Gamma_S} \vect{v} \cdot d\vect{l} = \oint_{\Gamma_1} \vect{v} \cdot d\vect{l} + \oint_{\Gamma_2} \vect{v} \cdot d\vect{l}
+\oint_{\Gamma_S} \kovarvect{v} \cdot d\kontravect{l} = \oint_{\Gamma_1} \kovarvect{v} \cdot d\kontravect{l} + \oint_{\Gamma_2} \kovarvect{v} \cdot d\kontravect{l}
 \end{split}
 \end{equation}
 
