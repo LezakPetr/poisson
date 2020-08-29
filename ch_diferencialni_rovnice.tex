@@ -1,0 +1,62 @@
+\chapter{Diferenciální rovnice}
+
+Diferenciální rovnicí \(n\)-tého řádu v \(k\)-rozměrném prostoru rozumíme rovnici \eqref{eq:definice_diferencialni_rovnice}. Je-li \(k = 1\), pak rovnici
+\eqref{eq:definice_diferencialni_rovnice} nazýváme obyčejnou diferenciální rovnicí. Je-li \(k > 1\), pak rovnici \eqref{eq:definice_diferencialni_rovnice}
+nazýváme parciální diferenciální rovnicí. Obyčejná diferenciální rovnice je definována na přímce, parciální diferenciální rovnice v rovině nebo prostoru.
+Řešením diferenciální rovnice je funkce \(y(x_1, x_2, ..., x_k)\), která vyhovuje rovnici \eqref{eq:definice_diferencialni_rovnice}.
+
+\begin{equation}
+\label{eq:definice_diferencialni_rovnice}
+\begin{split}
+g(x_1, x_2, ..., x_k, y, \frac{\partial y}{x_1}, \frac{\partial y}{x_2}, ..., \frac{\partial y}{x_k}, \frac{\partial^2 y}{x_1^2}, \frac{\partial^2 y}{x_1 x_2}, ..., \frac{\partial^n y}{x_k^n}) = 0
+\end{split}
+\end{equation}
+
+\section{Lineární diferenciální rovnice}
+
+Vystupují-li derivace a hodnota funkce \(y\) pouze v lineární kombinaci, pak takovouto diferenciální rovnici nazýváme lineární. Obecný zápis lineární
+diferenciální rovnice \(n\)-tého řádu v \(k\)-rozměrném prostoru je \eqref{eq:definice_linearni_diferencialni_rovnice};
+
+\begin{equation}
+\label{eq:definice_linearni_diferencialni_rovnice}
+\begin{split}
+\sum_{i_1=0}^n \sum_{i_2=0}^n ... \sum_{i_k=0}^n g_{i_1, i_2, ..., i_k} (x_1, x_2, ..., x_k) \cdot \frac{\partial^{i_1 + i_2 + ... + i_k} y}{\partial x_1^{i_1} \cdot x_2^{i_2} \cdot ... \cdot x_k^{i_k}} = f(x_1, x_2, ..., x_k)
+\end{split}
+\end{equation}
+
+Pokud je funkce \(f\) nulová, pak rovnici \eqref{eq:definice_linearni_diferencialni_rovnice} nazýváme homogenní, v opačném případě nehomogenní.
+
+Mějme nyní 2 řešení \(y_1\) a \(y_2\) stejné nehomogenní rovnice \eqref{eq:definice_linearni_diferencialni_rovnice}. Vyšetřeme, jaké vlastnosti má jejich
+rozdíl \(y_2 - y_1\). Řešení tedy vyhovují rovnicím \eqref{eq:linearni_diferencialni_rovnice_rozdil_1}. Odečteme-li tyto rovnice, získáme
+rovnici \eqref{eq:linearni_diferencialni_rovnice_rozdil_2}. Spojíme-li sumy, získáme rovnici \eqref{eq:linearni_diferencialni_rovnice_rozdil_3}.
+Vidíme tedy, že rozdíl \(y_2 - y_1\) vyhovuje odpovídající homogenní rovnici - původní rovnici \label{eq:definice_linearni_diferencialni_rovnice} s nulovou
+funkcí \(f\).
+
+\begin{equation}
+\label{eq:linearni_diferencialni_rovnice_rozdil_1}
+\begin{split}
+\sum_{i_1=0}^n \sum_{i_2=0}^n ... \sum_{i_k=0}^n g_{i_1, i_2, ..., i_k} (x_1, x_2, ..., x_k) \cdot \frac{\partial^{i_1 + i_2 + ... + i_k} y_1}{\partial x_1^{i_1} \cdot x_2^{i_2} \cdot ... \cdot x_k^{i_k}} = f(x_1, x_2, ..., x_k) \\
+\sum_{i_1=0}^n \sum_{i_2=0}^n ... \sum_{i_k=0}^n g_{i_1, i_2, ..., i_k} (x_1, x_2, ..., x_k) \cdot \frac{\partial^{i_1 + i_2 + ... + i_k} y_2}{\partial x_1^{i_1} \cdot x_2^{i_2} \cdot ... \cdot x_k^{i_k}} = f(x_1, x_2, ..., x_k)
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:linearni_diferencialni_rovnice_rozdil_2}
+\begin{split}
+\sum_{i_1=0}^n \sum_{i_2=0}^n ... \sum_{i_k=0}^n g_{i_1, i_2, ..., i_k} (x_1, x_2, ..., x_k) \cdot \frac{\partial^{i_1 + i_2 + ... + i_k} y_2}{\partial x_1^{i_1} \cdot x_2^{i_2} \cdot ... \cdot x_k^{i_k}} - \\
+\sum_{i_1=0}^n \sum_{i_2=0}^n ... \sum_{i_k=0}^n g_{i_1, i_2, ..., i_k} (x_1, x_2, ..., x_k) \cdot \frac{\partial^{i_1 + i_2 + ... + i_k} y_1}{\partial x_1^{i_1} \cdot x_2^{i_2} \cdot ... \cdot x_k^{i_k}} = 0
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:linearni_diferencialni_rovnice_rozdil_3}
+\begin{split}
+\sum_{i_1=0}^n \sum_{i_2=0}^n ... \sum_{i_k=0}^n g_{i_1, i_2, ..., i_k} (x_1, x_2, ..., x_k) \cdot \frac{\partial^{i_1 + i_2 + ... + i_k} (y_2 - y_1)}{\partial x_1^{i_1} \cdot x_2^{i_2} \cdot ... \cdot x_k^{i_k}} = 0
+\end{split}
+\end{equation}
+
+\begin{fact}
+Jakékoli řešení nehomogenní lineární diferenciální rovnice můžeme získat tak, že vezmeme jedno libovolné řešení této rovnice
+a přičteme k němu vhodné řešení odpovídající homogenní rovnice.
+\end{fact}
+

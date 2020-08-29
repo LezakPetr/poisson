@@ -1,0 +1,281 @@
+\chapter{Řešení Poissonovy rovnice na přímce}
+
+Nejdříve si ukážeme, jak lze řešit Poissonovu rovnici na přímce. Tu dokážeme řešit analyticky, a ukážeme si, jak bude řešení probíhat.
+Začněme tím, jak bude vypadat řešení rovnice.
+
+Poissonovu rovnici můžeme zapsat ve tvaru \eqref{eq:reseni_primka_1a} a \eqref{eq:reseni_primka_1b}. V podstatě jsme jen zavedli označení pro první derivaci potenciálu.
+
+\begin{equation}
+\label{eq:reseni_primka_1a}
+\frac{\mathrm{d} \Phi}{\mathrm{d} x} = f(x) \\
+\end{equation}
+
+\begin{equation}
+\label{eq:reseni_primka_1b}
+\frac{\mathrm{d} \varphi}{\mathrm{d} x} = \Phi(x)
+\end{equation}
+
+
+Pokud budeme integrovat rovnici \eqref{eq:reseni_primka_1a} od \(0\) do \(t\), získáme rovnici \eqref{eq:reseni_primka_2}, přesunutím členu pak rovnici \eqref{eq:reseni_primka_3}.
+
+\begin{equation}
+\label{eq:reseni_primka_2}
+\Phi(t) - \Phi(0) = \int_0^t f(x) \mathrm{d}x
+\end{equation}
+
+\begin{equation}
+\label{eq:reseni_primka_3}
+\Phi(t) = \Phi(0) + \int_0^t f(x) \mathrm{d}x
+\end{equation}
+
+Integrováním rovnice \eqref{eq:reseni_primka_1b} od \(0\) do \(s\) \eqref{eq:reseni_primka_3} získáme rovnici \eqref{eq:reseni_primka_4}.
+
+\begin{equation}
+\label{eq:reseni_primka_4}
+\varphi(x) - \varphi(0) = \int_0^x \Phi(s) \mathrm{d}s
+\end{equation}
+
+Nyní do rovnice \eqref{eq:reseni_primka_4} dosadíme rovnici \eqref{eq:reseni_primka_3} a získáme rovnici \eqref{eq:reseni_primka_5}. Z ní pak vyjádříme
+\(\varphi(x)\) a získáme rovnici \eqref{eq:reseni_primka_6}.
+
+\begin{equation}
+\label{eq:reseni_primka_5}
+\varphi(x) - \varphi(0) = \int_0^x \left( \Phi(0) + \int_0^s f(t) \mathrm{d}t \right) \mathrm{d}s = x \cdot \Phi(0) + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s
+\end{equation}
+
+\begin{equation}
+\label{eq:reseni_primka_6}
+\varphi(x) = \varphi(0) + x \cdot \Phi(0) + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s
+\end{equation}
+
+V této rovnici vystupují 2 parametry - potenciál na počátku \(\varphi(0)\) a derivace potenciálu na počátku \(\Phi(0)\). Rovnice \eqref{eq:reseni_primka_6} tak umožňuje
+řešit Poissonovu rovnici s podmínkami, že potenciál na počátku nabývá hodnoty \(\varphi(0)\) a jeho první derivace hodnoty \(\Phi(0)\). Tyto podmínky nazýváme Cauchyovskými počátečními podmínkami.
+
+Uvažujme nyní řešení na intervalu (0, \(L\)). Do rovnice \eqref{eq:reseni_primka_6} můžeme dosadit \(t = L\) a vyjádřit \(\Phi(0)\).
+Získáme tak rovnici \eqref{eq:reseni_primka_7}.
+
+\begin{equation}
+\label{eq:reseni_primka_7}
+\Phi(0) = \frac{\varphi(L) - \varphi(0) - \int_0^L \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s}{L}
+\end{equation}
+
+Dosadíme-li ji do rovnice \eqref{eq:reseni_primka_6} získáme rovnici \eqref{eq:reseni_primka_8}.
+
+\begin{equation}
+\label{eq:reseni_primka_8}
+\varphi(x) = \varphi(0) + \frac{x}{L} \left( \varphi(L) - \varphi(0) - \int_0^L \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s \right) + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s
+\end{equation}
+
+V rovnici \eqref{eq:reseni_primka_8} vystupují parametry \(\varphi(0)\) a \(\varphi(L)\), tedy potenciál na počátku a na konci intervalu. Rovnice \eqref{eq:reseni_primka_8} tak umožňuje
+řešit Poissonovu rovnici s podmínkami, že potenciál na počátku intervalu nabývá hodnoty \(\varphi(0)\) a na konci intervalu hodnoty \(\varphi(L)\). Takovéto podmínky, které ohraničují sledovanou oblast, nazýváme okrajovými.
+Okrajovou podmínku, která určuje hodnotu potenciálu, nazýváme Dirichletovu, rovnice \eqref{eq:reseni_primka_8} je proto řešení Poissonovy rovnice se dvěma Dirichletovými podmínkami.
+
+Rovnice \eqref{eq:reseni_primka_8} nám umožňuje vypočítat řešení na intervalu \(x \in < 0; L >\). Proto všechny integrály v rovnici \eqref{eq:reseni_primka_8} budou probíhat uvnitř tohoto intervalu, není tak potřeba
+znát \(f\) mimo interval. To platí obecně - pro řešení parciálních diferenciálních rovnic v utčité oblasti musíme znát zdroje v této oblasti a okrajové podmínky po kraji uvažované oblasti. Případné zdroje
+mimo oblast jsou už "započítány" v okrajových podmínkách.
+
+Dále můžeme upravit rovnici \eqref{eq:reseni_primka_2} tak, že dosadíme \(t = L\) a vyjádříme \(\Phi(0)\). Získáme tak rovnici \eqref{eq:reseni_primka_9}.
+
+\begin{equation}
+\label{eq:reseni_primka_9}
+\Phi(0) = \Phi(L) - \int_0^L f(x) \mathrm{d}x
+\end{equation}
+
+Dosadíme-li ji do rovnice \eqref{eq:reseni_primka_6} získáme rovnici \eqref{eq:reseni_primka_10}.
+
+\begin{equation}
+\label{eq:reseni_primka_10}
+\begin{split}
+\varphi(x) = \varphi(0) + x \cdot \left( \Phi(L) - \int_0^L f(x) \mathrm{d}x \right) + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s = \\
+\varphi(0) + x \cdot \Phi(L) - x \cdot \int_0^L f(x) \mathrm{d}x + \int_0^x \int_0^s f(t) \ \mathrm{d}t \ \mathrm{d}s
+\end{split}
+\end{equation}
+
+V rovnici \eqref{eq:reseni_primka_10} vystupují parametry \(\varphi(0)\) a \(\Phi(L)\), tedy potenciál na počátku a derivace potenciálu na konci intervalu. Rovnice \eqref{eq:reseni_primka_10} tak umožňuje
+řešit Poissonovu rovnici s podmínkami, že potenciál na počátku intervalu nabývá hodnoty \(\varphi(0)\) a jeho první derivace na konci intervalu hodnoty \(\Phi(L)\).
+Okrajovou podmínku, která určuje první derivaci potenciálu, nazýváme Neumannovou.
+
+Mohli bychom i řešit rovnici, kde na počátku intervalu bude zadaná Neumannova podmínka a na konci Dirichletova podmínka. Tuto možnost zde nebudeme rozebírat, stačí totiž otočit zadání a použít rovnici \eqref{eq:reseni_primka_10}.
+Dále by nás mohlo napadnout řešit rovnici se dvěma Neumannovými podmínkami. Podle rovnice \eqref{eq:reseni_primka_9} však tyto podmínky nebudou nezávislé, ve skutečnosti budeme mít pouze jednu Neumannovu podmínku a ta nám neurčí
+potenciál \(\varphi\) jednoznačně. Bude-li totiž \(\varphi\) řešením Poissonovy rovnice, pak i \(\varphi + C\) bude jejím řešením. Potřebujeme proto určit hodnotu potenciálu alespoň v jednom budě - potřebujeme alespoň
+jednu Dirichletovu okrajovou podmínku.
+
+\subsection{Příklad}
+\label{sec:priklad_chladic_pasek}
+
+Dva tranzistory jsou umístěny na hliníkový pásek o rozměrech 8cm x 1.5cm x 3mm. Konce pásku jsou připevněny
+na chladič, který má pokojovou teplotu 20\si{\degree}C. Každý tranzistor produkuje ztrátový výkon \(P_T = 10\mathrm{W}\) o kterém předpokládáme,
+že je rovnoměrně rozložen na celé jejich šířce 1cm. Tranzistory jsou od sebe a od okraje pásku vzdáleny 2cm.
+Tepelná vodivost hliníku je \(\lambda = 237 W m^{-1} K^{-1}\). Na jakou teplotu se tranzistory zahřejí?
+
+Pásek má průřez \(S = 1.5 \cdot 10^{-2} \cdot 3 \cdot 10^{-3} = 4.5 \cdot 10^-5 \mathrm{m^2}\).
+
+Máme-li na pásku dva průřezy ve vzdálenosti \(\mathrm{d}x\) s teplotním rozdílem \(\mathrm{d}T\), pak mezi nimi bude proudit
+tepelný tok \(P = -\lambda S \frac{\mathrm{d}t}{\mathrm{d}x}\). Záporné znaménko značí, že směr proudu tepla je opačný než směr růstu
+teploty - teplo proudí z místa s vyšší teplotou do místa s nižší teplotou.
+
+Zároveň platí zákon zachování energie, v tomto případě zákon zachování tepla. Máme-li úsek pásku o délce \(L\), pak
+v ustáleném stavu musí být celkový tepelný tok tímto úsekem nulový, jinak by se úsek zahříval nebo ochlazoval.
+Tepelný tok do pásku vstupuje jednak přes jeho krajní průřezy od okolních částí pásku, jednak tepelný tok \(p_T(x)\) od tranzistorů.
+
+Zapsáno matematicky \(P_{x+L} - P_{x} = \int_{x}^{x+L} p_T dt\). Derivováním tohoto vztahu podle \(x\) získáme vztah
+\(\frac{\mathrm{d}P}{\mathrm{d}x} = p_T\) platný pro každý bod pásku.
+
+Spojením výše uvedených vztahů získáme vztah \(p_T = -\lambda S \frac{\mathrm{d}^2 t}{\mathrm{d}x^2}\), neboli \(\frac{\mathrm{d}^2 t}{\mathrm{d}x^2} = -\frac{p_T}{\lambda S}\). Do je Poissonova rovnice s Dirichletovými okrajovými podmínkami. Obrázek \ref{img:pasek_vykon} ukazuje průběh tepelného toku
+od tranzistorů. Řešení rovnice je na obrázku \ref{img:pasek_teplota}. Maximální teplota pásku je 43.4\si{\degree}C, tranzistory mohou mít teplotu vyšší
+kvůli tepelnému odporu mezi nimi a páskem.
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{examples/chladic_pasek_1.png}
+	\caption{Ztrátový výkon}
+	\label{img:pasek_vykon}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{examples/chladic_pasek_2.png}
+	\caption{Teplota pásku}
+	\label{img:pasek_teplota}
+\end{figure}
+
+\subsection{Řešení integrací zdrojů}
+
+Výše uvedený postup řešil Poissonovu rovnici na přímce jako obyčejnou diferenciální rovnici. Jeho výsledkem je jednoduché analytické řešení. Tento postup bohužel nelze zobecnit na více rozměrů. Proto si nyní ukážeme 
+jiný způsob jak Poissonovu rovnici na přímce řešit. Tento postup půjde do určité míry zobecnit do více rozměrů.
+
+Začněme určením potenciálu násobku Diracova pulsu. Mějme zdroj \(f\) definaný tak, že je nenulový pouze nekonečně blízko počátku \(x = 0\), a \(\int_{-\infty}^{+\infty} f(x) dx = F\). Integrováním rovnice
+\eqref{eq:reseni_primka_1a} od \(-t\) do \(t\) získáme rovnici \eqref{eq:reseni_primka_bodove_1}. Využíváme přitom faktu, že pro \(t > 0\) interval \(<-t; t>\) obsahuje celý zdroj \(F\).
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_1}
+\Phi(t) - \Phi(-t) = \int_{-t}^{t} f(x) dx = F
+\end{equation}
+
+Pokud je zdroj symetrický, což můžeme u nekonečně tenkého pulsu předpokládat, pak musí být symetrický i potenciál. Proto můžeme předpokládat \(\Phi(-t) = -\Phi(t)\). Získáme tak rovnici
+\eqref{eq:reseni_primka_bodove_2}. Jejím integrováním získáme rovici \eqref{eq:reseni_primka_bodove_3}.
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_2}
+\frac{\mathrm{d} \varphi}{\mathrm{d} x} = \Phi(t) = \frac{F}{2}
+\end{equation}
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_3}
+\varphi(x) = \int \frac{F}{2} dx = \frac{F}{2} x + C
+\end{equation}
+
+Rovnice \eqref{eq:reseni_primka_bodove_3} platí pro \(x >= 0\). Potenciál musí být symetrický, proto integrační konstantu zvolíme \(C = 0\) a symetričnost zajistíme použitím absolutní hodnoty. Potenciál
+\(F\)-násobku Diracova pulsu je proto určen rovnicí \eqref{eq:reseni_primka_bodove_4}.
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_4}
+\varphi(x) = \frac{F}{2} | x |
+\end{equation}
+
+Obecné rozložení můžeme chápat jako sérii posunutých násobků Diracových pulsů. Příspěvek od jendoho elementárního zdroje proto určuje rovnice \eqref{eq:reseni_primka_bodove_5}, její integrací získáme
+rovnici \eqref{eq:reseni_primka_bodove_6}, která představuje řešení Poissonovy rovnice na přímce bez okrajových podmínek. Toto řešení není určeno jednoznačně - můžeme k němu přičíst libovolnou
+funkci s nulovou druhou derivací a získáme jiné řešení rovnice.
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_5}
+d \varphi = \frac{f(t)}{2} | x - t| dt
+\end{equation}
+
+\begin{equation}
+\label{eq:reseni_primka_bodove_6}
+\varphi(x) = \frac{1}{2} \int_{-\infty}^{+\infty} f(t) | x - t| dt
+\end{equation}
+
+\section{Řešení Laplaceovy rovnice na úsečce}
+
+Připomeňme si, že Laplaceova rovnice je Poissonova rovnice bez zdrojů. Na přímce je její rovnice \eqref{eq:laplace_primka_1}. Vidíme, že jejím řešením je jakákoli funkce s nulovou druhou derivací,
+tedy lineární funkce. Laplaceovu rovnici proto nemá smysl řešit bez okrajových podmínek, jakákoli lineární funkce by jí vyhověla.
+Obecně tedy bude řešení Laplaceovy rovnice vypadat podle vztahu \eqref{eq:laplace_primka_2}. Řešení (přímku) jsme zapsali jako lineární kombinaci
+funkcí, které vyhovují Laplaceově rovnici. Zde máme takové funkce 2 - \(1 - \frac{x}{L}\) a \(\frac{x}{L}\). Funkce byli zvoleny tak, že nabývají
+hodnoty 0 na jednom kraji intervalu a 1 na druhém. To nicméně není nutné, usnadní nám to ale řešení soustavy rovnic.
+
+\begin{equation}
+\label{eq:laplace_primka_1}
+\frac{\mathrm{d}^2 \varphi}{\mathrm{d}x^2} = 0
+\end{equation}
+
+\begin{equation}
+\label{eq:laplace_primka_2}
+\varphi = a (1 - \frac{x}{L}) + b \frac{x}{L}
+\end{equation}
+
+Chceme-li řešit Laplaceovu rovnici na intervalu \(<0; L>\) s Dirichletovými nebo Neumannovými okrajovými podmínkami, musíme najít lineární funkci,
+která bude okrajovým podmínkám vyhovovat. Abychom sjednotili Direchletovy a Neumannovy podmínky sjednotili, tak zavedeme lineární
+okrajovou podmínku \eqref{eq:linearni_podminka}. Rozepíšeme-li ji na oba okraje úsečky, tak získáme soustavu rovnic \eqref{eq:linearni_podminka_2}.
+V první rovnici jsme ještě otočili znaménko u Neumannovy podmínky, aby význam byla derivace směrem ven z intervalu.
+Vyjádřením hodnot a derivací z rovnice \eqref{eq:laplace_primka_2} a dosazením získáme rovnici \eqref{eq:linearni_podminka_3}. Zavedli jsme při tom
+označení \(n_0 = \frac{N_0}{L}\) a \(n_L = \frac{N_L}{L}\).
+To je soustava 2 rovnic o 2 neznámých která má řešení \eqref{eq:linearni_podminka_4}.
+
+\begin{equation}
+\label{eq:linearni_podminka}
+D \cdot \varphi + N \cdot \varphi' = H
+\end{equation}
+
+\begin{equation}
+\label{eq:linearni_podminka_2}
+\begin{split}
+D_0 \cdot \varphi(0) - N_0 \cdot \varphi'(0) = H_0 \\
+D_L \cdot \varphi(L) + N_L \cdot \varphi'(L) = H_L
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:linearni_podminka_3}
+\begin{split}
+D_0 \cdot a + n_0 \cdot (b - a) = H_0 \\
+D_L \cdot b + n_L \cdot (b - a) = H_L
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:linearni_podminka_4}
+\begin{split}
+a = \frac{H_0 D_L + H_L n_0 + H_0 n_l}{D_0 D_L + n_0 D_L + D_0 n_L} \\
+b = \frac{H_L D_0 + H_L n_0 + H_0 n_l}{D_0 D_L + n_0 D_L + D_0 n_L}
+\end{split}
+\end{equation}
+
+\begin{fact}
+Díky linearitě Laplaceovy rovnice můžeme řešení zapsat jako lineární kombinaci funkcí, které rovnici vyhovují, a hledat
+koeficienty této lineární kombinace.
+\end{fact}
+
+\section{Řešení Poissonovy rovnice na úsečce}
+
+Shrňme si fakta o Poissonově a Laplaceově rovnici na přímce. Metodou zdrojů umíme řešit Poissonovu rovnici bez okrajových podmínek. Její řešení
+zůstává v platnosti pokud k němu přičteme lineární funkci. Řešením Laplaceovy rovnice je lineární funkce.
+
+Z toho nám vyplývá následující postup řešení Poissonovy rovnice na úsečce:
+
+\begin{itemize}
+\item Vyřešíme Poissonovu rovnici na celé přímce bez okrajových podmínek. Můžeme (ale nemusíme) při tom ignorovat zdroje mimo interval \(<0; L>\).
+Označme toto řešení \(\varphi_P\).
+
+\item Upravíme okrajové podmínky tak, že zohledníme příspěvek od \(\varphi_P\).
+
+\item Vyřešíme Laplaceovu rovnici pro upravené okrajové podmínky. Označme její řešení \(\varphi_L\).
+
+\item Řešením Poissonovy rovnice na intervalu \(<0; L>\) je \(\varphi = \varphi_P + \varphi_L\).
+\end{itemize}
+
+\subsection{Příklad}
+
+Vyřešme příklad \eqref{sec:priklad_chladic_pasek} metodou integrace zdrojů. Při jeho řešení jsme odvodili rovnici \(\frac{\mathrm{d}^2 t}{\mathrm{d}x^2} = -\frac{p_T}{\lambda S}\). Funkce \(f(x) = -\frac{p_T(x)}{\lambda S}\) je po částech lineární funkce.
+Řešení Poissonovy rovnice je \(\varphi_P(x) = \frac{1}{2} \int_{-\infty}^{+\infty} f(s) | x - s| ds\). Integrál můžeme rozepsat na součet dvou integrálů
+a zbavit se tak absolutní hodnoty. Získáme tak řešení \(\varphi_P(x) = \frac{1}{2} \left(\int_{-\infty}^{x} f(s) (x - s) ds - \int_{x}^{+\infty} f(s) (x - s) ds \right)\). Pokud je funkce \(f\) dostatečně jednoduchá, tak můžeme tento integrál vypočítat analyticky. 
+
+Je-li funkce \(f\) po částech lineární funkce, tedy funkce, která v bodech \(s_i\) nabývá hodnoty \(y_i\) a mezi sousedními body je lineární, tak můžeme
+integrál přepsat na součet integrálů lineárních úseků \(\int_{s_1}^{s_n} f(s) (x - s) ds = \sum_{i=1}^{n-1} \int_{s_i}^{s_i} f(s) (x - s) ds\).
+Integrál přes jeden úsek můžeme vyjádřit \(\int_{s_i}^{s_i} f(s) (x - s) ds = (s_{i+1} - s_i) \cdot \left(\frac{1}{2} \cdot (x - s_i) \cdot (y_{i+1} + y_i) - (s_{i+1} - s_i) \cdot (\frac{y_{i+1}}{3} + \frac{y_{i}}{6} \right)\). Odvození nechám na čtenáři.
+
+\begin{figure}
+	\includegraphics[width=\linewidth]{examples/chladic_pasek_integrace_zdroju_1.png}
+	\caption{Řešení bez okrajových podmínek}
+	\label{img:pasek_integrace_zdroju_1}
+\end{figure}
+

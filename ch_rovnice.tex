@@ -1,0 +1,63 @@
+\chapter{Rovnice}
+
+Poissonova parciální diferenciální rovnice má velké využití v technické praxi, protože pomocí ní lze modelovat mnoho důležitých jevů.
+Rovnici lze zapsat ve více různých ekvivalentních tvarech zapsaných v~\eqref{eq:poissonova_rovnice_definice}. V~kartézské soustavě souřadnic na přímce má rovnice tvar \eqref{eq:poissonova_rovnice_primka}, v~rovině
+\eqref{eq:poissonova_rovnice_rovina} a~v~prostoru \eqref{eq:poissonova_rovnice_prostor}. Tyto tvary rovnic nazýváme diferenciální.
+
+\begin{equation}
+\label{eq:poissonova_rovnice_definice}
+\begin{split}
+\Delta \varphi = f \\
+\diverg \ \grad \ \varphi = f
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:poissonova_rovnice_primka}
+\frac{\partial^2 \varphi}{\partial x^2} = f
+\end{equation}
+
+\begin{equation}
+\label{eq:poissonova_rovnice_rovina}
+\frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} = f
+\end{equation}
+
+\begin{equation}
+\label{eq:poissonova_rovnice_prostor}
+\frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} + \frac{\partial^2 \varphi}{\partial z^2} = f
+\end{equation}
+
+Rovnici by samozřejmě bylo možné zobecnit i~do vícerozměrných prostorů, my se však v dalším výkladu zaměříme pouze na nejvýše tři rozměry.
+Zde \(\varphi\) je skalární potenciál. Skalární pole \(f\) je pole zdrojů, někdy též nazývané buzení.
+
+Poissonovu rovnici lze také zapsat v~integrálním tvaru. Rovnici \eqref{eq:poissonova_rovnice_integralni_tvar} lze z rovnice \eqref{eq:poissonova_rovnice_definice} odvodit Gaussovým teorémem.
+
+\begin{equation}
+\label{eq:poissonova_rovnice_integralni_tvar}
+\begin{split}
+\oint_{\partial V} \left( \grad \ \varphi \right) \cdot \vect{n} ds = \int_V f dV
+\end{split}
+\end{equation}
+
+Speciálním případem Poissonovy rovnice bez zdrojů je rovnice Laplaceova. V uvažované oblasti je \(f = 0\), rovnice má tvar \eqref{eq:laplaceova_rovnice_definice}. Obdobně integrální tvar rovnice má tvar \eqref{eq:laplaceova_rovnice_integralni_tvar}.
+
+\begin{equation}
+\label{eq:laplaceova_rovnice_definice}
+\begin{split}
+\Delta \varphi = f \\
+\diverg \ \grad \ \varphi = 0
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:laplaceova_rovnice_integralni_tvar}
+\begin{split}
+\oint_{\partial V} \left( \grad \ \varphi \right) \cdot \vect{n} ds = \int_V f dV
+\end{split}
+\end{equation}
+
+\begin{fact}
+Rovnicím bez zdrojů říkáme homogenní. Rovnicím se zdroji říkáme nehomogenní. Laplaceova rovnice je tedy homogenní rovnice, Poissonova
+nehomogenní.
+\end{fact}
+
