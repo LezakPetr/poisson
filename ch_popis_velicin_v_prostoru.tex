@@ -407,7 +407,7 @@ Vidíme, že za uvedených podmínek platí vztah \eqref{eq:euklidovsky_prostor_
 
 Kartézský systém souřadnic není jediný možný. Z~důvodu geometrie těles nebo symetrie problému může být v~praxi výhodné využít křivočarý systém souřadnic. Také je možné jej využít pokud kartézský systém nelze zavést protože prostor je zakřivený, například v~teorii relativity. Tím se zde však nebudeme zabývat, budeme předpokládat, že prostor je Euklidovský a~křivočarý systém souřadnic zavedeme transformací do kartézského. Mezi často používané křivočaré systémy souřadnic patří polární, cylindrický, sférický a~teorie obsáhne samozřejmě i~kartézský systém souřadnic.
 
-Předpokládejme, že máme prostor \(E_n\), ve kterém máme ne nutně kartézský systém souřadnic s~body určenými souřadnicemi \(P' = [P'_1, P'_2, ..., P'_n]\). Chceme zavést jiný systém souřadnic s~body určenými souřadnicemi \(P = [P_1, P_2, ..., P_n]\). Transformaci mezi souřadnými systémy popisuje sada funkcí \(p_i\):
+Předpokládejme, že máme prostor \(E_n\), ve kterém máme kartézský systém souřadnic s~body určenými souřadnicemi \(P' = [P'_1, P'_2, ..., P'_n]\). Chceme zavést jiný systém souřadnic s~body určenými souřadnicemi \(P = [P_1, P_2, ..., P_n]\). Transformaci mezi souřadnými systémy popisuje sada funkcí \(p_i\):
 
 \begin{equation}
 P'_i = p'_i(P_1, P_2, ..., P_n)
@@ -433,7 +433,7 @@ Skalár je číselná hodnota invariantní vůči změně souřadnicového syst�
 
 \subsection{Kovariantní vektory}
 
-Uvažujme funkci \(\varphi\) v~souřadnicích \(P\) a~odpovídající funkci \(\varphi' = \varphi(p_1(P'_1, ..., P'_n), ..., p_n(P'_1, ..., P'_n))\) v~souřadnicích \(P'\). Vyjádřeme první derivaci funkce \(\varphi'\) podle souřadnice \(P'_i\). Obecně platí:
+Uvažujme funkci \(\varphi\) v~souřadnicích \(P\) a~odpovídající funkci \(\varphi' = \varphi(p_1(P'_1, ..., P'_n), ..., p_n(P'_1, ..., P'_n))\) v~kartézských souřadnicích \(P'\). Vyjádřeme první derivaci funkce \(\varphi'\) podle souřadnice \(P'_i\). Obecně platí:
 
 \begin{equation}
 \begin{split}
@@ -473,7 +473,7 @@ Podívejme se na geometrický význam parciálních derivací \(\frac{\partial p
 
 \subsection{Kontravariantní vektory}
 
-Mějme křivku \(P = \Gamma(t)\) v~souřadnicích \(P\), která je v souřadnicích \(P'\) vyjádřena funkcí \(P' = \Gamma'(t) = p'(\Gamma_1(t), ..., \Gamma_n(t))\). Vyjádřeme první derivace souřadnic této křivky podle parametru \(t\):
+Mějme křivku \(P = \Gamma(t)\) v~souřadnicích \(P\), která je v~kartézských souřadnicích \(P'\) vyjádřena funkcí \(P' = \Gamma'(t) = p'(\Gamma_1(t), ..., \Gamma_n(t))\). Vyjádřeme první derivace souřadnic této křivky podle parametru \(t\):
 
 \begin{equation}
 \begin{split}
@@ -482,7 +482,7 @@ Mějme křivku \(P = \Gamma(t)\) v~souřadnicích \(P\), která je v souřadnic�
 \end{split}
 \end{equation}
 
-Vidíme, že máme-li \(n\)-tici čísel \(\vect{u} = (u_1, u_2, ..., u_n) = \left( \frac{\partial \Gamma_1}{\partial t}, \frac{\partial \Gamma_2}{\partial t}, ..., \frac{\partial \Gamma_n}{\partial t} \right)\) v~soustavě souřadnic \(P\), tak ji do soustavy souřadnic \(P'\) transformujeme vztahem:
+Vidíme, že máme-li \(n\)-tici čísel \(\vect{u} = (u_1, u_2, ..., u_n) = \left( \frac{\partial \Gamma_1}{\partial t}, \frac{\partial \Gamma_2}{\partial t}, ..., \frac{\partial \Gamma_n}{\partial t} \right)\) v~soustavě souřadnic \(P\), tak ji do kartézské soustavy souřadnic \(P'\) transformujeme vztahem:
 
 \begin{equation}
 \label{eq:kontravariantni_vektor}
@@ -493,7 +493,7 @@ Každou \(n\)-tici čísel, která se transformuje podle vztahu \eqref{eq:kontra
 
 V~křivočarých souřadnicích tedy musíme rozlišovat 2 druhy vektorů, protože každý se transformuje jinak. To jsme v~kartézské soustavě souřadnic nemuseli.
 
-Podívejme se na geometrický význam parciálních derivací \(\frac{\partial p'_i}{\partial P_j}\). Zaveďme označení \(\vect{g}_j = \left(\frac{\partial p'_1}{\partial P_j}, \frac{\partial p'_2}{\partial P_j}, ..., \frac{\partial p'_n}{\partial P_j}\right)\) pro vektor kontravariantní báze. Vektor \(\vect{g}_j\) tedy určuje, jak se změní (ne nutně kartézské) souřadnice \(P'\), pokud změníme křivočarou souřadnici \(P_j\) o~velmi malou hodnotu. Má tedy směr tečny ke křivce \(p'(P_1, P_2, ..., t, ..., P_n)\) s~parametrem \(t\) na místě souřadnice \(P_j\).
+Podívejme se na geometrický význam parciálních derivací \(\frac{\partial p'_i}{\partial P_j}\). Zaveďme označení \(\vect{g}_j = \left(\frac{\partial p'_1}{\partial P_j}, \frac{\partial p'_2}{\partial P_j}, ..., \frac{\partial p'_n}{\partial P_j}\right)\) pro vektor kontravariantní báze. Vektor \(\vect{g}_j\) tedy určuje, jak se změní kartézské souřadnice \(P'\), pokud změníme křivočarou souřadnici \(P_j\) o~velmi malou hodnotu. Má tedy směr tečny ke křivce \(p'(P_1, P_2, ..., t, ..., P_n)\) s~parametrem \(t\) na místě souřadnice \(P_j\).
 
 \begin{tikzpicture}
 \draw[->] (-3, 0) -- (3, 0) node[anchor=south east]{\(P'_1\)};
@@ -676,6 +676,7 @@ Celý výpočet si můžeme zjednodušit, pokud zavedeme Kroneckerův symbol del
 Sadu funkcí \(P\) definujeme \(P_j = \delta_{jl} \cdot t\) pro zvolený parametr \(l\). Dosazením do rovnice~\eqref{eq:reverzibilni_derivace} získáme:
 
 \begin{equation}
+\label{eq:vztah_mezi_bazemi}
 \begin{split}
 \sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \sum_{j=1}^n \frac{\partial p'_i}{\partial P_j} \cdot \delta_{jl} = \delta_{kl} \\
 \sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \frac{\partial p'_i}{\partial P_l} = \delta_{kl}
@@ -745,7 +746,7 @@ l = \sqrt{\sum_{i=1}^n \left(\sum_{j=1}^n \frac{\partial p'_i}{\partial P_j} v^j
 \end{split}
 \end{equation}
 
-Zavedli jsme označení \(g_{jk} = \sum_{i=1}^n \frac{\partial p'_i}{\partial P_j} \frac{\partial p'_i}{\partial P_k} = \vect{g}_j \cdot \vect{g}_k\). Délka \(l\) je invariantní vůči změně souřadného systému. Je tedy zřejmé, že \(g_{jk}\) musí být kovariantním tenzorem druhého řádu. Nazýváme jej metrickým tenzorem. Číselně je hodnota \(g_{jk}\) rovna skalárnímu součinu vektoru báze \(\vect{g}_j\) s~vektorem báze \(\vect{g}_k\).
+Zavedli jsme označení \(g_{jk} = \sum_{i=1}^n \frac{\partial p'_i}{\partial P_j} \frac{\partial p'_i}{\partial P_k} = \vect{g}_j \cdot \vect{g}_k\). Délka \(l\) je invariantní vůči změně souřadného systému. Je tedy zřejmé, že \(g_{jk}\) musí být kovariantním tenzorem druhého řádu. Jedná se o~tenzor symetrický, tedy \(g_{jk} = g_{kj}\). Nazýváme jej kovariantním metrickým tenzorem. Číselně je hodnota \(g_{jk}\) rovna skalárnímu součinu vektoru báze \(\vect{g}_j\) s~vektorem báze \(\vect{g}_k\).
 
 Všimněme si, že vztah se velmi zjednoduší, pokud \(g_{jk} = 0\) pro \(j \neq k\):
 
@@ -779,6 +780,70 @@ Obdobně můžeme vypočítat objem kvádru se stranami určenými diferenciály
 \label{eq:objem_diferencial_souradnic}
 dV = g_{ii} g_{jj} g_{kk} dx_i dx_j dx_k
 \end{equation}
+
+Obdobně můžeme vypočítat délku kovariantního vektoru:
+
+\begin{equation}
+\begin{split}
+l = \sqrt{\sum_{i=1}^n \left(\sum_{j=1}^n \frac{\partial p_j}{\partial P'_i} v_j \right)^2} = \sqrt{\sum_{i=1}^n \sum_{j=1}^n \sum_{k=1}^n \frac{\partial p_j}{\partial P'_i} \cdot \frac{\partial p_k}{\partial P'_i} v_j v_k} = \\
+\sqrt{\sum_{j=1}^n \sum_{k=1}^n v_j v_k \sum_{i=1}^n} \frac{\partial p_j}{\partial P'_i} \frac{\partial p_k}{\partial P'_i} = \sqrt{\sum_{j=1}^n \sum_{k=1}^n g^{jk} v_j v_k}
+\end{split}
+\end{equation}
+
+Veličinu \(g^{jk} = \sum_{i=1}^n \frac{\partial p_j}{\partial P'_i} \frac{\partial p_k}{\partial P'_i}\) nazveme kontravariantním metrickým tenzorem. Opět se jedná o~symetrický tenzor druhého řádu.
+
+
+\subsection{Zpětná transformace}
+
+Doposud jsme řešili, jak se transformují veličiny z~křivočaré soustavy souřadnic \(P\) do kartézské soustavy souřadnic \(P'\). Nyní prozkoumáme transformaci opačnou - z~kartézské soustavy souřadnic \(P\) do křivočaré soustavy souřadnic \(P'\).
+Vraťme se k~rovnici \eqref{eq:vztah_mezi_bazemi}, vynásobme ji kontravariantním vektorem \(v^l\) a~proveďme sumaci přes index \(l\):
+ 
+\begin{equation}
+\label{eq:transformace_kontravariantniho_vektoru_z_kartezske_soustavy}
+\begin{split}
+\sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \frac{\partial p'_i}{\partial P_l} = \delta_{kl} \\
+\sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \frac{\partial p'_i}{\partial P_l} v^l = \delta_{kl} \cdot v^l \\
+\sum_{l=1}^n \sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \frac{\partial p'_i}{\partial P_l} v^l = \sum_{l=1}^n \delta_{kl} \cdot v^l \\
+\sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \sum_{l=1}^n \frac{\partial p'_i}{\partial P_l} v^l = v^k \\
+\sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} v'^i = v^k
+\end{split}
+\end{equation}
+
+Vidíme, že kontravariantní vektor se transformuje z~kartézské do křivočaré soustavy souřadnic jako kovariantní vektor opačným směrem. To není překvapivé uvážíme-li, že transformační funkce \(p_i\) a \(p'_i\) jsou vzájemně inverzní. Obdobně se kovariantní vektor transformuje z~kartézské do křivočaré soustavy souřadnic jako kontravariantní vektor opačným směrem:
+
+\begin{equation}
+\label{eq:transformace_kovariantniho_vektoru_z_kartezske_soustavy}
+\begin{split}
+\sum_{i=1}^n \frac{\partial p'_i}{\partial P_l} \cdot \frac{\partial p_k}{\partial P'_i} = \delta_{kl} \\
+\sum_{i=1}^n \frac{\partial p'_i}{\partial P_l} \cdot \frac{\partial p_k}{\partial P'_i} v_k = \delta_{kl} \cdot v_k \\
+\sum_{k=1}^n \sum_{i=1}^n \frac{\partial p'_i}{\partial P_l} \cdot \frac{\partial p_k}{\partial P'_i} v_k = \sum_{k=1}^n \delta_{kl} \cdot v_k \\
+\sum_{i=1}^n \frac{\partial p'_i}{\partial P_l} \cdot \sum_{k=1}^n \frac{\partial p_k}{\partial P'_i} v_k = v_l \\
+\sum_{i=1}^n \frac{\partial p'_i}{\partial P_l} \cdot v'_i = v_l \\
+\end{split}
+\end{equation}
+
+V~kartézské soustavě souřadnic ale nemusíme rozlišovat mezi kovariantními a~kontravariantními vektory, přesněji jejich složky jsou shodné. S~využitím rovnice~\eqref{eq:transformace_kovariantniho_vektoru_z_kartezske_soustavy} tak můžeme definovat transformaci kontravariantního vektoru na kovariantní tak, že kontravariantní vektor transformujeme do kartézské soustavy souřadnic a~z~té ho jako kovaraintní vektor transformujeme zpět do křivočaré soustavy souřadnic:
+
+\begin{equation}
+\begin{split}
+v_l = \sum_{i=1}^n \frac{\partial p'_i}{\partial P_l} \cdot v'_i = \sum_{i=1}^n \frac{\partial p'_i}{\partial P_l} \cdot \sum_{j=1}^n \frac{\partial p'_i}{\partial P_j} v^j = \sum_{j=1}^n \sum_{i=1}^n \frac{\partial p'_i}{\partial P_l} \frac{\partial p'_i}{\partial P_j} v^j = \sum_{j=1}^n g_{lj} v^j
+\end{split}
+\end{equation}
+
+Kontravariantní tenzor tedy transformujeme na kovariantní tak, že jej vynásobíme kovariantním metrickým tenzorem a~zůžíme jej (podle libovolného indexu - metrický tenzor je symetrický).
+
+Obdobně můžeme s~pomocí rovnice~\eqref{eq:transformace_kontravariantniho_vektoru_z_kartezske_soustavy} definovat transformaci kovariantního vektoru na kontravariantní:
+
+\begin{equation}
+\begin{split}
+v^k = \sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} v'^i = \sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \cdot \sum_{j=1}^n \frac{\partial p_j}{\partial P'_i} v_j = \sum_{j=1}^n \sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} \frac{\partial p_j}{\partial P'_i} v_j = \sum_{j=1}^n g^{jk} v_j
+\end{split}
+\end{equation}
+
+
+
+
+
 
 \section{Základní definice}
 
