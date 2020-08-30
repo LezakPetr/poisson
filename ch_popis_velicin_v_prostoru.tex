@@ -830,7 +830,7 @@ v_l = \sum_{i=1}^n \frac{\partial p'_i}{\partial P_l} \cdot v'_i = \sum_{i=1}^n 
 \end{split}
 \end{equation}
 
-Kontravariantní tenzor tedy transformujeme na kovariantní tak, že jej vynásobíme kovariantním metrickým tenzorem a~zůžíme jej (podle libovolného indexu - metrický tenzor je symetrický).
+Kontravariantní tenzor tedy transformujeme na kovariantní tak, že jej vynásobíme kovariantním metrickým tenzorem a~zůžíme jej (podle libovolného indexu - metrický tenzor je symetrický). Této operaci říkáme snižování indexu a~lze ji provádět pro libovolný kontravariantní index tenzoru.
 
 Obdobně můžeme s~pomocí rovnice~\eqref{eq:transformace_kontravariantniho_vektoru_z_kartezske_soustavy} definovat transformaci kovariantního vektoru na kontravariantní:
 
@@ -840,6 +840,23 @@ v^k = \sum_{i=1}^n \frac{\partial p_k}{\partial P'_i} v'^i = \sum_{i=1}^n \frac{
 \end{split}
 \end{equation}
 
+Vidíme, že kovariantní a~kontravariantní vektory lze mezi sebou převádět. Můžeme tedy hovořit o~vektoru \(\vect{v}\), který má kovariantní složky \(v_i\) a~kontravariantní složky \(v^i\). Této operaci říkáme zvedání indexu a~lze ji provádět pro libovolný kovariantní index tenzoru.
+
+\subsection{Vyjádření některých operací}
+
+Umíme-li provádět transformace vektorů, tak můžeme vyjádřit operace s~vektory v~křivočarých souřadnicích. 
+
+Začněme skalárním součinem vektorů \(\vect{u} \cdot \vect{v}\). Už víme, jak vypočítat skalární součin kovariantního a~kontravariantního vektoru. Transformací jednoho vektoru pak můžeme vypočítat skalární součin dvou vektorů stejného druhu:
+
+\begin{fact}
+\begin{equation}
+\begin{split}
+\kovarvect{u} \cdot \kontravect{v} = \sum_{i=1}^n u_i \cdot v^i \\
+\kovarvect{u} \cdot \kovarvect{v} = \sum_{i=1}^n \sum_{j=1}^n u_i \cdot v_i \cdot g^{ij} \\
+\kontravect{u} \cdot \kontravect{v} = \sum_{i=1}^n \sum_{j=1}^n u^i \cdot v^i \cdot g_{ij}
+\end{split}
+\end{equation}
+\end{fact}
 
 
 
