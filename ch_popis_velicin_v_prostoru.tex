@@ -478,8 +478,89 @@ Počet inverzí permutace se prohozením libovolných dvou prvků změní o~lich
 To nám umožňuje rozdělit permutace na sudé a~liché:
 
 \begin{fact}
-Sudá permutace má sudý počet inverzí, lichá permutace má lichý počet inverzí. Prohození dvou prvků se ze sudé permutace stane lichá a~naopak.
+Sudá permutace má sudý počet inverzí, lichá permutace má lichý počet inverzí. Prohozením dvou libovolných prvků se ze sudé permutace stane lichá a~naopak.
 \end{fact}
+
+Mějme \(n\) vektorů \(\vect{a}\), \(\vect{b}\), \(\vect{c}\), ... se složkami \(a_i\), \(b_j\), \(c_k\) atd. Pro každou permutaci utvoříme součin \(a_i \cdot b_j \cdot c_k \cdot ...\), kde indexy \(i, j, k, ...\) odpovídají prvkům permutace. Pokud se jedná o~lichou permutaci, tak součin násobíme \(-1\). Tedy pro permutaci \([1, 3, 2]\) budeme mít součin \(-a_1 \cdot b_3 \cdot c_2\). Udělejme součet takovýchto součinů pro všechny permutace. Pro \(n=3\) tedy získáme \(s = a_1 b_2 c_3 + a_2 b_3 c_1 + a_3 b_1 c_2 - a_1 b_3 c_2  - a_3 b_2 c_1 - a_2 b_1 c_3\).
+
+Pokud bychom vektory uspořádali do matice, pak by uvedený součen součinů byl roven jejímu determinantu, tedy:
+
+\begin{equation}
+s = 
+\begin{vmatrix}
+a_1 & a_2 & a_3 \\
+b_1 & b_2 & b_3 \\
+c_1 & c_2 & c_3 \\
+\end{vmatrix}
+\end{equation}
+
+Povšimněme si, co se stane, pokud by 2 vektory byli shodné, například pokud \(\vect{a} = \vect{b}\). Počítali-bychom determinant: 
+
+\begin{equation}
+s = 
+\begin{vmatrix}
+b_1 & b_2 & b_3 \\
+b_1 & b_2 & b_3 \\
+c_1 & c_2 & c_3 \\
+\end{vmatrix}
+\end{equation}
+
+Získáme tak součet \(s = b_1 b_2 c_3 + b_2 b_3 c_1 + b_3 b_1 c_2 - b_1 b_3 c_2  - b_3 b_2 c_1 - b_2 b_1 c_3 = 0\). Vidíme, že součet je nulový, protože každý jeho člen se v~součtu objevuje jednou s~kladným znaménkem a~jendou se záporným znaménkem. To je důsledkem toho, že sme zavedli součet jako součet všech permutací. Například člen \(+b_1 b_2 c_3\) odpovídá sudé permutaci \(123\) a~člen \(-b_2 b_1 c_3\) liché permutaci \(213\). Protože tyto dvojice členů vzniknou tak, že prohodíme 2 prvky permutace, tak vždy jeden člen bude odpovídat sudé permutaci a~druhý liché permutaci. Proto budou mít vždy opačné zneménko. Obecně proto platí, že takto utvořený součet se dvěma stejnými vektory, tedy determinant matice se dvěma stejnými řádky, je nulový.
+
+Zaveďme Levi-Civitův symbol \(\varepsilon_{ijk...}\):
+
+\begin{fact}
+Symbol \(\varepsilon_{ijk...}\) má v~\(n\)-rozměrném prostoru hodnotu \(n\) indexů \(i, j, k, ...\), které mohou nabývat hodnot \(1\) až \(n\). Tvoří-li indexy sudou permutací čísel \(1, 2, ..., n\), pak \(\varepsilon_{ijk...} = +1\). Tvoří-li indexy lichou permutaci, pak \(\varepsilon_{ijk...} = -1\). Netvoří-li indexy permutaci čísel \(1, 2, ..., n\), pak \(\varepsilon_{ijk...} = 0\). Tento případ nastává pokud 2 nebo více indexů je shodných.
+\end{fact}
+
+Ve třírozměrném prostoru tedy máme:
+
+\begin{equation}
+\begin{split}
+\varepsilon_{123} = \varepsilon_{231} = \varepsilon_{312} = +1 \\
+\varepsilon_{132} = \varepsilon_{213} = \varepsilon_{321} = -1 \\
+\varepsilon_{iij} = \varepsilon_{iji} = \varepsilon_{jii} = 0
+\end{split}
+\end{equation}
+
+Levi-Civitův symbol nám umožňuje zapsat součet součinů permutací složek \(n\) vektorů. Pro \(n = 3\) máme:
+
+\begin{equation}
+s = \sum_{i=1}^3 \sum_{j=1}^3 \sum_{k=1}^3 a_i b_j c_k \varepsilon_{ijk}
+\end{equation}
+
+Tuto rovnici můžeme rozepsat na 2:
+
+\begin{equation}
+\begin{split}
+v_i = \sum_{j=1}^3 \sum_{k=1}^3 b_j c_k \varepsilon_{ijk} \\
+s = \sum_{i=1}^3 a_i \cdot v_i
+\end{split}
+\end{equation}
+
+Získáme tak vektor \(\vect{v}\).
+Povšimněme si, že pokud zvolíme \(\vect{a} = \vect{b}\), pak \(s = \sum_{i=1}^3 \sum_{j=1}^3 \sum_{k=1}^3 b_i b_j c_k \varepsilon_{ijk} = 0\). To ale znamená, že \(s = \sum_{i=1}^3 b_i \cdot v_i = 0\), tedy vektor \(\vect{v}\) je kolmý na vektor \(\vect{b}\).
+
+Obdobnou úvahou zjistíme, že vektor \(\vect{v}\) je kolmý na vektor \(\vect{c}\). Ve třírozměrném prostoru proto můžeme zavést tzv. vektorový součin, který utvoří vektor kolmý na 2 vektory:
+
+\begin{equation}
+\begin{split}
+\vect{v} = \vect{b} \times \vect{c} \\
+v_i = \sum_{j=1}^3 \sum_{k=1}^3 b_j c_k \varepsilon_{ijk}
+\end{split}
+\end{equation}
+
+Tuto rovnici můžeme rozepsat na jednotlivé složky uvědomíme-li si, že pouze 6 trojic indexů \(i, j, k\) odpovídá nenulovým \(\varepsilon_{ijk}\):
+
+\begin{equation}
+\begin{split}
+\vect{v} = \vect{b} \times \vect{c} = \\
+(b_2 c_3 - b_3 c_2, b_3 c_1 - b_1 c_3, b_1 c_2 - b_2 c_1) = \\
+(b_y c_z - b_z c_y, b_z c_x - b_x c_z, b_x c_y - b_y c_x)
+\end{split} 
+\end{equation}
+
+
 
 \section{Křivočaré systémy souřadnic}
 
