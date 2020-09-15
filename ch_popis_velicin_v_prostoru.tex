@@ -981,6 +981,8 @@ Vidíme, že kontravariantní vektor se transformuje z~kartézské do křivočar
 \end{split}
 \end{equation}
 
+Obdobně můžeme transformovat i~tenzory, pro každý index provedeme tuto transformaci zvlášť.
+
 V~kartézské soustavě souřadnic ale nemusíme rozlišovat mezi kovariantními a~kontravariantními vektory, přesněji jejich složky jsou shodné. S~využitím rovnice~\eqref{eq:transformace_kovariantniho_vektoru_z_kartezske_soustavy} tak můžeme definovat transformaci kontravariantního vektoru na kovariantní tak, že kontravariantní vektor transformujeme do kartézské soustavy souřadnic a~z~té ho jako kovaraintní vektor transformujeme zpět do křivočaré soustavy souřadnic:
 
 \begin{equation}
@@ -1017,8 +1019,41 @@ Začněme skalárním součinem vektorů \(\vect{u} \cdot \vect{v}\). Už víme,
 \end{equation}
 \end{fact}
 
+Podívejme se, jak se transformuje Levi-Civitův symbol do křivočarých souřadnic. Levi-Civitův symbol je kartézským tenzorem, můžeme jej proto transformovat na kovariantní i~kontravariantní tenzor v křivočarých souřadnicích, kde jej budeme značit \(\epsilon_{ijk}\) potažmo \(\epsilon^{ijk}\).
 
+Začněme transformací na kovariantní tenzor. 
 
+\begin{equation}
+\begin{split}
+\epsilon_{lmn} = \sum_{i=1}^3 \sum_{j=1}^3 \sum_{k=1}^3 \frac{\partial p'_i}{\partial P_l} \frac{\partial p'_j}{\partial P_m} \frac{\partial p'_k}{\partial P_n} \cdot \varepsilon_{ijk}
+\end{split}
+\end{equation}
+
+Prozkoumejme, pro které indexy \(lmn\) získáme nenulové \(\epsilon_{lmn}\). Začněme situací, kdy máme 2 indexy stejné. Nechť jsou to například indexy \(l = m\). Pak
+
+\begin{equation}
+\begin{split}
+\epsilon_{lln} = \sum_{i=1}^3 \sum_{j=1}^3 \sum_{k=1}^3 \frac{\partial p'_i}{\partial P_l} \frac{\partial p'_j}{\partial P_l} \frac{\partial p'_k}{\partial P_n} \cdot \varepsilon_{ijk}
+\end{split}
+\end{equation}
+
+Součet členů jde přes všechny permutace indexů \(i\), \(j\) a \(k\). Proto se budou členy \(\frac{\partial p'_i}{\partial P_l} \frac{\partial p'_j}{\partial P_l} \frac{\partial p'_k}{\partial P_n}\) v~součtu vyskytovat po dvojicích s~prohozenými indexy \(i\) a \(j\). Tyto dvojice budou odpovídat sudé a~liché permutaci indexů \(i\), \(j\) a \(k\), proto symbol \(\varepsilon_{ijk}\) bude mít opačné znaménko a~všechny členy se v~součtu vyruší. Tenzor \(\epsilon_{lmn}\) proto bude mít nenulové prvky jen pro různé indexy \(l\), \(m\) a~\(n\).
+
+Vyšetřeme tedy tenzor \(\epsilon_{lmn}\) pro různé indexy \(l\), \(m\) a~\(n\). Uvědomme si, že v~členech \(\frac{\partial p'_i}{\partial P_l} \frac{\partial p'_j}{\partial P_m} \frac{\partial p'_k}{\partial P_n}\) můžeme jednotlivé součinitele libovolně prohazovat beze změny jejich hodnot. Sou4initele proto můžeme přeskládat tak, aby členy byly ve tvaru \(\frac{\partial p'_a}{\partial P_1} \frac{\partial p'_b}{\partial P_2} \frac{\partial p'_c}{\partial P_3}\). Pokud posloupnost \([l, m, n]\) představovala sudou permutaci posloupnosti \([1, 2, 3]\), pak je potřeba sudý počet prohození součinitelů, pokud představovala permutaci lichou, pak je potřeba lichý počet prohození součinitelů. Spolu s~tím dochází ale i~k permutaci posloupností \([i, j, k]\) na posloupnosti \([a, b, c]\). Protože provádíme součet přes všechny permutace, tak budeme sčítat všechny členy i~po přeskládání součinitelů, ale při lichém počtu prohození součinitelů, tedy pokud je permutace \([l, m, n]\) lichá, je nutné násobit součinitele číslem -1. To přesně odpovídá Levi-Civitově symbolu:
+
+\begin{equation}
+\begin{split}
+\epsilon_{lmn} = \left(\sum_{i=1}^3 \sum_{j=1}^3 \sum_{k=1}^3 \frac{\partial p'_i}{\partial P_1} \frac{\partial p'_j}{\partial P_2} \frac{\partial p'_k}{\partial P_3} \cdot \varepsilon_{ijk} \right) \cdot \varepsilon_{lmn} = \\
+\begin{vmatrix}
+  \frac{\partial p'_1}{\partial P_1} & \frac{\partial p'_2}{\partial P_1} & \frac{\partial p'_3}{\partial P_1} \\
+  \frac{\partial p'_1}{\partial P_2} & \frac{\partial p'_2}{\partial P_2} & \frac{\partial p'_3}{\partial P_2} \\
+  \frac{\partial p'_1}{\partial P_3} & \frac{\partial p'_2}{\partial P_3} & \frac{\partial p'_3}{\partial P_3}
+\end{vmatrix}
+\cdot \varepsilon_{lmn}
+\end{split}
+\end{equation}
+
+Vidíme, že Levi-Civitův symbol se transformuje pouze násobením konstantou, tzv. Jakobiánem funkcí \(p'_i\).
 
 
 \section{Základní definice}
@@ -1282,20 +1317,7 @@ u_3 = \frac{\partial v_2}{\partial P_1} - \frac{\partial v_1}{\partial P_2}
 \end{split}
 \end{equation}
 
-Zavedením Levi-Civitova tenzoru \(\varepsilon_{ijk}\) můžeme však všechny 3 rovnice zapsat pomocí jedné.
-
-\begin{fact}
-Tenzor \(\varepsilon_{ijk}\) má ve třírozměrném prostoru složky, jejichž indexy jsou tvořeny sudou permutací čísel \(1, 2, 3\), rovné +1. Složky, jejichž indexy jsou tvořeny lichou permutací čísel \(1, 2, 3\), má rovné -1.
-Složky, jejichž indexy nejsou tvořeny permutací čísel \(1, 2, 3\), má rovné 0. Jedná se o~složky, v~nichž jsou 2 nebo tři indexy shodné.
-
-\begin{equation}
-\begin{split}
-\varepsilon_{123} = \varepsilon_{231} = \varepsilon_{312} = +1 \\
-\varepsilon_{132} = \varepsilon_{213} = \varepsilon_{321} = -1 \\
-\varepsilon_{iij} = \varepsilon_{iji} = \varepsilon_{jii} = 0
-\end{split}
-\end{equation}
-\end{fact}
+Pomocí Levi-Civitova tenzoru \(\varepsilon_{ijk}\) můžeme však všechny 3 rovnice zapsat pomocí jedné.
 
 \begin{equation}
 \begin{split}
