@@ -1055,6 +1055,23 @@ Vyšetřeme tedy tenzor \(\epsilon_{lmn}\) pro různé indexy \(l\), \(m\) a~\(n
 
 Vidíme, že Levi-Civitův symbol se transformuje pouze násobením konstantou, tzv. Jakobiánem funkcí \(p'_i\).
 
+Obdobně můžeme transformovat Levi-Civitův symbol na kontravariantní tenzor:
+
+\begin{equation}
+\begin{split}
+\epsilon^{lmn} = \sum_{i=1}^3 \sum_{j=1}^3 \sum_{k=1}^3 \frac{\partial p_l}{\partial P'_i} \frac{\partial p_m}{\partial P'_j} \frac{\partial p_n}{\partial P'_k} \cdot \varepsilon_{ijk} = \\
+\left(\sum_{i=1}^3 \sum_{j=1}^3 \sum_{k=1}^3 \frac{\partial p_1}{\partial P'_i} \frac{\partial p_2}{\partial P'_j} \frac{\partial p_3}{\partial P'_k} \cdot \varepsilon_{ijk} \right) \cdot \varepsilon_{lmn} = \\
+\begin{vmatrix}
+  \frac{\partial p_1}{\partial P'_1} & \frac{\partial p_2}{\partial P'_1} & \frac{\partial p_3}{\partial P'_1} \\
+  \frac{\partial p_1}{\partial P'_2} & \frac{\partial p_2}{\partial P'_2} & \frac{\partial p_3}{\partial P'_2} \\
+  \frac{\partial p_1}{\partial P'_3} & \frac{\partial p_2}{\partial P'_3} & \frac{\partial p_3}{\partial P'_3}
+\end{vmatrix}
+\cdot \varepsilon_{lmn}
+\end{split}
+\end{equation}
+
+Vidíme, že Levi-Civitův symbol se transformuje pouze násobením konstantou, tzv. Jakobiánem funkcí \(p_i\).
+
 
 \section{Základní definice}
 
