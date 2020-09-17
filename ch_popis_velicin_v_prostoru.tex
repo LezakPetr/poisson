@@ -544,6 +544,7 @@ Povšimněme si, že pokud zvolíme \(\vect{a} = \vect{b}\), pak \(s = \sum_{i=1
 Obdobnou úvahou zjistíme, že vektor \(\vect{v}\) je kolmý na vektor \(\vect{c}\). Ve třírozměrném prostoru proto můžeme zavést tzv. vektorový součin, který utvoří vektor kolmý na 2 vektory:
 
 \begin{equation}
+\label{eq:vektorovy_soucin}
 \begin{split}
 \vect{v} = \vect{b} \times \vect{c} \\
 v_i = \sum_{j=1}^3 \sum_{k=1}^3 b_j c_k \varepsilon_{ijk}
@@ -1072,6 +1073,24 @@ Obdobně můžeme transformovat Levi-Civitův symbol na kontravariantní tenzor:
 
 Vidíme, že Levi-Civitův symbol se transformuje pouze násobením konstantou, tzv. Jakobiánem funkcí \(p_i\).
 
+Prozkoumejme, jak se transformuje vektorový součin. Pro kartézské vektory platí rovnice \eqref{eq:vektorovy_soucin}, pro názornost si ji znovu připomeneme:
+
+\begin{equation}
+\begin{split}
+\vect{v} = \vect{b} \times \vect{c} \\
+v_i = \sum_{j=1}^3 \sum_{k=1}^3 b_j c_k \varepsilon_{ijk}
+\end{split}
+\end{equation}
+
+Vidíme, že rovnice má tvar dvojího zůžení součinu vektorů \(b_j\), \(c_k\) a~tenzoru \(\varepsilon_{ijk}\). To nám umožňuje přímo zapsat vektorový součin dvou kovariantních a~dvou kontravariantních vektorů:
+
+\begin{equation}
+v^i = \sum_{j=1}^3 \sum_{k=1}^3 b_j c_k \epsilon^{ijk}
+\end{equation}
+
+\begin{equation}
+v_i = \sum_{j=1}^3 \sum_{k=1}^3 b^j c^k \epsilon_{ijk}
+\end{equation}
 
 \section{Základní definice}
 
