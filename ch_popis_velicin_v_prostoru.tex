@@ -1008,6 +1008,8 @@ Vidíme, že kovariantní a~kontravariantní vektory lze mezi sebou převádět.
 
 Umíme-li provádět transformace vektorů, tak můžeme vyjádřit operace s~vektory v~křivočarých souřadnicích. 
 
+\subsubsection{Skalární součin}
+
 Začněme skalárním součinem vektorů \(\vect{u} \cdot \vect{v}\). Už víme, jak vypočítat skalární součin kovariantního a~kontravariantního vektoru. Transformací jednoho vektoru pak můžeme vypočítat skalární součin dvou vektorů stejného druhu:
 
 \begin{fact}
@@ -1019,6 +1021,8 @@ Začněme skalárním součinem vektorů \(\vect{u} \cdot \vect{v}\). Už víme,
 \end{split}
 \end{equation}
 \end{fact}
+
+\subsubsection{Levi-Civitův symbol}
 
 Podívejme se, jak se transformuje Levi-Civitův symbol do křivočarých souřadnic. Levi-Civitův symbol je kartézským tenzorem, můžeme jej proto transformovat na kovariantní i~kontravariantní tenzor v křivočarých souřadnicích, kde jej budeme značit \(\epsilon_{ijk}\) potažmo \(\epsilon^{ijk}\).
 
@@ -1073,6 +1077,8 @@ Obdobně můžeme transformovat Levi-Civitův symbol na kontravariantní tenzor:
 
 Vidíme, že Levi-Civitův symbol se transformuje pouze násobením konstantou, tzv. Jakobiánem funkcí \(p_i\).
 
+\subsubsection{Vektorový součin}
+
 Prozkoumejme, jak se transformuje vektorový součin. Pro kartézské vektory platí rovnice \eqref{eq:vektorovy_soucin}, pro názornost si ji znovu připomeneme:
 
 \begin{equation}
@@ -1090,6 +1096,27 @@ v^i = \sum_{j=1}^3 \sum_{k=1}^3 b_j c_k \epsilon^{ijk}
 
 \begin{equation}
 v_i = \sum_{j=1}^3 \sum_{k=1}^3 b^j c^k \epsilon_{ijk}
+\end{equation}
+
+\subsubsection{Derivace vektorů}
+
+Mějme derivaci soužky kartézského vektoru \(u_i\) podle souřadnice \(j\). Vyjádřeme ji pro kovariantní vektor:
+
+\begin{equation}
+\begin{split}
+\frac{\partial u'_i}{\partial P'_j} = \frac{\partial}{\partial P'_j} \sum_{k=1}^n \frac{\partial p_k}{\partial P'_i} \cdot u_k \\
+\frac{\partial}{\partial P'_j} \sum_{k=1}^n \frac{\partial p_k}{\partial P'_i}(P'_1, ..., P'_n) \cdot u_k(p_1(P'_1, ..., P'_n), ..., p_n(P'_1, ..., P'_n)) = \\
+\sum_{k=1}^n \frac{\partial}{\partial P'_j} \left( \frac{\partial p_k}{\partial P'_i}(P'_1, ..., P'_n) \cdot u_k(p_1(P'_1, ..., P'_n), ..., p_n(P'_1, ..., P'_n)) \right) = \\
+\sum_{k=1}^n \left(\frac{\partial p_k}{\partial P'_i} \sum_{l=1}^n \frac{\partial u_k}{\partial P_l} \cdot \frac{\partial p_l}{\partial P'_j} + \frac{\partial^2 p_k}{\partial P'_i P'_j} \cdot u_k \right) = \\
+\sum_{k=1}^n \sum_{l=1}^n \frac{\partial p_k}{\partial P'_i} \frac{\partial p_l}{\partial P'_j} \frac{\partial u_k}{\partial P_l} + \sum_{k=1}^n \frac{\partial^2 p_k}{\partial P'_i P'_j} u_k
+\end{split} 
+\end{equation}
+
+Vidíme, že derivace v~křivočarých souřadnicích sestává ze dvou členů. První člen odpovídá transformaci tenzoru, druhý člen odpovídá zakřivení souřadného systému. Tento druhý člen způsobuje, že derivace vektoru obecně není tenzor. Pokud ale uděláme rozdíl \(\frac{\partial u'_i}{\partial P'_j} - \frac{\partial u'_j}{\partial P'_i}\), tak se tento druhý člen vyruší a~tento rozdíl je tenzorem druhého řádu:
+
+\begin{equation}
+\frac{\partial u'_i}{\partial P'_j} - \frac{\partial u'_j}{\partial P'_i} =
+\sum_{k=1}^n \sum_{l=1}^n \frac{\partial p_k}{\partial P'_i} \frac{\partial p_l}{\partial P'_j} \left(\frac{\partial u_k}{\partial P_l} - \frac{\partial u_l}{\partial P_k} \right) 
 \end{equation}
 
 \section{Základní definice}
