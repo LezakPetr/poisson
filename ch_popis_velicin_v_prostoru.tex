@@ -1115,6 +1115,7 @@ Mějme derivaci soužky kartézského vektoru \(u_i\) podle souřadnice \(j\). V
 Vidíme, že derivace v~křivočarých souřadnicích sestává ze dvou členů. První člen odpovídá transformaci tenzoru, druhý člen odpovídá zakřivení souřadného systému. Tento druhý člen způsobuje, že derivace vektoru obecně není tenzor. Pokud ale uděláme rozdíl \(\frac{\partial u'_i}{\partial P'_j} - \frac{\partial u'_j}{\partial P'_i}\), tak se tento druhý člen vyruší a~tento rozdíl je tenzorem druhého řádu:
 
 \begin{equation}
+\label{eq:tenzor_rozdil_derivaci_vektoru}
 \frac{\partial u'_i}{\partial P'_j} - \frac{\partial u'_j}{\partial P'_i} =
 \sum_{k=1}^n \sum_{l=1}^n \frac{\partial p_k}{\partial P'_i} \frac{\partial p_l}{\partial P'_j} \left(\frac{\partial u_k}{\partial P_l} - \frac{\partial u_l}{\partial P_k} \right) 
 \end{equation}
@@ -1374,17 +1375,39 @@ Chceme-li rotaci zapsat ve složkovém tvaru, tak získáme 3 rovnice:
 
 \begin{equation}
 \begin{split}
-u_1 = \frac{\partial v_3}{\partial P_2} - \frac{\partial v_2}{\partial P_3} \\
-u_2 = \frac{\partial v_1}{\partial P_3} - \frac{\partial v_3}{\partial P_1} \\
-u_3 = \frac{\partial v_2}{\partial P_1} - \frac{\partial v_1}{\partial P_2}
+u'_1 = \frac{\partial v'_3}{\partial P'_2} - \frac{\partial v'_2}{\partial P'_3} \\
+u'_2 = \frac{\partial v'_1}{\partial P'_3} - \frac{\partial v'_3}{\partial P'_1} \\
+u'_3 = \frac{\partial v'_2}{\partial P'_1} - \frac{\partial v'_1}{\partial P'_2}
 \end{split}
 \end{equation}
 
 Pomocí Levi-Civitova tenzoru \(\varepsilon_{ijk}\) můžeme však všechny 3 rovnice zapsat pomocí jedné.
 
 \begin{equation}
+\label{eq:rotace_tenzorova}
 \begin{split}
-u_i = \sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac{\partial v_k}{\partial P_j}
+u'_i = \sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac{\partial v'_k}{\partial P'_j}
+\end{split}
+\end{equation}
+
+Vyjádřeme rotaci v křivočarých souřadnicích. Vztah \eqref{eq:rotace_tenzorova} vypadá, jako dvojí zůžení tenzoru, ale bohužel parciální derivace \(\frac{\partial v_k}{\partial P_j}\) nejsou tenzorem. Vztah tedy misíme upravit tak, aby veličiny v~něm obsažené tenzory byly:
+
+\begin{equation}
+\label{eq:rotace_tenzorova_2}
+\begin{split}
+u'_i = \frac{1}{2} \left(\sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac{\partial v'_k}{\partial P'_j} + \sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac{\partial v'_k}{\partial P'_j} \right) = \\
+\frac{1}{2} \left(\sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac{\partial v'_k}{\partial P'_j} + \sum_{k=1}^3 \sum_{j=1}^3 \varepsilon_{ikj} \cdot \frac{\partial v'_j}{\partial P'_k} \right) = \\
+\frac{1}{2} \left(\sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac{\partial v'_k}{\partial P'_j} + \sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ikj} \cdot \frac{\partial v'_j}{\partial P'_k} \right) = \\
+\frac{1}{2} \left(\sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac{\partial v'_k}{\partial P'_j} - \sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac{\partial v'_j}{\partial P'_k} \right) = \\
+\frac{1}{2} \sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \left(\frac{\partial v'_k}{\partial P'_j} - \frac{\partial v'_j}{\partial P'_k} \right)
+\end{split}
+\end{equation}
+
+V~prvním kroku jsme vztah napsali polovinu dvojnásobku vztahu \eqref{eq:rotace_tenzorova}. Ve druhém kroku jsme provedli substituci \(j \leftrightarrow k\) u~druhého členu - prohodili jsme tyto proměnné. Ve třetím kroku jsme prohodily nezávislé sumy u~druhého členu. Ve čtvrtém kroku jsme prohodily indexy \(j\) a~\(k\), proto jsme museli otočit znaménko u~sumy. Nakonec jsme oba členy spojily. Podle vztahu~\eqref{eq:tenzor_rozdil_derivaci_vektoru} je rozdíl parciálních derivací, který jsme získaly, tenzorem druhého řádu. Rovnice \eqref{eq:rotace_tenzorova_2} je proto tenzorovou rovnicí a~můžeme ji tak proto transformovat:
+\begin{equation}
+\label{eq:rotace_tenzorova_3}
+\begin{split}
+u'^i = \frac{1}{2} \sum_{j=1}^3 \sum_{k=1}^3 \epsilon^{ijk} \cdot \left(\frac{\partial v_k}{\partial P_j} - \frac{\partial v_j}{\partial P_k} \right)
 \end{split}
 \end{equation}
 
