@@ -6,7 +6,7 @@ ALL: examples poisson.pdf
 examples:
 	cd examples && $(MAKE)
 
-poisson.pdf: poisson.tex ch_*.tex
+poisson.pdf: poisson.tex ch_*.tex ap_*.tex
 	pdflatex $<
 	pdflatex $<
 
