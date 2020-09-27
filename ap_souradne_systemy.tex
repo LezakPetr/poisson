@@ -4,58 +4,105 @@ V~této příloze jsou vyjádřeny operace v~bežně používaných souřadných
 
 \section{Kartézský souřadný systém}
 
+\begin{equation}
+\begin{split}
+P' = (x, y, z)
+\end{split}
+\end{equation}
+
 \section{Polární souřadný systém}
 
 \begin{equation}
 \begin{split}
-x = r \cdot \cos \alpha \\
-y = r \cdot \sin \alpha
+P' = (x, y) \\
+P = (r, \alpha)
 \end{split}
 \end{equation}
 
 \begin{equation}
 \begin{split}
-r = \sqrt{x^2 + y^2} \\
-\alpha = \arctg \frac{y}{x}
+x = p'_1(r, \alpha) = r \cdot \cos \alpha \\
+y = p'_2(r, \alpha) = r \cdot \sin \alpha
 \end{split}
 \end{equation}
 
+\begin{equation}
+\begin{split}
+r = p_1(x, y) = \sqrt{x^2 + y^2} \\
+\alpha = p_2(x, y) = \arctg \frac{y}{x}
+\end{split}
+\end{equation}
 
+\begin{tabular}{| c || c | c |}
+\hline
+\(\frac{\partial p'_i}{\partial P_j}\) & \(i=1\) & \(i=2\) \\
+\hline
+\hline
+\(j=1\) & \(\frac{\partial x}{\partial r} = \cos \alpha\) & \(\frac{\partial x}{\partial \alpha} = -r \cdot \sin \alpha\) \\
+\hline
+\(j=2\) & \(\frac{\partial y}{\partial r} = \sin \alpha\) & \(\frac{\partial y}{\partial \alpha} = r \cdot \cos \alpha\) \\
+\hline
+\end{tabular}
 
 \section{Cylindrický souřadný systém}
 
 \begin{equation}
 \begin{split}
-x = r \cdot \cos \alpha \\
-y = r \cdot \sin \alpha \\
-z = z
+P' = (x, y, z) \\
+P = (r, \alpha, z)
 \end{split}
 \end{equation}
 
 \begin{equation}
 \begin{split}
-r = \sqrt{x^2 + y^2} \\
-\alpha = \arctg \frac{y}{x} \\
-z = z
+x = p'_1(r, \alpha, z) = r \cdot \cos \alpha \\
+y = p'_2(r, \alpha, z) = r \cdot \sin \alpha \\
+z = p'_3(r, \alpha, z) = z
 \end{split}
 \end{equation}
 
+\begin{equation}
+\begin{split}
+r = p_1(x, y, z) = \sqrt{x^2 + y^2} \\
+\alpha = p_2(x, y, z) = \arctg \frac{y}{x} \\
+z = p_3(x, y, z) = z
+\end{split}
+\end{equation}
 
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(\frac{\partial p'_i}{\partial P_j}\) & \(i=1\) & \(i=2\) & \(i=3\) \\
+\hline
+\hline
+\(j=1\) & \(\frac{\partial x}{\partial r} = \cos \alpha\) & \(\frac{\partial x}{\partial \alpha} = -r \cdot \sin \alpha\) & \(\frac{\partial x}{\partial z} = 0\) \\
+\hline
+\(j=2\) & \(\frac{\partial y}{\partial r} = \sin \alpha\) & \(\frac{\partial y}{\partial \alpha} = r \cdot \cos \alpha\) & \(\frac{\partial y}{\partial z} = 0\) \\
+\hline
+\(j=3\) & \(\frac{\partial y}{\partial r} = 0\) & \(\frac{\partial y}{\partial \alpha} = 0\) & \(\frac{\partial z}{\partial z} = 1\) \\
+\hline
+\end{tabular}
 
 \section{Sférický souřadný systém}
 
 \begin{equation}
 \begin{split}
-x = r \cdot \cos \beta \cdot \cos \alpha \\
-y = r \cdot \cos \beta \cdot \sin \alpha \\
-z = r \cdot \sin \beta
+P' = (x, y, z) \\
+P = (r, \alpha, \beta)
 \end{split}
 \end{equation}
 
 \begin{equation}
 \begin{split}
-r = \sqrt{x^2 + y^2 + z^2} \\
-\alpha = \arctg \frac{y}{x} \\
-\beta = \arctg \frac{z}{\sqrt{x^2 + y^2}}
+x = p'_1(r, \alpha, \beta) = r \cdot \cos \beta \cdot \cos \alpha \\
+y = p'_2(r, \alpha, \beta) = r \cdot \cos \beta \cdot \sin \alpha \\
+z = p'_3(r, \alpha, \beta) = r \cdot \sin \beta
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+r = p_1(x, y, z) = \sqrt{x^2 + y^2 + z^2} \\
+\alpha = p_2(x, y, z) = \arctg \frac{y}{x} \\
+\beta = p_3(x, y, z) = \arctg \frac{z}{\sqrt{x^2 + y^2}}
 \end{split}
 \end{equation}
