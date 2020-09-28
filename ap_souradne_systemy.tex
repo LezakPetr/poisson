@@ -35,12 +35,23 @@ r = p_1(x, y) = \sqrt{x^2 + y^2} \\
 
 \begin{tabular}{| c || c | c |}
 \hline
-\(\frac{\partial p'_i}{\partial P_j}\) & \(i=1\) & \(i=2\) \\
+\(\frac{\partial p'_j}{\partial P_i}\) & \(i=1\) & \(i=2\) \\
 \hline
 \hline
 \(j=1\) & \(\frac{\partial x}{\partial r} = \cos \alpha\) & \(\frac{\partial x}{\partial \alpha} = -r \cdot \sin \alpha\) \\
 \hline
 \(j=2\) & \(\frac{\partial y}{\partial r} = \sin \alpha\) & \(\frac{\partial y}{\partial \alpha} = r \cdot \cos \alpha\) \\
+\hline
+\end{tabular}
+
+\begin{tabular}{| c || c | c |}
+\hline
+\(\frac{\partial p_j}{\partial P'_i}\) & \(i=1\) & \(i=2\) \\
+\hline
+\hline
+\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2}}\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2}}\) \\
+\hline
+\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2}\) \\
 \hline
 \end{tabular}
 
@@ -71,7 +82,7 @@ z = p_3(x, y, z) = z
 
 \begin{tabular}{| c || c | c | c |}
 \hline
-\(\frac{\partial p'_i}{\partial P_j}\) & \(i=1\) & \(i=2\) & \(i=3\) \\
+\(\frac{\partial p'_j}{\partial P_i}\) & \(i=1\) & \(i=2\) & \(i=3\) \\
 \hline
 \hline
 \(j=1\) & \(\frac{\partial x}{\partial r} = \cos \alpha\) & \(\frac{\partial x}{\partial \alpha} = -r \cdot \sin \alpha\) & \(\frac{\partial x}{\partial z} = 0\) \\
@@ -79,6 +90,19 @@ z = p_3(x, y, z) = z
 \(j=2\) & \(\frac{\partial y}{\partial r} = \sin \alpha\) & \(\frac{\partial y}{\partial \alpha} = r \cdot \cos \alpha\) & \(\frac{\partial y}{\partial z} = 0\) \\
 \hline
 \(j=3\) & \(\frac{\partial y}{\partial r} = 0\) & \(\frac{\partial y}{\partial \alpha} = 0\) & \(\frac{\partial z}{\partial z} = 1\) \\
+\hline
+\end{tabular}
+
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(\frac{\partial p_j}{\partial P'_i}\) & \(i=1\) & \(i=2\) & \(i=3\)\\
+\hline
+\hline
+\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2}}\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2}}\) & \(\frac{\partial r}{\partial z} = 0\)\\
+\hline
+\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
+\hline
+\(j=3\) & \(\frac{\partial \alpha}{\partial x} = 0\) & \(\frac{\partial \alpha}{\partial y} = 0\) & \(\frac{\partial z}{\partial z} = 1\)\\
 \hline
 \end{tabular}
 
@@ -93,8 +117,8 @@ P = (r, \alpha, \beta)
 
 \begin{equation}
 \begin{split}
-x = p'_1(r, \alpha, \beta) = r \cdot \cos \beta \cdot \cos \alpha \\
-y = p'_2(r, \alpha, \beta) = r \cdot \cos \beta \cdot \sin \alpha \\
+x = p'_1(r, \alpha, \beta) = r \cdot \cos \alpha \cdot \cos \beta \\
+y = p'_2(r, \alpha, \beta) = r \cdot \sin \alpha \cdot \cos \beta \\
 z = p'_3(r, \alpha, \beta) = r \cdot \sin \beta
 \end{split}
 \end{equation}
@@ -106,3 +130,29 @@ r = p_1(x, y, z) = \sqrt{x^2 + y^2 + z^2} \\
 \beta = p_3(x, y, z) = \arctg \frac{z}{\sqrt{x^2 + y^2}}
 \end{split}
 \end{equation}
+
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(\frac{\partial p'_j}{\partial P_i}\) & \(i=1\) & \(i=2\) & \(i=3\) \\
+\hline
+\hline
+\(j=1\) & \(\frac{\partial x}{\partial r} = \cos \alpha \cdot \cos \alpha\) & \(\frac{\partial x}{\partial \alpha} = -r \cdot \sin \alpha \cdot \cos \beta\) & \(\frac{\partial x}{\partial \beta} = -r \cdot \cos \alpha \cdot \sin \beta\) \\
+\hline
+\(j=2\) & \(\frac{\partial y}{\partial r} = \sin \alpha \cdot \cos \alpha\) & \(\frac{\partial y}{\partial \alpha} = r \cdot \cos \alpha \cdot \cos \beta\) & \(\frac{\partial y}{\partial \beta} = -r \cdot \sin \alpha \cdot \sin \beta\) \\
+\hline
+\(j=3\) & \(\frac{\partial z}{\partial r} = \sin \alpha\) & \(\frac{\partial z}{\partial \alpha} = 0\) & \(\frac{\partial z}{\partial \beta} = r \cdot \cos \beta\) \\
+\hline
+\end{tabular}
+
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(\frac{\partial p_j}{\partial P'_i}\) & \(i=1\) & \(i=2\) & \(i=3\)\\
+\hline
+\hline
+\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2 + z^2}}\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2 + z^2}}\) & \(\frac{\partial r}{\partial z} = \frac{z}{\sqrt{x^2 + y^2 + z^2}}\)\\
+\hline
+\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
+\hline
+\(j=3\) & \(\frac{\partial \beta}{\partial x} = = \frac{-xz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}}\) & \(\frac{\partial \beta}{\partial y} = \frac{-yz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}}\) & \(\frac{\partial \beta}{\partial z} = \frac{\sqrt{x^2 + y^2}}{x^2 + y^2 + z^2}\)\\
+\hline
+\end{tabular}
