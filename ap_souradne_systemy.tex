@@ -49,11 +49,19 @@ r = p_1(x, y) = \sqrt{x^2 + y^2} \\
 \(\frac{\partial p_j}{\partial P'_i}\) & \(i=1\) & \(i=2\) \\
 \hline
 \hline
-\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2}}\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2}}\) \\
+\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2}} = \cos \alpha\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2}} = \sin \alpha\) \\
 \hline
-\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2}\) \\
+\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2} = -\frac{\sin \alpha}{r}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2} = \frac{\cos \alpha}{r}\) \\
 \hline
 \end{tabular}
+
+\begin{equation}
+\diverg{\varphi} = \begin{pmatrix}
+\frac{\partial \varphi}{\partial r} \cdot \cos \alpha - \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\sin \alpha}{r} \\
+\frac{\partial \varphi}{\partial r} \cdot \sin \alpha + \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\cos \alpha}{r}
+\end{pmatrix} 
+\end{equation}
+
 
 \section{Cylindrický souřadný systém}
 
@@ -98,13 +106,22 @@ z = p_3(x, y, z) = z
 \(\frac{\partial p_j}{\partial P'_i}\) & \(i=1\) & \(i=2\) & \(i=3\)\\
 \hline
 \hline
-\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2}}\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2}}\) & \(\frac{\partial r}{\partial z} = 0\)\\
+\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2}} = \cos \alpha\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2}} = \sin \alpha\) & \(\frac{\partial r}{\partial z} = 0\)\\
 \hline
-\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
+\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2} = -\frac{\sin \alpha}{r}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2} = \frac{\cos \alpha}{r}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
 \hline
 \(j=3\) & \(\frac{\partial \alpha}{\partial x} = 0\) & \(\frac{\partial \alpha}{\partial y} = 0\) & \(\frac{\partial z}{\partial z} = 1\)\\
 \hline
 \end{tabular}
+
+\begin{equation}
+\diverg{\varphi} = \begin{pmatrix}
+\frac{\partial \varphi}{\partial r} \cdot \cos \alpha - \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\sin \alpha}{r} \\
+\frac{\partial \varphi}{\partial r} \cdot \sin \alpha + \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\cos \alpha}{r} \\
+\frac{\partial \varphi}{\partial z}  
+\end{pmatrix}
+\end{equation}
+
 
 \section{Sférický souřadný systém}
 
@@ -149,10 +166,18 @@ r = p_1(x, y, z) = \sqrt{x^2 + y^2 + z^2} \\
 \(\frac{\partial p_j}{\partial P'_i}\) & \(i=1\) & \(i=2\) & \(i=3\)\\
 \hline
 \hline
-\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2 + z^2}}\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2 + z^2}}\) & \(\frac{\partial r}{\partial z} = \frac{z}{\sqrt{x^2 + y^2 + z^2}}\)\\
+\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2 + z^2}} = \cos \alpha \cdot \cos \beta\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2 + z^2}} = \sin \alpha \cdot \cos \beta\) & \(\frac{\partial r}{\partial z} = \frac{z}{\sqrt{x^2 + y^2 + z^2}} = \sin \beta\)\\
 \hline
-\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
+\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2} = -\frac{\sin \alpha}{r \cdot \cos \beta}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2} = \frac{\cos \alpha}{r \cdot \cos \beta}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
 \hline
-\(j=3\) & \(\frac{\partial \beta}{\partial x} = = \frac{-xz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}}\) & \(\frac{\partial \beta}{\partial y} = \frac{-yz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}}\) & \(\frac{\partial \beta}{\partial z} = \frac{\sqrt{x^2 + y^2}}{x^2 + y^2 + z^2}\)\\
+\(j=3\) & \(\frac{\partial \beta}{\partial x} = \frac{-xz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}} = \frac{-\sin \alpha \cdot \cos \alpha}{r}\) & \(\frac{\partial \beta}{\partial y} = \frac{-yz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}} = \frac{-\sin^2 \alpha}{r}\) & \(\frac{\partial \beta}{\partial z} = \frac{\sqrt{x^2 + y^2}}{x^2 + y^2 + z^2} = \frac{\cos \beta}{r}\)\\
 \hline
 \end{tabular}
+
+\begin{equation}
+\diverg{\varphi} = \begin{pmatrix}
+\frac{\partial \varphi}{\partial r} \cdot \cos \alpha \cdot \cos \beta - \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\sin \alpha}{r \cdot \cos \beta} - \frac{\partial \varphi}{\partial \beta} \cdot \frac{\sin \alpha \cdot \cos \alpha}{r} \\
+\frac{\partial \varphi}{\partial r} \cdot \sin \alpha \cdot \cos \beta + \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\cos \alpha}{r \cdot \cos \beta} - \frac{\partial \varphi}{\partial \beta} \cdot \frac{\sin^2 \alpha}{r} \\
+\frac{\partial \varphi}{\partial r} \cdot \sin \beta + \frac{\partial \varphi}{\partial \beta} \cdot \frac{\cos \beta}{r} \\
+\end{pmatrix}
+\end{equation}
