@@ -18,6 +18,18 @@ cylindrical.dpInv = @(r, alpha, z) [
 	0, 0, 1
 ];
 
+cylindrical.gCov = @(r, alpha, z) [
+	1, 0, 0;
+	0, r^2, 0;
+	0, 0, 1
+];
+
+cylindrical.gContra = @(r, alpha, z) [
+	1, 0, 0;
+	0, 1 / r^2, 0;
+	0, 0, 1
+]; 
+
 spherical.p = @(x, y, z) [ sqrt(x^2 + y^2 + z^2), atan2(y, x), atan(z / (sqrt(x^2 + y^2))) ]; 
 spherical.pInv = @(r, alpha, beta) [ r * cos(alpha) * cos(beta), r * sin(alpha) * cos(beta), r * sin(beta) ];
 
@@ -33,7 +45,19 @@ spherical.dpInv = @(r, alpha, beta) [
 	sin(beta), 0, r * cos(beta)
 ];
 
-systems = {cylindrical,	spherical };
+spherical.gCov = @(r, alpha, beta) [
+	1, 0, 0;
+	0, (r * cos(beta))^2, 0;
+	0, 0, r^2
+];
+
+spherical.gContra = @(r, alpha, beta) [
+	1, 0, 0;
+	0, 1 / (r * cos(beta))^2, 0;
+	0, 0, 1 / r^2
+]; 
+
+systems = {cylindrical, spherical };
 
 eps = 1e-10;
 
@@ -52,8 +76,15 @@ for i = 1:1
 		assert([x, y, z], cartesianCoord, eps);
 
 		# Provazanost prvnich derivaci souradneho systemu
-		firstDerivatesProduct = sys.dp(x, y, z) * sys.dpInv(curvedCoord(1), curvedCoord(2), curvedCoord(3));
+		dp = sys.dp(x, y, z);
+		dpInv = sys.dpInv(curvedCoord(1), curvedCoord(2), curvedCoord(3));
+		
+		firstDerivatesProduct = dp * dpInv;
 
 		assert(eye(3), firstDerivatesProduct, eps);
+		
+		# Tenzory g
+		assert(sys.gCov(curvedCoord(1), curvedCoord(2), curvedCoord(3)), dpInv' * dpInv, eps);
+		assert(sys.gContra(curvedCoord(1), curvedCoord(2), curvedCoord(3)), dp * dp', eps);
 	endfor
 endfor

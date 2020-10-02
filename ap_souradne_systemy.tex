@@ -55,14 +55,28 @@ r = p_1(x, y) = \sqrt{x^2 + y^2} \\
 \hline
 \end{tabular}
 
-\begin{equation}
-\diverg{\varphi} = \begin{pmatrix}
-\frac{\partial \varphi}{\partial r} \cdot \cos \alpha - \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\sin \alpha}{r} \\
-\frac{\partial \varphi}{\partial r} \cdot \sin \alpha + \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\cos \alpha}{r}
-\end{pmatrix} 
-\end{equation}
+\begin{tabular}{| c || c | c |}
+\hline
+\(g_{jk}\) & \(j=1\) & \(j=2\) \\
+\hline
+\hline
+\(k=1\) & \(1\) & \(0\) \\
+\hline
+\(k=2\) & \(0\) & \(r^2\) \\
+\hline
+\end{tabular}
 
+\begin{tabular}{| c || c | c |}
+\hline
+\(g^{jk}\) & \(j=1\) & \(j=2\) \\
+\hline
+\hline
+\(k=1\) & \(1\) & \(0\) \\
+\hline
+\(k=2\) & \(0\) & \(\frac{1}{r^2}\) \\
+\hline
 
+\end{tabular}
 \section{Cylindrický souřadný systém}
 
 \begin{equation}
@@ -114,14 +128,31 @@ z = p_3(x, y, z) = z
 \hline
 \end{tabular}
 
-\begin{equation}
-\diverg{\varphi} = \begin{pmatrix}
-\frac{\partial \varphi}{\partial r} \cdot \cos \alpha - \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\sin \alpha}{r} \\
-\frac{\partial \varphi}{\partial r} \cdot \sin \alpha + \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\cos \alpha}{r} \\
-\frac{\partial \varphi}{\partial z}  
-\end{pmatrix}
-\end{equation}
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(g_{jk}\) & \(j=1\) & \(j=2\) & \(j=3\) \\
+\hline
+\hline
+\(k=1\) & \(1\) & \(0\) & \(0\) \\
+\hline
+\(k=2\) & \(0\) & \(r^2\) & \(0\) \\
+\hline
+\(k=3\) & \(0\) & \(0\) & \(1\) \\
+\hline
+\end{tabular}
 
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(g^{jk}\) & \(j=1\) & \(j=2\) & \(j=3\) \\
+\hline
+\hline
+\(k=1\) & \(1\) & \(0\) & \(0\) \\
+\hline
+\(k=2\) & \(0\) & \(\frac{1}{r^2}\) & \(0\) \\
+\hline
+\(k=3\) & \(0\) & \(0\) & \(1\) \\
+\hline
+\end{tabular}
 
 \section{Sférický souřadný systém}
 
@@ -170,14 +201,33 @@ r = p_1(x, y, z) = \sqrt{x^2 + y^2 + z^2} \\
 \hline
 \(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2} = -\frac{\sin \alpha}{r \cdot \cos \beta}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2} = \frac{\cos \alpha}{r \cdot \cos \beta}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
 \hline
-\(j=3\) & \(\frac{\partial \beta}{\partial x} = \frac{-xz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}} = \frac{-\sin \alpha \cdot \cos \alpha}{r}\) & \(\frac{\partial \beta}{\partial y} = \frac{-yz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}} = \frac{-\sin^2 \alpha}{r}\) & \(\frac{\partial \beta}{\partial z} = \frac{\sqrt{x^2 + y^2}}{x^2 + y^2 + z^2} = \frac{\cos \beta}{r}\)\\
+\(j=3\) & \(\frac{\partial \beta}{\partial x} = \frac{-xz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}} = \frac{-\cos \alpha \cdot \sin \beta}{r}\) & \(\frac{\partial \beta}{\partial y} = \frac{-yz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}} = \frac{-\sin \alpha \cdot  \sin \beta}{r}\) & \(\frac{\partial \beta}{\partial z} = \frac{\sqrt{x^2 + y^2}}{x^2 + y^2 + z^2} = \frac{\cos \beta}{r}\)\\
 \hline
 \end{tabular}
 
-\begin{equation}
-\diverg{\varphi} = \begin{pmatrix}
-\frac{\partial \varphi}{\partial r} \cdot \cos \alpha \cdot \cos \beta - \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\sin \alpha}{r \cdot \cos \beta} - \frac{\partial \varphi}{\partial \beta} \cdot \frac{\sin \alpha \cdot \cos \alpha}{r} \\
-\frac{\partial \varphi}{\partial r} \cdot \sin \alpha \cdot \cos \beta + \frac{\partial \varphi}{\partial \alpha} \cdot \frac{\cos \alpha}{r \cdot \cos \beta} - \frac{\partial \varphi}{\partial \beta} \cdot \frac{\sin^2 \alpha}{r} \\
-\frac{\partial \varphi}{\partial r} \cdot \sin \beta + \frac{\partial \varphi}{\partial \beta} \cdot \frac{\cos \beta}{r} \\
-\end{pmatrix}
-\end{equation}
+
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(g_{jk}\) & \(j=1\) & \(j=2\) & \(j=3\) \\
+\hline
+\hline
+\(k=1\) & \(1\) & \(0\) & \(0\) \\
+\hline
+\(k=2\) & \(0\) & \(r^2 \cdot \cos^2 \beta\) & \(0\) \\
+\hline
+\(k=3\) & \(0\) & \(0\) & \(r^2\) \\
+\hline
+\end{tabular}
+
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(g^{jk}\) & \(j=1\) & \(j=2\) & \(j=3\) \\
+\hline
+\hline
+\(k=1\) & \(1\) & \(0\) & \(0\) \\
+\hline
+\(k=2\) & \(0\) & \(\frac{1}{r^2 \cdot \cos^2 \beta}\) & \(0\) \\
+\hline
+\(k=3\) & \(0\) & \(0\) & \(\frac{1}{r^2}\) \\
+\hline
+\end{tabular}
