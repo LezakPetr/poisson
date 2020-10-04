@@ -6,9 +6,9 @@ rehash();
 cylindrical.p = @(x, y, z) [ sqrt(x^2 + y^2), atan2(y, x), z ]; 
 cylindrical.pInv = @(r, alpha, z) [ r * cos(alpha), r * sin(alpha), z ];
 
-cylindrical.dp = @(x, y, z) [
-	x / sqrt(x^2 + y^2), y / sqrt(x^2 + y^2), 0;
-	-y / (x^2 + y^2), x / (x^2 + y^2), 0;
+cylindrical.dp = @(r, alpha, z) [
+	cos(alpha), sin(alpha), 0;
+	-sin(alpha) / r, cos(alpha) / r, 0;
 	0, 0, 1
 ];
 
@@ -33,10 +33,10 @@ cylindrical.gContra = @(r, alpha, z) [
 spherical.p = @(x, y, z) [ sqrt(x^2 + y^2 + z^2), atan2(y, x), atan(z / (sqrt(x^2 + y^2))) ]; 
 spherical.pInv = @(r, alpha, beta) [ r * cos(alpha) * cos(beta), r * sin(alpha) * cos(beta), r * sin(beta) ];
 
-spherical.dp = @(x, y, z) [
-	x / sqrt(x^2 + y^2 + z^2), y / sqrt(x^2 + y^2 + z^2), z / sqrt(x^2 + y^2 + z^2);
-	-y / (x^2 + y^2), x / (x^2 + y^2), 0;
-	-x*z / ((x^2 + y^2 + z^2) * sqrt(x^2 + y^2)), -y*z / ((x^2 + y^2 + z^2) * sqrt(x^2 + y^2)), sqrt(x^2 + y^2) / (x^2 + y^2 + z^2)
+spherical.dp = @(r, alpha, beta) [
+	cos(alpha) * cos(beta), sin(alpha) * cos(beta), sin(beta);
+	-sin(alpha) / (r * cos(beta)), cos(alpha) / (r * cos(beta)), 0;
+	-cos(alpha) * sin(beta) / r, -sin(alpha) * sin(beta) / r, cos(beta) / r
 ];
 
 spherical.dpInv = @(r, alpha, beta) [
@@ -76,14 +76,14 @@ for i = 1:1
 		assert([x, y, z], cartesianCoord, eps);
 
 		# Provazanost prvnich derivaci souradneho systemu
-		dp = sys.dp(x, y, z);
+		dp = sys.dp(curvedCoord(1), curvedCoord(2), curvedCoord(3));
 		dpInv = sys.dpInv(curvedCoord(1), curvedCoord(2), curvedCoord(3));
 		
 		firstDerivatesProduct = dp * dpInv;
 
 		assert(eye(3), firstDerivatesProduct, eps);
 		
-		# Tenzory g
+		# Metricke tenzory g
 		assert(sys.gCov(curvedCoord(1), curvedCoord(2), curvedCoord(3)), dpInv' * dpInv, eps);
 		assert(sys.gContra(curvedCoord(1), curvedCoord(2), curvedCoord(3)), dp * dp', eps);
 	endfor
