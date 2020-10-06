@@ -49,9 +49,9 @@ r = p_1(x, y) = \sqrt{x^2 + y^2} \\
 \(\frac{\partial p_j}{\partial P'_i}\) & \(i=1\) & \(i=2\) \\
 \hline
 \hline
-\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2}} = \cos \alpha\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2}} = \sin \alpha\) \\
+\(j=1\) & \(\frac{\partial r}{\partial x} = \cos \alpha\) & \(\frac{\partial r}{\partial y} = \sin \alpha\) \\
 \hline
-\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2} = -\frac{\sin \alpha}{r}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2} = \frac{\cos \alpha}{r}\) \\
+\(j=2\) & \(\frac{\partial \alpha}{\partial x} = -\frac{\sin \alpha}{r}\) & \(\frac{\partial \alpha}{\partial y} = \frac{\cos \alpha}{r}\) \\
 \hline
 \end{tabular}
 
@@ -75,8 +75,20 @@ r = p_1(x, y) = \sqrt{x^2 + y^2} \\
 \hline
 \(k=2\) & \(0\) & \(\frac{1}{r^2}\) \\
 \hline
-
 \end{tabular}
+
+\begin{tabular}{| c || c | c |}
+\hline
+\(\frac{\partial^2 p_j}{\partial P'^2_i}\) & \(i=1\) & \(i=2\) \\
+\hline
+\hline
+\(j=1\) & \(\frac{\partial^2 r}{\partial x^2} = \frac{\sin^2 \alpha}{r}\) & \(\frac{\partial^2 r}{\partial y^2} = \frac{\cos^2 \alpha}{r}\) \\
+\hline
+\(j=2\) & \(\frac{\partial^2 \alpha}{\partial x^2} = \frac{\sin 2\alpha}{r^2}\) & \(\frac{\partial^2 \alpha}{\partial y^2} = -\frac{\sin 2\alpha}{r^2}\) \\
+\hline
+\end{tabular}
+
+
 \section{Cylindrický souřadný systém}
 
 \begin{equation}
@@ -120,9 +132,9 @@ z = p_3(x, y, z) = z
 \(\frac{\partial p_j}{\partial P'_i}\) & \(i=1\) & \(i=2\) & \(i=3\)\\
 \hline
 \hline
-\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2}} = \cos \alpha\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2}} = \sin \alpha\) & \(\frac{\partial r}{\partial z} = 0\)\\
+\(j=1\) & \(\frac{\partial r}{\partial x} = \cos \alpha\) & \(\frac{\partial r}{\partial y} = \sin \alpha\) & \(\frac{\partial r}{\partial z} = 0\)\\
 \hline
-\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2} = -\frac{\sin \alpha}{r}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2} = \frac{\cos \alpha}{r}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
+\(j=2\) & \(\frac{\partial \alpha}{\partial x} = -\frac{\sin \alpha}{r}\) & \(\frac{\partial \alpha}{\partial y} = \frac{\cos \alpha}{r}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
 \hline
 \(j=3\) & \(\frac{\partial \alpha}{\partial x} = 0\) & \(\frac{\partial \alpha}{\partial y} = 0\) & \(\frac{\partial z}{\partial z} = 1\)\\
 \hline
@@ -153,6 +165,20 @@ z = p_3(x, y, z) = z
 \(k=3\) & \(0\) & \(0\) & \(1\) \\
 \hline
 \end{tabular}
+
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(\frac{\partial^2 p_j}{\partial P'^2_i}\) & \(i=1\) & \(i=2\) & \(i=3\) \\
+\hline
+\hline
+\(j=1\) & \(\frac{\partial^2 r}{\partial x^2} = \frac{\sin^2 \alpha}{r}\) & \(\frac{\partial^2 r}{\partial y^2} = \frac{\cos^2 \alpha}{r}\) & \(\frac{\partial^2 r}{\partial z^2} = 0\) \\
+\hline
+\(j=2\) & \(\frac{\partial^2 \alpha}{\partial x^2} = \frac{\sin 2 \alpha}{r^2}\) & \(\frac{\partial^2 \alpha}{\partial y^2} = -\frac{\sin 2\alpha}{r^2}\) & \(\frac{\partial^2 \alpha}{\partial z^2} = 0\) \\
+\hline
+\(j=3\) & \(\frac{\partial^2 z}{\partial x^2} = 0\) & \(\frac{\partial^2 z}{\partial y^2} = 0\) & \(\frac{\partial^2 z}{\partial z^2} = 0\) \\
+\hline
+\end{tabular}
+
 
 \section{Sférický souřadný systém}
 
@@ -197,11 +223,11 @@ r = p_1(x, y, z) = \sqrt{x^2 + y^2 + z^2} \\
 \(\frac{\partial p_j}{\partial P'_i}\) & \(i=1\) & \(i=2\) & \(i=3\)\\
 \hline
 \hline
-\(j=1\) & \(\frac{\partial r}{\partial x} = \frac{x}{\sqrt{x^2 + y^2 + z^2}} = \cos \alpha \cdot \cos \beta\) & \(\frac{\partial r}{\partial y} = \frac{y}{\sqrt{x^2 + y^2 + z^2}} = \sin \alpha \cdot \cos \beta\) & \(\frac{\partial r}{\partial z} = \frac{z}{\sqrt{x^2 + y^2 + z^2}} = \sin \beta\)\\
+\(j=1\) & \(\frac{\partial r}{\partial x} = \cos \alpha \cdot \cos \beta\) & \(\frac{\partial r}{\partial y} = \sin \alpha \cdot \cos \beta\) & \(\frac{\partial r}{\partial z} = \sin \beta\)\\
 \hline
-\(j=2\) & \(\frac{\partial \alpha}{\partial x} = \frac{-y}{x^2 + y^2} = -\frac{\sin \alpha}{r \cdot \cos \beta}\) & \(\frac{\partial \alpha}{\partial y} = \frac{x}{x^2 + y^2} = \frac{\cos \alpha}{r \cdot \cos \beta}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
+\(j=2\) & \(\frac{\partial \alpha}{\partial x} = -\frac{\sin \alpha}{r \cdot \cos \beta}\) & \(\frac{\partial \alpha}{\partial y} = \frac{\cos \alpha}{r \cdot \cos \beta}\) & \(\frac{\partial \alpha}{\partial z} = 0\)\\
 \hline
-\(j=3\) & \(\frac{\partial \beta}{\partial x} = \frac{-xz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}} = \frac{-\cos \alpha \cdot \sin \beta}{r}\) & \(\frac{\partial \beta}{\partial y} = \frac{-yz}{(x^2 + y^2 + z^2) \sqrt{x^2 + y^2}} = \frac{-\sin \alpha \cdot  \sin \beta}{r}\) & \(\frac{\partial \beta}{\partial z} = \frac{\sqrt{x^2 + y^2}}{x^2 + y^2 + z^2} = \frac{\cos \beta}{r}\)\\
+\(j=3\) & \(\frac{\partial \beta}{\partial x} = \frac{-\cos \alpha \cdot \sin \beta}{r}\) & \(\frac{\partial \beta}{\partial y} = \frac{-\sin \alpha \cdot  \sin \beta}{r}\) & \(\frac{\partial \beta}{\partial z} = \frac{\cos \beta}{r}\)\\
 \hline
 \end{tabular}
 
@@ -229,5 +255,18 @@ r = p_1(x, y, z) = \sqrt{x^2 + y^2 + z^2} \\
 \(k=2\) & \(0\) & \(\frac{1}{r^2 \cdot \cos^2 \beta}\) & \(0\) \\
 \hline
 \(k=3\) & \(0\) & \(0\) & \(\frac{1}{r^2}\) \\
+\hline
+\end{tabular}
+
+\begin{tabular}{| c || c | c | c |}
+\hline
+\(\frac{\partial^2 p_j}{\partial P'^2_i}\) & \(i=1\) & \(i=2\) & \(i=3\) \\
+\hline
+\hline
+\(j=1\) & \(\frac{\partial^2 r}{\partial x^2} = \frac{\sin^2 \alpha + \cos^2 \alpha \cdot \sin^2 \beta}{r}\) & \(\frac{\partial^2 r}{\partial y^2} = \frac{\cos^2 \alpha + \sin^2 \alpha \cdot \sin^2 \beta}{r}\) & \(\frac{\partial^2 r}{\partial z^2} = \frac{\cos^2 \beta}{r}\) \\
+\hline
+\(j=2\) & \(\frac{\partial^2 \alpha}{\partial x^2} = \frac{\sin 2\alpha}{r^2 \cdot \cos^2 \beta}\) & \(\frac{\partial^2 \alpha}{\partial y^2} = -\frac{\sin 2\alpha}{r^2 \cdot \cos^2 \beta}\) & \(\frac{\partial^2 \alpha}{\partial z^2} = 0\) \\
+\hline
+\(j=3\) & \(\frac{\partial^2 \beta}{\partial x^2} = \frac{\cos^2 \alpha \cdot \sin 2 \beta - \sin^2 \alpha \cdot \tg \beta}{r^2}\) & \(\frac{\partial^2 \beta}{\partial y^2} = \frac{\sin^2 \alpha \cdot \sin 2 \beta - \sin^2 \alpha \cdot \tg \beta}{r^2}\) & \(\frac{\partial^2 \beta}{\partial z^2} = -\frac{\sin 2 \beta}{r^2}\) \\
 \hline
 \end{tabular}
