@@ -1565,7 +1565,8 @@ Dosadíme-li za derivace vztah \eqref{eq:derivace_vektoru}, získáme:
 \begin{equation}
 \begin{split}
 \diverg \vect{v} = \sum_{i=1}^n \sum_{k=1}^n \sum_{l=1}^n \frac{\partial p_k}{\partial P'_i} \frac{\partial p_l}{\partial P'_i} \frac{\partial v_k}{\partial P_l} + \sum_{i=1}^n \sum_{k=1}^n \frac{\partial^2 p_k}{\partial P'^2_i} v_k = \\
-\sum_{k=1}^n \sum_{l=1}^n g^{kl} \frac{\partial v_k}{\partial P_l} + \sum_{i=1}^n \sum_{k=1}^n \frac{\partial^2 p_k}{\partial P'^2_i} v_k
+\sum_{k=1}^n \sum_{l=1}^n g^{kl} \frac{\partial v_k}{\partial P_l} + \sum_{i=1}^n \sum_{k=1}^n \frac{\partial^2 p_k}{\partial P'^2_i} v_k = \\
+\sum_{k=1}^n \sum_{l=1}^n g^{kl} \frac{\partial v_k}{\partial P_l} + \sum_{k=1}^n v_k \cdot \sum_{i=1}^n \frac{\partial^2 p_k}{\partial P'^2_i}
 \end{split}
 \end{equation}
 
