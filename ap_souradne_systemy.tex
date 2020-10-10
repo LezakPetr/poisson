@@ -102,6 +102,11 @@ r = p_1(x, y) = \sqrt{x^2 + y^2} \\
 \diverg{\kovarvect{v}} = \frac{\partial v_r}{\partial r} + \frac{1}{r^2} \frac{\partial v_{\alpha}}{\partial \alpha} + \frac{v_r}{r}
 \end{equation}
 
+\begin{equation}
+\label{eq:polarni_ss_div}
+\Delta \varphi = \frac{\partial^2 \varphi}{\partial r^2} + \frac{1}{r^2} \frac{\partial^2 \varphi}{\partial \alpha^2} + \frac{\partial \varphi}{\partial r}
+\end{equation}
+
 
 \section{Cylindrický souřadný systém}
 
@@ -208,6 +213,11 @@ z = p_3(x, y, z) = z
 \diverg{\kovarvect{v}} = \frac{\partial v_r}{\partial r} + \frac{1}{r^2} \frac{\partial v_{\alpha}}{\partial \alpha} + \frac{\partial v_z}{\partial z} + \frac{v_r}{r}
 \end{equation}
 
+\begin{equation}
+\label{eq:polarni_ss_div}
+\Delta \varphi = \frac{\partial^2 \varphi}{\partial r^2} + \frac{1}{r^2} \frac{\partial^2 \varphi}{\partial \alpha^2} + \frac{\partial^2 \varphi}{\partial z^2} + \frac{\partial \varphi}{\partial r}
+\end{equation}
+
 \section{Sférický souřadný systém}
 
 \begin{equation}
@@ -311,4 +321,9 @@ r = p_1(x, y, z) = \sqrt{x^2 + y^2 + z^2} \\
 \begin{equation}
 \label{eq:polarni_ss_div}
 \diverg{\kovarvect{v}} = \frac{\partial v_r}{\partial r} + \frac{1}{r^2 \cdot \cos^2 \beta} \frac{\partial v_{\alpha}}{\partial \alpha} + \frac{1}{r^2} \frac{\partial v_{\beta}}{\partial \beta} + \frac{2 \cdot v_r}{r} - \frac{2 \cdot \sin^2 \alpha \cdot \tg \beta \cdot v_{\beta}}{r^2}
+\end{equation}
+
+\begin{equation}
+\label{eq:polarni_ss_div}
+\Delta \varphi = \frac{\partial^2 \varphi}{\partial r^2} + \frac{1}{r^2 \cdot \cos^2 \beta} \frac{\partial^2 \varphi}{\partial \alpha^2} + \frac{1}{r^2} \frac{\partial^2 \varphi}{\partial \beta^2} + \frac{2}{r} \cdot \frac{\partial \varphi}{\partial r} - \frac{2 \cdot \sin^2 \alpha \cdot \tg \beta}{r^2} \cdot \frac{\partial \varphi}{\partial \beta}
 \end{equation}
