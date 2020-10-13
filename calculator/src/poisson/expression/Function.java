@@ -29,12 +29,12 @@ public abstract class Function implements Expression {
 
             if (arg.dependsOn(variable)) {
                 argumentDerivatives.add(
-                  times(defferentiateAgainstParameter(i, arg), arg.differentiate(variable))
+                  product(defferentiateAgainstParameter(i, arg), arg.differentiate(variable))
                 );
             }
         }
 
-        return plus(argumentDerivatives);
+        return sum(argumentDerivatives);
     }
 
     @Override
@@ -53,4 +53,9 @@ public abstract class Function implements Expression {
     public int getArgumentCount() {
         return arguments.size();
     }
+
+    public List<? extends Expression> getArguments() {
+        return arguments;
+    }
+
 }

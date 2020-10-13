@@ -2,6 +2,7 @@ package poisson.expression;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Value implements Expression {
 
@@ -9,6 +10,7 @@ public class Value implements Expression {
 
     public static final Value ZERO = new Value(0);
     public static final Value ONE = new Value(1);
+    public static final Value MINUS_ONE = new Value(-1);
 
     public Value(final double value) {
         this.value = value;
@@ -31,5 +33,10 @@ public class Value implements Expression {
 
     public double getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return Double.toString(value);
     }
 }
