@@ -72,7 +72,7 @@ spherical.gContra = @(r, alpha, beta) [
 ]; 
 
 spherical.div = @(vr, valpha, vbeta, r, alpha, beta) (
-	der(@(t) vr(t, alpha, beta), r) + der(@(t) valpha(r, t, beta), alpha) / (r * cos(beta))^2 + der(@(t) vbeta(r, alpha, t), beta) / r^2 + 2 * vr(r, alpha, beta) / r - 2 * (sin(alpha))^2 * tan(beta) * vbeta(r, alpha, beta) / r^2
+	der(@(t) vr(t, alpha, beta), r) + der(@(t) valpha(r, t, beta), alpha) / (r * cos(beta))^2 + der(@(t) vbeta(r, alpha, t), beta) / r^2 + 2 * vr(r, alpha, beta) / r - tan(beta) * vbeta(r, alpha, beta) / r^2
 );
 
 systems = {cylindrical, spherical };
@@ -89,8 +89,6 @@ for i = 1:1
 		
 	for s = systems
 		sys = s{};
-		
-		sys
 
 		# Inverze souradneho systemu
 		curvedCoord = sys.p(x, y, z);
@@ -115,7 +113,7 @@ for i = 1:1
 		assert(sys.gCov(c1, c2, c3), dpInv' * dpInv, eps);
 		assert(sys.gContra(c1, c2, c3), dp * dp', eps);
 		
-		# Laplaceuv operator
+		# Divergence
 		l1 = sys.div(v_a, v_b, v_c, c1, c2, c3);
 		
 		v_cart = @(px, py, pz) [
