@@ -1054,11 +1054,20 @@ Vyšetřeme tedy tenzor \(\epsilon_{lmn}\) pro různé indexy \(l\), \(m\) a~\(n
   \frac{\partial p'_1}{\partial P_2} & \frac{\partial p'_2}{\partial P_2} & \frac{\partial p'_3}{\partial P_2} \\
   \frac{\partial p'_1}{\partial P_3} & \frac{\partial p'_2}{\partial P_3} & \frac{\partial p'_3}{\partial P_3}
 \end{vmatrix}
-\cdot \varepsilon_{lmn}
+\cdot \varepsilon_{lmn} = J \cdot \varepsilon_{lmn}
 \end{split}
 \end{equation}
 
-Vidíme, že Levi-Civitův symbol se transformuje pouze násobením konstantou, tzv. Jakobiánem funkcí \(p'_i\).
+Vidíme, že Levi-Civitův symbol se transformuje pouze násobením konstantou, tzv. Jakobiánem funkcí \(p'_i\), pro nějž jsme zavedli označení:
+
+\begin{equation}
+J = 
+\begin{vmatrix}
+  \frac{\partial p'_1}{\partial P_1} & \frac{\partial p'_2}{\partial P_1} & \frac{\partial p'_3}{\partial P_1} \\
+  \frac{\partial p'_1}{\partial P_2} & \frac{\partial p'_2}{\partial P_2} & \frac{\partial p'_3}{\partial P_2} \\
+  \frac{\partial p'_1}{\partial P_3} & \frac{\partial p'_2}{\partial P_3} & \frac{\partial p'_3}{\partial P_3}
+\end{vmatrix}
+\end{equation}
 
 Obdobně můžeme transformovat Levi-Civitův symbol na kontravariantní tenzor:
 
@@ -1071,11 +1080,19 @@ Obdobně můžeme transformovat Levi-Civitův symbol na kontravariantní tenzor:
   \frac{\partial p_1}{\partial P'_2} & \frac{\partial p_2}{\partial P'_2} & \frac{\partial p_3}{\partial P'_2} \\
   \frac{\partial p_1}{\partial P'_3} & \frac{\partial p_2}{\partial P'_3} & \frac{\partial p_3}{\partial P'_3}
 \end{vmatrix}
-\cdot \varepsilon_{lmn}
+\cdot \varepsilon_{lmn}  = J' \cdot \varepsilon_{lmn}
 \end{split}
 \end{equation}
 
-Vidíme, že Levi-Civitův symbol se transformuje pouze násobením konstantou, tzv. Jakobiánem funkcí \(p_i\).
+Vidíme, že Levi-Civitův symbol se transformuje pouze násobením konstantou, tzv. Jakobiánem funkcí \(p_i\), pro nějž jsme zavedli označení:
+
+\begin{equation}
+J' = \begin{vmatrix}
+  \frac{\partial p_1}{\partial P'_1} & \frac{\partial p_2}{\partial P'_1} & \frac{\partial p_3}{\partial P'_1} \\
+  \frac{\partial p_1}{\partial P'_2} & \frac{\partial p_2}{\partial P'_2} & \frac{\partial p_3}{\partial P'_2} \\
+  \frac{\partial p_1}{\partial P'_3} & \frac{\partial p_2}{\partial P'_3} & \frac{\partial p_3}{\partial P'_3}
+\end{vmatrix}
+\end{equation}
 
 \subsubsection{Vektorový součin}
 
@@ -1405,12 +1422,17 @@ u'_i = \frac{1}{2} \left(\sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac
 \end{equation}
 
 V~prvním kroku jsme vztah napsali polovinu dvojnásobku vztahu \eqref{eq:rotace_tenzorova}. Ve druhém kroku jsme provedli substituci \(j \leftrightarrow k\) u~druhého členu - prohodili jsme tyto proměnné. Ve třetím kroku jsme prohodily nezávislé sumy u~druhého členu. Ve čtvrtém kroku jsme prohodily indexy \(j\) a~\(k\), proto jsme museli otočit znaménko u~sumy. Nakonec jsme oba členy spojily. Podle vztahu~\eqref{eq:tenzor_rozdil_derivaci_vektoru} je rozdíl parciálních derivací, který jsme získaly, tenzorem druhého řádu. Rovnice \eqref{eq:rotace_tenzorova_2} je proto tenzorovou rovnicí a~můžeme ji tak proto transformovat:
+
 \begin{equation}
 \label{eq:rotace_tenzorova_3}
 \begin{split}
-u'^i = \frac{1}{2} \sum_{j=1}^3 \sum_{k=1}^3 \epsilon^{ijk} \cdot \left(\frac{\partial v_k}{\partial P_j} - \frac{\partial v_j}{\partial P_k} \right)
+u^i = \frac{1}{2} \sum_{j=1}^3 \sum_{k=1}^3 \epsilon^{ijk} \cdot \left(\frac{\partial v_k}{\partial P_j} - \frac{\partial v_j}{\partial P_k} \right) = \\
+J' \cdot \frac{1}{2} \sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \left(\frac{\partial v_k}{\partial P_j} - \frac{\partial v_j}{\partial P_k} \right) = \\
+J' \cdot \sum_{j=1}^3 \sum_{k=1}^3 \varepsilon_{ijk} \cdot \frac{\partial v_k}{\partial P_j}
 \end{split}
 \end{equation}
+
+V~posledním kroku jsme využili vztah \eqref{eq:rotace_tenzorova_2} obráceně, pouze pro křivočaré souřadnice.
 
 
 \subsection{Stokesova věta}
