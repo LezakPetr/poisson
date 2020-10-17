@@ -39,10 +39,12 @@ cylindrical.gContra = @(r, alpha, z) [
 	0, 0, 1
 ];
 
-
 cylindrical.div = @(vr, valpha, vz, r, alpha, z) (
 	der(@(t) vr(t, alpha, z), r) + der(@(t) valpha(r, t, z), alpha) / r^2 + der(@(t) vz(r, alpha, t), z) + vr(r, alpha, z) / r
 );
+
+cylindrical.jInv = @(r, alpha, z) r;
+cylindrical.j = @(r, alpha, z) 1 / r;
 
 spherical.p = @(x, y, z) [ sqrt(x^2 + y^2 + z^2), atan2(y, x), atan(z / (sqrt(x^2 + y^2))) ]; 
 spherical.pInv = @(r, alpha, beta) [ r * cos(alpha) * cos(beta), r * sin(alpha) * cos(beta), r * sin(beta) ];
@@ -75,7 +77,10 @@ spherical.div = @(vr, valpha, vbeta, r, alpha, beta) (
 	der(@(t) vr(t, alpha, beta), r) + der(@(t) valpha(r, t, beta), alpha) / (r * cos(beta))^2 + der(@(t) vbeta(r, alpha, t), beta) / r^2 + 2 * vr(r, alpha, beta) / r - tan(beta) * vbeta(r, alpha, beta) / r^2
 );
 
-systems = {cylindrical, spherical };
+spherical.jInv = @(r, alpha, beta) r^2 * cos(beta);
+spherical.j = @(r, alpha, beta) 1 / (r^2 * cos(beta));
+
+systems = { cylindrical, spherical };
 
 v_a = @(a, b, c) a^3 * sin(2*b) * cos(3*c);
 v_b = @(a, b, c) a^2 * sin(4*b) * cos(2*c);
@@ -125,5 +130,11 @@ for i = 1:1
 		l2 = der(@(t) v_cart(t, y, z)(1), x) + der(@(t) v_cart(x, t, z)(2), y) + der(@(t) v_cart(x, y, t)(3), z);
 		
 		assert(l2, l1, eps);
+
+		# J
+		assert(det(sys.dpInv(c1, c2, c3)), sys.jInv(c1, c2, c3), eps);
+		
+		# J'
+		assert(det(sys.dp(c1, c2, c3)), sys.j(c1, c2, c3), eps); 		
 	endfor
 endfor
