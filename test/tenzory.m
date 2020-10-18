@@ -119,7 +119,7 @@ for i = 1:1
 		assert(sys.gContra(c1, c2, c3), dp * dp', eps);
 		
 		# Divergence
-		l1 = sys.div(v_a, v_b, v_c, c1, c2, c3);
+		div1 = sys.div(v_a, v_b, v_c, c1, c2, c3);
 		
 		v_cart = @(px, py, pz) [
 			v_a(sys.p(px, py, pz)(1), sys.p(px, py, pz)(2), sys.p(px, py, pz)(3));
@@ -127,14 +127,29 @@ for i = 1:1
 			v_c(sys.p(px, py, pz)(1), sys.p(px, py, pz)(2), sys.p(px, py, pz)(3))
 		]' * sys.dp(sys.p(px, py, pz)(1), sys.p(px, py, pz)(2), sys.p(px, py, pz)(3));
 		
-		l2 = der(@(t) v_cart(t, y, z)(1), x) + der(@(t) v_cart(x, t, z)(2), y) + der(@(t) v_cart(x, y, t)(3), z);
+		div2 = der(@(t) v_cart(t, y, z)(1), x) + der(@(t) v_cart(x, t, z)(2), y) + der(@(t) v_cart(x, y, t)(3), z);
 		
-		assert(l2, l1, eps);
+		assert(div2, div1, eps);
 
 		# J
 		assert(det(sys.dpInv(c1, c2, c3)), sys.jInv(c1, c2, c3), eps);
 		
 		# J'
 		assert(det(sys.dp(c1, c2, c3)), sys.j(c1, c2, c3), eps); 		
+
+		# Rotace
+		rot1 = sys.j(c1, c2, c3) * [
+			der(@(t) v_c(c1, t, c3), c2) - der(@(t) v_b(c1, c2, t), c3);
+			der(@(t) v_a(c1, c2, t), c3) - der(@(t) v_c(t, c2, c3), c1);
+			der(@(t) v_b(t, c2, c3), c1) - der(@(t) v_a(c1, t, c3), c2)
+		]';
+		
+		rot2 = [
+			der(@(t) v_cart(x, t, z), y)(3) - der(@(t) v_cart(x, y, t), z)(2);
+			der(@(t) v_cart(x, y, t), z)(1) - der(@(t) v_cart(t, y, z), x)(3);
+			der(@(t) v_cart(t, y, z), x)(2) - der(@(t) v_cart(x, t, z), y)(1)
+		]';
+		
+		assert(rot2, rot1 * sys.dpInv(c1, c2, c3)', eps);
 	endfor
 endfor

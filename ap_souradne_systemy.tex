@@ -238,6 +238,11 @@ J = r
 J' = \frac{1}{r}
 \end{equation}
 
+\begin{equation}
+\label{eq:cylindricky_ss_rotace}
+\kontravect{u} = \rot \kovarvect{v} = \frac{1}{r} \cdot \left( \frac{\partial v_{z}}{\partial \alpha} - \frac{\partial v_{\alpha}}{\partial z}, \frac{\partial v_{r}}{\partial z} - \frac{\partial v_{z}}{\partial r}, \frac{\partial v_{\alpha}}{\partial r} - \frac{\partial v_{r}}{\partial \alpha} \right)
+\end{equation}
+
 
 \section{Sférický souřadný systém}
 
@@ -357,4 +362,9 @@ J = r^2 \cdot \cos \beta
 \begin{equation}
 \label{eq:sfericky_ss_j_inv}
 J' = \frac{1}{r^2 \cdot \cos \beta}
+\end{equation}
+
+\begin{equation}
+\label{eq:sfericky_ss_rotace}
+\kontravect{u} = \rot \kovarvect{v} = \frac{1}{r^2 \cdot \cos \beta} \cdot \left( \frac{\partial v_{\beta}}{\partial \alpha} - \frac{\partial v_{\alpha}}{\partial \beta}, \frac{\partial v_{r}}{\partial \beta} - \frac{\partial v_{\beta}}{\partial r}, \frac{\partial v_{\alpha}}{\partial r} - \frac{\partial v_{r}}{\partial \alpha} \right)
 \end{equation}
