@@ -6,8 +6,50 @@ V~této příloze jsou vyjádřeny operace v~bežně používaných souřadných
 
 \begin{equation}
 \begin{split}
-P' = (x, y, z)
+P = P' = (x, y, z)
 \end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\frac{\partial p'_j}{\partial P_i} = \frac{\partial p_j}{\partial P'_i} = \delta_{ij}
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+g_{jk} = g^{jk} = \delta_{ij}
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\frac{\partial^2 p_j}{\partial P'^2_i} = 0
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+\sum_{i=1}^3 \frac{\partial^2 p_j}{\partial P'^2_i} = 0
+\end{split}
+\end{equation}
+
+\begin{equation}
+\label{eq:kartezsky_ss_div}
+\diverg{\kovarvect{v}} = \frac{\partial v_x}{\partial x} + \frac{\partial v_y}{\partial y} + \frac{\partial v_z}{\partial z}\end{equation}
+
+\begin{equation}
+\label{eq:kartezsky_ss_laplace}
+\Delta \varphi = \frac{\partial^2 \varphi}{\partial x^2} + \frac{\partial^2 \varphi}{\partial y^2} + \frac{\partial^2 \varphi}{\partial x^2}\end{equation}
+
+\begin{equation}
+\label{eq:kartezsky_ss_j}
+J = J' = 1
+\end{equation}
+
+\begin{equation}
+\label{eq:kartezsky_ss_rotace}
+\rot \kovarvect{v} = \left(\frac{\partial v_z}{\partial y} - \frac{\partial v_y}{\partial z}, \frac{\partial v_x}{\partial z} - \frac{\partial v_z}{\partial x}, \frac{\partial v_y}{\partial x} - \frac{\partial v_x}{\partial y} \right)
 \end{equation}
 
 \section{Polární souřadný systém}
