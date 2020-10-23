@@ -4,6 +4,41 @@ V~této příloze jsou vyjádřeny operace v~bežně používaných souřadných
 
 \section{Kartézský souřadný systém}
 
+\begin{tikzpicture}
+
+\drawaxes{0}{0}{6}{4}{2}
+
+% Rovina XY
+\draw[thick] (0, -1) -- (-1, -1) -- (-1, 0);
+\draw[dashed] (-1, 0) -- (-1, 1);
+\draw[thick] (-1, 1) -- (-1, 3) -- (3, 3) -- (3, -1) -- (1, -1);
+\draw[dashed] (1, -1) -- (0, -1);
+
+% Rovina YZ
+\draw[thick] (3, 2) -- (4, 2) -- (2, 0) -- (-2, 0) -- (-1, 1);
+\draw[dashed] (-1, 1) -- (0, 2) -- (3, 2);
+
+% Rovina XZ
+\draw[thick] (1, -1) -- (0, -2) -- (0, 2) -- (2, 4) -- (2, 3);
+\draw[dashed] (2, 3) -- (2, 0) -- (1, -1);
+
+% X
+\draw[thick] (-1, 1) -- (0, 1);
+\draw[dashed] (0, 1) -- (1, 1);
+\draw[thick] (1, 1) -- (3, 1);
+
+% Y
+\draw[thick] (0, 0) -- (1, 1);
+\draw[dashed] (1, 1) -- (2, 2);
+
+% Z
+\draw[thick] (1, -1) -- (1, 0);
+\draw[dashed] (1, 0) -- (1, 1);
+\draw[thick] (1, 1) -- (1, 3);
+
+\end{tikzpicture}
+
+
 \begin{equation}
 \begin{split}
 P = P' = (x, y, z)
