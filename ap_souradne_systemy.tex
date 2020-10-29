@@ -89,6 +89,13 @@ J = J' = 1
 
 \section{Polární souřadný systém}
 
+\begin{tikzpicture}
+
+\draw[thick] (0, 0) circle(1);
+\draw[thick] (0, 0) -- (1, 1);
+
+\end{tikzpicture}
+
 \begin{equation}
 \begin{split}
 P' = (x, y) \\
@@ -354,6 +361,36 @@ J' = \frac{1}{r}
 
 
 \section{Sférický souřadný systém}
+
+\begin{tikzpicture}
+
+% Rovina YZ
+\draw[thick] (0, 1.2247) -- (0, 2) -- (-1, 1) -- (-1, -1) -- (-0.86599, -0.86599);
+\draw[dashed] (-0.86599, -0.86599) -- (0, 0) -- (0, 1.2247);
+
+\draw[thick] (-0.86599, -0.86599) -- (-0.35355, 0.35355);
+\draw[dashed] (-0.35355, 0.35355) -- (-0.16970, 0.80655);
+\draw[thick] (-0.16970, 0.80655) -- (0, 1.2247);
+
+% Koule
+\draw[dashed] (0, 1.2247) arc(90:225:1.2247);
+\draw[thick] (0, 1.2247) arc(90:-135:1.2247);
+
+\draw[dashed] (-0.35355, 0.35355) arc(90:225:0.70711);
+\draw[thick] (-0.35355, 0.35355) arc(90:-135:0.70711);
+
+% Kuzel
+\draw[thick] (-1, -1) circle(2);
+
+\draw[dashed] (0, 0) -- (-3, -1);
+\draw[dashed] (0, 0) -- (-1, -3);
+
+\draw[dashed] (0, 0) -- (-0.35355, 0.35355);
+\draw[thick] (-0.35355, 0.35355) -- (-1, 1);
+
+\draw[dashed] (0, 0) -- (1, -1);
+
+\end{tikzpicture}
 
 \begin{equation}
 \begin{split}
