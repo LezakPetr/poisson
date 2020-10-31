@@ -1755,6 +1755,31 @@ Proto divergence v prostoru, se kterou jsme dosud pracovali, je shodná s diverg
 Uvedený postup je obecně použitelný, pokud máme problém definovaný v prostoru, ale v jedné nebo více os je invariantní vůči posunutí. Můžeme tak snížit
 počet dimenzi problému.
 
+\section{Změna skalárního pole v~daném směru, gradient}
+
+Mějme skalární funkci \(\varphi(P_1, P_2, ..., P_n)\) definovanou obecně v~křivočarých souřadnicích \(P_i\). Chceme-li vypočítat její změnu v~nekonečně blízkém bodě \((P_1 + \mathrm{d}P_1, P_2 + \mathrm{d}P_2, ..., P_n + \mathrm{d}P_n)\), pak
+můžeme použít vztah pro totální diferenciál funkce:
+
+\begin{equation}
+\begin{split}
+\mathrm{d} \varphi = \varphi(P_1 + \mathrm{d}P_1, P_2 + \mathrm{d}P_2, ..., P_n + \mathrm{d}P_n) - \varphi(P_1, P_2, ..., P_n) = \\
+\mathrm{d}P_1 \cdot \frac{\partial \varphi}{\partial P_1} + \mathrm{d}P_1 \cdot \frac{\partial \varphi}{\partial P_2} +
+... + \mathrm{d}P_n \cdot \frac{\partial \varphi}{\partial P_n} = \\
+\sum_{i=1}^n \mathrm{d}P_i \cdot \frac{\partial \varphi}{\partial P_i}
+\end{split}
+\end{equation}
+
+Kovariantní vektor \(v_i = \frac{\partial \varphi}{\partial P_i}\) nazveme gradientem a~označíme \(\kovarvect{v} = \grad{\varphi}\). Změnu funkční hodnoty pak vypočítáme:
+
+\begin{equation}
+\begin{split}
+\mathrm{d}\varphi = (\mathrm{d}P_1, \mathrm{d}P_2, ..., \mathrm{d}P_n) \cdot \grad{\varphi} 
+\end{split}
+\end{equation}
+
+Dále budeme uvažovat pouze kartézský souřadný systém. V~něm víme, že skalární součin dvou vektorů nabývá svého maxima, pokud
+mají oba vektory stejný směr. Gradient v~kartézském souřadném systému proto má směr nejvyššího růstu funkce \(\varphi\).
+
 
 \section{Operátory}
 
