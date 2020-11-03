@@ -561,7 +561,25 @@ Tuto rovnici můžeme rozepsat na jednotlivé složky uvědomíme-li si, že pou
 \end{split} 
 \end{equation}
 
+\section{Objekty v~prostoru}
 
+Souřadné systémy nám umožňují popisovat objekty v~prostoru. Nyní si ukážeme, jak je to možné.
+
+\subsection{Bod}
+
+Začněme nejjednodušším objektem, kterým je bod. Bod v~\(n\)-rozměrném prostoru, označme jej \(P\), lze popsat \(n\) souřadnicemi \([P_1, P_2, ..., P_n]\). Souřadnice nemají žádný parametr, jsou konstantní. Říkáme, že bod je bezrozměrný.
+
+\subsection{Křivka}
+
+Křivku v~\(n\)-rozměrném prostoru, označme ji \(\Gamma\), lze popsat sadou \(n\) funkcí souřadnic \([\Gamma_1(t), \Gamma_2(t), ..., \Gamma_n(n)]\). Funkce souřadnic mají jeden parametr \(t\), říkáme, že křivka je jednorozměrná. Někdy pro zjednodušení místo o~sadě funkcí hovoříme o~funkci jedné.
+
+Parametr \(t\) probíhá po zvoleném intervalu \(I = <t_1, t_2>\). Zaveďme označení \(\vect{\Gamma} = [\Gamma_1(t), \Gamma_2(t), ..., \Gamma_n(n)]\) a~\(\frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t} = \left(\frac{\mathrm{d}\Gamma_1}{\mathrm{d}t}, \frac{\mathrm{d}\Gamma_2}{\mathrm{d}t}, ..., \frac{\mathrm{d}\Gamma_n}{\mathrm{d}t} \right)\). Pak předpokládáme:
+
+\begin{itemize}
+\item funkce \(\Gamma_i(t)\) jsou spojité, tedy \(\forall t_0 \in I: \lim_{t \to t_0} \vect{\Gamma}(t) = \vect{\Gamma}(t_0)\)
+\item funkce \(\frac{\mathrm{d}\Gamma_i}{\mathrm{d}t}\) jsou po částech spojité, tedy až na konečný počet bodů na intervalu \(I\) platí \(\lim_{t \to t_0} \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t) = \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t_0)\)
+\item \(\left|\frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t} \right| > 0\) až na konečný počet bodů na intervalu \(I\)
+\end{itemize}
 
 \section{Křivočaré systémy souřadnic}
 
@@ -1779,6 +1797,8 @@ Kovariantní vektor \(v_i = \frac{\partial \varphi}{\partial P_i}\) nazveme grad
 
 Dále budeme uvažovat pouze kartézský souřadný systém. V~něm víme, že skalární součin dvou vektorů nabývá svého maxima, pokud
 mají oba vektory stejný směr. Gradient v~kartézském souřadném systému proto má směr nejvyššího růstu funkce \(\varphi\).
+
+% TODO kolmá konstantní rovina
 
 
 \section{Operátory}
