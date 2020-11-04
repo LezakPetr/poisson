@@ -571,9 +571,21 @@ Začněme nejjednodušším objektem, kterým je bod. Bod v~\(n\)-rozměrném pr
 
 \subsection{Křivka}
 
-Křivku v~\(n\)-rozměrném prostoru, označme ji \(\Gamma\), lze popsat sadou \(n\) funkcí souřadnic \([\Gamma_1(t), \Gamma_2(t), ..., \Gamma_n(n)]\). Funkce souřadnic mají jeden parametr \(t\), říkáme, že křivka je jednorozměrná. Někdy pro zjednodušení místo o~sadě funkcí hovoříme o~funkci jedné.
+Křivku v~\(n\)-rozměrném prostoru, označme ji \(\Gamma\), lze popsat sadou \(n\) funkcí souřadnic \([\Gamma_1(t), \Gamma_2(t), ..., \Gamma_n(t)]\). Funkce souřadnic mají jeden parametr \(t\), říkáme, že křivka je jednorozměrná. Někdy pro zjednodušení místo o~sadě funkcí hovoříme o~funkci jedné.
 
-Parametr \(t\) probíhá po zvoleném intervalu \(I\). Zaveďme označení \(\vect{\Gamma} = [\Gamma_1(t), \Gamma_2(t), ..., \Gamma_n(n)]\) a~\(\frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t} = \left(\frac{\mathrm{d}\Gamma_1}{\mathrm{d}t}, \frac{\mathrm{d}\Gamma_2}{\mathrm{d}t}, ..., \frac{\mathrm{d}\Gamma_n}{\mathrm{d}t} \right)\). Pak předpokládáme:
+Parametr \(t\) probíhá po zvoleném intervalu \(I\). Zaveďme označení:
+
+\begin{equation}
+\vect{\Gamma} = [\Gamma_1(t), \Gamma_2(t), ..., \Gamma_n(t)]
+\end{equation}
+
+a
+
+\begin{equation}
+\frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t} = \left(\frac{\mathrm{d}\Gamma_1}{\mathrm{d}t}, \frac{\mathrm{d}\Gamma_2}{\mathrm{d}t}, ..., \frac{\mathrm{d}\Gamma_n}{\mathrm{d}t} \right)
+\end{equation}
+
+Pak předpokládáme:
 
 \begin{itemize}
 \item funkce \(\Gamma_i(t)\) jsou spojité, tedy \(\forall t_0 \in I: \lim_{t \to t_0} \vect{\Gamma}(t) = \vect{\Gamma}(t_0)\)
@@ -590,6 +602,37 @@ Křivku je možné v~okolí bodu \(t_0\) linearizovat - nahradit přímkou. Rovn
 \begin{equation}
 P = \vect{\Gamma}(t_0) + (t - t_0) \cdot \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t_0)
 \end{equation}
+
+Výraz 
+
+\begin{equation}
+\mathrm{d}\vect{l} = \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t} \cdot \mathrm{d}t 
+\end{equation}
+
+představuje element křivky. Vektor \(\mathrm{d}\vect{l}\) má v~každém bodě křivky směr její tečny a~velikost posunutí po křivce odpovídající změně parametru \(t\) o~\(\mathrm{d}t\).
+
+\subsection{Plocha}
+
+Plochu v~\(n\)-rozměrném prostoru, označme ji \(\S\), lze popsat sadou \(n\) funkcí souřadnic \([S_1(t, u), S_2(t, u), ..., S_n(t, u)]\). Funkce souřadnic mají dva parametry \(t\) a~\(u\), říkáme, že plocha je dvojrozměrná.
+
+Zaveďme označení:
+
+\begin{equation}
+\vect{S} = [S_1(t, u), S_2(t, u), ..., S_n(t, u)]
+\end{equation}
+
+a
+
+\begin{equation}
+\frac{\mathrm{d}\vect{S}}{\mathrm{d}t} = \left(\frac{\mathrm{d}S_1}{\mathrm{d}t}, \frac{\mathrm{d}S_2}{\mathrm{d}t}, ..., \frac{\mathrm{d}S_n}{\mathrm{d}t} \right)
+\end{equation}
+
+\begin{equation}
+\frac{\mathrm{d}\vect{S}}{\mathrm{d}u} = \left(\frac{\mathrm{d}S_1}{\mathrm{d}u}, \frac{\mathrm{d}S_2}{\mathrm{d}u}, ..., \frac{\mathrm{d}S_n}{\mathrm{d}u} \right)
+\end{equation}
+
+Parametry \(t\) a~\(u\) probíhají po určité oblasti \(\Omega\).
+
 
 \section{Křivočaré systémy souřadnic}
 
