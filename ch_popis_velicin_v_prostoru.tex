@@ -561,6 +561,51 @@ Tuto rovnici můžeme rozepsat na jednotlivé složky uvědomíme-li si, že pou
 \end{split} 
 \end{equation}
 
+\section{Limita funkce}
+
+V~metrickém prostoru \((M, d)\) pro \(\delta > 0\) definujme \(\delta\)-okolí prvku \(P \in M\) jako množinu bodů, jejichž vzdálenost od prvku \(P\) je menší než \(\delta\):
+
+\begin{equation}
+\forall \delta > 0, P \in M: U_{\delta}(P) = \{X \in M: d(X, P) < \delta\}
+\end{equation}
+
+Pokud v~dalším textu neuvedeme jinak, tak za metrický prostor budeme považovat Euklidovský prostor. Budeme tedy používat metriku \eqref{eq:euklidovsky_prostor_metrika} i~v~případě, že ji bude nutné zavést uměle. V~Euklidovském prostoru představuje  \(\delta\)-okolí obecně hyperkouli okolo zvoleného bodu. V~jednorozměrném prostoru se jedná o~interval \(|x - x_0| < \delta\), ve dvojrozměrném prostoru o~kruh \((x - x_0)^2 + (y - y_0)^2 < \delta^2\) a~ve třírozměrném prostoru o~kouli \((x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 < \delta^2\).
+
+Limitou funkce \(y = \lim_{P \to P_0} \mathrm{f}(P)\) rozumíme to, k~jaké funkční hodnotě se funkce blíží, pokud se její argumenty blíží k~bodu \(P\). Přesná definice je následující. To, že funkce \(\mathrm{f(P)}\) má v~bodě \(P_0\) limitu \(y\) znamená, že pro každé kladné \(\varepsilon\) lze nalézt kladné \(\delta\) takové, že funkce má v~\(\delta\)-okolí bodu \(P_0\) kromě bodu samotného hodnoty lišící se od \(y\) méně než o~\(\varepsilon\):
+
+\begin{equation}
+\forall \varepsilon > 0 \; \exists \delta > 0 \; \forall P \in (U_{\delta}(P_0) \setminus P_0) \; |\mathrm{f}(P) - y| < \varepsilon
+\end{equation}
+
+Na funkční hodnotě v~daném bodě nezáleží. Funkce nemusí být ani v~daném bodě definovaná. Funkce nemusí mít v~daném bodě limitu, pokud ji však má, tak je tato limita jednoznačně určená.
+
+Tuto definici můžeme použít i~pro funkce více reálných proměnných. Například pro funkci \(\mathrm{f}(x, y)\) můžeme definovat \(P = [x, y]\) a~předpokládat, že body \(P\) leží v~prostoru \(E_2\).
+
+\subsection{Příklad}
+
+Dokažme \(\lim_{[x, y] \to [0, 2]} \frac{x^2 + x y}{x} = 2\).
+
+Musíme zajistit:
+
+\begin{equation}
+\begin{split}
+|\mathrm{f}(P) - y| < \varepsilon \\
+\left|\frac{x^2 + 2x}{x} - 2 \right| < \varepsilon \\
+|x + 2 - 2| < \varepsilon \\
+|x| < \varepsilon
+\end{split}
+\end{equation}
+
+Vidíme, že zvolíme-li \(\delta = \varepsilon\), pak pro \(|x| < \delta\) bude \(|\mathrm{f}(P) - y| = |x| < \varepsilon\).
+
+\section{Limita funkce}
+
+Funkci nazveme spojitou v~daném bodě pokud je limita v~tomto bodě rovna funkční hodnotě. Tedy pokud v~daném bodě funkce limitů má, má v~něm i~funkční hodnotu a~limita je funkční hodnotě rovna. Tedy pokud
+
+\begin{equation}
+\lim_{P \to P_0} \mathrm{f}(P) = \mathrm{f}(P_0)
+\end{equation}
+
 \section{Objekty v~prostoru}
 
 Souřadné systémy nám umožňují popisovat objekty v~prostoru. Nyní si ukážeme, jak je to možné.
@@ -588,7 +633,7 @@ a
 Pak předpokládáme:
 
 \begin{itemize}
-\item funkce \(\Gamma_i(t)\) jsou spojité, tedy \(\forall t_0 \in I: \lim_{t \to t_0} \vect{\Gamma}(t) = \vect{\Gamma}(t_0)\)
+\item funkce \(\Gamma_i(t)\) jsou spojité, tedy \(\forall t_0 \in I \setminus \partial I: \lim_{t \to t_0} \vect{\Gamma}(t) = \vect{\Gamma}(t_0)\)
 \item funkce \(\frac{\mathrm{d}\Gamma_i}{\mathrm{d}t}\) jsou po částech spojité, tedy až na konečný počet bodů na intervalu \(I\) platí \(\lim_{t \to t_0} \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t) = \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t_0)\)
 \item \(\left|\frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t} \right| > 0\) až na konečný počet bodů na intervalu \(I\)
 \end{itemize}
@@ -632,6 +677,15 @@ a
 \end{equation}
 
 Parametry \(t\) a~\(u\) probíhají po určité oblasti \(\Omega\).
+
+Pak předpokládáme:
+
+\begin{itemize}
+\item funkce \(S_i(t, u)\) jsou spojité, tedy \(\forall [t_0, u_0] \in \Omega \setminus \partial \Omega: \lim_{[t, u] \to [t_0, u_0]} \vect{S}(t, u) = \vect{S}(t_0, u_0)\)
+\item funkce \(\frac{\mathrm{d}\Gamma_i}{\mathrm{d}t}\) jsou po částech spojité, tedy až na konečný počet bodů na intervalu \(I\) platí \(\lim_{t \to t_0} \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t) = \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t_0)\)
+\item \(\left|\frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t} \right| > 0\) až na konečný počet bodů na intervalu \(I\)
+\end{itemize}
+
 
 
 \section{Křivočaré systémy souřadnic}
