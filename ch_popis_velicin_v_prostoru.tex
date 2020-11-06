@@ -596,7 +596,24 @@ Vyjádřeme vzdálenost od \(y\):
 
 Vidíme, že zvolíme-li \(\delta = \frac{\varepsilon}{2}\), pak pro \(\sqrt{x^2 + y^2} < \delta\) bude \(|\mathrm{f}(P) - y| = |x| < \varepsilon\).
 
-\section{Limita funkce}
+\subsection{Základní limity}
+
+Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Ke každému vztahu je uvedena funkce \(\delta\), která prokazuje správnost limity. Tyto vztahy nejsou překvapivé, pro spojité funkce je funkční hodnota rovna limitě, viz \ref{sec:spojitost_funkce}. Tyto vztahy však platí i~pro nespojité funkce a~funkce \(delta\) to dokazuje.
+
+Začněme limitou součtu nebo rozdílu. Ta je rovna součtu nebo rozdílu limit pokud existují:
+
+\begin{equation}
+\lim_{x \to x_0} \left(\mathrm{f}(x) \pm \mathrm{g}(x) \right) = \lim_{x \to x_0} \mathrm{f}(x) \pm \lim_{x \to x_0} \mathrm{g}(x)
+\end{equation}
+
+Je zřejmé, že v~nejhorším případě se odchylky \(\varepsilon\) od limit sčítaných/odčítaných funkcí sčítají, pokud mají stejné/opačné znaménko. Zvolíme-li tedy pro jejich limity poloviční \(\varepsilon\) a~vezmeme menší z~jejich \(\delta\), pak určitě nepřekročíme stanovenou hodnotu \(\varepsilon\):
+
+\begin{equation}
+\delta(\varepsilon) = \min \left( \delta_f \left(\frac{\varepsilon}{2}\right), \delta_g \left(\frac{\varepsilon}{2} \right) \right)
+\end{equation}
+
+\section{Spojitost funkce}
+\label{sec:spojitost_funkce}
 
 Funkci nazveme spojitou v~daném bodě pokud je limita v~tomto bodě rovna funkční hodnotě. Tedy pokud v~daném bodě funkce limitů má, má v~něm i~funkční hodnotu a~limita je funkční hodnotě rovna. Tedy pokud
 
