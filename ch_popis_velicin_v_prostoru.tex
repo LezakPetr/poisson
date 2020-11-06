@@ -585,18 +585,16 @@ Tuto definici můžeme použít i~pro funkce více reálných proměnných. Nap�
 
 Dokažme \(\lim_{[x, y] \to [0, 2]} \frac{x^2 + x y}{x} = 2\).
 
-Musíme zajistit:
+Vyjádřeme vzdálenost od \(y\):
 
 \begin{equation}
 \begin{split}
-|\mathrm{f}(P) - y| < \varepsilon \\
-\left|\frac{x^2 + 2x}{x} - 2 \right| < \varepsilon \\
-|x + 2 - 2| < \varepsilon \\
-|x| < \varepsilon
+|\mathrm{f}(P) - y| = \left|\frac{x^2 + x y}{x} - 2 \right| = \left|x + y - 2 \right| = \\
+\left|dx + ( 2+ dy) - 2 \right| = \left|dx + dy\right| \leq 2 \cdot \delta
 \end{split}
 \end{equation}
 
-Vidíme, že zvolíme-li \(\delta = \varepsilon\), pak pro \(|x| < \delta\) bude \(|\mathrm{f}(P) - y| = |x| < \varepsilon\).
+Vidíme, že zvolíme-li \(\delta = \frac{\varepsilon}{2}\), pak pro \(\sqrt{x^2 + y^2} < \delta\) bude \(|\mathrm{f}(P) - y| = |x| < \varepsilon\).
 
 \section{Limita funkce}
 
