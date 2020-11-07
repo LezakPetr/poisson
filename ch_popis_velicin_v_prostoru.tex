@@ -600,10 +600,12 @@ Vidíme, že zvolíme-li \(\delta = \frac{\varepsilon}{2}\), pak pro \(\sqrt{x^2
 
 Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Ke každému vztahu je uvedena funkce \(\delta\), která prokazuje správnost limity. Tyto vztahy nejsou překvapivé, pro spojité funkce je funkční hodnota rovna limitě, viz \ref{sec:spojitost_funkce}. Tyto vztahy však platí i~pro nespojité funkce a~funkce \(delta\) to dokazuje.
 
-Začněme limitou součtu nebo rozdílu. Ta je rovna součtu nebo rozdílu limit pokud existují:
+\subsubsection{Limita součtu a~rozdílu}
+
+Začněme limitou součtu a rozdílu. Ta je rovna součtu nebo rozdílu limit pokud existují:
 
 \begin{equation}
-\lim_{x \to x_0} \left(\mathrm{f}(x) \pm \mathrm{g}(x) \right) = \lim_{x \to x_0} \mathrm{f}(x) \pm \lim_{x \to x_0} \mathrm{g}(x)
+\lim_{P \to P_0} \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) = \lim_{P \to P_0} \mathrm{f}(P) \pm \lim_{P \to P_0} \mathrm{g}(P)
 \end{equation}
 
 Je zřejmé, že v~nejhorším případě se odchylky \(\varepsilon\) od limit sčítaných/odčítaných funkcí sčítají, pokud mají stejné/opačné znaménko. Zvolíme-li tedy pro jejich limity poloviční \(\varepsilon\) a~vezmeme menší z~jejich \(\delta\), pak určitě nepřekročíme stanovenou hodnotu \(\varepsilon\):
@@ -612,8 +614,58 @@ Je zřejmé, že v~nejhorším případě se odchylky \(\varepsilon\) od limit s
 \delta(\varepsilon) = \min \left( \delta_f \left(\frac{\varepsilon}{2}\right), \delta_g \left(\frac{\varepsilon}{2} \right) \right)
 \end{equation}
 
+Z~definice limit funkcí \(\mathrm{f}\) a~\(\mathrm{g}\) víme:
+
+\begin{equation}
+\begin{split}
+\forall P \in (U_{\delta_f(\frac{\varepsilon}{2})}(P_0) \setminus P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| < \frac{\varepsilon}{2} \\
+\forall P \in (U_{\delta_g(\frac{\varepsilon}{2})}(P_0) \setminus P_0) \; \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < \frac{\varepsilon}{2}
+\end{split}
+\end{equation}
+
+Protože 
+
+\begin{equation}
+\begin{split}
+\delta(\varepsilon) \leq \delta_f \left(\frac{\varepsilon}{2}\right) \\
+\delta(\varepsilon) \leq \delta_g \left(\frac{\varepsilon}{2}\right)
+\end{split}
+\end{equation}
+
+tak
+
+
+\begin{equation}
+\begin{split}
+U_{\delta(\varepsilon)}(P_0) \subset U_{\delta_f(\frac{\varepsilon}{2})}(P_0) \\
+U_{\delta(\varepsilon)}(P_0) \subset U_{\delta_g(\frac{\varepsilon}{2})}(P_0)
+\end{split}
+\end{equation}
+
+a~bude také platit
+
+\begin{equation}
+\begin{split}
+\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| < \frac{\varepsilon}{2} \\
+\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < \frac{\varepsilon}{2}
+\end{split}
+\end{equation}
+
+a~pro součet nebo rozdíl těchto výrazů bude platit
+
+\begin{equation}
+\begin{split}
+\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| + \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < 2 \cdot \frac{\varepsilon}{2} \\
+\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \left(\mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right) \pm \left( \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right)\right| < \varepsilon \\
+\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) - \left(\lim_{P \to P_0} \pm \lim_{P \to P_0} \mathrm{g}(P)\right)\right| < \varepsilon \\
+\end{split}
+\end{equation}
+
+Využili jsme přitom nerovnosti \(|x \pm y| \leq |x| + |y|\). Tím je vztah pro limitu součtu a~rozdílu dokázán.
+
 \section{Spojitost funkce}
 \label{sec:spojitost_funkce}
+
 
 Funkci nazveme spojitou v~daném bodě pokud je limita v~tomto bodě rovna funkční hodnotě. Tedy pokud v~daném bodě funkce limitů má, má v~něm i~funkční hodnotu a~limita je funkční hodnotě rovna. Tedy pokud
 
