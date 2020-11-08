@@ -569,17 +569,34 @@ V~metrickém prostoru \((M, d)\) pro \(\delta > 0\) definujme \(\delta\)-okolí 
 \forall \delta > 0, P \in M: U_{\delta}(P) = \{X \in M: d(X, P) < \delta\}
 \end{equation}
 
+Zaveďme také označení pro výlučné \(\delta\)-okolí prvku \(P\), tedy okolí bez vlastního bodu:
+
+\begin{equation}
+\overset{\circ}{U}_{\delta}(P) = U_{\delta}(P) \setminus P
+\end{equation}
+
 Pokud v~dalším textu neuvedeme jinak, tak za metrický prostor budeme považovat Euklidovský prostor. Budeme tedy používat metriku \eqref{eq:euklidovsky_prostor_metrika} i~v~případě, že ji bude nutné zavést uměle. V~Euklidovském prostoru představuje  \(\delta\)-okolí obecně hyperkouli okolo zvoleného bodu. V~jednorozměrném prostoru se jedná o~interval \(|x - x_0| < \delta\), ve dvojrozměrném prostoru o~kruh \((x - x_0)^2 + (y - y_0)^2 < \delta^2\) a~ve třírozměrném prostoru o~kouli \((x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 < \delta^2\).
 
 Limitou funkce \(y = \lim_{P \to P_0} \mathrm{f}(P)\) rozumíme to, k~jaké funkční hodnotě se funkce blíží, pokud se její argumenty blíží k~bodu \(P\). Přesná definice je následující. To, že funkce \(\mathrm{f(P)}\) má v~bodě \(P_0\) limitu \(y\) znamená, že pro každé kladné \(\varepsilon\) lze nalézt kladné \(\delta\) takové, že funkce má v~\(\delta\)-okolí bodu \(P_0\) kromě bodu samotného hodnoty lišící se od \(y\) méně než o~\(\varepsilon\):
 
 \begin{equation}
-\forall \varepsilon > 0 \; \exists \delta > 0 \; \forall P \in (U_{\delta}(P_0) \setminus P_0) \; |\mathrm{f}(P) - y| < \varepsilon
+\forall \varepsilon > 0 \; \exists \delta > 0 \; \forall P \in \overset{\circ}{U}_{\delta}(P_0) \; |\mathrm{f}(P) - y| < \varepsilon
 \end{equation}
 
 Na funkční hodnotě v~daném bodě nezáleží. Funkce nemusí být ani v~daném bodě definovaná. Funkce nemusí mít v~daném bodě limitu, pokud ji však má, tak je tato limita jednoznačně určená.
 
 Tuto definici můžeme použít i~pro funkce více reálných proměnných. Například pro funkci \(\mathrm{f}(x, y)\) můžeme definovat \(P = [x, y]\) a~předpokládat, že body \(P\) leží v~prostoru \(E_2\).
+
+\subsection{Spojitost funkce}
+\label{sec:spojitost_funkce}
+
+
+Funkci nazveme spojitou v~daném bodě pokud je limita v~tomto bodě rovna funkční hodnotě. Tedy pokud v~daném bodě funkce limitů má, má v~něm i~funkční hodnotu a~limita je funkční hodnotě rovna. Tedy pokud
+
+\begin{equation}
+\lim_{P \to P_0} \mathrm{f}(P) = \mathrm{f}(P_0)
+\end{equation}
+
 
 \subsection{Příklad}
 
@@ -598,7 +615,7 @@ Vidíme, že zvolíme-li \(\delta = \frac{\varepsilon}{2}\), pak pro \(\sqrt{x^2
 
 \subsection{Základní limity}
 
-Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Ke každému vztahu je uvedena funkce \(\delta\), která prokazuje správnost limity. Tyto vztahy nejsou překvapivé, pro spojité funkce je funkční hodnota rovna limitě, viz \ref{sec:spojitost_funkce}. Tyto vztahy však platí i~pro nespojité funkce a~funkce \(delta\) to dokazuje.
+Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Ke každému vztahu je uvedena funkce \(\delta\), která prokazuje správnost limity. Tyto vztahy nejsou překvapivé, pro spojité funkce je funkční hodnota rovna limitě, viz \ref{sec:spojitost_funkce}. Tyto vztahy však platí i~pro nespojité funkce a~funkce \(\delta\) to dokazuje.
 
 \subsubsection{Limita součtu a~rozdílu}
 
@@ -618,8 +635,8 @@ Z~definice limit funkcí \(\mathrm{f}\) a~\(\mathrm{g}\) víme:
 
 \begin{equation}
 \begin{split}
-\forall P \in (U_{\delta_f(\frac{\varepsilon}{2})}(P_0) \setminus P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| < \frac{\varepsilon}{2} \\
-\forall P \in (U_{\delta_g(\frac{\varepsilon}{2})}(P_0) \setminus P_0) \; \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < \frac{\varepsilon}{2}
+\forall P \in \overset{\circ}{U}_{\delta_f(\frac{\varepsilon}{2})}(P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| < \frac{\varepsilon}{2} \\
+\forall P \in \overset{\circ}{U}_{\delta_g(\frac{\varepsilon}{2})}(P_0) \; \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < \frac{\varepsilon}{2}
 \end{split}
 \end{equation}
 
@@ -634,11 +651,10 @@ Protože
 
 tak
 
-
 \begin{equation}
 \begin{split}
-U_{\delta(\varepsilon)}(P_0) \subset U_{\delta_f(\frac{\varepsilon}{2})}(P_0) \\
-U_{\delta(\varepsilon)}(P_0) \subset U_{\delta_g(\frac{\varepsilon}{2})}(P_0)
+\overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \subset \overset{\circ}{U}_{\delta_f(\frac{\varepsilon}{2})}(P_0) \\
+\overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \subset \overset{\circ}{U}_{\delta_g(\frac{\varepsilon}{2})}(P_0)
 \end{split}
 \end{equation}
 
@@ -646,8 +662,8 @@ a~bude také platit
 
 \begin{equation}
 \begin{split}
-\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| < \frac{\varepsilon}{2} \\
-\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < \frac{\varepsilon}{2}
+\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| < \frac{\varepsilon}{2} \\
+\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < \frac{\varepsilon}{2}
 \end{split}
 \end{equation}
 
@@ -655,23 +671,60 @@ a~pro součet nebo rozdíl těchto výrazů bude platit
 
 \begin{equation}
 \begin{split}
-\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| + \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < 2 \cdot \frac{\varepsilon}{2} \\
-\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \left(\mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right) \pm \left( \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right)\right| < \varepsilon \\
-\forall P \in (U_{\delta(\varepsilon)}(P_0) \setminus P_0) \; \left| \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) - \left(\lim_{P \to P_0} \pm \lim_{P \to P_0} \mathrm{g}(P)\right)\right| < \varepsilon \\
+\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| + \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < 2 \cdot \frac{\varepsilon}{2} \\
+\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \left(\mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right) \pm \left( \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right)\right| < \varepsilon \\
+\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) - \left(\lim_{P \to P_0} \pm \lim_{P \to P_0} \mathrm{g}(P)\right)\right| < \varepsilon \\
 \end{split}
 \end{equation}
 
 Využili jsme přitom nerovnosti \(|x \pm y| \leq |x| + |y|\). Tím je vztah pro limitu součtu a~rozdílu dokázán.
 
-\section{Spojitost funkce}
-\label{sec:spojitost_funkce}
+Vidíme, že dokázat vztah pro limitu součtu je poměrně složité. Abychom si zjednodušili práci, tak prozkoumejme limitu složené funkce.
 
+\section{Limita složené funkce}
 
-Funkci nazveme spojitou v~daném bodě pokud je limita v~tomto bodě rovna funkční hodnotě. Tedy pokud v~daném bodě funkce limitů má, má v~něm i~funkční hodnotu a~limita je funkční hodnotě rovna. Tedy pokud
+Pro limitu složených funkcí platí následující vztah. Přitom předpokládáme, že hodnota funkce g (bod \(Q_0\)) leží ve stejném metrickém prostoru jako argument funkce f (bod \(Q_0\)), tedy že se v obou případech používá stejná metrika.
 
 \begin{equation}
-\lim_{P \to P_0} \mathrm{f}(P) = \mathrm{f}(P_0)
+\begin{split}
+\lim_{P \to P_0} \mathrm{g}(P) = Q_0 \land \lim_{Q \to Q_0} \mathrm{f}(Q) = y \Rightarrow \lim_{P \to P_0} \mathrm{f}(\mathrm{g}(P)) = y
+\end{split}
 \end{equation}
+
+Pokud je funkce \(f\) spojitá, tak její limitu můžeme nahradit její funkční hodnotou a~vztah se zjednodušší:
+
+\begin{equation}
+\begin{split}
+\lim_{P \to P_0} \mathrm{f}(\mathrm{g}(P)) = \mathrm{f} \left( \lim_{P \to P_0} (\mathrm{g}(P)) \right)
+\end{split}
+\end{equation}
+
+Obě dvě věty je třeba chápat jako implikace. Neexistence limit jednotlivých funkcí ještě neznemaná, že neexistuje limita složené funkce.
+
+Přistupme k důkazu. Z~definice limit funkcí \(\mathrm{f}\) a~\(\mathrm{g}\) víme:
+
+\begin{equation}
+\begin{split}
+\forall Q \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \; \left| \mathrm{f}(Q) - y \right| < \varepsilon_f  \\
+\forall P \in \overset{\circ}{U}_{\delta_g(\varepsilon_g)}(P_0) \; \left| \mathrm{g}(P) - Q_0 \right| < \varepsilon_g
+\end{split}
+\end{equation}
+
+Uvědomíme-li si, že pokud \(\varepsilon_g \leq \delta_f(\varepsilon_f)\) tak platí
+
+\begin{equation}
+\overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \subset \{\mathrm{g}(P): \left| \mathrm{g}(P) - Q_0 \right| < \varepsilon_g \} 
+\end{equation}
+
+tak můžeme v~první rovnici nahradit \(Q = \mathrm{g}(P)\) pokud zvolíme \(\varepsilon_g = \delta_f(\varepsilon_f)\). Získáme tak rovnici 
+
+\begin{equation}
+\begin{split}
+\forall P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \; \left| \mathrm{f}(\mathrm{g}(P)) - y \right| < \varepsilon_f  \\
+\end{split}
+\end{equation}
+
+která dokazuje vztah pro limitu složené funkce.
 
 \section{Objekty v~prostoru}
 
