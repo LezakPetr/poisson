@@ -580,12 +580,10 @@ Pokud v~dalším textu neuvedeme jinak, tak za metrický prostor budeme považov
 Limitou funkce \(y = \lim_{P \to P_0} \mathrm{f}(P)\) rozumíme to, k~jaké funkční hodnotě se funkce blíží, pokud se její argumenty blíží k~bodu \(P\). Přesná definice je následující. To, že funkce \(\mathrm{f(P)}\) má v~bodě \(P_0\) limitu \(y\) znamená, že pro každé kladné \(\varepsilon\) lze nalézt kladné \(\delta\) takové, že funkce má v~\(\delta\)-okolí bodu \(P_0\) kromě bodu samotného hodnoty lišící se od \(y\) méně než o~\(\varepsilon\):
 
 \begin{equation}
-\forall \varepsilon > 0 \; \exists \delta > 0 \; \forall P \in \overset{\circ}{U}_{\delta}(P_0) \; |\mathrm{f}(P) - y| < \varepsilon
+\forall \varepsilon > 0 \; \exists \delta > 0 \; \forall P \in \overset{\circ}{U}_{\delta}(P_0) \; \mathrm{f}(P) \in U_{\varepsilon}(y)
 \end{equation}
 
-Na funkční hodnotě v~daném bodě nezáleží. Funkce nemusí být ani v~daném bodě definovaná. Funkce nemusí mít v~daném bodě limitu, pokud ji však má, tak je tato limita jednoznačně určená.
-
-Tuto definici můžeme použít i~pro funkce více reálných proměnných. Například pro funkci \(\mathrm{f}(x, y)\) můžeme definovat \(P = [x, y]\) a~předpokládat, že body \(P\) leží v~prostoru \(E_2\).
+Na funkční hodnotě v~daném bodě nezáleží. Funkce nemusí být ani v~daném bodě definovaná. Funkce nemusí mít v~daném bodě limitu, pokud ji však má, tak je tato limita jednoznačně určená. Metrický prostor funkčních argumentů a~funkčních hodnot je obecně různý.
 
 \subsection{Spojitost funkce}
 \label{sec:spojitost_funkce}
@@ -705,26 +703,30 @@ Přistupme k důkazu. Z~definice limit funkcí \(\mathrm{f}\) a~\(\mathrm{g}\) v
 
 \begin{equation}
 \begin{split}
-\forall Q \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \; \left| \mathrm{f}(Q) - y \right| < \varepsilon_f  \\
-\forall P \in \overset{\circ}{U}_{\delta_g(\varepsilon_g)}(P_0) \; \left| \mathrm{g}(P) - Q_0 \right| < \varepsilon_g
+\forall Q \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \; \mathrm{f}(Q) \in U_{\varepsilon_f}(y) \\
+\forall P \in \overset{\circ}{U}_{\delta_g(\varepsilon_g)}(P_0) \; \mathrm{g}(P) \in U_{\varepsilon_g}(Q_0)
 \end{split}
 \end{equation}
 
-Uvědomíme-li si, že pokud \(\varepsilon_g \leq \delta_f(\varepsilon_f)\) tak platí
+Uvědomíme-li si, že z~\(\varepsilon_g \leq \delta_f(\varepsilon_f)\) tak platí
 
 \begin{equation}
-\overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \subset \{\mathrm{g}(P): \left| \mathrm{g}(P) - Q_0 \right| < \varepsilon_g \} 
+\overset{\circ}{U}_{\varepsilon_g}(Q_0) \subset \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0)
 \end{equation}
 
-tak můžeme v~první rovnici nahradit \(Q = \mathrm{g}(P)\) pokud zvolíme \(\varepsilon_g = \delta_f(\varepsilon_f)\). Získáme tak rovnici 
+a~my můžeme první rovnici specializovat:
 
 \begin{equation}
-\begin{split}
-\forall P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \; \left| \mathrm{f}(\mathrm{g}(P)) - y \right| < \varepsilon_f  \\
-\end{split}
+\forall Q \in \overset{\circ}{U}_{\varepsilon_g}(Q_0) \; \mathrm{f}(Q) \in U_{\varepsilon_f}(y)
 \end{equation}
 
-která dokazuje vztah pro limitu složené funkce.
+Využijeme druhé rovnice. Plyne z~ní, že podmínka \(Q \in \overset{\circ}{U}_{\varepsilon_g}(Q_0)\) je splněna pokud \(P \in \overset{\circ}{U}_{\delta_g(\varepsilon_g)}(P_0)\) a~my ji tak můžeme do rovnice zapsat pokud nahradíme \(Q = \mathrm{g}(P)\) a~\(\varepsilon_g = \delta_f(\varepsilon_f)\):
+
+\begin{equation}
+\forall P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \; \mathrm{f}(\mathrm{g}(P)) \in U_{\varepsilon_f}(y)
+\end{equation}
+
+Tím je dokázán vztah pro limitu složené funkce.
 
 \section{Objekty v~prostoru}
 
