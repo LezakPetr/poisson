@@ -613,77 +613,9 @@ Vyjádřeme vzdálenost od \(y\):
 
 Vidíme, že zvolíme-li \(\delta = \frac{\varepsilon}{2}\), pak pro \(\sqrt{x^2 + y^2} < \delta\) bude \(|\mathrm{f}(P) - y| = |x| < \varepsilon\).
 
-\subsection{Základní limity}
+\subsection{Limita složené funkce}
 
-Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Ke každému vztahu je uvedena funkce \(\delta\), která prokazuje správnost limity. Tyto vztahy nejsou překvapivé, pro spojité funkce je funkční hodnota rovna limitě, viz \ref{sec:spojitost_funkce}. Tyto vztahy však platí i~pro nespojité funkce a~funkce \(\delta\) to dokazuje.
-
-\subsubsection{Limita součtu a~rozdílu}
-
-Začněme limitou součtu a rozdílu. Ta je rovna součtu nebo rozdílu limit pokud existují:
-
-\begin{equation}
-\lim_{P \to P_0} \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) = \lim_{P \to P_0} \mathrm{f}(P) \pm \lim_{P \to P_0} \mathrm{g}(P)
-\end{equation}
-
-Je zřejmé, že v~nejhorším případě se odchylky \(\varepsilon\) od limit sčítaných/odčítaných funkcí sčítají, pokud mají stejné/opačné znaménko. Zvolíme-li tedy pro jejich limity poloviční \(\varepsilon\) a~vezmeme menší z~jejich \(\delta\), pak určitě nepřekročíme stanovenou hodnotu \(\varepsilon\):
-
-\begin{equation}
-\delta(\varepsilon) = \min \left( \delta_f \left(\frac{\varepsilon}{2}\right), \delta_g \left(\frac{\varepsilon}{2} \right) \right)
-\end{equation}
-
-Z~definice limit funkcí \(\mathrm{f}\) a~\(\mathrm{g}\) víme:
-
-\begin{equation}
-\begin{split}
-\forall P \in \overset{\circ}{U}_{\delta_f(\frac{\varepsilon}{2})}(P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| < \frac{\varepsilon}{2} \\
-\forall P \in \overset{\circ}{U}_{\delta_g(\frac{\varepsilon}{2})}(P_0) \; \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < \frac{\varepsilon}{2}
-\end{split}
-\end{equation}
-
-Protože 
-
-\begin{equation}
-\begin{split}
-\delta(\varepsilon) \leq \delta_f \left(\frac{\varepsilon}{2}\right) \\
-\delta(\varepsilon) \leq \delta_g \left(\frac{\varepsilon}{2}\right)
-\end{split}
-\end{equation}
-
-tak
-
-\begin{equation}
-\begin{split}
-\overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \subset \overset{\circ}{U}_{\delta_f(\frac{\varepsilon}{2})}(P_0) \\
-\overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \subset \overset{\circ}{U}_{\delta_g(\frac{\varepsilon}{2})}(P_0)
-\end{split}
-\end{equation}
-
-a~bude také platit
-
-\begin{equation}
-\begin{split}
-\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| < \frac{\varepsilon}{2} \\
-\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < \frac{\varepsilon}{2}
-\end{split}
-\end{equation}
-
-a~pro součet nebo rozdíl těchto výrazů bude platit
-
-\begin{equation}
-\begin{split}
-\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right| + \left| \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right| < 2 \cdot \frac{\varepsilon}{2} \\
-\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \left(\mathrm{f}(P) - \lim_{P \to P_0} \mathrm{f}(P)\right) \pm \left( \mathrm{g}(P) - \lim_{P \to P_0} \mathrm{g}(P)\right)\right| < \varepsilon \\
-\forall P \in \overset{\circ}{U}_{\delta(\varepsilon)}(P_0) \; \left| \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) - \left(\lim_{P \to P_0} \pm \lim_{P \to P_0} \mathrm{g}(P)\right)\right| < \varepsilon \\
-\end{split}
-\end{equation}
-
-Využili jsme přitom nerovnosti \(|x \pm y| \leq |x| + |y|\). Tím je vztah pro limitu součtu a~rozdílu dokázán.
-
-Vidíme, že dokázat vztah pro limitu součtu je poměrně složité. Abychom si zjednodušili práci, tak prozkoumejme limitu složené funkce.
-
-\section{Limita složené funkce}
-
-Pro limitu složených funkcí platí následující vztah. Přitom předpokládáme, že hodnota funkce g (bod \(Q_0\)) leží ve stejném metrickém prostoru jako argument funkce f (bod \(Q_0\)), tedy že se v obou případech používá stejná metrika.
+Pro limitu složených funkcí platí následující vztah. Přitom předpokládáme, že hodnota funkce g (bod \(Q_0\)) leží ve stejném metrickém prostoru jako argument funkce f (bod \(Q\)), tedy že se v obou případech používá stejná metrika.
 
 \begin{equation}
 \begin{split}
@@ -695,7 +627,7 @@ Pokud je funkce \(f\) spojitá, tak její limitu můžeme nahradit její funkčn
 
 \begin{equation}
 \begin{split}
-\lim_{P \to P_0} \mathrm{f}(\mathrm{g}(P)) = \mathrm{f} \left( \lim_{P \to P_0} (\mathrm{g}(P)) \right)
+\lim_{P \to P_0} \mathrm{f}(\mathrm{g}(P)) = \mathrm{f} \left( \lim_{P \to P_0} \mathrm{g}(P) \right)
 \end{split}
 \end{equation}
 
@@ -710,25 +642,57 @@ Přistupme k důkazu. Z~definice limit funkcí \(\mathrm{f}\) a~\(\mathrm{g}\) v
 \end{split}
 \end{equation}
 
-Uvědomíme-li si, že z~\(\varepsilon_g \leq \delta_f(\varepsilon_f)\) tak platí
+Uvědomíme-li si, že z~\(\varepsilon_g \leq \delta_f(\varepsilon_f)\) plyne
 
 \begin{equation}
 \overset{\circ}{U}_{\varepsilon_g}(Q_0) \subset \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0)
 \end{equation}
 
-a~my můžeme první rovnici specializovat:
+a~my můžeme první rovnici specializovat pokud zvolíme \(\varepsilon_g = \delta_f(\varepsilon_f)\):
 
 \begin{equation}
-\forall Q \in \overset{\circ}{U}_{\varepsilon_g}(Q_0) \; \mathrm{f}(Q) \in U_{\varepsilon_f}(y)
+\begin{split}
+\forall Q \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \; \mathrm{f}(Q) \in U_{\varepsilon_f}(y) \\
+\forall Q \; Q \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \Rightarrow \mathrm{f}(Q) \in U_{\varepsilon_f}(y)
+\end{split}
 \end{equation}
 
-Využijeme druhé rovnice. Plyne z~ní, že podmínka \(Q \in \overset{\circ}{U}_{\varepsilon_g}(Q_0)\) je splněna pokud \(P \in \overset{\circ}{U}_{\delta_g(\varepsilon_g)}(P_0)\) a~my ji tak můžeme do rovnice zapsat pokud nahradíme \(Q = \mathrm{g}(P)\) a~\(\varepsilon_g = \delta_f(\varepsilon_f)\):
+Rovnici jsme zapsali ve tvaru implikace, protože \(\forall A \in S \; p(A)\) je jen zjednodušený zápis pro \(\forall A \; A \in S \Rightarrow p(A)\). 
+
+Dále pak můžeme dosadit \(Q = \mathrm{g}(P)\):
 
 \begin{equation}
+\forall P \; \mathrm{g}(P) \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \Rightarrow \; \mathrm{f}(\mathrm{g}(P)) \in U_{\varepsilon_f}(y)
+\end{equation}
+
+Ve druhé rovnici také zavedeme substituci \(\varepsilon_g = \delta_f(\varepsilon_f)\):
+
+\begin{equation}
+\begin{split}
+\forall P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \; \mathrm{g}(P) \in U_{\delta_f(\varepsilon_f)}(Q_0) \\
+\forall P \; P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \Rightarrow \mathrm{g}(P) \in U_{\delta_f(\varepsilon_f)}(Q_0)
+\end{split}
+\end{equation}
+
+Obě rovnice jsou ve tvaru 2 implikací a~je možné využít transitivitu implikací. Získáme tak rovnici:
+
+\begin{equation}
+\begin{split}
+\forall P \; P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \Rightarrow \mathrm{f}(\mathrm{g}(P)) \in U_{\varepsilon_f}(y) \\
 \forall P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \; \mathrm{f}(\mathrm{g}(P)) \in U_{\varepsilon_f}(y)
+\end{split}
 \end{equation}
 
 Tím je dokázán vztah pro limitu složené funkce.
+
+\subsection{Základní limity}
+
+Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Ke každému vztahu je uvedena funkce \(\delta\), která prokazuje správnost limity. Tyto vztahy nejsou překvapivé, pro spojité funkce je funkční hodnota rovna limitě, viz \ref{sec:spojitost_funkce}. Tyto vztahy však platí i~pro nespojité funkce a~funkce \(\delta\) to dokazuje.
+
+\begin{equation}
+\lim_{P \to P_0} \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) = \lim_{P \to P_0} \mathrm{f}(P) \pm \lim_{P \to P_0} \mathrm{g}(P)
+\end{equation}
+
 
 \section{Objekty v~prostoru}
 
