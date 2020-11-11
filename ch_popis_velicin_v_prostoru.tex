@@ -626,6 +626,7 @@ Pro limitu složených funkcí platí následující vztah. Přitom předpoklád
 Pokud je funkce \(f\) spojitá, tak její limitu můžeme nahradit její funkční hodnotou a~vztah se zjednodušší:
 
 \begin{equation}
+\label{eq:limita_spojite_slozene_funkce}
 \begin{split}
 \lim_{P \to P_0} \mathrm{f}(\mathrm{g}(P)) = \mathrm{f} \left( \lim_{P \to P_0} \mathrm{g}(P) \right)
 \end{split}
@@ -687,10 +688,26 @@ Tím je dokázán vztah pro limitu složené funkce.
 
 \subsection{Základní limity}
 
-Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Ke každému vztahu je uvedena funkce \(\delta\), která prokazuje správnost limity. Tyto vztahy nejsou překvapivé, pro spojité funkce je funkční hodnota rovna limitě, viz \ref{sec:spojitost_funkce}. Tyto vztahy však platí i~pro nespojité funkce a~funkce \(\delta\) to dokazuje.
+Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Vztahy jsou odvozeny ze vztahu~\eqref{eq:limita_spojite_slozene_funkce}.
 
 \begin{equation}
 \lim_{P \to P_0} \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) = \lim_{P \to P_0} \mathrm{f}(P) \pm \lim_{P \to P_0} \mathrm{g}(P)
+\end{equation}
+
+\begin{equation}
+\lim_{P \to P_0} \left(\mathrm{f}(P) \cdot \mathrm{g}(P) \right) = \lim_{P \to P_0} \mathrm{f}(P) \cdot \lim_{P \to P_0} \mathrm{g}(P)
+\end{equation}
+
+\begin{equation}
+\lim_{P \to P_0} \frac{\mathrm{f}(P)}{\mathrm{g}(P)} = \frac{\lim_{P \to P_0} \mathrm{f}(P)}{\lim_{P \to P_0} \mathrm{g}(P)}; \lim_{P \to P_0} \mathrm{g}(P) \neq 0
+\end{equation}
+
+\begin{equation}
+\lim_{P \to P_0} \left(\mathrm{f}(P)\right)^n = \left(\lim_{P \to P_0} \mathrm{f}(P)\right)^n; n > 0
+\end{equation}
+
+\begin{equation}
+\lim_{P \to P_0} \left(\mathrm{f}(P)\right)^{\mathrm{g}(P)} = \left(\lim_{P \to P_0} \mathrm{f}(P)\right)^{\lim_{P \to P_0} \mathrm{g}(P)}; \lim_{P \to P_0} \mathrm{f}(P) > 0
 \end{equation}
 
 
