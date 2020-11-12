@@ -710,6 +710,52 @@ Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity pod
 \lim_{P \to P_0} \left(\mathrm{f}(P)\right)^{\mathrm{g}(P)} = \left(\lim_{P \to P_0} \mathrm{f}(P)\right)^{\lim_{P \to P_0} \mathrm{g}(P)}; \lim_{P \to P_0} \mathrm{f}(P) > 0
 \end{equation}
 
+\section{Derivace}
+
+Derivací funkce rozumíme poměr změny funkční hodnoty vůči změne jejího parametru:
+
+\begin{equation}
+\begin{split}
+z =\mathrm{f}(x) \\
+\frac{\mathrm{d}z}{\mathrm{d}x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(x + \mathrm{d}x) - \mathrm{f}(x)}{\mathrm{d}x}
+\end{split}
+\end{equation}
+
+Máme-li funkci více parametrů, pak ostatní parametry považujeme za konstantní. Takovou derivaci nazýváme parciální. Samozřejmě je možné vypočítat parciální derivace vůči všem parametrům:
+
+\begin{equation}
+\begin{split}
+z =\mathrm{f}(x, y) \\
+\frac{\partial z}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(x + \mathrm{d}x, y) - \mathrm{f}(x, y)}{\mathrm{d}x} \\
+\frac{\partial z}{\partial y} = \lim_{\mathrm{d}y \to 0} \frac{\mathrm{f}(x, y + \mathrm{d}y) - \mathrm{f}(x, y)}{\mathrm{d}y}
+\end{split}
+\end{equation}
+
+Je nutné mít na paměti, že \(\frac{\mathrm{d}z}{\mathrm{d}x}\) ani \(\frac{\partial z}{\partial x}\) nejsou podíly nebo zlomky, jedná se o symboly pro derivace. Později sice uvidíme, že například derivace složené funkce vypadá jako krácení zlomků, ale ve skutečnosti je to opět jen symbolika zápisu.
+
+\begin{tikzpicture}
+\label{img:kartezsky_system_souradnic}
+\draw[->] (-0.5, 0) -- (2.5, 0);
+\draw (2.5, 0) node[anchor=north]{x};
+
+\draw[->] (0, -0.5) -- (0, 4.5);
+\draw (0, 4.5) node[anchor=east]{y};
+
+\draw[domain=0:2, smooth, variable = \x] plot ({\x}, {\x * \x});
+
+\draw[thick] (0.5, 0.25) -- (1.5, 2.25); 
+
+\draw[dashed] (0.5, 0) -- (0.5, 0.25) -- (0, 0.25);
+\draw[dashed] (1.5, 0) -- (1.5, 2.25) -- (0, 2.25);
+
+\draw (0.5, 0) node[anchor=north]{\(x\)};
+\draw (1.5, 0.08) node[anchor=north]{\(x + \mathrm{d}x\)};
+
+\draw (0, 0.25) node[anchor=east]{\(\mathrm{f}(x)\)};
+\draw (0, 2.25) node[anchor=east]{\(\mathrm{f}(x + \mathrm{d}x)\)};
+
+\end{tikzpicture}
+
 
 \section{Objekty v~prostoru}
 
