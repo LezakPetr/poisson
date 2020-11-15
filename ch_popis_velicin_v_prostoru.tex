@@ -618,6 +618,7 @@ Vidíme, že zvolíme-li \(\delta = \frac{\varepsilon}{2}\), pak pro \(\sqrt{x^2
 Pro limitu složených funkcí platí následující vztah. Přitom předpokládáme, že hodnota funkce g (bod \(Q_0\)) leží ve stejném metrickém prostoru jako argument funkce f (bod \(Q\)), tedy že se v obou případech používá stejná metrika.
 
 \begin{equation}
+\label{eq:limita_slozene_funkce}
 \begin{split}
 \lim_{P \to P_0} \mathrm{g}(P) = Q_0 \land \lim_{Q \to Q_0} \mathrm{f}(Q) = y \Rightarrow \lim_{P \to P_0} \mathrm{f}(\mathrm{g}(P)) = y
 \end{split}
@@ -715,6 +716,7 @@ Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity pod
 Derivací funkce rozumíme poměr změny funkční hodnoty vůči změne jejího parametru:
 
 \begin{equation}
+\label{eq:definice_derivace}
 \begin{split}
 z =\mathrm{f}(x) \\
 \frac{\mathrm{d}z}{\mathrm{d}x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(x + \mathrm{d}x) - \mathrm{f}(x)}{\mathrm{d}x}
@@ -733,8 +735,9 @@ z =\mathrm{f}(x, y) \\
 
 Je nutné mít na paměti, že \(\frac{\mathrm{d}z}{\mathrm{d}x}\) ani \(\frac{\partial z}{\partial x}\) nejsou podíly nebo zlomky, jedná se o symboly pro derivace. Později sice uvidíme, že například derivace složené funkce vypadá jako krácení zlomků, ale ve skutečnosti je to opět jen symbolika zápisu.
 
+\begin{figure}
+\begin{center}
 \begin{tikzpicture}
-\label{img:kartezsky_system_souradnic}
 \draw[->] (-0.5, 0) -- (2.5, 0);
 \draw (2.5, 0) node[anchor=north]{x};
 
@@ -743,7 +746,7 @@ Je nutné mít na paměti, že \(\frac{\mathrm{d}z}{\mathrm{d}x}\) ani \(\frac{\
 
 \draw[domain=0:2, smooth, variable = \x] plot ({\x}, {\x * \x});
 
-\draw[thick] (0.5, 0.25) -- (1.5, 2.25); 
+\draw[thick] (0.25, -0.25) -- (1.75, 2.75); 
 
 \draw[dashed] (0.5, 0) -- (0.5, 0.25) -- (0, 0.25);
 \draw[dashed] (1.5, 0) -- (1.5, 2.25) -- (0, 2.25);
@@ -753,8 +756,58 @@ Je nutné mít na paměti, že \(\frac{\mathrm{d}z}{\mathrm{d}x}\) ani \(\frac{\
 
 \draw (0, 0.25) node[anchor=east]{\(\mathrm{f}(x)\)};
 \draw (0, 2.25) node[anchor=east]{\(\mathrm{f}(x + \mathrm{d}x)\)};
-
 \end{tikzpicture}
+\caption{Derivace funkce}
+\end{center}
+\label{img:derivace}
+\end{figure}
+
+Na obrázku \ref{img:derivace} je vidět grafický význam derivace. Přímka procházející body \([x, \mathrm{f}(x)]\) a~\([x + \mathrm{d}x, \mathrm{f}(x + \mathrm{d}x)]\) tvoří sečnu funkce \(\mathrm{f}\). Pokud \(\mathrm{d}x \to 0\), pak se sečna bude blížit tečně. Derivace proto představuje směrnici tečny v~daném bodě.
+
+\subsection{Derivace složené funkce jedné proměnné}
+
+Mějme složenou funkci
+
+\begin{equation}
+y = \mathrm{f}(\mathrm{g}(x))
+\end{equation}
+
+a~chtějme vypočítat její derivaci. Derivaci můžeme vypočítat podle definice~\eqref{eq:definice_derivace}:
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}y}{\mathrm{d}x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}x} = \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}x} \cdot \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} = \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x) + \mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} \cdot \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{d}x} = \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x) + \mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} \cdot \lim_{\mathrm{d}x \to 0} \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{d}x} = \\
+\lim_{\mathrm{d}g \to 0} \frac{\mathrm{f}(\mathrm{g}(x) + \mathrm{d}g) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}g} \cdot \lim_{\mathrm{d}x \to 0} \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{d}x} = \\
+\frac{\mathrm{df}}{\mathrm{d}g}(\mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x}
+\end{split}
+\end{equation}
+
+Několikrát jsme využili vztah pro limitu složené funkce~\eqref{eq:limita_slozene_funkce}. Zapišme odvozený vztah ještě jednou, protože se jedná o~velmi důležitý vztah:
+
+\begin{equation}
+\frac{\mathrm{d}y}{\mathrm{d}x} = \frac{\mathrm{d}}{\mathrm{d}x}\mathrm{f}(\mathrm{g}(x)) = \frac{\mathrm{df}}{\mathrm{d}g}(\mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x}
+\end{equation}
+
+Derivaci složené funkce \(\mathrm{f}(\mathrm{g}(x))\) tedy vypočítáme tak, že vypočítáme derivaci vnější funkce \(\mathrm{f}\) vůči jejímu parametru \(g\) vyhodnocenou v~bodě \(\mathrm{g}(x)\) a~vynásobíme ji derivací vnitřní funkce \(\mathrm{g}\). Vnitřní funkce je vyhodnocena v~bodě \(x\), ale to není nutné explicitně zapisovat.
+
+
+\subsection{Derivace složené funkce více proměnných}
+
+Mějme složenou funkci
+
+\begin{equation}
+\mathrm{f}(\mathrm{g}_1(x), \mathrm{g}_2(x), ..., \mathrm{g}_n(x))
+\end{equation}
+
+začněme nejdříve vztahem
+
+\begin{equation}
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}_1(x + \mathrm{d}x), \mathrm{g}_2(x + \mathrm{d}x), ..., \mathrm{g}_n(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}_1(x), \mathrm{g}_2(x + \mathrm{d}x), ..., \mathrm{g}_n(x + \mathrm{d}x))}{\mathrm{d}x}
+\end{equation}
+
 
 
 \section{Objekty v~prostoru}
