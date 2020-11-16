@@ -775,6 +775,7 @@ y = \mathrm{f}(\mathrm{g}(x))
 a~chtějme vypočítat její derivaci. Derivaci můžeme vypočítat podle definice~\eqref{eq:definice_derivace}:
 
 \begin{equation}
+\label{eq:derivace_slozene_funkce_vypocet}
 \begin{split}
 \frac{\mathrm{d}y}{\mathrm{d}x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}x} = \\
 \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}x} \cdot \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} = \\
@@ -796,19 +797,36 @@ Derivaci složené funkce \(\mathrm{f}(\mathrm{g}(x))\) tedy vypočítáme tak, 
 
 \subsection{Derivace složené funkce více proměnných}
 
-Mějme složenou funkci
+Mějme složenou funkci 2 proměnných:
 
 \begin{equation}
-\mathrm{f}(\mathrm{g}_1(x), \mathrm{g}_2(x), ..., \mathrm{g}_n(x))
+y = \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))
 \end{equation}
 
-začněme nejdříve vztahem
+Její derivace je určena vztahem
 
 \begin{equation}
-\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}_1(x + \mathrm{d}x), \mathrm{g}_2(x + \mathrm{d}x), ..., \mathrm{g}_n(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}_1(x), \mathrm{g}_2(x + \mathrm{d}x), ..., \mathrm{g}_n(x + \mathrm{d}x))}{\mathrm{d}x}
+\frac{\partial y}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))}{\mathrm{d}x}
 \end{equation}
 
+Nyní využijeme triku, který je v~této knize využit několikrát. Jednou z~možností, jak se z~bodu \(A\) dostat do bodu \(B\) je podél souřadnicových os. Nejdříve podél osy \(x\), pak podél osy \(y\) atd. V~našem případě to znamená:
 
+
+\begin{equation}
+\begin{split}
+\frac{\partial y}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x))}{\mathrm{d}x} + \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))}{\mathrm{d}x} = \\
+\lim_{\varepsilon \to 0} \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x), \mathrm{h}(x + \varepsilon)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \varepsilon))}{\mathrm{d}x} + \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))}{\mathrm{d}x} = \\
+\lim_{\varepsilon \to 0} \frac{\partial \mathrm{f}}{\partial g}(\mathrm{g}(x), \mathrm{h}(x + \varepsilon)) \cdot \frac{\partial \mathrm{g}}{\partial x} +
+\frac{\partial \mathrm{f}}{\partial h}(\mathrm{g}(x), \mathrm{h}(x)) \cdot \frac{\partial \mathrm{h}}{\partial x} = \\
+\frac{\partial \mathrm{f}}{\partial g}(\mathrm{g}(x), \mathrm{h}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} +
+\frac{\partial \mathrm{f}}{\partial h}(\mathrm{g}(x), \mathrm{h}(x)) \cdot \frac{\partial \mathrm{h}}{\partial x}
+\end{split}
+\end{equation}
+
+Nejdříve jsme k~výrazu přičetli a~odečetli člen \(\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x))\) a~limitu rozdělili na dvě. Dále jsme jeden člen \(d_x\) nahradili nově zavedeným členem \(\varepsilon\). Využili jsme při tom vztahu TODO.
+Nakonec jsme limity nahradili derivacemi podle vztahu~\eqref{eq:derivace_slozene_funkce_vypocet}, jen funkci dvou proměnných s~jednou proměnnou konstantní chápeme jako funkci jedné proměnné.
 
 \section{Objekty v~prostoru}
 
