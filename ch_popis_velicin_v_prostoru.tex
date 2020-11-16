@@ -687,6 +687,22 @@ Obě rovnice jsou ve tvaru 2 implikací a~je možné využít transitivitu impli
 
 Tím je dokázán vztah pro limitu složené funkce.
 
+\subsection{Zůžení limity}
+
+Mějme funkci dvou proměnných \(\mathrm{g}(a, b)\). Pak existují-li limity na levé straně následujících rovností, pak rovnosti platí:
+
+\begin{equation}
+\label{eq:zuzeni_limity_fixace}
+\lim_{a \to a_0} \lim_{b \to b_0} \mathrm{g}(a, b) = \lim_{[a, b] \to [a_0, b_0]} \mathrm{g}(a, b) = \lim_{a \to a_0} \mathrm{g}(a, b_0) = \lim_{b \to b_0} \mathrm{g}(a_0, b)
+\end{equation}
+
+\begin{equation}
+\label{eq:zuzeni_limity_stejne_promenne}
+\lim_{a \to x_0} \lim_{b \to x_0} \mathrm{g}(a, b) = \lim_{[a, b] \to [x_0, x_0]} \mathrm{g}(a, b) = \lim_{x \to x_0} \mathrm{g}(x, x)
+\end{equation}
+
+Důkaz je zřejmý, okolí bodů u~limit vpravo je podmnožinou okolí bodů u~limit vlevo.
+
 \subsection{Základní limity}
 
 Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Vztahy jsou odvozeny ze vztahu~\eqref{eq:limita_spojite_slozene_funkce}.
@@ -825,7 +841,7 @@ Nyní využijeme triku, který je v~této knize využit několikrát. Jednou z~m
 \end{split}
 \end{equation}
 
-Nejdříve jsme k~výrazu přičetli a~odečetli člen \(\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x))\) a~limitu rozdělili na dvě. Dále jsme jeden člen \(d_x\) nahradili nově zavedeným členem \(\varepsilon\). Využili jsme při tom vztahu TODO.
+Nejdříve jsme k~výrazu přičetli a~odečetli člen \(\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x))\) a~limitu rozdělili na dvě. Dále jsme jeden člen \(d_x\) nahradili nově zavedeným členem \(\varepsilon\). Využili jsme při tom vztahu \eqref{eq:zuzeni_limity_stejne_promenne}.
 Nakonec jsme limity nahradili derivacemi podle vztahu~\eqref{eq:derivace_slozene_funkce_vypocet}, jen funkci dvou proměnných s~jednou proměnnou konstantní chápeme jako funkci jedné proměnné.
 
 \section{Objekty v~prostoru}
