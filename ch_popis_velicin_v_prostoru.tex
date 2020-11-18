@@ -597,6 +597,11 @@ Funkci nazveme spojitou v~daném bodě pokud je limita v~tomto bodě rovna funk�
 \lim_{P \to P_0} \mathrm{f}(P) = \mathrm{f}(P_0)
 \end{equation}
 
+Není-li funkce v daném bodě definovaná, ale je možné ji upravit tak, že se v~okolí bodu nezmění a~po úpravě bude spojitá, pak můžeme její limitu vypočítat jako hodnotu této upravené funkce. Příklad:
+
+\begin{equation}
+\lim_{x \to 0} \frac{2x}{x} = \lim_{x \to 0} 2 = 2
+\end{equation}
 
 \subsection{Příklad}
 
@@ -847,6 +852,23 @@ Tento vztah lze zobecnit na složenou funkci libovolného počtu proměnných:
 
 \begin{equation}
 \frac{\partial}{\partial x} \mathrm{f} (\mathrm{g}_1(x, y, ...), \mathrm{g}_2(x, y, ...), ..., \mathrm{g}_n(x, y, ...)) = \sum_{i=1}^n \frac{\partial \mathrm{f}}{\partial g_i}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}_i}{\partial x}
+\end{equation}
+
+\subsection{Derivace inverzní funkce}
+
+Mějme navzájem inverzní funkce \(\mathrm{f}(x)\) a~\(\mathrm{g}(x)\). Pak pro ně musí platit:
+
+\begin{equation}
+\mathrm{f}(\mathrm{g}(x)) = x
+\end{equation}
+
+Derivace stejných funkcí musí být stejná, to vyplývá z~definice derivace. To znamená, že můžeme zderivovat obě strany rovnice, protože rovnost zůstane zachována. Získáme tak rovnici:
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{df}}{\mathrm{d}x}(\mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = 1 \\
+\frac{\mathrm{dg}}{\mathrm{d}x} = \frac{1}{\frac{\mathrm{df}}{\mathrm{d}x}(\mathrm{g}(x))}
+\end{split}
 \end{equation}
 
 \section{Objekty v~prostoru}
