@@ -871,6 +871,40 @@ Derivace stejných funkcí musí být stejná, to vyplývá z~definice derivace.
 \end{split}
 \end{equation}
 
+\subsection{Tabulka derivací}
+
+Vypočítejme derivace různých funkcí. Začněme derivací konstantní funkce, přesněji funkce nezávislé na proměnné, podle které derivujeme:
+
+\begin{equation}
+\frac{\mathrm{d}k}{\mathrm{d}x} = \lim_{dx \to 0} \frac{k - k}{dx} = \lim_{dx \to 0} 0 = 0¨
+\end{equation}
+
+Pokračujme derivací součtu a~rozdílu funkcí. K~tomu budeme potřebovat derivaci přímé úměry:
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} kx = \lim_{dx \to 0} \frac{k \cdot (x + dx) - kx}{dx} = \lim_{dx \to 0} k = k
+\end{equation}
+
+Derivaci součtu a~rozdílu funkcí vypočítáme jako derivaci složené funkce. Označme vnější funkci \(\mathrm{s}(f, g) = f \pm g\). Ta je vůči svým parametrům \(f\) a~\(g\) přímo úměrná s~koeficientem 1 pro parametr \(f\) a \(\pm1\) pro parametr \(g\), tedy \(\frac{\mathrm{ds}}{\mathrm{d}f} = 1\) a~\(\frac{\mathrm{ds}}{\mathrm{d}g} = \pm1\):
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} (\mathrm{f}(x) \pm \mathrm{g}(x)) = \frac{\mathrm{d}}{\mathrm{d}x} \mathrm{s}(\mathrm{f}(x), \mathrm{g}(x)) = \frac{\mathrm{ds}}{\mathrm{d}f} \cdot \frac{\mathrm{df}}{\mathrm{d}x} + \frac{\mathrm{ds}}{\mathrm{d}g} \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = \frac{\mathrm{df}}{\mathrm{d}x} \pm \frac{\mathrm{dg}}{\mathrm{d}x}
+\end{equation}
+
+Derivaci součinu funkcí vypočítáme opět jako derivaci složené funkce. Označme vnější funkci \(\mathrm{s}(f, g) = f \cdot g\). Ta je vůči svým parametrům \(f\) a~\(g\) přímo úměrná s~koeficientem druhého parametru, tedy \(\frac{\mathrm{ds}}{\mathrm{d}f} = g\) a~\(\frac{\mathrm{ds}}{\mathrm{d}g} = f\):
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}}{\mathrm{d}x} (\mathrm{f}(x) \cdot \mathrm{g}(x)) = \frac{\mathrm{d}}{\mathrm{d}x} \mathrm{s}({f}(x), \mathrm{g}(x)) = \\
+\frac{\mathrm{ds}}{\mathrm{d}f} (\mathrm{f}(x), \mathrm{g}(x)) \cdot \frac{\mathrm{df}}{\mathrm{d}x} + \frac{\mathrm{ds}}{\mathrm{d}g}(\mathrm{f}(x), \mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = \\
+\mathrm{g}(x) \cdot \frac{\mathrm{df}}{\mathrm{d}x} + \mathrm{f}(x) \cdot \frac{\mathrm{dg}}{\mathrm{d}x}
+\end{split}
+\end{equation}
+
+
+
+
+
 \section{Objekty v~prostoru}
 
 Souřadné systémy nám umožňují popisovat objekty v~prostoru. Nyní si ukážeme, jak je to možné.
