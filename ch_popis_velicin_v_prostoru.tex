@@ -930,6 +930,35 @@ Derivaci podílu funkcí vypočítáme opět jako derivaci složené funkce. Ozn
 \end{split}
 \end{equation}
 
+Dále dokážeme matematickou indukcí vztah
+
+\begin{equation}
+\label{eq:derivace_mocniny_n}
+\frac{\mathrm{d}}{\mathrm{d}x} x^n = n \cdot x^{n-1}; n \in \mathbb{N}
+\end{equation}
+
+Pro \(n = 1\) získáme vztah 
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} x = 1
+\end{equation}
+
+který jsme už dokázaly. Dále, pokud platí 
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} x^{n-1} = (n - 1) \cdot x^{n-2}; n \geq 2
+\end{equation}
+
+pak
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}}{\mathrm{d}x} x^n = \frac{\mathrm{d}}{\mathrm{d}x} (x \cdot x^{n-1}) = x^{n-1} \cdot \frac{\mathrm{d}}{\mathrm{d}x} x + x \cdot \frac{\mathrm{d}}{\mathrm{d}x} x^{n-1} = \\
+x^{n-1} + x \cdot (n - 1) \cdot x^{n-2} = x^{n-1} + (n - 1) \cdot x^{n-1} = n \cdot x^{n-1}
+\end{split}
+\end{equation}
+
+a~proto vztah \eqref{eq:derivace_mocniny_n} platí pro všechna přirozená čísla.
 
 \section{Objekty v~prostoru}
 
