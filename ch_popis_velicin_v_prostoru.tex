@@ -960,6 +960,39 @@ x^{n-1} + x \cdot (n - 1) \cdot x^{n-2} = x^{n-1} + (n - 1) \cdot x^{n-1} = n \c
 
 a~proto vztah \eqref{eq:derivace_mocniny_n} platí pro všechna přirozená čísla.
 
+\subsubsection{Derivace exponenciální funkce}
+
+Mějme funkci \(y = a^x\) pro \(a > 0\). Její derivace je:
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}y}{\mathrm{d}x} a^x = \frac{\mathrm{d}}{\mathrm{d}x} a^x = \lim_{dx \to 0} \frac{a^{x+dx} - a^x}{dx} = \lim_{dx \to 0} \frac{a^x \cdot a^{dx} - a^x}{dx} = \\
+a^x \cdot \lim_{dx \to 0} \frac{a^{dx} - 1}{dx} = y \cdot \frac{\mathrm{d}y}{\mathrm{d}x}(0)
+\end{split}
+\end{equation}
+
+Vidíme, že derivace funkce \(a^x\) je rovna \(a^x\) násobené derivací v~bodě \(x = 0\).
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\draw[->] (-2.5, 0) -- (2.5, 0);
+\draw (2.5, 0) node[anchor=north]{x};
+
+\draw[->] (0, -0.5) -- (0, 4.5);
+\draw (0, 4.5) node[anchor=east]{y};
+
+\draw[domain=-2:2, smooth, variable = \x] plot ({\x}, {pow(1.5, \x)});
+\draw[domain=-2:2, smooth, variable = \x] plot ({\x}, {pow(2, \x)});
+\draw[domain=-2:1.5129, smooth, variable = \x] plot ({\x}, {pow(2.5, \x)});
+\draw[domain=-2:1.2619, smooth, variable = \x] plot ({\x}, {pow(3, \x)});
+
+\end{tikzpicture}
+\caption{Derivace exponenciální funkce}
+\end{center}
+\label{img:derivace_exponencialni_funkce}
+\end{figure}
+
 \section{Objekty v~prostoru}
 
 Souřadné systémy nám umožňují popisovat objekty v~prostoru. Nyní si ukážeme, jak je to možné.
