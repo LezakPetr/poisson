@@ -865,6 +865,7 @@ Mějme navzájem inverzní funkce \(\mathrm{f}(x)\) a~\(\mathrm{g}(x)\). Pak pro
 Derivace stejných funkcí musí být stejná, to vyplývá z~definice derivace. To znamená, že můžeme zderivovat obě strany rovnice, protože rovnost zůstane zachována. Získáme tak rovnici:
 
 \begin{equation}
+\label{eq:derivace_inverzni_funkce}
 \begin{split}
 \frac{\mathrm{df}}{\mathrm{d}x}(\mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = 1 \\
 \frac{\mathrm{dg}}{\mathrm{d}x} = \frac{1}{\frac{\mathrm{df}}{\mathrm{d}x}(\mathrm{g}(x))}
@@ -1044,6 +1045,20 @@ a~proto
 
 \begin{equation}
 \frac{\mathrm{d}}{\mathrm{d}x} a^x = \frac{\mathrm{d}}{\mathrm{d}x} e^{x \cdot \ln a} = e^{x \cdot \ln a} \cdot \ln a = \ln a \cdot a^x
+\end{equation}
+
+\subsubsection{Derivace přirozeného logaritmu}
+
+Vyjdeme z~identity
+
+\begin{equation}
+e^{\ln x} = x; x > 0
+\end{equation}
+
+a~použitím vztahu~\eqref{eq:derivace_inverzni_funkce} získáme
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} \ln x = \frac{1}{e^{\ln x}} = \frac{1}{x}; x > 0
 \end{equation}
 
 \subsubsection{Derivace reálné mocniny}
