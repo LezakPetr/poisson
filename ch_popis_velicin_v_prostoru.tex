@@ -966,7 +966,7 @@ Mějme funkci \(y = a^x\) pro \(a > 0\). Její derivace je:
 
 \begin{equation}
 \begin{split}
-\frac{\mathrm{d}y}{\mathrm{d}x} a^x = \frac{\mathrm{d}}{\mathrm{d}x} a^x = \lim_{dx \to 0} \frac{a^{x+dx} - a^x}{dx} = \lim_{dx \to 0} \frac{a^x \cdot a^{dx} - a^x}{dx} = \\
+\frac{\mathrm{d}y}{\mathrm{d}x} = \frac{\mathrm{d}}{\mathrm{d}x} a^x = \lim_{dx \to 0} \frac{a^{x+dx} - a^x}{dx} = \lim_{dx \to 0} \frac{a^x \cdot a^{dx} - a^x}{dx} = \\
 a^x \cdot \lim_{dx \to 0} \frac{a^{dx} - 1}{dx} = y \cdot \frac{\mathrm{d}y}{\mathrm{d}x}(0)
 \end{split}
 \end{equation}
@@ -1017,6 +1017,35 @@ e = \lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n
 \end{equation}
 
 Uvedená limita znamená, že \(n\) roste nade všechny meze, přesnou definici zde nebudeme uvádět. Je zřejmé, že pokud \(n \to \infty\), pak \(dx \to 0\). Například pro \(n = 2^{66}\) dostaneme \(e \approx 2.718281828459045235\).
+
+Proto platí:
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} e^x = e^x
+\end{equation}
+
+Inverzní funkcí je přirozený logaritmus \(\ln x\). Proto platí:
+
+\begin{equation}
+\ln e^x = x
+\end{equation}
+
+\begin{equation}
+e^{\ln x} = x; x > 0
+\end{equation}
+
+Obecnou exponenciální funkci proto můžeme zapsat
+
+\begin{equation}
+a^x = e^{\ln a^x} = e^{x \cdot \ln a}; a > 0
+\end{equation}
+
+a~proto
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} a^x = \frac{\mathrm{d}}{\mathrm{d}x} e^{x \cdot \ln a} = e^{x \cdot \ln a} \cdot \ln a = \ln a \cdot a^x
+\end{equation}
+
 
 \section{Objekty v~prostoru}
 
