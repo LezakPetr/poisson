@@ -982,16 +982,41 @@ Vidíme, že derivace funkce \(a^x\) je rovna \(a^x\) násobené derivací v~bod
 \draw[->] (0, -0.5) -- (0, 4.5);
 \draw (0, 4.5) node[anchor=east]{y};
 
-\draw[domain=-2:2, smooth, variable = \x] plot ({\x}, {pow(1.5, \x)});
-\draw[domain=-2:2, smooth, variable = \x] plot ({\x}, {pow(2, \x)});
-\draw[domain=-2:1.5129, smooth, variable = \x] plot ({\x}, {pow(2.5, \x)});
-\draw[domain=-2:1.2619, smooth, variable = \x] plot ({\x}, {pow(3, \x)});
+\draw[domain=-2:2, smooth, variable = \x] plot ({\x}, {pow(1.5, \x)}) node[anchor=west]{\(1.5^x\)};
+\draw[domain=-2:2, smooth, variable = \x] plot ({\x}, {pow(2, \x)}) node[anchor=south]{\(2^x\)};
+\draw[domain=-2:1.2619, smooth, variable = \x] plot ({\x}, {pow(3, \x)}) node[anchor=south]{\(3^x\)};
+
+\draw[dashed] (-1, 0) -- (2, 3);
 
 \end{tikzpicture}
 \caption{Derivace exponenciální funkce}
 \end{center}
 \label{img:derivace_exponencialni_funkce}
 \end{figure}
+
+Na obrázku~\ref{img:derivace_exponencialni_funkce} vidíme několik různých exponenciálních funkcí, všechny procházejí budem \([0, 1]\) protože \(a^0 = 1\). Na obrázku je také čárkovaně zakreslena přímka odpovídající v~tomto bodě tečně funkce s~derivací 1. Vidíme, že existuje základ mocniny, pro kterou bude tato přímka tečnou a~že leží mezi čísly 2 a~3. Tento základ nazveme Eulerovým číslem po slavném matematikovy a~označíme jej \(e\). Pro Eulerovo číslo tedy musí platit:
+
+\begin{equation}
+\lim_{dx \to 0} \frac{e^{dx} - 1}{dx} = 1
+\end{equation}
+
+Z~něj můžeme Eulerovo číslo vyjádřit:
+
+\begin{equation}
+\begin{split}
+\lim_{dx \to 0} e^{dx} - 1 = \lim_{dx \to 0} dx \\
+\lim_{dx \to 0} e^{dx} = \lim_{dx \to 0} (1 + dx) \\
+e = \lim_{dx \to 0} \sqrt[dx]{1 + dx}
+\end{split}
+\end{equation}
+
+Zavedeme-li substituci \(dx = \frac{1}{n}\), pak dostaneme známý vztah pro výpočet Eulerova čísla:
+
+\begin{equation}
+e = \lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n
+\end{equation}
+
+Uvedená limita znamená, že \(n\) roste nade všechny meze, přesnou definici zde nebudeme uvádět. Je zřejmé, že pokud \(n \to \infty\), pak \(dx \to 0\). Například pro \(n = 2^{66}\) dostaneme \(e \approx 2.718281828459045235\).
 
 \section{Objekty v~prostoru}
 
