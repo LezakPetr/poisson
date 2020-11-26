@@ -1069,17 +1069,52 @@ Dříve jsme dokázali vztah \(\frac{\mathrm{d}}{\mathrm{d}x} x^n = n \cdot x^{n
 x^r = e^{\ln x^r} = e^{r \cdot \ln x}; x \in \mathbb{R}^+, r \in \mathbb{R}
 \end{equation}
 
-tak
+tak proto platí
 
 \begin{equation}
 \frac{\mathrm{d}}{\mathrm{d}x} x^r = \frac{\mathrm{d}}{\mathrm{d}x} e^{r \cdot \ln x} = e^{r \cdot \ln x} \cdot r \cdot \frac{1}{x} = x^r \cdot r \cdot \frac{1}{x} = r \cdot x^{r-1}; x > 0
 \end{equation}
 
 
- 
+\subsection{Jak derivovat}
 
+S~využitím tabulky derivací primitivních funkcí a~pravidlem pro derivování složených funkcí lze derivovat čistě mechanicky "zeshora dolů". Zkusme zderivovat například:
 
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} \left(e^{2x+1} + 3x \right)^3 = ...
+\end{equation}
 
+Nejvýše postavenou funkcí je \(a^3\) s~\(a = e^{2x+1} + 3x\). Je to ta funkce, kterou bychom při vyčíslování výrazu vypočítali až nakonec. Víme, že derivace \(x^3\) je \(3 x^2\) a~využijeme pravidlo pro derivování složené funkce:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \frac{\mathrm{d}}{\mathrm{d}x} \left(e^{2x+1} + 3x \right) = ...
+\end{equation}
+
+Využijeme pravidlo pro derivaci součtu:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \left(\frac{\mathrm{d}}{\mathrm{d}x} e^{2x+1} + \frac{\mathrm{d}}{\mathrm{d}x} 3x \right) = ...
+\end{equation}
+
+První člen je \(e^b\) kde \(b = 2x + 1\), ten opět zderivujeme jako složenou funkci. Na druhý člen využijeme pravidlo pro derivaci součinu funkcí. Jedná se o~speciální případ, kdy jedna funkce je konstantní:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \left(e^{2x+1} \cdot \frac{\mathrm{d}}{\mathrm{d}x} \left(2x+1\right) + 3 \cdot \frac{\mathrm{d}}{\mathrm{d}x} x \right) = ...
+\end{equation}
+
+Na první člen použijeme pravidlo pro derivaci součtu. Derivace druhého členu \(x\) je 1:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \left(e^{2x+1} \cdot \left(\frac{\mathrm{d}}{\mathrm{d}x} 2x + \frac{\mathrm{d}}{\mathrm{d}x} 1\right) + 3 \right) = ...
+\end{equation}
+
+Derivace členu \(2x\) je 2, už ji nebudu znovu rozepisovat na derivaci součinu. Derivace konstanty 1 je 0. Získáme tak výsledek:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \left(2 e^{2x+1} + 3 \right)
+\end{equation}
+
+Tento postup je obecný a~s~trochou cviku lze derivace jednodušších výrazů psát napřímo bez rozepisování mezikroků. 
 
 \section{Objekty v~prostoru}
 
