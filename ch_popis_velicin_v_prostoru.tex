@@ -759,6 +759,7 @@ Je nutné mít na paměti, že \(\frac{\mathrm{d}z}{\mathrm{d}x}\) ani \(\frac{\
 \begin{figure}
 \begin{center}
 \begin{tikzpicture}
+// Secna
 \draw[->] (-0.5, 0) -- (2.5, 0);
 \draw (2.5, 0) node[anchor=north]{x};
 
@@ -777,6 +778,23 @@ Je nutné mít na paměti, že \(\frac{\mathrm{d}z}{\mathrm{d}x}\) ani \(\frac{\
 
 \draw (0, 0.25) node[anchor=east]{\(\mathrm{f}(x)\)};
 \draw (0, 2.25) node[anchor=east]{\(\mathrm{f}(x + \mathrm{d}x)\)};
+
+// Tecna
+\draw[->] (3.5, 0) -- (6.5, 0);
+\draw (6.5, 0) node[anchor=north]{x};
+
+\draw[->] (4, -0.5) -- (4, 4.5);
+\draw (4, 4.5) node[anchor=east]{y};
+
+\draw[domain=0:2, smooth, variable = \x] plot ({\x + 4}, {\x * \x});
+
+\draw[thick] (4.0, -0.25) -- (6.5, 2.25); 
+
+\draw[dashed] (4.5, 0) -- (4.5, 0.25) -- (4, 0.25);
+
+\draw (4.5, 0) node[anchor=north]{\(x\)};
+\draw (4, 0.25) node[anchor=east]{\(\mathrm{f}(x)\)};
+
 \end{tikzpicture}
 \caption{Derivace funkce}
 \end{center}
