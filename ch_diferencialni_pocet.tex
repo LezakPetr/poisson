@@ -1,0 +1,594 @@
+\chapter{Diferenciální počet}
+
+\section{Limita funkce}
+
+V~metrickém prostoru \((M, d)\) pro \(\delta > 0\) definujme \(\delta\)-okolí prvku \(P \in M\) jako množinu bodů, jejichž vzdálenost od prvku \(P\) je menší než \(\delta\):
+
+\begin{equation}
+\forall \delta > 0, P \in M: U_{\delta}(P) = \{X \in M: d(X, P) < \delta\}
+\end{equation}
+
+Zaveďme také označení pro výlučné \(\delta\)-okolí prvku \(P\), tedy okolí bez vlastního bodu:
+
+\begin{equation}
+\overset{\circ}{U}_{\delta}(P) = U_{\delta}(P) \setminus P
+\end{equation}
+
+Pokud v~dalším textu neuvedeme jinak, tak za metrický prostor budeme považovat Euklidovský prostor. Budeme tedy používat metriku \eqref{eq:euklidovsky_prostor_metrika} i~v~případě, že ji bude nutné zavést uměle. V~Euklidovském prostoru představuje  \(\delta\)-okolí obecně hyperkouli okolo zvoleného bodu. V~jednorozměrném prostoru se jedná o~interval \(|x - x_0| < \delta\), ve dvojrozměrném prostoru o~kruh \((x - x_0)^2 + (y - y_0)^2 < \delta^2\) a~ve třírozměrném prostoru o~kouli \((x - x_0)^2 + (y - y_0)^2 + (z - z_0)^2 < \delta^2\).
+
+Limitou funkce \(y = \lim_{P \to P_0} \mathrm{f}(P)\) rozumíme to, k~jaké funkční hodnotě se funkce blíží, pokud se její argumenty \(P\) blíží k~bodu \(P_0\). Přesná definice je následující. To, že funkce \(\mathrm{f}(P)\) má v~bodě \(P_0\) limitu \(y\) znamená, že pro každé kladné \(\varepsilon\) lze nalézt kladné \(\delta\) takové, že funkce má ve výlučném \(\delta\)-okolí bodu \(P_0\) hodnoty ležící v~\(\varepsilon\)-okolí bodu \(y\):
+
+\begin{equation}
+\forall \varepsilon > 0 \; \exists \delta > 0 \; \forall P \in \overset{\circ}{U}_{\delta}(P_0) \; \mathrm{f}(P) \in U_{\varepsilon}(y)
+\end{equation}
+
+Limitu tedy můžeme dokázat tak, že nalezneme funkci \(\delta(\varepsilon)\) splňující výše uvedené požadavky.
+
+Na funkční hodnotě v~daném bodě nezáleží. Funkce nemusí být ani v~daném bodě definovaná. Funkce nemusí mít v~daném bodě limitu, pokud ji však má, tak je tato limita jednoznačně určená. Metrický prostor funkčních argumentů a~funkčních hodnot je obecně různý.
+
+\subsection{Spojitost funkce}
+\label{sec:spojitost_funkce}
+
+
+Funkci nazveme spojitou v~daném bodě pokud je limita v~tomto bodě rovna funkční hodnotě. Tedy pokud v~daném bodě funkce limitů má, má v~něm i~funkční hodnotu a~limita je funkční hodnotě rovna. Tedy pokud
+
+\begin{equation}
+\lim_{P \to P_0} \mathrm{f}(P) = \mathrm{f}(P_0)
+\end{equation}
+
+Není-li funkce v daném bodě definovaná, ale je možné ji upravit tak, že se v~okolí bodu nezmění a~po úpravě bude spojitá, pak můžeme její limitu vypočítat jako hodnotu této upravené funkce. Příklad:
+
+\begin{equation}
+\lim_{x \to 0} \frac{2x}{x} = \lim_{x \to 0} 2 = 2
+\end{equation}
+
+\subsection{Příklad}
+
+Dokažme \(\lim_{[x, y] \to [0, 2]} \frac{x^2 + x y}{x} = 2\).
+
+Vyjádřeme vzdálenost od \(y\):
+
+\begin{equation}
+\begin{split}
+|\mathrm{f}(P) - y| = \left|\frac{x^2 + x y}{x} - 2 \right| = \left|x + y - 2 \right| = \\
+\left|dx + ( 2+ dy) - 2 \right| = \left|dx + dy\right| \leq 2 \cdot \delta
+\end{split}
+\end{equation}
+
+Vidíme, že zvolíme-li \(\delta = \frac{\varepsilon}{2}\), pak pro \(\sqrt{x^2 + y^2} < \delta\) bude \(|\mathrm{f}(P) - y| = |x| < \varepsilon\).
+
+\subsection{Limita složené funkce}
+
+Pro limitu složených funkcí platí následující vztah. Přitom předpokládáme, že hodnota funkce g (bod \(Q_0\)) leží ve stejném metrickém prostoru jako argument funkce f (bod \(Q\)), tedy že se v obou případech používá stejná metrika.
+
+\begin{equation}
+\label{eq:limita_slozene_funkce}
+\begin{split}
+\lim_{P \to P_0} \mathrm{g}(P) = Q_0 \land \lim_{Q \to Q_0} \mathrm{f}(Q) = y \Rightarrow \lim_{P \to P_0} \mathrm{f}(\mathrm{g}(P)) = y
+\end{split}
+\end{equation}
+
+Pokud je funkce \(f\) spojitá, tak její limitu můžeme nahradit její funkční hodnotou a~vztah se zjednodušší:
+
+\begin{equation}
+\label{eq:limita_spojite_slozene_funkce}
+\begin{split}
+\lim_{P \to P_0} \mathrm{f}(\mathrm{g}(P)) = \mathrm{f} \left( \lim_{P \to P_0} \mathrm{g}(P) \right)
+\end{split}
+\end{equation}
+
+Obě dvě věty je třeba chápat jako implikace. Neexistence limit jednotlivých funkcí ještě neznemaná, že neexistuje limita složené funkce.
+
+Přistupme k důkazu. Z~definice limit funkcí \(\mathrm{f}\) a~\(\mathrm{g}\) víme:
+
+\begin{equation}
+\begin{split}
+\forall Q \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \; \mathrm{f}(Q) \in U_{\varepsilon_f}(y) \\
+\forall P \in \overset{\circ}{U}_{\delta_g(\varepsilon_g)}(P_0) \; \mathrm{g}(P) \in U_{\varepsilon_g}(Q_0)
+\end{split}
+\end{equation}
+
+Uvědomíme-li si, že z~\(\varepsilon_g \leq \delta_f(\varepsilon_f)\) plyne
+
+\begin{equation}
+\overset{\circ}{U}_{\varepsilon_g}(Q_0) \subset \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0)
+\end{equation}
+
+a~my můžeme první rovnici specializovat pokud zvolíme \(\varepsilon_g = \delta_f(\varepsilon_f)\):
+
+\begin{equation}
+\begin{split}
+\forall Q \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \; \mathrm{f}(Q) \in U_{\varepsilon_f}(y) \\
+\forall Q \; Q \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \Rightarrow \mathrm{f}(Q) \in U_{\varepsilon_f}(y)
+\end{split}
+\end{equation}
+
+Rovnici jsme zapsali ve tvaru implikace, protože \(\forall A \in S \; p(A)\) je jen zjednodušený zápis pro \(\forall A \; A \in S \Rightarrow p(A)\). 
+
+Dále pak můžeme dosadit \(Q = \mathrm{g}(P)\):
+
+\begin{equation}
+\forall P \; \mathrm{g}(P) \in \overset{\circ}{U}_{\delta_f(\varepsilon_f)}(Q_0) \Rightarrow \; \mathrm{f}(\mathrm{g}(P)) \in U_{\varepsilon_f}(y)
+\end{equation}
+
+Ve druhé rovnici také zavedeme substituci \(\varepsilon_g = \delta_f(\varepsilon_f)\):
+
+\begin{equation}
+\begin{split}
+\forall P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \; \mathrm{g}(P) \in U_{\delta_f(\varepsilon_f)}(Q_0) \\
+\forall P \; P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \Rightarrow \mathrm{g}(P) \in U_{\delta_f(\varepsilon_f)}(Q_0)
+\end{split}
+\end{equation}
+
+Obě rovnice jsou ve tvaru 2 implikací a~je možné využít transitivitu implikací. Získáme tak rovnici:
+
+\begin{equation}
+\begin{split}
+\forall P \; P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \Rightarrow \mathrm{f}(\mathrm{g}(P)) \in U_{\varepsilon_f}(y) \\
+\forall P \in \overset{\circ}{U}_{\delta_g(\delta_f(\varepsilon_f))}(P_0) \; \mathrm{f}(\mathrm{g}(P)) \in U_{\varepsilon_f}(y)
+\end{split}
+\end{equation}
+
+Tím je dokázán vztah pro limitu složené funkce.
+
+\subsection{Zůžení limity}
+
+Mějme funkci dvou proměnných \(\mathrm{g}(a, b)\). Pak existují-li limity na levé straně následujících rovností, pak rovnosti platí:
+
+\begin{equation}
+\label{eq:zuzeni_limity_fixace}
+\lim_{a \to a_0} \lim_{b \to b_0} \mathrm{g}(a, b) = \lim_{[a, b] \to [a_0, b_0]} \mathrm{g}(a, b) = \lim_{a \to a_0} \mathrm{g}(a, b_0) = \lim_{b \to b_0} \mathrm{g}(a_0, b)
+\end{equation}
+
+\begin{equation}
+\label{eq:zuzeni_limity_stejne_promenne}
+\lim_{a \to x_0} \lim_{b \to x_0} \mathrm{g}(a, b) = \lim_{[a, b] \to [x_0, x_0]} \mathrm{g}(a, b) = \lim_{x \to x_0} \mathrm{g}(x, x)
+\end{equation}
+
+Důkaz je zřejmý, okolí bodů u~limit vpravo je podmnožinou okolí bodů u~limit vlevo.
+
+\subsection{Základní limity}
+
+Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Vztahy jsou odvozeny ze vztahu~\eqref{eq:limita_spojite_slozene_funkce}.
+
+\begin{equation}
+\lim_{P \to P_0} \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) = \lim_{P \to P_0} \mathrm{f}(P) \pm \lim_{P \to P_0} \mathrm{g}(P)
+\end{equation}
+
+\begin{equation}
+\lim_{P \to P_0} \left(\mathrm{f}(P) \cdot \mathrm{g}(P) \right) = \lim_{P \to P_0} \mathrm{f}(P) \cdot \lim_{P \to P_0} \mathrm{g}(P)
+\end{equation}
+
+\begin{equation}
+\lim_{P \to P_0} \frac{\mathrm{f}(P)}{\mathrm{g}(P)} = \frac{\lim_{P \to P_0} \mathrm{f}(P)}{\lim_{P \to P_0} \mathrm{g}(P)}; \lim_{P \to P_0} \mathrm{g}(P) \neq 0
+\end{equation}
+
+\begin{equation}
+\lim_{P \to P_0} \left(\mathrm{f}(P)\right)^n = \left(\lim_{P \to P_0} \mathrm{f}(P)\right)^n; n > 0
+\end{equation}
+
+\begin{equation}
+\lim_{P \to P_0} \left(\mathrm{f}(P)\right)^{\mathrm{g}(P)} = \left(\lim_{P \to P_0} \mathrm{f}(P)\right)^{\lim_{P \to P_0} \mathrm{g}(P)}; \lim_{P \to P_0} \mathrm{f}(P) > 0
+\end{equation}
+
+\section{Derivace}
+
+Derivací funkce rozumíme poměr změny funkční hodnoty vůči změne jejího parametru:
+
+\begin{equation}
+\label{eq:definice_derivace}
+\begin{split}
+z =\mathrm{f}(x) \\
+\frac{\mathrm{d}z}{\mathrm{d}x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(x + \mathrm{d}x) - \mathrm{f}(x)}{\mathrm{d}x}
+\end{split}
+\end{equation}
+
+Máme-li funkci více parametrů, pak ostatní parametry považujeme za konstantní. Takovou derivaci nazýváme parciální. Samozřejmě je možné vypočítat parciální derivace vůči všem parametrům:
+
+\begin{equation}
+\begin{split}
+z =\mathrm{f}(x, y) \\
+\frac{\partial z}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(x + \mathrm{d}x, y) - \mathrm{f}(x, y)}{\mathrm{d}x} \\
+\frac{\partial z}{\partial y} = \lim_{\mathrm{d}y \to 0} \frac{\mathrm{f}(x, y + \mathrm{d}y) - \mathrm{f}(x, y)}{\mathrm{d}y}
+\end{split}
+\end{equation}
+
+Je nutné mít na paměti, že \(\frac{\mathrm{d}z}{\mathrm{d}x}\) ani \(\frac{\partial z}{\partial x}\) nejsou podíly nebo zlomky, jedná se o symboly pro derivace. Později sice uvidíme, že například derivace složené funkce vypadá jako krácení zlomků, ale ve skutečnosti je to opět jen symbolika zápisu.
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+// Secna
+\draw[->] (-0.5, 0) -- (2.5, 0);
+\draw (2.5, 0) node[anchor=north]{x};
+
+\draw[->] (0, -0.5) -- (0, 4.5);
+\draw (0, 4.5) node[anchor=east]{y};
+
+\draw[domain=0:2, smooth, variable = \x] plot ({\x}, {\x * \x});
+
+\draw[thick] (0.25, -0.25) -- (1.75, 2.75); 
+
+\draw[dashed] (0.5, 0) -- (0.5, 0.25) -- (0, 0.25);
+\draw[dashed] (1.5, 0) -- (1.5, 2.25) -- (0, 2.25);
+
+\draw (0.5, 0) node[anchor=north]{\(x\)};
+\draw (1.5, 0.08) node[anchor=north]{\(x + \mathrm{d}x\)};
+
+\draw (0, 0.25) node[anchor=east]{\(\mathrm{f}(x)\)};
+\draw (0, 2.25) node[anchor=east]{\(\mathrm{f}(x + \mathrm{d}x)\)};
+
+// Tecna
+\draw[->] (3.5, 0) -- (6.5, 0);
+\draw (6.5, 0) node[anchor=north]{x};
+
+\draw[->] (4, -0.5) -- (4, 4.5);
+\draw (4, 4.5) node[anchor=east]{y};
+
+\draw[domain=0:2, smooth, variable = \x] plot ({\x + 4}, {\x * \x});
+
+\draw[thick] (4.0, -0.25) -- (6.5, 2.25); 
+
+\draw[dashed] (4.5, 0) -- (4.5, 0.25) -- (4, 0.25);
+
+\draw (4.5, 0) node[anchor=north]{\(x\)};
+\draw (4, 0.25) node[anchor=east]{\(\mathrm{f}(x)\)};
+
+\end{tikzpicture}
+\caption{Derivace funkce}
+\end{center}
+\label{img:derivace}
+\end{figure}
+
+Na obrázku \ref{img:derivace} je vidět grafický význam derivace. Přímka procházející body \([x, \mathrm{f}(x)]\) a~\([x + \mathrm{d}x, \mathrm{f}(x + \mathrm{d}x)]\) tvoří sečnu funkce \(\mathrm{f}\). Pokud \(\mathrm{d}x \to 0\), pak se sečna bude blížit tečně. Derivace proto představuje směrnici tečny v~daném bodě.
+
+\subsection{Derivace složené funkce jedné proměnné}
+
+Mějme složenou funkci
+
+\begin{equation}
+y = \mathrm{f}(\mathrm{g}(x))
+\end{equation}
+
+a~chtějme vypočítat její derivaci. Derivaci můžeme vypočítat podle definice~\eqref{eq:definice_derivace}:
+
+\begin{equation}
+\label{eq:derivace_slozene_funkce_vypocet}
+\begin{split}
+\frac{\mathrm{d}y}{\mathrm{d}x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}x} = \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}x} \cdot \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} = \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x) + \mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} \cdot \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{d}x} = \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x) + \mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} \cdot \lim_{\mathrm{d}x \to 0} \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{d}x} = \\
+\lim_{\mathrm{d}g \to 0} \frac{\mathrm{f}(\mathrm{g}(x) + \mathrm{d}g) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}g} \cdot \lim_{\mathrm{d}x \to 0} \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{d}x} = \\
+\frac{\mathrm{df}}{\mathrm{d}g}(\mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x}
+\end{split}
+\end{equation}
+
+Několikrát jsme využili vztah pro limitu složené funkce~\eqref{eq:limita_slozene_funkce}. Zapišme odvozený vztah ještě jednou, protože se jedná o~velmi důležitý vztah:
+
+\begin{equation}
+\frac{\mathrm{d}y}{\mathrm{d}x} = \frac{\mathrm{d}}{\mathrm{d}x}\mathrm{f}(\mathrm{g}(x)) = \frac{\mathrm{df}}{\mathrm{d}g}(\mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x}
+\end{equation}
+
+Derivaci složené funkce \(\mathrm{f}(\mathrm{g}(x))\) tedy vypočítáme tak, že vypočítáme derivaci vnější funkce \(\mathrm{f}\) vůči jejímu parametru \(g\) vyhodnocenou v~bodě \(\mathrm{g}(x)\) a~vynásobíme ji derivací vnitřní funkce \(\mathrm{g}\). Vnitřní funkce je vyhodnocena v~bodě \(x\), ale to není nutné explicitně zapisovat.
+
+\subsection{Derivace složené funkce více proměnných}
+
+Mějme složenou funkci 2 proměnných:
+
+\begin{equation}
+y = \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))
+\end{equation}
+
+Její derivace je určena vztahem
+
+\begin{equation}
+\frac{\partial y}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))}{\mathrm{d}x}
+\end{equation}
+
+Nyní využijeme triku, který je v~této knize využit několikrát. Jednou z~možností, jak se z~bodu \(A\) dostat do bodu \(B\) je podél souřadnicových os. Nejdříve podél osy \(x\), pak podél osy \(y\) atd. V~našem případě to znamená:
+
+
+\begin{equation}
+\begin{split}
+\frac{\partial y}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x))}{\mathrm{d}x} + \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))}{\mathrm{d}x} = \\
+\lim_{\varepsilon \to 0} \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x), \mathrm{h}(x + \varepsilon)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \varepsilon))}{\mathrm{d}x} + \\
+\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))}{\mathrm{d}x} = \\
+\lim_{\varepsilon \to 0} \frac{\partial \mathrm{f}}{\partial g}(\mathrm{g}(x), \mathrm{h}(x + \varepsilon)) \cdot \frac{\partial \mathrm{g}}{\partial x} +
+\frac{\partial \mathrm{f}}{\partial h}(\mathrm{g}(x), \mathrm{h}(x)) \cdot \frac{\partial \mathrm{h}}{\partial x} = \\
+\frac{\partial \mathrm{f}}{\partial g}(\mathrm{g}(x), \mathrm{h}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} +
+\frac{\partial \mathrm{f}}{\partial h}(\mathrm{g}(x), \mathrm{h}(x)) \cdot \frac{\partial \mathrm{h}}{\partial x}
+\end{split}
+\end{equation}
+
+Nejdříve jsme k~výrazu přičetli a~odečetli člen \(\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x))\) a~limitu rozdělili na dvě. Dále jsme jeden člen \(d_x\) nahradili nově zavedeným členem \(\varepsilon\). Využili jsme při tom vztahu \eqref{eq:zuzeni_limity_stejne_promenne}.
+Nakonec jsme limity nahradili derivacemi podle vztahu~\eqref{eq:derivace_slozene_funkce_vypocet}, jen funkci dvou proměnných s~jednou proměnnou konstantní chápeme jako funkci jedné proměnné.
+
+Tento vztah lze zobecnit na složenou funkci libovolného počtu proměnných:
+
+\begin{equation}
+\frac{\partial}{\partial x} \mathrm{f} (\mathrm{g}_1(x, y, ...), \mathrm{g}_2(x, y, ...), ..., \mathrm{g}_n(x, y, ...)) = \sum_{i=1}^n \frac{\partial \mathrm{f}}{\partial g_i}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}_i}{\partial x}
+\end{equation}
+
+\subsection{Derivace inverzní funkce}
+
+Mějme navzájem inverzní funkce \(\mathrm{f}(x)\) a~\(\mathrm{g}(x)\). Pak pro ně musí platit:
+
+\begin{equation}
+\mathrm{f}(\mathrm{g}(x)) = x
+\end{equation}
+
+Derivace stejných funkcí musí být stejná, to vyplývá z~definice derivace. To znamená, že můžeme zderivovat obě strany rovnice, protože rovnost zůstane zachována. Získáme tak rovnici:
+
+\begin{equation}
+\label{eq:derivace_inverzni_funkce}
+\begin{split}
+\frac{\mathrm{df}}{\mathrm{d}x}(\mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = 1 \\
+\frac{\mathrm{dg}}{\mathrm{d}x} = \frac{1}{\frac{\mathrm{df}}{\mathrm{d}x}(\mathrm{g}(x))}
+\end{split}
+\end{equation}
+
+\subsection{Tabulka derivací}
+
+Vypočítejme derivace různých funkcí. Začněme derivací konstantní funkce, přesněji funkce nezávislé na proměnné, podle které derivujeme:
+
+\begin{equation}
+\frac{\mathrm{d}k}{\mathrm{d}x} = \lim_{dx \to 0} \frac{k - k}{dx} = \lim_{dx \to 0} 0 = 0¨
+\end{equation}
+
+Pokračujme derivací součtu a~rozdílu funkcí. K~tomu budeme potřebovat derivaci přímé úměry:
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} kx = \lim_{dx \to 0} \frac{k \cdot (x + dx) - kx}{dx} = \lim_{dx \to 0} k = k
+\end{equation}
+
+Derivaci součtu a~rozdílu funkcí vypočítáme jako derivaci složené funkce. Označme vnější funkci \(\mathrm{s}(f, g) = f \pm g\). Ta je vůči svým parametrům \(f\) a~\(g\) přímo úměrná s~koeficientem 1 pro parametr \(f\) a \(\pm1\) pro parametr \(g\), tedy \(\frac{\mathrm{ds}}{\mathrm{d}f} = 1\) a~\(\frac{\mathrm{ds}}{\mathrm{d}g} = \pm1\):
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} (\mathrm{f}(x) \pm \mathrm{g}(x)) = \frac{\mathrm{d}}{\mathrm{d}x} \mathrm{s}(\mathrm{f}(x), \mathrm{g}(x)) = \frac{\mathrm{ds}}{\mathrm{d}f} \cdot \frac{\mathrm{df}}{\mathrm{d}x} + \frac{\mathrm{ds}}{\mathrm{d}g} \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = \frac{\mathrm{df}}{\mathrm{d}x} \pm \frac{\mathrm{dg}}{\mathrm{d}x}
+\end{equation}
+
+Derivaci součinu funkcí vypočítáme opět jako derivaci složené funkce. Označme vnější funkci \(\mathrm{s}(f, g) = f \cdot g\). Ta je vůči svým parametrům \(f\) a~\(g\) přímo úměrná s~koeficientem druhého parametru, tedy \(\frac{\mathrm{ds}}{\mathrm{d}f} = g\) a~\(\frac{\mathrm{ds}}{\mathrm{d}g} = f\):
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}}{\mathrm{d}x} (\mathrm{f}(x) \cdot \mathrm{g}(x)) = \frac{\mathrm{d}}{\mathrm{d}x} \mathrm{s}({f}(x), \mathrm{g}(x)) = \\
+\frac{\mathrm{ds}}{\mathrm{d}f} (\mathrm{f}(x), \mathrm{g}(x)) \cdot \frac{\mathrm{df}}{\mathrm{d}x} + \frac{\mathrm{ds}}{\mathrm{d}g}(\mathrm{f}(x), \mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = \\
+\mathrm{g}(x) \cdot \frac{\mathrm{df}}{\mathrm{d}x} + \mathrm{f}(x) \cdot \frac{\mathrm{dg}}{\mathrm{d}x}
+\end{split}
+\end{equation}
+
+Pokud je jeden ze součinitelů nezávislý na proměnné, vůči které se derivuje, pak se vztah zjednodušší:
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}}{\mathrm{d}x} (k \cdot \mathrm{f}(x)) = k \cdot \frac{\mathrm{df}}{\mathrm{d}x}
+\end{split}
+\end{equation}
+
+Pro výpočet derivace podílu funkcí budeme znát derivaci inverzní funkce \(\frac{1}{x}\):
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}}{\mathrm{d}x} \frac{1}{x} = \lim_{dx \to 0} \frac{\frac{1}{x + dx} - \frac{1}{x}}{dx} = \\
+\lim_{dx \to 0} \frac{\frac{x - x - dx}{(x + dx) \cdot x}}{dx} = \lim_{dx \to 0} \frac{\frac{-dx}{(x + dx) \cdot x}}{dx} = \\
+\lim_{dx \to 0} \frac{-1}{(x + dx) \cdot x} = -\frac{1}{x^2}
+\end{split}
+\end{equation}
+
+Derivaci podílu funkcí vypočítáme opět jako derivaci složené funkce. Označme vnější funkci \(\mathrm{s}(f, g) = \frac{f}{g}\). Pak \(\frac{\mathrm{ds}}{\mathrm{d}f} = \frac{1}{g}\) a~\(\frac{\mathrm{ds}}{\mathrm{d}g} = -\frac{f}{g^2}\):
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}}{\mathrm{d}x} \frac{\mathrm{f}(x)}{\mathrm{g}(x)} = \frac{\mathrm{d}}{\mathrm{d}x} \mathrm{s}({f}(x), \mathrm{g}(x)) = \\
+\frac{\mathrm{ds}}{\mathrm{d}f} (\mathrm{f}(x), \mathrm{g}(x)) \cdot \frac{\mathrm{df}}{\mathrm{d}x} + \frac{\mathrm{ds}}{\mathrm{d}g}(\mathrm{f}(x), \mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = \\
+\frac{1}{\mathrm{g}(x)} \cdot \frac{\mathrm{df}}{\mathrm{d}x} -\frac{\mathrm{f}(x)}{\mathrm{g}^2(x)} \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = \\
+\frac{\frac{\mathrm{df}}{\mathrm{d}x} \cdot \mathrm{g}(x) - \mathrm{f}(x) \cdot \frac{\mathrm{dg}}{\mathrm{d}x}}{\mathrm{g}^2(x)}
+\end{split}
+\end{equation}
+
+Dále dokážeme matematickou indukcí vztah
+
+\begin{equation}
+\label{eq:derivace_mocniny_n}
+\frac{\mathrm{d}}{\mathrm{d}x} x^n = n \cdot x^{n-1}; n \in \mathbb{N}
+\end{equation}
+
+Pro \(n = 1\) získáme vztah 
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} x = 1
+\end{equation}
+
+který jsme už dokázaly. Dále, pokud platí 
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} x^{n-1} = (n - 1) \cdot x^{n-2}; n \geq 2
+\end{equation}
+
+pak
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}}{\mathrm{d}x} x^n = \frac{\mathrm{d}}{\mathrm{d}x} (x \cdot x^{n-1}) = x^{n-1} \cdot \frac{\mathrm{d}}{\mathrm{d}x} x + x \cdot \frac{\mathrm{d}}{\mathrm{d}x} x^{n-1} = \\
+x^{n-1} + x \cdot (n - 1) \cdot x^{n-2} = x^{n-1} + (n - 1) \cdot x^{n-1} = n \cdot x^{n-1}
+\end{split}
+\end{equation}
+
+a~proto vztah \eqref{eq:derivace_mocniny_n} platí pro všechna přirozená čísla.
+
+\subsubsection{Derivace exponenciální funkce}
+
+Mějme funkci \(y = a^x\) pro \(a > 0\). Její derivace je:
+
+\begin{equation}
+\begin{split}
+\frac{\mathrm{d}y}{\mathrm{d}x} = \frac{\mathrm{d}}{\mathrm{d}x} a^x = \lim_{dx \to 0} \frac{a^{x+dx} - a^x}{dx} = \lim_{dx \to 0} \frac{a^x \cdot a^{dx} - a^x}{dx} = \\
+a^x \cdot \lim_{dx \to 0} \frac{a^{dx} - 1}{dx} = y \cdot \frac{\mathrm{d}y}{\mathrm{d}x}(0)
+\end{split}
+\end{equation}
+
+Vidíme, že derivace funkce \(a^x\) je rovna \(a^x\) násobené derivací v~bodě \(x = 0\).
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+\draw[->] (-2.5, 0) -- (2.5, 0);
+\draw (2.5, 0) node[anchor=north]{x};
+
+\draw[->] (0, -0.5) -- (0, 4.5);
+\draw (0, 4.5) node[anchor=east]{y};
+
+\draw[domain=-2:2, smooth, variable = \x] plot ({\x}, {pow(1.5, \x)}) node[anchor=west]{\(1.5^x\)};
+\draw[domain=-2:2, smooth, variable = \x] plot ({\x}, {pow(2, \x)}) node[anchor=south]{\(2^x\)};
+\draw[domain=-2:1.2619, smooth, variable = \x] plot ({\x}, {pow(3, \x)}) node[anchor=south]{\(3^x\)};
+
+\draw[dashed] (-1, 0) -- (2, 3);
+
+\end{tikzpicture}
+\caption{Derivace exponenciální funkce}
+\end{center}
+\label{img:derivace_exponencialni_funkce}
+\end{figure}
+
+Na obrázku~\ref{img:derivace_exponencialni_funkce} vidíme několik různých exponenciálních funkcí, všechny procházejí budem \([0, 1]\) protože \(a^0 = 1\). Na obrázku je také čárkovaně zakreslena přímka odpovídající v~tomto bodě tečně funkce s~derivací 1. Vidíme, že existuje základ mocniny, pro kterou bude tato přímka tečnou a~že leží mezi čísly 2 a~3. Tento základ nazveme Eulerovým číslem po slavném matematikovy a~označíme jej \(e\). Pro Eulerovo číslo tedy musí platit:
+
+\begin{equation}
+\lim_{dx \to 0} \frac{e^{dx} - 1}{dx} = 1
+\end{equation}
+
+Z~něj můžeme Eulerovo číslo vyjádřit:
+
+\begin{equation}
+\begin{split}
+\lim_{dx \to 0} e^{dx} - 1 = \lim_{dx \to 0} dx \\
+\lim_{dx \to 0} e^{dx} = \lim_{dx \to 0} (1 + dx) \\
+e = \lim_{dx \to 0} \sqrt[dx]{1 + dx}
+\end{split}
+\end{equation}
+
+Zavedeme-li substituci \(dx = \frac{1}{n}\), pak dostaneme známý vztah pro výpočet Eulerova čísla:
+
+\begin{equation}
+e = \lim_{n \to \infty} \left(1 + \frac{1}{n}\right)^n
+\end{equation}
+
+Uvedená limita znamená, že \(n\) roste nade všechny meze, přesnou definici zde nebudeme uvádět. Je zřejmé, že pokud \(n \to \infty\), pak \(dx \to 0\). Například pro \(n = 2^{66}\) dostaneme \(e \approx 2.718281828459045235\).
+
+Proto platí:
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} e^x = e^x
+\end{equation}
+
+Inverzní funkcí je přirozený logaritmus \(\ln x\). Proto platí:
+
+\begin{equation}
+\ln e^x = x
+\end{equation}
+
+\begin{equation}
+e^{\ln x} = x; x > 0
+\end{equation}
+
+Obecnou exponenciální funkci proto můžeme zapsat
+
+\begin{equation}
+a^x = e^{\ln a^x} = e^{x \cdot \ln a}; a > 0
+\end{equation}
+
+a~proto
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} a^x = \frac{\mathrm{d}}{\mathrm{d}x} e^{x \cdot \ln a} = e^{x \cdot \ln a} \cdot \ln a = \ln a \cdot a^x
+\end{equation}
+
+\subsubsection{Derivace přirozeného logaritmu}
+
+Vyjdeme z~identity
+
+\begin{equation}
+e^{\ln x} = x; x > 0
+\end{equation}
+
+a~použitím vztahu~\eqref{eq:derivace_inverzni_funkce} získáme
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} \ln x = \frac{1}{e^{\ln x}} = \frac{1}{x}; x > 0
+\end{equation}
+
+\subsubsection{Derivace reálné mocniny}
+
+Dříve jsme dokázali vztah \(\frac{\mathrm{d}}{\mathrm{d}x} x^n = n \cdot x^{n-1}\) pro \(x \in \mathbb{R}\) a~\(n \in \mathbb{N}\). Nyní dokážeme, že tento vztah platí i~pro reálné exponenty. Protože platí
+
+\begin{equation}
+x^r = e^{\ln x^r} = e^{r \cdot \ln x}; x \in \mathbb{R}^+, r \in \mathbb{R}
+\end{equation}
+
+tak proto platí
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} x^r = \frac{\mathrm{d}}{\mathrm{d}x} e^{r \cdot \ln x} = e^{r \cdot \ln x} \cdot r \cdot \frac{1}{x} = x^r \cdot r \cdot \frac{1}{x} = r \cdot x^{r-1}; x > 0
+\end{equation}
+
+
+\subsection{Jak derivovat}
+
+S~využitím tabulky derivací primitivních funkcí a~pravidlem pro derivování složených funkcí lze derivovat čistě mechanicky "zeshora dolů". Zkusme zderivovat například:
+
+\begin{equation}
+\frac{\mathrm{d}}{\mathrm{d}x} \left(e^{2x+1} + 3x \right)^3 = ...
+\end{equation}
+
+Nejvýše postavenou funkcí je \(a^3\) s~\(a = e^{2x+1} + 3x\). Je to ta funkce, kterou bychom při vyčíslování výrazu vypočítali až nakonec. Víme, že derivace \(x^3\) je \(3 x^2\) a~využijeme pravidlo pro derivování složené funkce:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \frac{\mathrm{d}}{\mathrm{d}x} \left(e^{2x+1} + 3x \right) = ...
+\end{equation}
+
+Využijeme pravidlo pro derivaci součtu:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \left(\frac{\mathrm{d}}{\mathrm{d}x} e^{2x+1} + \frac{\mathrm{d}}{\mathrm{d}x} 3x \right) = ...
+\end{equation}
+
+První člen je \(e^b\) kde \(b = 2x + 1\), ten opět zderivujeme jako složenou funkci. Na druhý člen využijeme pravidlo pro derivaci součinu funkcí. Jedná se o~speciální případ, kdy jedna funkce je konstantní:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \left(e^{2x+1} \cdot \frac{\mathrm{d}}{\mathrm{d}x} \left(2x+1\right) + 3 \cdot \frac{\mathrm{d}}{\mathrm{d}x} x \right) = ...
+\end{equation}
+
+Na první člen použijeme pravidlo pro derivaci součtu. Derivace druhého členu \(x\) je 1:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \left(e^{2x+1} \cdot \left(\frac{\mathrm{d}}{\mathrm{d}x} 2x + \frac{\mathrm{d}}{\mathrm{d}x} 1\right) + 3 \right) = ...
+\end{equation}
+
+Derivace členu \(2x\) je 2, už ji nebudu znovu rozepisovat na derivaci součinu. Derivace konstanty 1 je 0. Získáme tak výsledek:
+
+\begin{equation}
+... = 3 \cdot \left(e^{2x+1} + 3x \right)^2 \cdot \left(2 e^{2x+1} + 3 \right)
+\end{equation}
+
+Tento postup je obecný a~s~trochou cviku lze derivace jednodušších výrazů psát napřímo bez rozepisování mezikroků. 
+
+\subsection{Vícenásobná derivace}
+
+Derivací funkce je funkce, kterou můžeme opět derivovat. Máme-li funkci více proměnných, pak můžeme derivotat podle stejné nebo podle jiné proměnné.
+
+Mějme například funkci \(\mathrm{f}(x) = x^3 y^2\). Pak \(\frac{\partial \mathrm{f}}{\partial x} = 3 x^2 y^2\). Tuto první derivaci můžeme opět derivovat podle \(x\) a~získáme \(\frac{\partial^2 \mathrm{f}}{\partial x^2} = 6 x y^2\). Nebo podle \(y\) a~získáme \(\frac{\partial^2 \mathrm{f}}{\partial xy} = 6 x^2 y\).
+Funkci \(f\) můžeme také derivovat podle \(y\) a~získáme \(\frac{\partial \mathrm{f}}{\partial y} = 2 x^3 y\). Derivujeme-li tuto derivaci podle \(x\), tak získáme \(\frac{\partial^2 \mathrm{f}}{\partial yx} = 6 x^2 y\).
+
+Povšimněme si, že \(\frac{\partial^2 \mathrm{f}}{\partial xy} = \frac{\partial^2 \mathrm{f}}{\partial yx}\). To, že nezáleží na pořadí derivování, nyní dokážeme obecně:
+
+\begin{equation}
+\begin{split}
+\frac{\partial^2 \mathrm{f}}{\partial yx} = \\
+\lim_{dx \to 0} \frac{\lim_{dy \to 0} \frac{\mathrm{f}(x+dx, y+dy) - \mathrm{f}(x+dx, y)}{dy} - \lim_{dy \to 0} \frac{\mathrm{f}(x, y+dy) - \mathrm{f}(x, y)}{dy}}{dx} = \\
+\lim_{dx \to 0, dy \to 0} \frac{\mathrm{f}(x+dx, y+dy) - \mathrm{f}(x+dx, y) - \mathrm{f}(x, y+dy) + \mathrm{f}(x, y)}{dx \cdot dy} = \\
+\lim_{dx \to 0} \frac{\lim_{dy \to 0} \frac{\mathrm{f}(x+dx, y+dy) - \mathrm{f}(x, y+dy)}{dx} - \lim_{dy \to 0} \frac{\mathrm{f}(x+dx, y) - \mathrm{f}(x, y)}{dx}}{dy} = \\
+\frac{\partial^2 \mathrm{f}}{\partial xy}
+\end{split}
+\end{equation}
+
