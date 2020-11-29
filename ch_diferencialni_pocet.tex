@@ -30,6 +30,70 @@ Na funkční hodnotě v~daném bodě nezáleží. Funkce nemusí být ani v~dan�
 
 Funkce nemusí mít v~daném bodě limitu, pokud ji však má, tak je tato limita jednoznačně určená. Dokažme to. Předpokládejme, že \(\lim_{x \to x_0} = a\) a~\(\lim_{x \to x_0} = b\), přičemž \(a \neq b\). Pak \(\mathrm{d}(a, b) > 0\) je vzdálenost mezi funkčními hodnotami \(a\) a~\(b\). Potom při volbě \(\varepsilon = \left| \frac{\mathrm{d}(a, b)}{2} \right|\) budou \(\varepsilon\)-okolí bodů disjunktní. Díky podmínce \eqref{eq:pseudometricky_prostor_definice_3} pro metrický prostor totiž nemůže existovat funkční hodnota \(c\), aby \(\mathrm{d}(a, c) < \varepsilon\) a~\(\mathrm{d}(b, c) < \varepsilon\). Tím je dokázáno, že v~jednom bodě nemohou existovat 2 různé limity.
 
+Na obrázku \ref{img:limita_funkce} jsou zobrazeny 3 funkce, které všechny mají v~bodě \(x = 1\) limitu 1. První funkce je spojitá, druhá funkce nemá funkční hodnotu v~daném bodě definovanou, třetí funkce má v~daném bodě jinou funkční hodnotu než limitu. 
+ 
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+
+// Spojita funkce
+\tikzmath{ \x = 0; \y = 0; }
+
+\draw[->] (\x - 0.5, \y) -- (\x + 2.5, \y);
+\draw (\x + 2.5, 0) node[anchor=north]{x};
+
+\draw[->] (\x, \y - 0.5) -- (\x, \y + 2.5);
+\draw (\x, \y + 2.5) node[anchor=east]{y};
+
+\draw (\x, \y) -- (\x + 2, \y + 2);
+
+\draw[dashed] (\x + 1, \y) -- (\x + 1, \y + 1) -- (\x, \y + 1);
+\draw (\x + 1, \y) node[anchor=north]{1};
+\draw (\x, \y + 1) node[anchor=east]{1};
+
+// Funkce s vyloucenym bodem
+\tikzmath{ \x = 3.5; \y = 0; \r = 0.05;}
+
+\draw[->] (\x - 0.5, \y) -- (\x + 2.5, \y);
+\draw (\x + 2.5, 0) node[anchor=north]{x};
+
+\draw[->] (\x, \y - 0.5) -- (\x, \y + 2.5);
+\draw (\x, \y + 2.5) node[anchor=east]{y};
+
+\draw (\x, \y) -- (\x + 1 - \r * 0.70711, \y + 1 - \r * 0.70711);
+\draw (\x + 1 + \r * 0.70711, \y + 1 + \r * 0.70711) -- (\x + 2, \y + 2);
+
+\draw (\x + 1, \y + 1) circle[radius=\r];
+
+\draw[dashed] (\x + 1, \y) -- (\x + 1, \y + 1) -- (\x, \y + 1);
+\draw (\x + 1, \y) node[anchor=north]{1};
+\draw (\x, \y + 1) node[anchor=east]{1};
+
+// Funkce s jinym bodem
+\tikzmath{ \x = 7; \y = 0; \r = 0.05;}
+
+\draw[->] (\x - 0.5, \y) -- (\x + 2.5, \y);
+\draw (\x + 2.5, 0) node[anchor=north]{x};
+
+\draw[->] (\x, \y - 0.5) -- (\x, \y + 2.5);
+\draw (\x, \y + 2.5) node[anchor=east]{y};
+
+\draw (\x, \y) -- (\x + 1 - \r * 0.70711, \y + 1 - \r * 0.70711);
+\draw (\x + 1 + \r * 0.70711, \y + 1 + \r * 0.70711) -- (\x + 2, \y + 2);
+
+\draw (\x + 1, \y + 1) circle[radius=\r];
+\draw[fill=black] (\x + 1, \y + 2) circle[,radius=\r];
+
+\draw[dashed] (\x + 1, \y) -- (\x + 1, \y + 1) -- (\x, \y + 1);
+\draw (\x + 1, \y) node[anchor=north]{1};
+\draw (\x, \y + 1) node[anchor=east]{1};
+
+\end{tikzpicture}
+\caption{Limita funkce}
+\end{center}
+\label{img:limita_funkce}
+\end{figure}
+
 \subsection{Spojitost funkce}
 \label{sec:spojitost_funkce}
 
