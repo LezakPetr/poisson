@@ -1,5 +1,7 @@
 \chapter{Diferenciální počet}
 
+Diferenciální počet se zabývá chováním funkcí při malých změnách jejich parametrů. Budeme tedy zkoumat, jak se funkce chovají v~okolí nějakého bodu.
+
 \section{Limita funkce}
 
 V~metrickém prostoru \((M, d)\) pro \(\delta > 0\) definujme \(\delta\)-okolí prvku \(P \in M\) jako množinu bodů, jejichž vzdálenost od prvku \(P\) je menší než \(\delta\):
@@ -24,11 +26,12 @@ Limitou funkce \(y = \lim_{P \to P_0} \mathrm{f}(P)\) rozumíme to, k~jaké funk
 
 Limitu tedy můžeme dokázat tak, že nalezneme funkci \(\delta(\varepsilon)\) splňující výše uvedené požadavky.
 
-Na funkční hodnotě v~daném bodě nezáleží. Funkce nemusí být ani v~daném bodě definovaná. Funkce nemusí mít v~daném bodě limitu, pokud ji však má, tak je tato limita jednoznačně určená. Metrický prostor funkčních argumentů a~funkčních hodnot je obecně různý.
+Na funkční hodnotě v~daném bodě nezáleží. Funkce nemusí být ani v~daném bodě definovaná. Metrický prostor funkčních argumentů a~funkčních hodnot je obecně různý.
+
+Funkce nemusí mít v~daném bodě limitu, pokud ji však má, tak je tato limita jednoznačně určená. Dokažme to. Předpokládejme, že \(\lim_{x \to x_0} = a\) a~\(\lim_{x \to x_0} = b\), přičemž \(a \neq b\). Pak \(\mathrm{d}(a, b) > 0\) je vzdálenost mezi funkčními hodnotami \(a\) a~\(b\). Potom při volbě \(\varepsilon = \left| \frac{\mathrm{d}(a, b)}{2} \right|\) budou \(\varepsilon\)-okolí bodů disjunktní. Díky podmínce \eqref{eq:pseudometricky_prostor_definice_3} pro metrický prostor totiž nemůže existovat funkční hodnota \(c\), aby \(\mathrm{d}(a, c) < \varepsilon\) a~\(\mathrm{d}(b, c) < \varepsilon\). Tím je dokázáno, že v~jednom bodě nemohou existovat 2 různé limity.
 
 \subsection{Spojitost funkce}
 \label{sec:spojitost_funkce}
-
 
 Funkci nazveme spojitou v~daném bodě pokud je limita v~tomto bodě rovna funkční hodnotě. Tedy pokud v~daném bodě funkce limitů má, má v~něm i~funkční hodnotu a~limita je funkční hodnotě rovna. Tedy pokud
 
