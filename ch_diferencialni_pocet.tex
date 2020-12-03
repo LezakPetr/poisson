@@ -755,3 +755,9 @@ Hodnotu \(\varepsilon\) můžeme zvolit libovolnou kladnou, zvolíme tedy \(\var
 Uvědomme-si, že levá a~pravá strana nerovnice jsou si rovny, pokud \(\mathrm{f}(x_0 + \mathrm{d}x) - \mathrm{f}(x_0) = 0\).
 Uvažujme nejdříve, že součin \(\frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x\) je kladný. Pak nerovnice bude platit právě tehdy když \(\mathrm{f}(x_0 + \mathrm{d}x) - \mathrm{f}(x_0) > 0\). Uvažujme naopak, že součin \(\frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x\) je záporný. Pak nerovnice bude platit právě tehdy když \(\mathrm{f}(x + \mathrm{d}x) - \mathrm{f}(x) < 0\). To ale znamená, že pro opačná znaménka \(\mathrm{d}x\) musí být \(\mathrm{f}(x_0 + \mathrm{d}x)\) jednou větší a~podruhé menší než \(\mathrm{f}(x_0)\). Funkce tedy nemůže v~daném bodě mít lokální extrém, protože v~každém (libovolně malém) \(\delta\)-okolí bodu \(x_0\) bude funkce obsahovat hodnoty větší i~menší než \(\mathrm{f}(x_0)\).
 
+Pokud máme funkci více proměnných \(\mathrm{g}(x_1, x_2, ..., x_n)\), pak parciální derivaci vůči kterémukoli z~nich získáme tak, že ostatní parametry považujeme za konstantní. Nechť derivujeme například vůči parametru \(x_1\). Můžeme tedy uvažovat, že máme funkci jedné proměnné \(\mathrm{f}(x) = \mathrm{g}(x, x_2, ..., x_n)\), přičemž \(\frac{\partial \mathrm{f}}{\partial x} = \frac{\partial \mathrm{g}}{\partial x_1}\). To tedy znamená:
+
+\begin{fact}
+Mějme funkci \(\mathrm{g}(x_1, x_2, ..., x_n)\). Jestliže \(\frac{\partial \mathrm{g}}{\partial x_i}(x_{10}, x_{20}, ..., x_{n0}) \neq 0\), pak v~bodě \((x_{10}, x_{20}, ..., x_{n0})\) nemůže funkce \(\mathrm{g}\) mít lokální extrém.
+Funkce tedy může mít lokální extrém v~bodech, kde jsou všechny první derivace vůči všem jejím parametrům rovny 0 nebo kde není alespoň jedna z~nich definovaná.
+\end{fact}
