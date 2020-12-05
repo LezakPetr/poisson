@@ -3,17 +3,73 @@
 
 \section{Objekty v~prostoru}
 
-Souřadné systémy nám umožňují popisovat objekty v~prostoru. Nyní si ukážeme, jak je to možné.
+Souřadné systémy nám umožňují popisovat objekty v~prostoru. Nyní si ukážeme, jak je to možné. 
 
 \subsection{Bod}
 
 Začněme nejjednodušším objektem, kterým je bod. Bod v~\(n\)-rozměrném prostoru, označme jej \(P\), lze popsat \(n\) souřadnicemi \([P_1, P_2, ..., P_n]\). Souřadnice nemají žádný parametr, jsou konstantní. Říkáme, že bod je bezrozměrný.
 
+\subsection{Oblast}
+
+Oblastí \(\Omega\) v~\(n\)-rozměrném prostoru rozumíme množinu bodů, tedy jednoznačné přiřazení určující, které body leží v~oblasti a~které ne. Bod tedy \(P\) tedy leží v~oblasti \(\Omega\) pokud \(P \in \Omega\).
+
+Bod nazýváme vnitřním bodem pokud existuje jeho \(\delta\)-okolí takové, že všechny body v~něm obsažené leží v~oblasti:
+
+\begin{equation}
+\exists \delta > 0 \ \mathrm{U}_{\delta}(P) \subset \Omega
+\end{equation}
+
+Bod nazýváme hraničním bodem pokud každé jeho \(\delta\)-okolí obsahuje body ležící i~neležící v~oblasti:
+
+\begin{equation}
+\forall \delta > 0 \ \mathrm{U}_{\delta}(P) \cap \Omega \neq \emptyset \land \mathrm{U}_{\delta}(P) \cap \overline{\Omega} \neq \emptyset
+\end{equation}
+
+Množinu všech hraničních bodů nazýváme hranicí oblasti \(\Omega\) a~značíme ji \(\partial \Omega\).
+
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+
+\draw[fill=lightgray] (-2, -2) -- (-2, 2) -- (2, 2) -- (2, -2) -- (-2, -2);
+
+\draw (-1, 1) node[anchor=west]{\(\Omega\)};
+\draw (-2, 0) node[anchor=east]{\(\partial \Omega\)};
+
+\drawcross{0}{0}{0.1};
+\draw (0, 0) circle[radius=0.5];
+\draw (0, 0) node[anchor=west]{\(A\)};
+
+\drawcross{2}{1}{0.1};
+\draw (2, 1) circle[radius=0.5];
+\draw (2, 1) node[anchor=west]{\(B\)};
+
+\drawcross{3}{0}{0.1};
+\draw (3, 0) circle[radius=0.5];
+\draw (3, 0) node[anchor=west]{\(C\)};
+
+\end{tikzpicture}
+\caption{Oblast}
+\end{center}
+\label{img:oblast}
+\end{figure}
+
 \subsection{Křivka}
 
 Křivku v~\(n\)-rozměrném prostoru, označme ji \(\Gamma\), lze popsat sadou \(n\) funkcí souřadnic \([\Gamma_1(t), \Gamma_2(t), ..., \Gamma_n(t)]\). Funkce souřadnic mají jeden parametr \(t\), říkáme, že křivka je jednorozměrná. Někdy pro zjednodušení místo o~sadě funkcí hovoříme o~funkci jedné.
 
-Parametr \(t\) probíhá po zvoleném intervalu \(I\). Zaveďme označení:
+Parametr \(t\) probíhá po zvoleném intervalu \(I\), který je sjednocením nejvýše \(m\) disjuktních intervalů \(I_i\). Tedy 
+
+\begin{equation}
+I = \bigcup_{i=1}^m I_i
+\end{equation}
+
+\begin{equation}
+I_i \cap I_j = \emptyset
+\end{equation}
+
+
+Zaveďme označení:
 
 \begin{equation}
 \vect{\Gamma} = [\Gamma_1(t), \Gamma_2(t), ..., \Gamma_n(t)]
