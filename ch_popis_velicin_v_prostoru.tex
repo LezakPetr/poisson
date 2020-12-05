@@ -11,27 +11,37 @@ Začněme nejjednodušším objektem, kterým je bod. Bod v~\(n\)-rozměrném pr
 
 \subsection{Oblast}
 
-Oblastí \(\Omega\) v~\(n\)-rozměrném prostoru rozumíme množinu bodů, tedy jednoznačné přiřazení určující, které body leží v~oblasti a~které ne. Bod tedy \(P\) tedy leží v~oblasti \(\Omega\) pokud \(P \in \Omega\).
+Mějme metrický prostor \((M, d)\) a~množinu bodů \(\Omega \subset M\). Pak můžeme zavést následující klasifikaci bodů.
 
-Bod nazýváme vnitřním bodem pokud existuje jeho \(\delta\)-okolí takové, že všechny body v~něm obsažené leží v~oblasti:
+Bod nazýváme vnitřním bodem pokud existuje jeho \(\delta\)-okolí takové, že všechny body v~něm obsažené leží v~množině \(\Omega\):
 
 \begin{equation}
 \exists \delta > 0 \ \mathrm{U}_{\delta}(P) \subset \Omega
 \end{equation}
 
-Bod nazýváme hraničním bodem pokud každé jeho \(\delta\)-okolí obsahuje body ležící i~neležící v~oblasti:
+Bod nazýváme hraničním bodem pokud každé jeho \(\delta\)-okolí obsahuje alespoň jeden bod ležící v~množině \(\Omega\) a~alespoň jeden bod neležící v~množině \(\Omega\):
 
 \begin{equation}
 \forall \delta > 0 \ \mathrm{U}_{\delta}(P) \cap \Omega \neq \emptyset \land \mathrm{U}_{\delta}(P) \cap \overline{\Omega} \neq \emptyset
 \end{equation}
 
-Množinu všech hraničních bodů nazýváme hranicí oblasti \(\Omega\) a~značíme ji \(\partial \Omega\).
+Množinu všech hraničních bodů nazýváme hranicí množiny \(\Omega\) a~značíme ji \(\partial \Omega\).
+
+Vnitřní bod je vždy obsažen v~množině. Hraniční bod může ale nemusí být obsažen v~množině. Hraniční bod nemůže být vnitřní.
+
+Pokud jsou všechny body množiny vnitřní, tedy pokud množina neobsahuje svoji hranici, pak ji nazýváme otevřenou. Pokud každé dva body množiny \(\Omega\) lze spojit křivkou složenou z~konečného množství úseček (tedy lomenou čarou), která celá leží v~množině \(\Omega\), pak množinu \(\Omega\) nazýváme souvislou.  
+
+\begin{fact}
+Otevřenou souvislou množinu nazýváme oblastí.
+\end{fact}
+
+Na obrázku~\ref{img:oblast} je příklad oblasti. Na obrázku jsou zobrazeny 3 body včetně jejich \(\delta\)-okolí. Bod~\(A\) je vnitřním bodem, bod \(B\) je hraničním bodem a~neleží tedy v~oblasti stejně jako bod \(C\).
 
 \begin{figure}
 \begin{center}
 \begin{tikzpicture}
 
-\draw[fill=lightgray] (-2, -2) -- (-2, 2) -- (2, 2) -- (2, -2) -- (-2, -2);
+\draw[dashed,fill=lightgray] (-2, -2) -- (-2, 2) -- (2, 2) -- (2, -2) -- (-2, -2);
 
 \draw (-1, 1) node[anchor=west]{\(\Omega\)};
 \draw (-2, 0) node[anchor=east]{\(\partial \Omega\)};
