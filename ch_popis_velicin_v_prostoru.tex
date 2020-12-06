@@ -22,7 +22,7 @@ Bod nazýváme vnitřním bodem pokud existuje jeho \(\delta\)-okolí takové, �
 Bod nazýváme hraničním bodem pokud každé jeho \(\delta\)-okolí obsahuje alespoň jeden bod ležící v~množině \(\Omega\) a~alespoň jeden bod neležící v~množině \(\Omega\):
 
 \begin{equation}
-\forall \delta > 0 \ \mathrm{U}_{\delta}(P) \cap \Omega \neq \emptyset \land \mathrm{U}_{\delta}(P) \cap \overline{\Omega} \neq \emptyset
+\forall \delta > 0 \ \mathrm{U}_{\delta}(P) \cap \Omega \neq \emptyset \land \mathrm{U}_{\delta}(P) \cap (M \setminus \Omega) \neq \emptyset
 \end{equation}
 
 Množinu všech hraničních bodů nazýváme hranicí množiny \(\Omega\) a~značíme ji \(\partial \Omega\).
@@ -35,7 +35,11 @@ Pokud jsou všechny body množiny vnitřní, tedy pokud množina neobsahuje svoj
 Otevřenou souvislou množinu nazýváme oblastí.
 \end{fact}
 
-Na obrázku~\ref{img:oblast} je příklad oblasti. Na obrázku jsou zobrazeny 3 body včetně jejich \(\delta\)-okolí. Bod~\(A\) je vnitřním bodem, bod \(B\) je hraničním bodem a~neleží tedy v~oblasti stejně jako bod \(C\).
+\begin{fact}
+Sjednocením oblasti \(\Omega\) s~její hranicí označujeme \(\overline{\Omega} = \Omega \cup \partial \Omega\). Získáme tak uzavřenou oblast. 
+\end{fact}
+
+Na obrázku~\ref{img:oblast} je příklad oblasti. Na obrázku jsou zobrazeny 3 body včetně jejich \(\delta\)-okolí. Bod~\(A\) je vnitřním bodem, bod \(B\) je hraničním bodem a~neleží tedy v~oblasti stejně jako bod \(C\). Na obrázku~\ref{img:uzavrena_oblast} je nakreslena uzavřená oblast. Je-li hranice obsažena v~množině, pak ji kreslíme plnou čarou, není-li obsažena v~množině, tak ji kreslíme přerušovanou čarou.
 
 \begin{figure}
 \begin{center}
@@ -64,20 +68,36 @@ Na obrázku~\ref{img:oblast} je příklad oblasti. Na obrázku jsou zobrazeny 3 
 \label{img:oblast}
 \end{figure}
 
+\begin{figure}
+\begin{center}
+\begin{tikzpicture}
+
+\draw[fill=lightgray] (-2, -2) -- (-2, 2) -- (2, 2) -- (2, -2) -- (-2, -2);
+
+\draw (-1, 1) node[anchor=west]{\(\overline{\Omega}\)};
+\draw (-2, 0) node[anchor=east]{\(\partial \Omega\)};
+
+\end{tikzpicture}
+\caption{Uzavřená oblast}
+\end{center}
+\label{img:uzavrena_oblast}
+\end{figure}
+
 \subsection{Křivka}
 
 Křivku v~\(n\)-rozměrném prostoru, označme ji \(\Gamma\), lze popsat sadou \(n\) funkcí souřadnic \([\Gamma_1(t), \Gamma_2(t), ..., \Gamma_n(t)]\). Funkce souřadnic mají jeden parametr \(t\), říkáme, že křivka je jednorozměrná. Někdy pro zjednodušení místo o~sadě funkcí hovoříme o~funkci jedné.
 
-Parametr \(t\) probíhá po zvoleném intervalu \(I\), který je sjednocením nejvýše \(m\) disjuktních intervalů \(I_i\). Tedy 
+Parametr \(t\) probíhá po zvoleném intervalu \(I\), který je sjednocením nejvýše \(m\) disjuktních otevřených intervalů \(I_i\) spolu s~jejich hranicemi. Tedy 
 
 \begin{equation}
-I = \bigcup_{i=1}^m I_i
+I = \bigcup_{i=1}^m \overline{I_i} 
 \end{equation}
+
+Otevřený interval je oblastí, proto \(\overline{I_i}\) je uzavřený interval. Dále musí pro \(i \neq j\) platit: 
 
 \begin{equation}
 I_i \cap I_j = \emptyset
 \end{equation}
-
 
 Zaveďme označení:
 
@@ -94,12 +114,27 @@ a
 Pak předpokládáme:
 
 \begin{itemize}
-\item funkce \(\Gamma_i(t)\) jsou spojité, tedy \(\forall t_0 \in I \setminus \partial I: \lim_{t \to t_0} \vect{\Gamma}(t) = \vect{\Gamma}(t_0)\)
-\item funkce \(\frac{\mathrm{d}\Gamma_i}{\mathrm{d}t}\) jsou po částech spojité, tedy až na konečný počet bodů na intervalu \(I\) platí \(\lim_{t \to t_0} \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t) = \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t_0)\)
-\item \(\left|\frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t} \right| > 0\) až na konečný počet bodů na intervalu \(I\)
+
+\item funkce \(\Gamma_i(t)\) jsou spojité, tedy:
+\begin{equation}
+\forall t_0 \in I \setminus \partial I: \lim_{t \to t_0} \vect{\Gamma}(t) = \vect{\Gamma}(t_0)
+\end{equation}
+
+\item derivace \(\frac{\mathrm{d}\Gamma_i}{\mathrm{d}t}\) jsou na intervalech \(I_j\) spojité, tedy:
+\begin{equation}
+\forall j \in 1...m \ \forall t_0 \in I_j \ \lim_{t \to t_0} \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t) = \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t_0)
+\end{equation}
+Na celém intervalu \(I\) jsou tedy derivace po částech spojité.
+
+\item derivace \(\frac{\mathrm{d}\Gamma_i}{\mathrm{d}t}\) nejsou na intervalech \(I_j\) v~určitém bodě všechny nulové, tedy:
+\begin{equation}
+\forall j \in 1...m \ \forall t_0 \in I_j \ \frac{\mathrm{d}\vect{\Gamma}}{\mathrm{d}t}(t_0) \neq \vect{0}
+\end{equation}
+Na celém intervalu \(I\) tedy mohou být všechny derivace nulové jen v~konečném počtu bodů.
+
 \end{itemize}
 
-První předpoklad zajišťuje, že je křivka spojitá - že je v~celku. Druhý předpoklad zajišťuje, že až na konečný počet bodů je křivka hladká. Křivka se tak skládá z~konečného počtu hladkých úseků, které jsou vzájemně spojené a~ve spojích se může křivka "zlomit". Tímto předpokladem tedy vylučujeme například fraktální křivky, pro technickou praxi je však tato definice křivek dostatečná. Třetí předpoklad říká, že křivka nemůže v~určitém podintervalu \(I\) uváznout na místě. 
+První předpoklad zajišťuje, že je křivka spojitá - že je v~celku. Druhý předpoklad zajišťuje, že až na konečný počet bodů je křivka hladká. Křivka se tak skládá z~konečného počtu hladkých úseků na intervalech \(I_i\), které jsou vzájemně spojené a~ve spojích se může křivka "zlomit". Tímto předpokladem tedy vylučujeme například fraktální křivky, pro technickou praxi je však tato definice křivek dostatečná. Třetí předpoklad říká, že křivka nemůže v~určitém podintervalu \(I\) uváznout na místě. 
 
 Pokud \(I = <t_1, t_2>\), pak mohou nastat dva případy. Buď \(\vect{\Gamma}(t_1) = \vect{\Gamma}(t_2)\), pak křivku \(\Gamma\) nazýváme uzavřenou. Takováto křivka nemá hranici. V~opačném případě jsou hranicemi křivky body \(\vect{\Gamma}(t_1)\) a~ \(\vect{\Gamma}(t_2)\).
 
