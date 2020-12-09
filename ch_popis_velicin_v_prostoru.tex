@@ -187,18 +187,30 @@ Pak předpokládáme:
 \begin{itemize}
 \item funkce \(S_i(t, u)\) jsou spojité, tedy \(\forall [t_0, u_0] \in \Omega \setminus \partial \Omega: \lim_{[t, u] \to [t_0, u_0]} \vect{S}(t, u) = \vect{S}(t_0, u_0)\)
 
-\item derivace \(\frac{\partial \Gamma_i}{\partial t}\) jsou v~oblastech \(\Omega_j\) spojité, tedy:
+\item derivace \(\frac{\partial S_i}{\partial t}\) a~\(\frac{\partial S_i}{\partial u}\) jsou v~oblastech \(\Omega_j\) spojité, tedy:
 \begin{equation}
-\forall j \in 1...m \ \forall [t_0, u_0] \in \Omega_j \ \lim_{[t, u] \to [t_0, u_0]} \frac{\partial \vect{\Gamma}}{\partial t}(t, u) = \frac{\partial \vect{\Gamma}}{\partial t}(t_0, u_0)
+\forall j \in 1...m \ \forall [t_0, u_0] \in \Omega_j \ \lim_{[t, u] \to [t_0, u_0]} \frac{\partial \vect{S}}{\partial t}(t, u) = \frac{\partial \vect{S}}{\partial t}(t_0, u_0)
 \end{equation}
 
-\item derivace \(\frac{\partial \vect{\Gamma}}{\partial t}\) a~\(\frac{\partial \vect{\Gamma}}{\partial u}\) nejsou na oblastech \(\Omega_j\) v~určitém bodě kolineární, tedy:
+\item derivace \(\frac{\partial \vect{S}}{\partial t}\) a~\(\frac{\partial \vect{S}}{\partial u}\) nejsou na oblastech \(\Omega_j\) v~určitém bodě kolineární, tedy:
 \begin{equation}
-\forall j \in 1...m \ \forall [t_0, u_0] \in \Omega_j \not \exists [k_1, k_2] \neq [0, 0] \ k_1 \cdot \frac{\partial \vect{\Gamma}}{\partial t}(t_0, u_0) + k_2 \cdot \frac{\partial \vect{\Gamma}}{\partial u}(t_0, u_0) = \vect{0}
+\forall j \in 1...m \ \forall [t_0, u_0] \in \Omega_j \not \exists [k_1, k_2] \neq [0, 0] \ k_1 \cdot \frac{\partial \vect{S}}{\partial t}(t_0, u_0) + k_2 \cdot \frac{\partial \vect{S}}{\partial u}(t_0, u_0) = \vect{0}
 \end{equation}
+
+\item hranici plochy \(\partial \Omega\), pokud existuje, tvoří křivky.
 
 \end{itemize}
 
+Ve třírozměrném prostoru výraz 
+
+Povšimněme si, že vektory \(\frac{\partial \vect{S}}{\partial t}\) a \(\frac{\partial \vect{S}}{\partial u}\) jsou (v daném bodě) tečné k ploše \(S\). Proto ve třírozměrném prostoru vektorový součin \(\frac{\partial S}{\partial t} \times \frac{\partial S}{\partial u}\) má směr normály. Ne však nutně shodnou orientaci. Proto výraz
+
+\begin{equation}
+\label{eq:element_plochy}
+\mathrm{d} \vect{s} = \frac{\partial \vect{S}}{\partial t} \times \frac{\partial \vect{S}}{\partial u} \mathrm{d}t \ \mathrm{d}u
+\end{equation}
+
+představuje element plochy, který má v~každém bodě plochy směr její normály (až na orientaci) a~velikost odpovídající ploše, kterou vyvolá změna parametrů o~\(\mathrm{d}t\) a~\(\mathrm{d}u\).
 
 
 \section{Křivočaré systémy souřadnic}
@@ -1111,8 +1123,7 @@ pak plošný integrál definujeme rovnicí \eqref{eq:plosny_integral_definice}. 
 \end{split}
 \end{equation}
 
-
-Povšimněme si, že vektory \(\frac{\partial S}{\partial t}\) a \(\frac{\partial S}{\partial u}\) jsou (v daném bodě) tečné k ploše \(S\). Proto vektorový součin \(\frac{\partial S}{\partial t} \times \frac{\partial S}{\partial u}\) má směr normály. Ne však nutně shodnou orientaci. Navíc \(\frac{\partial S}{\partial t} \times \frac{\partial S}{\partial u} dt \ du\) má velikot splošného elementu \(ds\). Proto lze plošný integrál až na znaménko spočítat pomocí vztahu \eqref{eq:plosny_integral_vypocet}.
+Využijeme-li vztah \eqref{eq:element_plochy}, tak lze plošný integrál až na znaménko spočítat pomocí vztahu \eqref{eq:plosny_integral_vypocet}.
 
 \begin{equation}
 \label{eq:plosny_integral_vypocet}
