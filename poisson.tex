@@ -23,6 +23,11 @@
 	\fbox{\parbox{\textwidth}{\BODY}}
 }
 
+\newcommand{\drawcross}[3]{   -- x, y, d
+	\draw (#1 - #3, #2 - #3) -- (#1 + #3, #2 + #3);
+	\draw (#1 - #3, #2 + #3) -- (#1 + #3, #2 - #3);
+}
+
 \newcommand{\drawaxestar}[6]{   -- x, y, dx, dy, dz, param
 }
 
@@ -94,6 +99,10 @@ V~knize se používají následující symboly:
 
 
 \input{ch_diferencialni_rovnice}
+\input{ch_prostor}
+\input{ch_diferencialni_pocet}
+\input{ch_objekty_v_prostoru}
+\input{ch_krivocare_systemy_souradnic}
 \input{ch_popis_velicin_v_prostoru}
 \input{ch_rovnice}
 \input{ch_fyzikalni_jevy}
@@ -102,6 +111,7 @@ V~knize se používají následující symboly:
 \input{ch_reseni_pr_bez_okrajovych_podminek}
 
 \appendix
+\input{ap_derivace_zakladnich_funkci}
 \input{ap_souradne_systemy}
 
 Poissonova rovnice
