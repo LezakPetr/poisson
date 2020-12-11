@@ -5,13 +5,62 @@ je ale nutné fyzikální rovnici napřed upravit na Poissonovu rovnici.
 
 \section{Tepelný tok}
 
-Mějme izotropní tepelně vodivý materiál. 
-Máme-li v materiálu 2 plochy o~obsahu \(S\) ve vzdálenosti \(v\) s teplotním rozdílem \(\mathrm{d}t\), pak mezi nimi bude proudit
+Mějme izotropní tepelně vodivý materiál s~tepelnou vodivostí \(\lambda\). 
+Máme-li v materiálu 2 plochy o~obsahu \(S\) ve vzdálenosti \(v\) s~teplotním rozdílem \(\mathrm{d}t\), pak mezi nimi bude proudit
 tepelný tok \(P = -\lambda S \frac{\mathrm{d}t}{v}\). Záporné znaménko značí, že směr proudu tepla je opačný než směr růstu
-teploty - teplo proudí z~místa s~vyšší teplotou do místa s~nižší teplotou.
+teploty - teplo proudí z~místa s~vyšší teplotou do místa s~nižší teplotou. 
 
+Zapišme tento vztah vektorově. 
+Začneme tím, že nahradíme vzdálenost \(v\) vektorem nekonečně malého posunutí \(\mathrm{d}\vect{v}\). Dále podle vztahu \eqref{eq:zmena_pole_gradient} platí \(\mathrm{d}t = \mathrm{t}(x + \mathrm{d}v_x, y + \mathrm{d}v_y, z + \mathrm{d}v_z) - t(x, y, z) = \mathrm{d}\vect{v} \cdot \grad \ \mathrm{t}\):
 
-\section{Elektrostatické pole}
+\begin{equation}
+P = -\lambda S \frac{\mathrm{d}\vect{v} \cdot \grad \ \mathrm{t}}{|\mathrm{d}\vect{v}|}
+\end{equation}
+
+Vidíme, že \(\frac{\mathrm{d}\vect{v}}{|\mathrm{d}\vect{v}|} = \vect{n}\) je normála plochy \(S\):
+
+\begin{equation}
+P = -\lambda \cdot S \cdot \vect{n} \cdot \grad \ \mathrm{t}
+\end{equation}
+
+Tepelný tok nekonečně malou plochou \(\mathrm{d}S\) je pak:
+
+\begin{equation}
+\mathrm{d}P = -\lambda \cdot \mathrm{d}S \cdot \vect{n} \cdot \grad \ \mathrm{t} = -\lambda \cdot \mathrm{d}\vect{s} \cdot \grad \ \mathrm{t}
+\end{equation}
+
+A~celkový tok obecnou plochou \(S\) je pak:
+
+\begin{equation}
+P = -\lambda \cdot \int_{S} \grad \ \mathrm{t} \cdot \mathrm{d}\vect{s} 
+\end{equation}
+
+Je-li plocha \(S\) uzavřená obklopující těleso \(V\), pak tento výkon musí být roven celkovému výkonu zdroje v~této ploše. Označme hustotu výkonu zdroje \(p_z\). Pak:
+
+\begin{equation}
+\int_{V} p_z \mathrm{d}V = -\lambda \cdot \oint_{\partial V} \grad \ \mathrm{t} \cdot \mathrm{d}\vect{s} 
+\end{equation} 
+
+Na plošný integrál na pravé straně rovnice použijeme Gaussův teorém: 
+
+\begin{equation}
+\int_{V} p_z \mathrm{d}V = -\lambda \cdot \int_{V} \diverg \ \grad \ \mathrm{t} \ \mathrm{d}V = \int_{V} -\lambda \cdot \diverg \ \grad \ \mathrm{t} \ \mathrm{d}V
+\end{equation}
+
+Má-li tato rovnice platit pro libovolný objem \(V\), pak musí platit v~každém bodě. Můžeme tedy odstranit objemové integrály:
+
+\begin{equation}
+p_z = -\lambda \cdot \diverg \ \grad \ t = -\lambda \cdot \Delta \mathrm{t}
+\end{equation}
+
+Tím jsme získaly Poissonovu rovnici pro vedení tepla.
+
+\section{Proud ve vodiči}
+
+\section{Centrální síla klesající s~kvadrátem vzdálenosti}
+
+\subsection{Elektrostatické pole}
+\subsection{Gravitační pole}
 
 \section{Stacionární magnetické pole}
 
