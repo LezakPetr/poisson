@@ -6,8 +6,14 @@ je ale nutné fyzikální rovnici napřed upravit na Poissonovu rovnici.
 \section{Tepelný tok}
 
 Mějme izotropní tepelně vodivý materiál s~tepelnou vodivostí \(\lambda\). 
-Máme-li v materiálu 2 plochy o~obsahu \(S\) ve vzdálenosti \(v\) s~teplotním rozdílem \(\mathrm{d}t\), pak mezi nimi bude proudit
-tepelný tok \(P = -\lambda S \frac{\mathrm{d}t}{v}\). Záporné znaménko značí, že směr proudu tepla je opačný než směr růstu
+Máme-li v materiálu 2 plochy o~obsahu \(S\) ve vzdálenosti \(v\) s~teplotním rozdílem \(\mathrm{d}t\), pak mezi nimi bude proudit tepelný tok 
+
+\begin{equation}
+\label{eq:tepelny_tok_1}
+P = -\lambda S \frac{\mathrm{d}t}{v}
+\end{equation}
+
+Záporné znaménko značí, že směr proudu tepla je opačný než směr růstu
 teploty - teplo proudí z~místa s~vyšší teplotou do místa s~nižší teplotou. 
 
 Zapišme tento vztah vektorově. 
@@ -55,7 +61,68 @@ p_z = -\lambda \cdot \diverg \ \grad \ t = -\lambda \cdot \Delta \mathrm{t}
 
 Tím jsme získaly Poissonovu rovnici pro vedení tepla.
 
+\begin{fact}
+
+\begin{equation}
+p_z = -\lambda \cdot \Delta \mathrm{t}
+\end{equation}
+
+\begin{equation}
+P = -\lambda \cdot \int_{S} \grad \ \mathrm{t} \cdot \mathrm{d}\vect{s} 
+\end{equation}
+
+\(P\) - tepelný tok [\(\mathrm{W}\)]
+
+\(p_z\) - hustota tepelného toku z~vnějšího zdroje [\(\mathrm{W} \mathrm{m}^{-3}\)]
+
+\(t\) - teplota [\(\mathrm{K}, \si{\degree}\mathrm{C}\)]
+
+\(\lambda\) - tepelná vodivost [\(\mathrm{W} \mathrm{m}^{-1} \mathrm{K}^{-1}\)] 
+\end{fact}
+
 \section{Proud ve vodiči}
+
+Začněme ohmovým zákonem:
+
+\begin{equation}
+\label{eq:proud_ve_vodici_1}
+I = \frac{U}{R}
+\end{equation}
+
+Odpor vodiče o~délce \(l\), průřezu \(S\) a~měrné vodivosti \(sigma\) je určen vztahem \(R = \frac{l}{\sigma S}\). Ten můžeme dosadit do předešlé rovnice. Dále zaveďme elektrický potenciál \(\varphi\). Eletrické napětí \(U\) mezi dvěma body je rovno rozdílu potenciálů v~těchto bodech, tedy \(U = -\mathrm{d}\varphi\). Záporné znaménko značí, že proud teče z~místa s~větším potenciálem do místa s~nižším potenciálem:
+
+\begin{equation}
+\label{eq:proud_ve_vodici_2}
+I = -\sigma S \frac{-\mathrm{d}\varphi}{l}
+\end{equation}
+
+Srovnejme rovnici \eqref{eq:proud_ve_vodici_2} s~rovnicí \eqref{eq:tepelny_tok_1}. Vidíme, že se liší pouze ve veličinách, jinak mají stejnou formu. Proto i~postup jejich řešení bude shodný. Postup proto nebudeme opakovat.
+
+\begin{fact}
+
+\begin{equation}
+j_z = -\sigma \cdot \Delta \mathrm{\varphi}
+\end{equation}
+
+\begin{equation}
+I = -\sigma \cdot \int_{S} \grad \ \mathrm{\varphi} \cdot \mathrm{d}\vect{s} 
+\end{equation}
+
+\begin{equation}
+U_{AB} = \varphi(A) - \varphi(B) 
+\end{equation}
+
+\(I\) - proud [\(\mathrm{A}\)]
+
+\(p_z\) - proudová hustota vnějšího zdroje proudu [\(\mathrm{A} \mathrm{m}^{-3}\)]
+
+\(\varphi\) - potenciál elektrického pole [\(\mathrm{V}\)]
+
+\(U\) - elektrické napětí [\(\mathrm{V}\)]
+
+\(\sigma\) - elektrická vodivost [\(\mathrm{A} \mathrm{m}^{-1} \mathrm{V}^{-1}\)] 
+\end{fact}
+
 
 \section{Centrální síla klesající s~kvadrátem vzdálenosti}
 
