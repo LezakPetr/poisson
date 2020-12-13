@@ -842,7 +842,7 @@ zůstane v platnosti.
 \rot \ \vect{\psi} + \vect{0} = \rot \ \vect{\psi}
 \end{equation}
 
-Speciálním případem je situace, kdy \(\varphi\) zvolíme tak, že \(\diverg \vect{\psi} + \diverg \grad \varphi = 0\). To bude splněno pokud
+Speciálním případem je situace, kdy \(\varphi\) zvolíme tak, že \(\diverg \ \vect{\psi} + \diverg \ \grad \ \varphi = 0\). To bude splněno pokud
 \(-\diverg \vect{\psi} = \diverg \grad \varphi = 0\). Pravá strana rovnice představuje Poissonovu rovnici bez okrajových podmínek.
 Její řešení je uvedeno dále, ale nyní je podstatná pouze jeho existence. Důsledkem tedy je, že existuje-li pole \(\vect{\psi}\) řešící
 rovnici \eqref{eq:virova_pole_definice}, pak existuje \(\vect{\psi}\) takové, že má nulovou divergenci, tedy vírové pole.
@@ -872,5 +872,52 @@ Pravou stranu rovnice můžeme přepsat podle vztahu \eqref{eq:vect_laplace_roze
 \end{equation}
 
 To je vektorová Poissonova rovnice bez okrajových podmínek. Jak uvidíme dále, tak tato rovnice má řešení. Proto vírová pole \(v\) lze vyjádřit
-pomocí pomocí rovnice \eqref{eq:virova_pole_definice} a to tak, že vyřešíme rovnici \eqref{eq:virova_pole_potencial_3} a dopočítáme \(\vect{psi} = \rot \ \vect{rho}\).
+pomocí pomocí rovnice \eqref{eq:virova_pole_definice} a to tak, že vyřešíme rovnici \eqref{eq:virova_pole_potencial_3} a dopočítáme \(\vect{\psi} = \rot \ \vect{\rho}\).
 
+Nutnou a~postačující podmínkou pro vírové pole je proto:
+
+\begin{equation}
+\diverg \ \vect{v} = 0
+\end{equation}
+
+Ukážeme si, jak tuto podmínku zapsat v~integrálním tvaru. Obě strany rovnice budeme integrovat přes libovolný objem \(V\):
+
+\begin{equation}
+\int_{V} \diverg \ \ \vect{v} \ \mathrm{d}V = \int_{V} 0 \ \mathrm{d}V = 0
+\end{equation}
+
+Na levou stranu rovnice aplikujeme Gaussův teorém:
+
+\begin{equation}
+\oint_{\partial V} \vect{v} \ \mathrm{d}\vect{s} = 0
+\end{equation}
+
+Protože objem \(V\) byl zvolen libovolně, tak i~hranice \(\partial V\) je libovolná. Proto vztah můžeme zobecnit:
+
+\begin{equation}
+\oint_{S} \vect{v} \ \mathrm{d}\vect{s} = 0
+\end{equation}
+
+Proto se polím říká bezzřídlová, protože tato pole neobsahují žádné zdroje - zřídla.
+
+\begin{fact}
+Vírová neboli bezzřídlová pole jsou pole, která lze zapsat pomocí vztahu
+
+\begin{equation}
+\vect{v} = \rot \ \vect{\psi}
+\end{equation}
+
+Nutnou a~postačující podmínkou je platnost rovnice
+
+\begin{equation}
+\diverg \ \vect{v} = 0
+\end{equation} 
+
+pro libovolný bod neboli
+
+\begin{equation}
+\oint_{S} \vect{v} \ \mathrm{d}\vect{s} = 0
+\end{equation}
+
+pro libovolnou uzavřenou plochu \(S\).
+\end{fact}
