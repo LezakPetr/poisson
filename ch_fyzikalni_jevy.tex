@@ -131,4 +131,70 @@ U_{AB} = \varphi(A) - \varphi(B)
 
 \section{Stacionární magnetické pole}
 
+Začněme Ampérovým zákonem:
+
+\begin{equation}
+\oint_{\partial S} \vect{B} \cdot \mathrm{d}\vect{l} = \mu \cdot I
+\end{equation}
+
+Proud \(I\) představuje celkový proud tekoucí uvnitř (libovolné) plochy \(S\), která má hranici \(\partial S\). Neboli, cirkulace vektoru magnetické indukce \(B\) okolo libovolné uzavřené křivky je rovna celkovému proudu, který tato křivka obepíná, násobenému permeabilitou prostředí \(\mu\). Zavedeme proto plošnou hustotu proudu \(j\) a~proud vyjádříme pomocí ní:
+
+\begin{equation}
+\oint_{\partial S} \vect{B} \cdot \mathrm{d}\vect{l} = \int_S \mu \cdot \vect{j} \cdot \mathrm{d}\vect{s}
+\end{equation}
+
+Na integrál na levé straně rovnice použijeme Stokessovu větu:
+
+\begin{equation}
+\int_{S} \rot \ \vect{B} \cdot \mathrm{d}\vect{s} = \int_S \mu \cdot \vect{j} \cdot \mathrm{d}\vect{s}
+\end{equation}
+
+Protože plocha \(S\) může být libovolná, tak musí být rovny i~integrované funkce:
+
+\begin{equation}
+\rot \ \vect{B} = \mu \cdot \vect{j}
+\end{equation}
+
+Touto rovnicí ale není magnetická indukce \(B\) určena jednoznačně. Musíme připojit rovnici udávající, že megnetická indukce je vírové pole. Neexisují tedy zřídla magnetického pole, magnetické monopóly:
+
+\begin{equation}
+\diverg \ \vect{B} = 0
+\end{equation}
+
+My bychom potřebovali obě rovnice spojit do jedné. Toho můžeme dosáhnout tak, že zavedeme vektorový potenciál \(A\):
+
+\begin{equation}
+\vect{B} = \rot \ \vect{A}
+\end{equation}
+
+Tím máme zajištěno, že platí
+
+\begin{equation}
+\diverg \ \vect{B} = \diverg \ \rot \ \vect{A} = 0
+\end{equation}
+
+a~máme tak jedinou rovnici:
+
+\begin{equation}
+\rot \ \rot \ \vect{A} = \mu \cdot \vect{j}
+\end{equation}
+
+Vektorový potenciál ale není určen jednoznačně. Může proto zavést podmínku 
+
+\begin{equation}
+\diverg \ \vect{A} = 0
+\end{equation}
+
+Blíže je toto zavedení podmínky popsáno v~sekci~\ref{sec:pole_virova}. Napišme znovu vztah~\eqref{eq:vect_laplace_rozepsany}:
+
+\begin{equation}
+\Delta \ \vect{A} = \grad \ \diverg \ \vect{A} - \rot \ \rot \vect{A} 
+\end{equation}
+
+Dosazením do pravé strany rovnice získáme Poissonovu rovnici:
+
+\begin{equation}
+\Delta \ \vect{A} = -\mu \cdot \vect{j}
+\end{equation}
+
 \section{Elektromagnetické pole}
