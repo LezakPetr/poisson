@@ -73,11 +73,11 @@ P = -\lambda \cdot \int_{S} \grad \ \mathrm{t} \cdot \mathrm{d}\vect{s}
 
 \(P\) - tepelný tok [\(\mathrm{W}\)]
 
-\(p_z\) - hustota tepelného toku z~vnějšího zdroje [\(\mathrm{W} \mathrm{m}^{-3}\)]
+\(p_z\) - hustota tepelného toku z~vnějšího zdroje [\(\mathrm{W} \cdot \mathrm{m}^{-3}\)]
 
 \(t\) - teplota [\(\mathrm{K}, \si{\degree}\mathrm{C}\)]
 
-\(\lambda\) - tepelná vodivost [\(\mathrm{W} \mathrm{m}^{-1} \mathrm{K}^{-1}\)] 
+\(\lambda\) - tepelná vodivost [\(\mathrm{W} \cdot \mathrm{m}^{-1} \cdot \mathrm{K}^{-1}\)] 
 \end{fact}
 
 \section{Proud ve vodiči}
@@ -99,7 +99,6 @@ I = -\sigma S \frac{-\mathrm{d}\varphi}{l}
 Srovnejme rovnici \eqref{eq:proud_ve_vodici_2} s~rovnicí \eqref{eq:tepelny_tok_1}. Vidíme, že se liší pouze ve veličinách, jinak mají stejnou formu. Proto i~postup jejich řešení bude shodný. Postup proto nebudeme opakovat.
 
 \begin{fact}
-
 \begin{equation}
 j_z = -\sigma \cdot \Delta \mathrm{\varphi}
 \end{equation}
@@ -114,13 +113,13 @@ U_{AB} = \varphi(A) - \varphi(B)
 
 \(I\) - proud [\(\mathrm{A}\)]
 
-\(p_z\) - proudová hustota vnějšího zdroje proudu [\(\mathrm{A} \mathrm{m}^{-3}\)]
+\(j_z\) - proudová hustota vnějšího zdroje proudu [\(\mathrm{A} \cdot \mathrm{m}^{-3}\)]
 
 \(\varphi\) - potenciál elektrického pole [\(\mathrm{V}\)]
 
 \(U\) - elektrické napětí [\(\mathrm{V}\)]
 
-\(\sigma\) - elektrická vodivost [\(\mathrm{A} \mathrm{m}^{-1} \mathrm{V}^{-1}\)] 
+\(\sigma\) - elektrická vodivost [\(\mathrm{A} \cdot \mathrm{m}^{-1} \cdot \mathrm{V}^{-1}\)] 
 \end{fact}
 
 
@@ -191,10 +190,47 @@ Blíže je toto zavedení podmínky popsáno v~sekci~\ref{sec:pole_virova}. Napi
 \Delta \ \vect{A} = \grad \ \diverg \ \vect{A} - \rot \ \rot \vect{A} 
 \end{equation}
 
-Dosazením do pravé strany rovnice získáme Poissonovu rovnici:
+Dosazením do pravé strany rovnice získáme vektorovou rovnici, která je v~kartézském souřadném systému řešitelná jako tři nezávislé Poissonovy rovnice pro jednotlivé složky:
 
 \begin{equation}
 \Delta \ \vect{A} = -\mu \cdot \vect{j}
 \end{equation}
+
+Při studiu elektromagnetické indukce je důležitá veličina magnetického toku plochou. Zaveďme ji tedy.
+
+\begin{equation}
+\Phi = \int_S \ \vect{B} \cdot \mathrm{d}\vect{s}
+\end{equation}
+
+Prozkoumejme souvislost toku \(\Phi\) s~vektorovým potenciálem \(A\). V~rovnici pomocí něj vyjádříme magnetickou indukci a~použijeme Stokessovu větu:
+
+\begin{equation}
+\Phi = \int_S \ \rot \ \vect{A} \cdot \mathrm{d}\vect{s} = \oint_{\partial S} \vect{A} \cdot \mathrm{d}\vect{l}
+\end{equation}
+
+\begin{fact}
+\begin{equation}
+\Delta \ \vect{A} = -\mu \cdot \vect{j}
+\end{equation}
+
+\begin{equation}
+\vect{B} = \rot \ \vect{A}
+\end{equation}
+
+\begin{equation}
+\Phi = \oint_{\partial S} \vect{A} \cdot \mathrm{d}\vect{l}
+\end{equation}
+
+\(j\) - proudová hustota [\(\mathrm{A} \cdot \mathrm{m}^{-3}\)]
+
+\(\mu\) - permeabilita prostředí [\(\mathrm{H} \cdot \mathrm{m}^{-1}\)]
+
+\(\vect{A}\) - vektorový potenciál magnetického pole [\(\mathrm{T} \cdot \mathrm{m}\)]
+
+\(\vect{B}\) - magnetická indukce [\(\mathrm{T}\)]
+
+\(\Phi\) - magnetický tok [\(\mathrm{Wb}\)]
+\end{fact}
+
 
 \section{Elektromagnetické pole}
