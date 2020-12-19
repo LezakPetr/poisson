@@ -122,11 +122,82 @@ U_{AB} = \varphi(A) - \varphi(B)
 \(\sigma\) - elektrická vodivost [\(\mathrm{A} \cdot \mathrm{m}^{-1} \cdot \mathrm{V}^{-1}\)] 
 \end{fact}
 
+\section{Elektrostatické pole}
 
-\section{Centrální síla klesající s~kvadrátem vzdálenosti}
+Máme-li dva náboje \(Q_1\) a~\(Q_2\) ve vzdálenosti \(r\) a~v~prostředí s~permitivitou \(\varepsilon\), pak mezi nimi působí síla daná Coulombovým zákonem:
 
-\subsection{Elektrostatické pole}
-\subsection{Gravitační pole}
+\begin{equation}
+\label{eq:coulombuv_zakon}
+F = \frac{1}{4 \pi \varepsilon} \cdot \frac{Q_1 \cdot Q_2}{r^2}
+\end{equation}
+
+Tato síla je odpudivá, pokud jsou náboje stejného znaménka a~přitažlivá, pokud jsou opačného znaménka. Kladná síla daná vztahem~\eqref{eq:coulombuv_zakon} je tedy odpudivá. Vztah můžeme přepsat do tvaru 
+
+\begin{equation}
+F = \frac{1}{4 \pi \varepsilon} \cdot \frac{Q_1}{r^2} \cdot Q_2 = E \cdot Q_2
+\end{equation}
+
+zavedením intenzity elektrického pole:
+
+\begin{equation}
+\label{eq:intenzita_elektrickeho_pole_bodoveho_naboje}
+E = \frac{1}{4 \pi \varepsilon} \cdot \frac{Q_1}{r^2}
+\end{equation}
+
+Intenzita elektrického pole tedy určuje sílu vyvolanou nábojem \(Q_1\), která působí na jednotkový náboj \(Q_2\). Síly obecně se vektorově sčítají. Proto se i~intenzity elektrických polí od různých nábojů vektorově sčítají a~vytvářejí celkovou intenzitu. Intenzita elektrického pole je proto vektorovou veličinou.  
+
+Zintegrujme tento vztah po povrchu \(K\) koule o~poloměru \(r\), v~jejímž středu se nachází náboj \(Q_1\). Intenzita elektrického pole je tedy v~každém bodě kolmá na povrch koule a~má stejnou velikost. Povrch koule se vypočítá podle vztahu \(S = 4 \pi r^2\).
+
+\begin{equation}
+\oint_{\partial K} \vect{E} \cdot \mathrm{d}\vect{s} = 4 \pi r^2 \frac{1}{4 \pi \varepsilon} \cdot \frac{Q_1}{r^2} = \frac{Q_1}{\varepsilon}
+\end{equation}
+
+Na levou stranu rovnice použijeme Gaussův teorém: 
+
+\begin{equation}
+\int_{K} \diverg \vect{E} \cdot \mathrm{d}V = \frac{Q_1}{\varepsilon}
+\end{equation}
+
+Povšimněme si, že \(\int_{K} \diverg \vect{E} \cdot \mathrm{d}V\) nezávisí na poloměru koule. Utvoříme-li dvě koule okolo stejného náboje, pak obě budou mít uvedený integrál stejný:
+
+\begin{equation}
+\int_{K_1} \diverg \vect{E} \cdot \mathrm{d}V = \int_{K_2} \diverg \vect{E} \cdot \mathrm{d}V
+\end{equation}
+
+Předpokládejme, že koule \(K_2\) má větší poloměr než koule \(K_1\). Pro objem mezi oběma koulemi tedy musí platit:
+
+\begin{equation}
+\int_{K_2 \setminus K_1} \diverg \vect{E} \cdot \mathrm{d}V = 0
+\end{equation}
+
+Nyní si uvědomme, že intenzita elektrického pole \(E\) je symetrická okolo náboje \(Q_1\). Pokud tedy uděláme z~uvedeného objemu mezi koulemi libovolnou výseč, pak musí i~v~tézo výseči být uvecený integrál nulový. Z~takovýchto výsečí je pak možné poskládat libovolné těleso. Můžeme tedy řící, že pro libovolné těleso \(V_0\) které neobsahuje elektrický náboj platí:
+
+\begin{equation}
+\int_{V_0} \diverg \vect{E} \cdot \mathrm{d}V = 0
+\end{equation}
+
+Libovolné těleso, které obsahuje bodový náboj, pak můžeme zkonstruovat tak, že okolo náboje utvoříme nekonečně malou kouli. Tu pak sjednotíme s~daným tělesem bez této koule. Proto pro libovolné těleso s~bodovým nábojem platí:
+
+\begin{equation}
+\begin{split}
+\int_{V} \diverg \vect{E} \cdot \mathrm{d}V = \int_{K \cup (V \setminus K)} \diverg \vect{E} \cdot \mathrm{d}V = \\
+\int_{K} \diverg \vect{E} \cdot \mathrm{d}V + \int_{V \setminus K} \diverg \vect{E} \cdot \mathrm{d}V = \frac{Q_1}{\varepsilon} + 0 = \frac{Q_1}{\varepsilon}
+\end{split}
+\end{equation}
+
+Doteď jsme uvažovali pouze jeden bodový náboj \(Q_1\), o~kterém předpokládáme, že je uvnitř tělesa \(V\). Zaveďme objemovou hustotu náboje \(\rho\) a~proveďme integraci těchto nekokečně malých nábojů přes celé těleso \(V\):
+
+\begin{equation}
+\int_{V} \diverg \vect{E} \cdot \mathrm{d}V = \int_{V} \rho \cdot \mathrm{d}V
+\end{equation}
+
+Protože uvedená rovnice platí pro jakékoli těleso \(V\), tak musí platit:
+
+\begin{equation}
+\diverg \vect{E} = \rho
+\end{equation}
+
+\section{Gravitační pole}
 
 \section{Stacionární magnetické pole}
 
@@ -231,6 +302,3 @@ Prozkoumejme souvislost toku \(\Phi\) s~vektorovým potenciálem \(A\). V~rovnic
 
 \(\Phi\) - magnetický tok [\(\mathrm{Wb}\)]
 \end{fact}
-
-
-\section{Elektromagnetické pole}
