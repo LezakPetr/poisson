@@ -131,6 +131,23 @@ Máme-li dva náboje \(Q_1\) a~\(Q_2\) ve vzdálenosti \(r\) a~v~prostředí s~p
 F = \frac{1}{4 \pi \varepsilon} \cdot \frac{Q_1 \cdot Q_2}{r^2}
 \end{equation}
 
+\begin{tikzpicture}
+\pgfmathsetmacro{\r}{0.1}
+\pgfmathsetmacro{\d}{1.5}
+\pgfmathsetmacro{\l}{2}
+
+\draw (-\d, 0) circle[radius=\r];
+\draw[->] (-\d - \r, 0) -- (-\d - \l, 0);
+\draw (-\d, -\r) node[anchor=north]{\(Q_1\)};
+\draw (-\d - \l / 2, 0) node[anchor=north]{\(F\)};
+
+\draw (\d, 0) circle[radius=\r];
+\draw[->] (\d + \r, 0) -- (\d + \l, 0);
+\draw (\d, -\r) node[anchor=north]{\(Q_2\)};
+\draw (\d + \l / 2, 0) node[anchor=north]{\(F\)};
+
+\end{tikzpicture}
+
 Tato síla je odpudivá, pokud jsou náboje stejného znaménka a~přitažlivá, pokud jsou opačného znaménka. Kladná síla daná vztahem~\eqref{eq:coulombuv_zakon} je tedy odpudivá. Vztah můžeme přepsat do tvaru 
 
 \begin{equation}
@@ -185,7 +202,13 @@ Libovolné těleso, které obsahuje bodový náboj, pak můžeme zkonstruovat ta
 \end{split}
 \end{equation}
 
-Doteď jsme uvažovali pouze jeden bodový náboj \(Q_1\), o~kterém předpokládáme, že je uvnitř tělesa \(V\). Zaveďme objemovou hustotu náboje \(\rho\) a~proveďme integraci těchto nekokečně malých nábojů přes celé těleso \(V\):
+Doteď jsme uvažovali pouze jeden bodový náboj \(Q_1\), o~kterém předpokládáme, že je uvnitř tělesa \(V\). Pokud bychom uvnitř tělesa měli více bodových nábojů, pak se jejich intenzity elektrických polí budou sčítat a~bude záležet na celkovém náboji uvnitř tělese: 
+
+\begin{equation}
+\int_{V} \diverg \vect{E} \cdot \mathrm{d}V = \frac{1}{\varepsilon} \sum_{i=1}^n Q_i = \frac{Q}{\varepsilon}
+\end{equation}
+
+Zaveďme objemovou hustotu náboje \(\rho\) a~proveďme integraci těchto nekokečně malých nábojů přes celé těleso \(V\):
 
 \begin{equation}
 \int_{V} \diverg \vect{E} \cdot \mathrm{d}V = \int_{V} \rho \cdot \mathrm{d}V
@@ -196,6 +219,8 @@ Protože uvedená rovnice platí pro jakékoli těleso \(V\), tak musí platit:
 \begin{equation}
 \diverg \vect{E} = \rho
 \end{equation}
+
+
 
 \section{Gravitační pole}
 
