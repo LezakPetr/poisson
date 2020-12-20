@@ -145,25 +145,54 @@ F = \frac{1}{4 \pi \varepsilon} \cdot \frac{Q_1 \cdot Q_2}{r^2}
 \draw[->] (\d + \r, 0) -- (\d + \l, 0);
 \draw (\d, -\r) node[anchor=north]{\(Q_2\)};
 \draw (\d + \l / 2, 0) node[anchor=north]{\(F\)};
-
 \end{tikzpicture}
 
-Tato síla je odpudivá, pokud jsou náboje stejného znaménka a~přitažlivá, pokud jsou opačného znaménka. Kladná síla daná vztahem~\eqref{eq:coulombuv_zakon} je tedy odpudivá. Vztah můžeme přepsat do tvaru 
+Tato síla působí po přímce procházející oběma náboji. Je odpudivá, pokud jsou náboje stejného znaménka a~přitažlivá, pokud jsou opačného znaménka. Kladná síla daná vztahem~\eqref{eq:coulombuv_zakon} je tedy odpudivá. Vztah můžeme přepsat do tvaru 
 
 \begin{equation}
 F = \frac{1}{4 \pi \varepsilon} \cdot \frac{Q_1}{r^2} \cdot Q_2 = E \cdot Q_2
 \end{equation}
 
-zavedením intenzity elektrického pole:
+zavedením intenzity elektrického pole
 
 \begin{equation}
 \label{eq:intenzita_elektrickeho_pole_bodoveho_naboje}
 E = \frac{1}{4 \pi \varepsilon} \cdot \frac{Q_1}{r^2}
 \end{equation}
 
-Intenzita elektrického pole tedy určuje sílu vyvolanou nábojem \(Q_1\), která působí na jednotkový náboj \(Q_2\). Síly obecně se vektorově sčítají. Proto se i~intenzity elektrických polí od různých nábojů vektorově sčítají a~vytvářejí celkovou intenzitu. Intenzita elektrického pole je proto vektorovou veličinou.  
+Intenzita elektrického pole tedy určuje sílu vyvolanou nábojem \(Q_1\), která působí na jednotkový náboj \(Q_2\). Síly obecně se vektorově sčítají. Proto se i~intenzity elektrických polí od různých nábojů vektorově sčítají a~vytvářejí celkovou intenzitu. Intenzita elektrického pole je proto vektorovou veličinou.
 
-Zintegrujme tento vztah po povrchu \(K\) koule o~poloměru \(r\), v~jejímž středu se nachází náboj \(Q_1\). Intenzita elektrického pole je tedy v~každém bodě kolmá na povrch koule a~má stejnou velikost. Povrch koule se vypočítá podle vztahu \(S = 4 \pi r^2\).
+O~elektrickém poli náboje \(Q_1\) předpokládáme, že existuje nezávisle na náboji \(Q_2\). Protože síla mezi náboji působí vždy po jejich spojnici, tak pro různé polohy náboje \(Q_2\) míří vždy do náboje \(Q_1\). Intenzita elektrického pole \(\vect{E}\) proto vždy míří do nebo z~náboje \(Q_1\), jedná se o~centrální pole.
+
+\begin{tikzpicture}
+\pgfmathsetmacro{\q}{0.1}
+\pgfmathsetmacro{\r}{1.5}
+\pgfmathsetmacro{\l}{1}
+\pgfmathsetmacro{\n}{12}
+
+\draw[fill=lightgray] (0, 0) circle[radius=\r];
+
+\draw (0, 0) circle[radius=\q];
+\draw (0, -\q) node[anchor=north]{\(Q_1\)};
+
+\pgfmathsetmacro{\x}{cos(45)}
+\pgfmathsetmacro{\y}{sin(45)}
+
+\draw[->] (\q * \x, \q * \y) -- (\r * \x, \r * \y);
+\draw (\r * \x / 2, \r * \y / 2) node[anchor=north west]{\(r\)};
+
+\foreach \alpha in {1, ..., \n} {
+	\pgfmathsetmacro{\x}{cos(360 * \alpha / \n)}
+	\pgfmathsetmacro{\y}{sin(360 * \alpha / \n)}
+	
+	\draw[->] (\r * \x, \r * \y) -- (\r * \x + \l * \x, \r * \y + \l * \y);
+}
+
+\draw (\r + \l / 2, 0) node[anchor=south]{\(\vect{E}\)};
+\draw (0, \r) node[anchor=north]{\(K\)};
+\end{tikzpicture}
+
+Zintegrujme vztah~\eqref{eq:intenzita_elektrickeho_pole_bodoveho_naboje} po povrchu \(K\) koule o~poloměru \(r\), v~jejímž středu se nachází náboj \(Q_1\). Intenzita elektrického pole je tedy v~každém bodě kolmá na povrch koule a~má stejnou velikost. Povrch koule se vypočítá podle vztahu \(S = 4 \pi r^2\).
 
 \begin{equation}
 \oint_{\partial K} \vect{E} \cdot \mathrm{d}\vect{s} = 4 \pi r^2 \frac{1}{4 \pi \varepsilon} \cdot \frac{Q_1}{r^2} = \frac{Q_1}{\varepsilon}
@@ -187,6 +216,31 @@ Předpokládejme, že koule \(K_2\) má větší poloměr než koule \(K_1\). Pr
 \int_{K_2 \setminus K_1} \diverg \vect{E} \cdot \mathrm{d}V = 0
 \end{equation}
 
+\begin{tikzpicture}
+\pgfmathsetmacro{\q}{0.1}
+\pgfmathsetmacro{\ra}{1.5}
+\pgfmathsetmacro{\rb}{2.5}
+\pgfmathsetmacro{\l}{0.5}
+\pgfmathsetmacro{\n}{12}
+
+\draw[fill=lightgray] (0, 0) circle[radius=\rb];
+\draw[fill=white] (0, 0) circle[radius=\ra];
+
+\draw (0, 0) circle[radius=\q];
+\draw (0, -\q) node[anchor=north]{\(Q_1\)};
+
+\foreach \alpha in {1, ..., \n} {
+	\pgfmathsetmacro{\x}{cos(360 * \alpha / \n)}
+	\pgfmathsetmacro{\y}{sin(360 * \alpha / \n)}
+	
+	\draw[->] (\ra * \x, \ra * \y) -- (\ra * \x + \l * \x, \ra * \y + \l * \y);
+	\draw[->] (\rb * \x, \rb * \y) -- (\rb * \x + \l * \x, \rb * \y + \l * \y);
+}
+
+\draw (\rb + \l / 2, 0) node[anchor=south]{\(\vect{E}\)};
+\draw (0, \rb) node[anchor=north]{\(K_2 \setminus K_1\)};
+\end{tikzpicture}
+
 Nyní si uvědomme, že intenzita elektrického pole \(E\) je symetrická okolo náboje \(Q_1\). Pokud tedy uděláme z~uvedeného objemu mezi koulemi libovolnou výseč, pak musí i~v~tézo výseči být uvecený integrál nulový. Z~takovýchto výsečí je pak možné poskládat libovolné těleso. Můžeme tedy řící, že pro libovolné těleso \(V_0\) které neobsahuje elektrický náboj platí:
 
 \begin{equation}
@@ -201,6 +255,24 @@ Libovolné těleso, které obsahuje bodový náboj, pak můžeme zkonstruovat ta
 \int_{K} \diverg \vect{E} \cdot \mathrm{d}V + \int_{V \setminus K} \diverg \vect{E} \cdot \mathrm{d}V = \frac{Q_1}{\varepsilon} + 0 = \frac{Q_1}{\varepsilon}
 \end{split}
 \end{equation}
+
+\begin{tikzpicture}
+\pgfmathsetmacro{\q}{0.1}
+\pgfmathsetmacro{\dx}{1}
+\pgfmathsetmacro{\ra}{1.5}
+\pgfmathsetmacro{\rb}{2.5}
+\pgfmathsetmacro{\l}{0.5}
+\pgfmathsetmacro{\n}{12}
+
+\draw[fill=lightgray] (\dx, 0) circle[x radius=2*\rb, y radius=\rb];
+\draw[fill=gray] (0, 0) circle[radius=\ra];
+
+\draw (0, 0) circle[radius=\q];
+\draw (0, -\q) node[anchor=north]{\(Q_1\)};
+
+\draw (0, \ra) node[anchor=north]{\(K\)};
+\draw (\dx, \rb) node[anchor=north]{\(V \setminus K\)};
+\end{tikzpicture}
 
 Doteď jsme uvažovali pouze jeden bodový náboj \(Q_1\), o~kterém předpokládáme, že je uvnitř tělesa \(V\). Pokud bychom uvnitř tělesa měli více bodových nábojů, pak se jejich intenzity elektrických polí budou sčítat a~bude záležet na celkovém náboji uvnitř tělese: 
 
