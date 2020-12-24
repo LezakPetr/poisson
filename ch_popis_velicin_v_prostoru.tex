@@ -819,6 +819,31 @@ v_x(B_x, B_y, B_z)
 Vidíme, že všechny parciální derivace potenciálu odpovídají složkám gradientu. Dokázali jsme tak, že má-li pole \(v\) nulovou rotaci, můžeme zavést jeho
 potenciál vztahem \eqref{eq:potencial_7} a díky vztahu \eqref{eq:potencial_1} obecně vztahem \eqref{eq:potencial_6}.
 
+\subsubsection{Potenciál jednoparametrického pole}
+\label{sec:potencial_jednoparametrickeho_pole}
+Rozeberme jeden speciální případ, který se často vyskytuje.
+
+\begin{fact}
+Mějme ne nutně kartézský souřadný systém s~body určenými souřadnicemi \(P\). Pokud pole \(\kovarvect{v}(P)\) má pouze jednu nenulovou složku kovariantních souřadnic a~pokud tato složka závisí pouze na této souřadnici, pak je \(\kovarvect{v}(P)\) potenciální pole. 
+\end{fact}
+
+Dokažme to. Beze ztráty obecnosti uvažujme, že první složka pole \(\kovarvect{v}(P)\) je nenulová, ostatní jsou nulové. Můžeme tedy zapsat:
+
+\begin{equation}
+(v_1(P_1), 0, 0, ..., 0) = \grad \varphi = \left(\frac{\partial \varphi}{\partial P_1}, 0, 0, ...,  0 \right)
+\end{equation}
+
+Pro první složku tedy dostáváme obyčejnou diferenciální rovnici, která má řešení
+
+\begin{equation}
+\begin{split}
+v_1(P_1) = \frac{\partial \varphi}{\partial P_1} \\
+\varphi(P_1) = \int v_1(P_1) \ \mathrm{d}P_1 + C
+\end{split}
+\end{equation}
+
+Rovnost ostatních složek je zajištěna volbou potenciálu jako funkce první složky. Vidíme, že vhodnou volbou souřadného systému můžeme potenciál snadno vypočítat.
+
 \subsection{Pole vírová}
 \label{sec:pole_virova}
 

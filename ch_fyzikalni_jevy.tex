@@ -281,47 +281,50 @@ Doteď jsme uvažovali pouze jeden bodový náboj \(Q_1\), o~kterém předpoklá
 Zaveďme objemovou hustotu náboje \(\rho\) a~proveďme integraci těchto nekokečně malých nábojů přes celé těleso \(V\):
 
 \begin{equation}
-\int_{V} \diverg \vect{E} \cdot \mathrm{d}V = \int_{V} \rho \cdot \mathrm{d}V
+\int_{V} \diverg \vect{E} \cdot \mathrm{d}V = \int_{V} \frac{\rho}{\varepsilon} \cdot \mathrm{d}V
 \end{equation}
 
 Protože uvedená rovnice platí pro jakékoli těleso \(V\), tak musí platit:
 
 \begin{equation}
-\diverg \vect{E} = \rho
+\diverg \vect{E} = \frac{\rho}{\varepsilon}
 \end{equation}
 
+Podle vztahu \eqref{eq:intenzita_elektrickeho_pole_bodoveho_naboje} závisí intenzita elektrického pole \(\vect{E}\) pouze na vzdálenosti od náboje a~míří z/do náboje. Ve sférickém souřadném systému proto budou splněny podmínky popsané v~\label{sec:potencial_jednoparametrickeho_pole}, inzenzita elektrostatického pole je proto potenciálním polem. Proto můžeme intenzitu elektrického pole vyjádřit ve tvaru 
 
-\begin{tikzpicture}
-\pgfmathsetmacro{\q}{0.1}
-\pgfmathsetmacro{\ra}{1.5}
-\pgfmathsetmacro{\rb}{2.5}
-\pgfmathsetmacro{\l}{0.5}
-\pgfmathsetmacro{\n}{6}
-\pgfmathsetmacro{\angle}{45}
+\begin{equation}
+\vect{E} = \grad \ \varphi
+\end{equation}
 
-\pgfmathsetmacro{\x}{cos(\angle)}
-\pgfmathsetmacro{\y}{sin(\angle)}
+a~získáme tak Poissonovu rovnici
 
-\draw[thick, <-] (\ra, 0) arc (0:\angle:\ra);
-\draw[thick, ->] (\rb, 0) arc (0:\angle:\rb);
+\begin{equation}
+\diverg \ \grad \ \varphi = \Delta \varphi = \frac{\rho}{\varepsilon}
+\end{equation}
 
-\draw[thick, ->] (\ra, 0) -- (\rb, 0);
-\draw[thick, <-] (\ra * \x, \ra * \y) -- (\rb * \x, \rb * \y);
+\begin{fact}
+\begin{equation}
+\Delta \varphi = \frac{\rho}{\varepsilon}
+\end{equation}
 
-\draw (0, 0) circle[radius=\q];
-\draw (0, -\q) node[anchor=north]{\(Q_1\)};
+\begin{equation}
+\vect{E} = \grad \ \varphi
+\end{equation}
 
-\foreach \alpha in {1, ..., \n} {
-	\pgfmathsetmacro{\x}{cos(\angle * (\alpha - 0.5) / \n)}
-	\pgfmathsetmacro{\y}{sin(\angle * (\alpha - 0.5) / \n)}
-	
-	\draw[->] (\ra * \x, \ra * \y) -- (\ra * \x + \l * \x, \ra * \y + \l * \y);
-	\draw[->] (\rb * \x, \rb * \y) -- (\rb * \x + \l * \x, \rb * \y + \l * \y);
-}
+\begin{equation}
+U_{AB} = \int_{BA} \vect{E} \cdot \mathrm{d}\vect{l} = \varphi(A) - \varphi(B) 
+\end{equation}
 
-\draw (\rb + \l / 2, 0.2) node[anchor=north]{\(\vect{E}\)};
-\end{tikzpicture}
+\(E\) - intenzita elektrického pole [\(\mathrm{V} \cdot \mathrm{m}^{-1}\)]
 
+\(\varphi\) - potenciál elektrického pole [\(\mathrm{V}\)]
+
+\(U\) - elektrické napětí [\(\mathrm{V}\)]
+
+\(\varepsilon\) - permitivita prostředí [\(\mathrm{F} \cdot \mathrm{m}^{-1}\)]
+
+\(\rho\) - objemová hustota náboje [\(\mathrm{C} \cdot \mathrm{m}^{-3}\)] 
+\end{fact}
 
 \section{Gravitační pole}
 
