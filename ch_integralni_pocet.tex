@@ -1,5 +1,32 @@
 \chapter{Integrální počet}
 
+\section{Definice integrálu}
+
+Zaveďme pojem plocha pod křivkou. Mějme funkci \(y = \mathrm{f}(x)\) definované na intervalu \(<x_1, x_2>\). Plochou pod křivkou funkce \(\mathrm{f}(x)\) rozumíme plochu mezi křivkou určenou touto funkcí a~osou \(x\) omezenou na interval \(<x_1, x_2>\). Tato plocha je kladná pokud jsou hodnoty funkce kladné (křivka leží nad osou \(x\)) nebo záporná pokud jsou hodnoty funkce záporné (křivka leží pod osou \(x\)).
+Na obrázku~\ref{img:plocha_pod_krivkou} je tato plocha zobrazena šedou barvou.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}
+\path [smooth, domain=0.5:4, fill=lightgray]
+ plot({\x}, {1.2 + sin(80 * \x)})
+  -- (4, 0) -- (0.5, 0) -- (0.5, 1.2);
+  
+\draw [smooth, domain=0.5:4] plot({\x}, {1.2 + sin(80 * \x)});
+\draw (2.5, 1.4) node{\(\mathrm{f}(x)\)};
+
+\drawaxesxy{0}{0}{-0.5}{-0.5}{4.5}{3.5}
+
+\drawxcoord{0.5}{0}{\(x_1\)}
+\drawxcoord{4}{0}{\(x_2\)}
+
+\end{tikzpicture}
+\caption{Plocha pod křivkou}
+\end{center}
+\label{img:plocha_pod_krivkou}
+\end{figure}
+
+
 \section{Křivkový integrál}
 
 Pokud máme orientovanou po částech hladkou křivku v~prostoru definovanou parametricky pomocí rovnice \eqref{eq:krivkovy_integral_krivka} a~kovariantní vektorové pole \(\kovarvect{v}\), pak křivkový integrál definujeme rovnicí \eqref{eq:krivkovy_integral_definice}.

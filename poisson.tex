@@ -31,6 +31,24 @@
 \newcommand{\drawaxestar}[6]{   -- x, y, dx, dy, dz, param
 }
 
+\newcommand{\drawaxesxy}[6]{   -- x, y, minx, miny, maxx, maxy
+	\draw[->] (#1 + #3, #2) -- (#1 + #5, #2);
+	\draw (#1 + #5, #2) node[anchor=north]{x};
+
+	\draw[->] (#1, #2 + #4) -- (#1, #2 + #6);
+	\draw (#1, #2 + #6) node[anchor=east]{y};
+}
+
+\newcommand{\drawxcoord}[3]{   -- x, y, label
+	\draw (#1, #2 - 0.1) -- (#1, #2 + 0.1);
+	\draw (#1, #2 - 0.1) node[anchor=north]{#3};
+}
+
+\newcommand{\drawycoord}[3]{   -- x, y, label
+	\draw (#1 - 0.1, #2) -- (#1, #2);
+	\draw (#1 - 0.1, #2) node[anchor=east]{#3};
+}
+
 \newcommand{\drawaxes}[5]{   -- x, y, dx, dy, dz
 	\draw[->] (#1, #2) -- (#1 + #3, #2);
 	\draw (#1 + #3, #2) node[anchor=north]{x};
