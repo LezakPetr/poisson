@@ -2,7 +2,7 @@
 
 \section{Definice integrálu}
 
-Zaveďme pojem plocha pod křivkou. Mějme funkci \(y = \mathrm{f}(x)\) definované na intervalu \(<x_1, x_2>\). Plochou pod křivkou funkce \(\mathrm{f}(x)\) rozumíme plochu mezi křivkou určenou touto funkcí a~osou \(x\) omezenou na interval \(<x_1, x_2>\). Tato plocha je kladná pokud jsou hodnoty funkce kladné (křivka leží nad osou \(x\)) nebo záporná pokud jsou hodnoty funkce záporné (křivka leží pod osou \(x\)).
+Zaveďme pojem plocha pod křivkou. Mějme funkci \(y = \mathrm{f}(x)\) definované na intervalu \(<a, b>\). Plochou pod křivkou funkce \(\mathrm{f}(x)\) rozumíme plochu mezi křivkou určenou touto funkcí a~osou \(x\) omezenou na interval \(<a, b>\). Tato plocha je kladná pokud jsou hodnoty funkce kladné (křivka leží nad osou \(x\)) nebo záporná pokud jsou hodnoty funkce záporné (křivka leží pod osou \(x\)).
 Na obrázku~\ref{img:plocha_pod_krivkou} je tato plocha zobrazena šedou barvou.
 
 \begin{figure}[ht]
@@ -15,10 +15,10 @@ Na obrázku~\ref{img:plocha_pod_krivkou} je tato plocha zobrazena šedou barvou.
 \draw [smooth, domain=0.5:4] plot({\x}, {1.2 + sin(80 * \x)});
 \draw (2.5, 1.4) node{\(\mathrm{f}(x)\)};
 
-\drawaxesxy{0}{0}{-0.5}{-0.5}{4.5}{3.5}
+\drawaxesxy{0}{0}{-0.5}{-0.5}{4.5}{2.5}
 
-\drawxcoord{0.5}{0}{\(x_1\)}
-\drawxcoord{4}{0}{\(x_2\)}
+\drawxcoord{0.5}{0}{\(a\)}
+\drawxcoord{4}{0}{\(b\)}
 
 \end{tikzpicture}
 \caption{Plocha pod křivkou}
@@ -26,6 +26,155 @@ Na obrázku~\ref{img:plocha_pod_krivkou} je tato plocha zobrazena šedou barvou.
 \label{img:plocha_pod_krivkou}
 \end{figure}
 
+Označme tuto plochu pod křivkou
+
+\begin{equation}
+\int_{a}^{b} \mathrm{f}(x) \cdot \mathrm{d}x
+\end{equation}
+
+a~nazvěme ji určitý integrál.
+
+Prozkoumejme, jaké vlastnosti má určitý integrál. Zaprvé se plocha pod křivkou pro sousední intervaly sčítá jak je vidět na obrázku~\ref{img:scitani_integralu}, tedy
+
+\begin{equation}
+\int_{a}^{c} \mathrm{f}(x) \cdot \mathrm{d}x + \int_{c}^{b} \mathrm{f}(x) \cdot \mathrm{d}x = \int_{a}^{b} \mathrm{f}(x) \cdot \mathrm{d}x
+\end{equation}
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}
+\path [smooth, domain=0.5:1.9, fill=lightgray]
+ plot({\x}, {1.2 + sin(80 * \x)})
+  -- (1.9, 0) -- (0.5, 0) -- (0.5, 1.2);
+  
+\draw [smooth, domain=0.5:1.9] plot({\x}, {1.2 + sin(80 * \x)});
+\draw (2.5, 1.4) node{\(\mathrm{f}(x)\)};
+
+
+\path [smooth, domain=2.1:4, fill=lightgray]
+ plot({\x}, {1.2 + sin(80 * \x)})
+  -- (4, 0) -- (2.1, 0) -- (2.1, 1.2);
+  
+\draw [smooth, domain=2.1:4] plot({\x}, {1.2 + sin(80 * \x)});
+\draw (2.5, 1.4) node{\(\mathrm{f}(x)\)};
+
+\draw (2, 0.7) node{+};
+
+\drawaxesxy{0}{0}{-0.5}{-0.5}{4.5}{2.5}
+
+\drawxcoord{0.5}{0}{\(a\)}
+\drawxcoord{2}{0}{\(c\)}
+\drawxcoord{4}{0}{\(b\)}
+
+\end{tikzpicture}
+\caption{Sčítání integrálů}
+\end{center}
+\label{img:scitani_integralu}
+\end{figure}
+
+Zadruhé je plocha omezena minimální a~maximální funkční hodnotou. Výrazy \(\min(\mathrm{f}(x))\) a~\(\max(\mathrm{f}(x)\) rozumíme minimální respektive maximální funkční hodnotu 
+
+\begin{equation}
+\begin{split}
+(b - a) \cdot \min(\{\mathrm{f}(x) | a \leq x \leq b\}) \leq \\
+\int_{x_1}^{x_2} \mathrm{f}(x) \cdot \mathrm{d}x \\
+\leq (b - a) \cdot \max(\{\mathrm{f}(x) | a \leq x \leq b\})
+\end{split}
+\end{equation}
+
+Tyto dvě vlastnosti nám umožňují definovat horní a~dolní mez integrálu. Rozdělme interval \(<a; b>\) na konečný počet intervalů \(<x_0, x_1>\), \(<x_1, x_2>\) atd. Dolní mez integrálu je dána vztahem
+
+\begin{equation}
+\underline{\int}_a^b = \sum_{i} (x_{i+1} - x_i) \cdot \min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})
+\end{equation}
+
+a~její grafická interpretace je vidět na obrázku~\ref{img:integral_dolni_mez}.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}
+  
+\path[fill=lightgray]
+	(0.5, 1.84279) -| (1, 2.06603) -| (1.5, 1.54202) -| (2, 0.85798) -| (2.5, 0.33397) -| (3, 0.2) -| (4, 0.2) --
+	(4, 0) -- (0.5, 0) -- (0.5, 1.84279);
+
+\draw (0.5, 1.84279) -| (1, 2.06603) -| (1.5, 1.54202) -| (2, 0.85798) -| (2.5, 0.33397) -| (3, 0.2) -| (4, 0.2);
+
+\draw [smooth, domain=0.5:4] plot({\x}, {1.2 + sin(80 * \x)});
+\draw (2.5, 1.4) node{\(\mathrm{f}(x)\)};
+
+\drawaxesxy{0}{0}{-0.5}{-0.5}{4.5}{2.5}
+
+\drawxcoord{0.5}{0}{\(x_0\)}
+\drawxcoord{1}{0}{\(x_1\)}
+\drawxcoord{1.5}{0}{\(x_2\)}
+\drawxcoord{2}{0}{\(x_3\)}
+\drawxcoord{2.5}{0}{\(x_4\)}
+\drawxcoord{3}{0}{\(x_5\)}
+\drawxcoord{3.5}{0}{\(x_6\)}
+\drawxcoord{4}{0}{\(x_7\)}
+
+\end{tikzpicture}
+\caption{Dolní mez integtrálu}
+\end{center}
+\label{img:integral_dolni_mez}
+\end{figure}
+
+Horní mez integrálu je dána vztahem
+
+\begin{equation}
+\overline{\int}_a^b = \sum_{i} (x_{i+1} - x_i) \cdot \max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})
+\end{equation}
+
+a~její grafická interpretace je vidět na obrázku~\ref{img:integral_horni_mez}.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}
+  
+\path[fill=lightgray]
+	(0.5, 2.2) -| (1.5, 2.06603) -| (2, 1.54202) -| (2.5, 0.85798) -| (3, 0.33397) -| (3.5, 0.55721) -| (4, 0.55721) --
+	(4, 0) -- (0.5, 0) -- (0.5, 2.2);
+
+\draw (0.5, 2.2) -| (1.5, 2.06603) -| (2, 1.54202) -| (2.5, 0.85798) -| (3, 0.33397) -| (3.5, 0.55721) -| (4, 0.55721);
+
+\draw [smooth, domain=0.5:4] plot({\x}, {1.2 + sin(80 * \x)});
+\draw (2.5, 2) node{\(\mathrm{f}(x)\)};
+
+\drawaxesxy{0}{0}{-0.5}{-0.5}{4.5}{2.5}
+
+\drawxcoord{0.5}{0}{\(x_0\)}
+\drawxcoord{1}{0}{\(x_1\)}
+\drawxcoord{1.5}{0}{\(x_2\)}
+\drawxcoord{2}{0}{\(x_3\)}
+\drawxcoord{2.5}{0}{\(x_4\)}
+\drawxcoord{3}{0}{\(x_5\)}
+\drawxcoord{3.5}{0}{\(x_6\)}
+\drawxcoord{4}{0}{\(x_7\)}
+
+\end{tikzpicture}
+\caption{Horní mez integrálu}
+\end{center}
+\label{img:integral_horni_mez}
+\end{figure}
+
+Dělení intervalu nemusí být rovnoměrné. Označme toto dělení \(d\) a~nejdelší interval tohoto dělení \(\delta(d) = \max(x_{i+1} - x_i)\). Pak můžeme spočítat limity dolních a~horních mezí. Povšimněme si, že dělení intervalu není určeno jednoznačně a~my v~limitách bereme v~potaz nejhorší případ:
+
+\begin{equation}
+\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \right | \delta(d) \leq \delta_m\}\right)
+\end{equation}
+
+\begin{equation}
+\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \right | \delta(d) \leq \delta_m\}\right)
+\end{equation}
+
+
+Pokud horní a~dolní mez mají stejnou limitu, pak je tato limita rovna integrálu.
+
+\begin{equation}
+\int_a^b = \lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \right | \delta(d) \leq \delta_m\}\right)
+ = \lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \right | \delta(d) \leq \delta_m\}\right)
+\end{equation}
 
 \section{Křivkový integrál}
 
