@@ -85,7 +85,7 @@ Zadruhé je plocha omezena minimální a~maximální funkční hodnotou. Výrazy
 Tyto dvě vlastnosti nám umožňují definovat horní a~dolní mez integrálu. Rozdělme interval \(<a; b>\) na konečný počet intervalů \(<x_0, x_1>\), \(<x_1, x_2>\) atd. Dolní mez integrálu je dána vztahem
 
 \begin{equation}
-\underline{\int}_a^b = \sum_{i} (x_{i+1} - x_i) \cdot \min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})
+\underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x = \sum_{i} (x_{i+1} - x_i) \cdot \min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})
 \end{equation}
 
 a~její grafická interpretace je vidět na obrázku~\ref{img:integral_dolni_mez}.
@@ -123,7 +123,7 @@ a~její grafická interpretace je vidět na obrázku~\ref{img:integral_dolni_mez
 Horní mez integrálu je dána vztahem
 
 \begin{equation}
-\overline{\int}_a^b = \sum_{i} (x_{i+1} - x_i) \cdot \max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})
+\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x = \sum_{i} (x_{i+1} - x_i) \cdot \max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})
 \end{equation}
 
 a~její grafická interpretace je vidět na obrázku~\ref{img:integral_horni_mez}.
@@ -161,19 +161,42 @@ a~její grafická interpretace je vidět na obrázku~\ref{img:integral_horni_mez
 Dělení intervalu nemusí být rovnoměrné. Označme toto dělení \(d\) a~nejdelší interval tohoto dělení \(\delta(d) = \max(x_{i+1} - x_i)\). Pak můžeme spočítat limity dolních a~horních mezí. Povšimněme si, že dělení intervalu není určeno jednoznačně a~my v~limitách bereme v~potaz nejhorší případ:
 
 \begin{equation}
-\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \right | \delta(d) \leq \delta_m\}\right)
+\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right)
 \end{equation}
 
 \begin{equation}
-\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \right | \delta(d) \leq \delta_m\}\right)
+\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right)
 \end{equation}
 
-
-Pokud horní a~dolní mez mají stejnou limitu, pak je tato limita rovna integrálu.
+Pokud horní a~dolní mez mají stejnou limitu, pak je tato limita rovna integrálu:
 
 \begin{equation}
-\int_a^b = \lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \right | \delta(d) \leq \delta_m\}\right)
- = \lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \right | \delta(d) \leq \delta_m\}\right)
+\begin{split}
+\int_a^b \mathrm{f}(x) \cdot \mathrm{d}x = \\
+\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right) = \\
+\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right)
+\end{split}
+\end{equation}
+
+To tedy znamená, že k~integrálu bude konvergovat i~každá posloupnost, která vznikne tak, že sečteme libovolné body z~intervalů vzniklých dělením. Je tomu tak proto, že tyto body budou ležet mezi minimi a~maximy těchto intervalů:
+
+\begin{equation}
+\int_a^b \mathrm{f}(x) \cdot \mathrm{d}x = \lim_{\delta_m \to 0} \sum_{i} (x_{i+1} - x_i) \cdot \mathrm{f}(x_i \leq x \leq x_{i+1})
+\end{equation}
+
+Prozkoumejme existenci integrálu. Nechť je funkce \(\mathrm{f}(x)\) spojitá na intervalu \(<a; b>\), to tedy předpokládá, že funkce má na celém intervalu limitu. Z~definice limity tedy musí pro každý bod existovat (obecně různá) funkce \(\delta(\epsilon)\). Nechť \(\delta_{inf}(\epsilon)\) označuje její infimum přes všechny body intervalu. Potom
+
+\begin{equation}
+\begin{split}
+\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right) - \\
+\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right) = \\
+\lim_{\delta_m \to 0} \left( \overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x - \underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \right) = \\
+\lim_{\delta_m \to 0} \Bigg( \sum_{i} (x_{i+1} - x_i) \cdot \max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) - \\
+\sum_{i} (x_{i+1} - x_i) \cdot \min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) \Bigg) = \\
+\lim_{\delta_m \to 0} \Bigg( \sum_{i} (x_{i+1} - x_i) \cdot (\max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) - \\
+\min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) \Bigg) = \\
+0
+\end{split}
 \end{equation}
 
 \section{Křivkový integrál}
