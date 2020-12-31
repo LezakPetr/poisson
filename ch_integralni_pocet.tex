@@ -85,6 +85,7 @@ Zadruhé je plocha omezena minimální a~maximální funkční hodnotou. Výrazy
 Tyto dvě vlastnosti nám umožňují definovat horní a~dolní mez integrálu. Rozdělme interval \(<a; b>\) na konečný počet intervalů \(<x_0, x_1>\), \(<x_1, x_2>\) atd. Dolní mez integrálu je dána vztahem
 
 \begin{equation}
+\label{eq:dolni_mez_integralu}
 \underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x = \sum_{i} (x_{i+1} - x_i) \cdot \min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})
 \end{equation}
 
@@ -123,6 +124,7 @@ a~její grafická interpretace je vidět na obrázku~\ref{img:integral_dolni_mez
 Horní mez integrálu je dána vztahem
 
 \begin{equation}
+\label{eq:horni_mez_integralu}
 \overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x = \sum_{i} (x_{i+1} - x_i) \cdot \max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})
 \end{equation}
 
@@ -158,17 +160,13 @@ a~její grafická interpretace je vidět na obrázku~\ref{img:integral_horni_mez
 \label{img:integral_horni_mez}
 \end{figure}
 
-Dělení intervalu nemusí být rovnoměrné. Označme toto dělení \(d\) a~nejdelší interval tohoto dělení \(\delta(d) = \max(x_{i+1} - x_i)\). Pak můžeme spočítat limity dolních a~horních mezí. Povšimněme si, že dělení intervalu není určeno jednoznačně a~my v~limitách bereme v~potaz nejhorší případ:
+Dělení intervalu nemusí být rovnoměrné. Označme toto dělení \(d\) a~nejdelší interval tohoto dělení \(\delta(d) = \max(x_{i+1} - x_i)\). Pak můžeme spočítat limity dolních a~horních mezí. Povšimněme si, že dělení intervalu není určeno jednoznačně a~my v~limitách bereme v~potaz nejhorší případ. Pokud platí
 
 \begin{equation}
-\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right)
+\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x - \underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right) = 0
 \end{equation}
 
-\begin{equation}
-\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right)
-\end{equation}
-
-Pokud horní a~dolní mez mají stejnou limitu, pak je tato limita rovna integrálu:
+tedy pokud rozdíl a~dolní meze konverguje k~nule, pak jsou tyto limity rovny integrálu:
 
 \begin{equation}
 \begin{split}
@@ -184,20 +182,41 @@ To tedy znamená, že k~integrálu bude konvergovat i~každá posloupnost, kter�
 \int_a^b \mathrm{f}(x) \cdot \mathrm{d}x = \lim_{\delta_m \to 0} \sum_{i} (x_{i+1} - x_i) \cdot \mathrm{f}(x_i \leq x \leq x_{i+1})
 \end{equation}
 
-Prozkoumejme existenci integrálu. Nechť je funkce \(\mathrm{f}(x)\) spojitá na intervalu \(<a; b>\), to tedy předpokládá, že funkce má na celém intervalu limitu. Z~definice limity tedy musí pro každý bod existovat (obecně různá) funkce \(\delta(\epsilon)\). Nechť \(\delta_{inf}(\epsilon)\) označuje její infimum přes všechny body intervalu. Potom
+Prozkoumejme existenci integrálu. Nechť je funkce \(\mathrm{f}(x)\) spojitá na intervalu \(<a; b>\), to tedy předpokládá, že funkce má na celém intervalu limitu. Z~definice limity tedy musí pro každý bod existovat (obecně různá) funkce \(\delta(\varepsilon)\). Nechť \(\delta_{inf}(\varepsilon)\) označuje její infimum přes všechny body intervalu. Potom pro jakýkoli interval \(<x_i; x_{i+1}>\), kde \(x_{i+1} - x_i < \delta_{inf}(\varepsilon)\), musí platit 
+
+\begin{equation}
+\max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) - \min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) < \varepsilon
+\end{equation}
+
+Je tomu tak proto, že \(\delta_{inf}\)-okolí jakéhokoli bodu intervalu je celý interval. Proto pro každé dostatečně jemné dělení intervalu bude platit
 
 \begin{equation}
 \begin{split}
-\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right) - \\
-\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right) = \\
 \lim_{\delta_m \to 0} \left( \overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x - \underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \right) = \\
 \lim_{\delta_m \to 0} \Bigg( \sum_{i} (x_{i+1} - x_i) \cdot \max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) - \\
 \sum_{i} (x_{i+1} - x_i) \cdot \min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) \Bigg) = \\
 \lim_{\delta_m \to 0} \Bigg( \sum_{i} (x_{i+1} - x_i) \cdot (\max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) - \\
-\min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) \Bigg) = \\
-0
+\min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})) \Bigg) = \\
+\sum_{i} (x_{i+1} - x_i) \cdot \lim_{\delta_m \to 0} (\max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) - \\
+\min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\})) = 0
 \end{split}
 \end{equation}
+
+Proto každá spojitá funkce má integrál. Zvažme dále, co se stane, pokud by funkce nebyla spojitá v~konečném počtu \(n\) bodů. Z~integrálu tyto body vyjmeme. Prozkoumejme, co se stane se sumou ve vztahu~\eqref{eq:dolni_mez_integralu} respektive~\eqref{eq:horni_mez_integralu}. Každý z~vyňatých bodů může být v~nejhorším případě obsažen ve dvou intervalech (pokud by ležel na jejich hranici). Jejich součet v~uvedených sumách je proto v~limitě
+
+\begin{equation}
+\lim_{\delta_m \to 0} 2 \cdot n \cdot \delta_m \cdot x = 0 
+\end{equation}
+
+a~integrál proto neovlivní. Z~toho plynou závěry:
+
+\begin{fact}
+Každá po částech spojitá funkce má integrál.
+\end{fact}
+
+\begin{fact}
+Odebráním konečného počtu bodů z~integrované funkce se integrál nezmění.
+\end{fact}
 
 \section{Křivkový integrál}
 
