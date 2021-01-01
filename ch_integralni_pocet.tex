@@ -37,6 +37,7 @@ a~nazvěme ji určitý integrál.
 Prozkoumejme, jaké vlastnosti má určitý integrál. Zaprvé se plocha pod křivkou pro sousední intervaly sčítá jak je vidět na obrázku~\ref{img:scitani_integralu}, tedy
 
 \begin{equation}
+\label{eq:scitani_integralu}
 \int_{a}^{c} \mathrm{f}(x) \cdot \mathrm{d}x + \int_{c}^{b} \mathrm{f}(x) \cdot \mathrm{d}x = \int_{a}^{b} \mathrm{f}(x) \cdot \mathrm{d}x
 \end{equation}
 
@@ -217,6 +218,36 @@ Každá po částech spojitá funkce má integrál.
 \begin{fact}
 Odebráním konečného počtu bodů z~integrované funkce se integrál nezmění.
 \end{fact}
+
+Vraťme se ještě k~rovnici \eqref{eq:scitani_integralu} a~zapišme ji s~jiným označením mezí: 
+
+\begin{equation}
+\begin{split}
+\int_{x_0}^{b} \mathrm{f}(x) \cdot \mathrm{d}x = \int_{x_0}^{a} \mathrm{f}(x) \cdot \mathrm{d}x + \int_{a}^{b} \mathrm{f}(x) \cdot \mathrm{d}x \\
+\int_{a}^{b} \mathrm{f}(x) \cdot \mathrm{d}x = \int_{x_0}^{b} \mathrm{f}(x) \cdot \mathrm{d}x - \int_{x_0}^{a} \mathrm{f}(x) \cdot \mathrm{d}x
+\end{split}
+\end{equation}
+
+Zavedeme-li pro libovolně zvolenou hodnotu \(x_0\) funkci, tzv. neurčitý integrál
+
+\begin{equation}
+\mathrm{F}(x) = \int \mathrm{f}(x) \cdot \mathrm{d}x = \int_{x_0}^{x} \mathrm{f}(x) \cdot \mathrm{d}x
+\end{equation}
+
+pak můžeme rovnici přepsat do tvaru:
+
+\begin{equation}
+\label{eq:vztah_mezi_neurcitym_a_urcitym_integralem}
+\int_{a}^{b} \mathrm{f}(x) \cdot \mathrm{d}x = \mathrm{F}(b) - \mathrm{F}(a) = \left[\mathrm{F}(x)\right]_a^b 
+\end{equation}
+
+Označením \(\left[\mathrm{F}(x)\right]_a^b\) myslíme právě výraz \(\mathrm{F}(b) - \mathrm{F}(a)\), tedy rozdíl hodnot výrazu v~závorce vyhodnoceného pro \(b\) a~\(a\).
+
+Povšimněme si, že neurčitý integrál není určen jednoznačně. Můžeme k~němu pripočíst libovolnou konstantu a~rozdíl ve vztahu~\eqref{eq:vztah_mezi_neurcitym_a_urcitym_integralem} to nijak neovlivní. Proto je neurčitý integrál množina funkcí lišících se o~konstantu a~píšeme ho ve tvaru:
+
+\begin{equation}
+\int \mathrm{f}(x) \cdot \mathrm{d}x = \mathrm{F}(x) + \mathrm{C}
+\end{equation}
 
 \section{Křivkový integrál}
 
