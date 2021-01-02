@@ -180,6 +180,7 @@ tedy pokud rozdíl a~dolní meze konverguje k~nule, pak jsou tyto limity rovny i
 To tedy znamená, že k~integrálu bude konvergovat i~každá posloupnost, která vznikne tak, že sečteme libovolné body z~intervalů vzniklých dělením. Je tomu tak proto, že tyto body budou ležet mezi minimi a~maximy těchto intervalů:
 
 \begin{equation}
+\label{eq:vypocet_integralu}
 \int_a^b \mathrm{f}(x) \cdot \mathrm{d}x = \lim_{\delta_m \to 0} \sum_{i} (x_{i+1} - x_i) \cdot \mathrm{f}(x_i \leq x \leq x_{i+1})
 \end{equation}
 
@@ -258,7 +259,8 @@ Zkusme vyjádřit, jak se chová určitý integrál v~okolí bodu:
 \end{split}
 \end{equation}
 
-Protože \(\mathrm{d}x\) je nekonečně malý, tak můžeme funkci \(\mathrm{f}(x)\) považovat mezi \(x\) a~\(x + \mathrm{f}(x)\) za konstantní. Proto platí:
+Protože \(\mathrm{d}x\) je nekonečně malý, tak můžeme funkci \(\mathrm{f}(x)\) považovat mezi \(x\) a~\(x + \mathrm{f}(x)\) za konstantní. Přesněji, \(\mathrm{d}x\) je tak malé, že interval \(<x; x + \mathrm{d}x>\) je rozdělen pouze na jeden podinterval. Suma ve vztahu~\eqref{eq:vypocet_integralu} proto přejde do tvaru \(\mathrm{d}x \cdot \mathrm{f}(x)\).
+Proto platí:
 
 \begin{equation}
 \begin{split}
@@ -274,6 +276,8 @@ Vidíme tedy, že derivování je opačná operace než integrování. Tento fak
 \mathrm{f}(x) = \frac{\partial \mathrm{F}}{\partial x} \Leftrightarrow \int \mathrm{f}(x) \cdot \mathrm{d}x = \mathrm{F}(x) + \mathrm{C}
 \end{equation}
 \end{fact}
+
+Takto můžeme vyjádřit integrály k~elementárním funkcím. Vyjádřeny jsou v~příloze~\ref{ap:integraly_zakladnich_funkci}.
 
 \section{Křivkový integrál}
 
