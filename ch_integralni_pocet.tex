@@ -229,10 +229,10 @@ Vraťme se ještě k~rovnici \eqref{eq:scitani_integralu} a~zapišme ji s~jiným
 \end{split}
 \end{equation}
 
-Zavedeme-li pro libovolně zvolenou hodnotu \(x_0\) funkci, tzv. neurčitý integrál
+Zavedeme-li pro libovolně zvolenou hodnotu \(x_0\) tzv. primitivní funkci
 
 \begin{equation}
-\mathrm{F}(x) = \int \mathrm{f}(x) \cdot \mathrm{d}x = \int_{x_0}^{x} \mathrm{f}(x) \cdot \mathrm{d}x
+\mathrm{F}(x) = \int_{x_0}^{x} \mathrm{f}(x) \cdot \mathrm{d}x
 \end{equation}
 
 pak můžeme rovnici přepsat do tvaru:
@@ -242,15 +242,18 @@ pak můžeme rovnici přepsat do tvaru:
 \int_{a}^{b} \mathrm{f}(x) \cdot \mathrm{d}x = \mathrm{F}(b) - \mathrm{F}(a) = \left[\mathrm{F}(x)\right]_a^b 
 \end{equation}
 
+Primitivní funkce budeme zapisovat velkými písmeny.
 Označením \(\left[\mathrm{F}(x)\right]_a^b\) myslíme právě výraz \(\mathrm{F}(b) - \mathrm{F}(a)\), tedy rozdíl hodnot výrazu v~závorce vyhodnoceného pro \(b\) a~\(a\).
 
-Povšimněme si, že neurčitý integrál není určen jednoznačně. Můžeme k~němu pripočíst libovolnou konstantu a~rozdíl ve vztahu~\eqref{eq:vztah_mezi_neurcitym_a_urcitym_integralem} to nijak neovlivní. Proto je neurčitý integrál množina funkcí lišících se o~konstantu a~píšeme ho ve tvaru:
+Povšimněme si, že primitivní funkce není určena jednoznačně. Můžeme k~ní pripočíst libovolnou konstantu a~rozdíl ve vztahu~\eqref{eq:vztah_mezi_neurcitym_a_urcitym_integralem} to nijak neovlivní. Množinu všech primitivních funkcí lišících se o~konstantu nazýváme neurčitý integrál a~píšeme ho ve tvaru:
 
 \begin{equation}
 \int \mathrm{f}(x) \cdot \mathrm{d}x = \mathrm{F}(x) + \mathrm{C}
 \end{equation}
 
-Zkusme vyjádřit, jak se chová určitý integrál v~okolí bodu:
+Naproti tomu integrál \(\int_a^b \mathrm{f}(x) \cdot \mathrm{d}x\) nazýváme určitý integrál.
+
+Zkusme vyjádřit, jak se primitivní funkce chová v~okolí bodu:
 
 \begin{equation}
 \begin{split}
@@ -278,6 +281,43 @@ Vidíme tedy, že derivování je opačná operace než integrování. Tento fak
 \end{fact}
 
 Takto můžeme vyjádřit integrály k~elementárním funkcím. Vyjádřeny jsou v~příloze~\ref{ap:integraly_zakladnich_funkci}.
+
+\section{Integrování pomocí substituce}
+
+Začněme vztahem pro derivování složené funkce, přičemž platí \(\mathrm{f}(t) = \frac{\partial \mathrm{F}}{\partial t}\):
+
+\begin{equation}
+\frac{\partial}{\partial x} \mathrm{F}(\mathrm{g}(x)) = \frac{\partial \mathrm{F}}{\partial x} (\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} = \mathrm{f}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x}
+\end{equation}
+
+Obě strany rovnice zintegrujeme
+
+\begin{equation}
+\mathrm{F}(\mathrm{g}(x)) = \int \mathrm{f}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x
+\end{equation}
+
+a~můžeme zavést substituci \(t = \mathrm{g}(x)\): 
+
+\begin{equation}
+\int \mathrm{f}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x = \mathrm{F}(t) = \int \mathrm{f}(t) \cdot \mathrm{d}t
+\end{equation}
+
+Integrovat pomocí substituce můžeme přímo i~určité integrály.
+
+\begin{equation}
+\int_a^b \mathrm{f}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x = [\mathrm{F}(\mathrm{g}(x))]_a^b = [\mathrm{F}(t)]_{\mathrm{g}(a)}^{\mathrm{g}(b)} = \int_{\mathrm{g}(a)}^{\mathrm{g}(b)} \mathrm{f}(t) \cdot \mathrm{d}t
+\end{equation}
+
+\begin{fact}
+\begin{equation}
+\int \mathrm{f}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x = \int \mathrm{f}(t) \cdot \mathrm{d}t; t = \mathrm{g}(x)
+\end{equation}
+
+\begin{equation}
+\int_a^b \mathrm{f}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x = \int_{\mathrm{g}(a)}^{\mathrm{g}(b)} \mathrm{f}(t) \cdot \mathrm{d}t
+\end{equation}
+
+\end{fact}
 
 \section{Křivkový integrál}
 
