@@ -319,6 +319,44 @@ Integrovat pomocí substituce můžeme přímo i~určité integrály.
 
 \end{fact}
 
+\section{Integrování per partes}
+
+Vyjděme ze vztahu pro derivaci součinu:
+
+\begin{equation}
+\frac{\partial}{\partial x} (\mathrm{f}(x) \cdot \mathrm{g}(x)) = \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} + \mathrm{f}(x) \cdot \frac{\partial \mathrm{g}}{\partial x}
+\end{equation}
+
+Aplikujeme fundamentální větu matematické analýzy a~přeuspořádáme výraz:
+
+\begin{equation}
+\begin{split}
+\mathrm{f}(x) \cdot \mathrm{g}(x) = \int \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x + \int \mathrm{f}(x) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x \\
+\int \mathrm{f}(x) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x = \mathrm{f}(x) \cdot \mathrm{g}(x) - \int \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x
+\end{split}
+\end{equation}
+
+Vztah můžeme vyjádřit i~pro určitý integrál:
+
+\begin{equation}
+\begin{split}
+\int_a^b \mathrm{f}(x) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x = \left[ \int \mathrm{f}(x) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x \right]_a^b = \\
+\left[ \mathrm{f}(x) \cdot \mathrm{g}(x) - \int \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x \right]_a^b = \\
+\left[ \mathrm{f}(x) \cdot \mathrm{g}(x) \right]_a^b - \int_a^b \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x
+\end{split}
+\end{equation}
+
+\begin{fact}
+\begin{equation}
+\int \mathrm{f}(x) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x = \mathrm{f}(x) \cdot \mathrm{g}(x) - \int \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x
+\end{equation}
+
+\begin{equation}
+\int_a^b \mathrm{f}(x) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x =
+\left[ \mathrm{f}(x) \cdot \mathrm{g}(x) \right]_a^b - \int_a^b \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x
+\end{equation}
+\end{fact}
+
 \section{Křivkový integrál}
 
 Pokud máme orientovanou po částech hladkou křivku v~prostoru definovanou parametricky pomocí rovnice \eqref{eq:krivkovy_integral_krivka} a~kovariantní vektorové pole \(\kovarvect{v}\), pak křivkový integrál definujeme rovnicí \eqref{eq:krivkovy_integral_definice}.
