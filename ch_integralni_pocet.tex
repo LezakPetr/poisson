@@ -73,7 +73,7 @@ Prozkoumejme, jaké vlastnosti má určitý integrál. Zaprvé se plocha pod kř
 \label{img:scitani_integralu}
 \end{figure}
 
-Zadruhé je plocha omezena minimální a~maximální funkční hodnotou. Výrazy \(\min(\mathrm{f}(x))\) a~\(\max(\mathrm{f}(x)\) rozumíme minimální respektive maximální funkční hodnotu 
+Zadruhé je plocha omezena minimální a~maximální funkční hodnotou:
 
 \begin{equation}
 \begin{split}
@@ -356,6 +356,34 @@ Vztah můžeme vyjádřit i~pro určitý integrál:
 \left[ \mathrm{f}(x) \cdot \mathrm{g}(x) \right]_a^b - \int_a^b \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x
 \end{equation}
 \end{fact}
+
+\section{Vícerozměrný integrál}
+
+Doposud jsme pracovali s~jednorozměrným integrálem - definičním oborem integrované funkce byl (pod)množina reálných čísel. Určitý integrál jsme definovali jako plochu pod křivkou určenou funkcí s~jedním parametrem probíhajícím po určitém intervalu. Tuto definici můžeme rozšířit na funkci se dvěma parametry probíhajícími po obdélníku, se třemi parametry probíhajícími po kvádru nebo obecně s~více parametry probíhajícími po hyperkvádru.
+
+Mějme funkci s~více parametry \(\mathrm{f}(x, y, ...)\), kterou budeme integrovat obecně na hyperkvádru se stranamy \(<a_x; b_x>\), \(<a_y; b_y>\) atd. Tyto strany rozdělíme na konečný počet intervalů \(<x_0, x_1>\), \(<x_1, x_2>\), ...,  \(<y_0, y_1>\), \(<y_1, y_2>\) atd. Tím vznikne mřížka dělící integrovaný hyperkvádr na malé hyperkvádry. Dolní mez integrálu je pak dána vztahem
+
+\begin{equation}
+\underline{\int}_a^b \mathrm{f}(x, y, ...) \cdot \mathrm{d}V = \sum_{i, j, ...} (x_{i+1} - x_i) \cdot (y_{j+1} - y_j) \cdot ... \cdot \min_{i, j, ..}(\mathrm{f})
+\end{equation}
+
+přičemž zápisem \(\min_{i, j, ..}(\mathrm{f})\) rozumíme minimální hodnotu funkce \(\mathrm{f}\) na malém hyperkvádru:
+
+\begin{equation}
+\min_{i, j, ..}(\mathrm{f}) = \min(\{\mathrm{f}(x, y, ...) | x_i \leq x \leq x_{i+1} \land y_j \leq y \leq y_{j+1} \land ...\})
+\end{equation}
+
+Horní mez integrálu je obdobně dána vztahem
+
+\begin{equation}
+\overline{\int}_a^b \mathrm{f}(x, y, ...) \cdot \mathrm{d}V = \sum_{i, j, ...} (x_{i+1} - x_i) \cdot (y_{j+1} - y_j) \cdot ... \cdot \max_{i, j, ..}(\mathrm{f})
+\end{equation}
+
+přičemž zápisem \(\max_{i, j, ..}(\mathrm{f})\) rozumíme maximální hodnotu funkce \(\mathrm{f}\) na malém hyperkvádru:
+
+\begin{equation}
+\max_{i, j, ..}(\mathrm{f}) = \max(\{\mathrm{f}(x, y, ...) | x_i \leq x \leq x_{i+1} \land y_j \leq y \leq y_{j+1} \land ...\})
+\end{equation}
 
 \section{Křivkový integrál}
 
