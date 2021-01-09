@@ -161,10 +161,10 @@ a~její grafická interpretace je vidět na obrázku~\ref{img:integral_horni_mez
 \label{img:integral_horni_mez}
 \end{figure}
 
-Dělení intervalu nemusí být rovnoměrné. Označme toto dělení \(d\) a~nejdelší interval tohoto dělení \(\delta(d) = \max(x_{i+1} - x_i)\). Pak můžeme spočítat limity dolních a~horních mezí. Povšimněme si, že dělení intervalu není určeno jednoznačně a~my v~limitách bereme v~potaz nejhorší případ. Pokud platí
+Dělení intervalu nemusí být rovnoměrné. Označme toto dělení \(d\) a~nejdelší interval tohoto dělení \(\delta_d = \max(x_{i+1} - x_i)\). Pak můžeme spočítat limity dolních a~horních mezí. Povšimněme si, že dělení intervalu není určeno jednoznačně a~my v~limitách bereme v~potaz nejhorší případ. Pokud platí
 
 \begin{equation}
-\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x - \underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right) = 0
+\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x - \underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta_d \leq \delta_m \right\}\right) = 0
 \end{equation}
 
 tedy pokud rozdíl a~dolní meze konverguje k~nule, pak jsou tyto limity rovny integrálu:
@@ -172,8 +172,8 @@ tedy pokud rozdíl a~dolní meze konverguje k~nule, pak jsou tyto limity rovny i
 \begin{equation}
 \begin{split}
 \int_a^b \mathrm{f}(x) \cdot \mathrm{d}x = \\
-\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right) = \\
-\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta(d) \leq \delta_m \right\}\right)
+\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta_d \leq \delta_m \right\}\right) = \\
+\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int}_a^b \mathrm{f}(x) \cdot \mathrm{d}x \middle| \delta_d \leq \delta_m \right\}\right)
 \end{split}
 \end{equation}
 
@@ -361,10 +361,11 @@ Vztah můžeme vyjádřit i~pro určitý integrál:
 
 Doposud jsme pracovali s~jednorozměrným integrálem - definičním oborem integrované funkce byl (pod)množina reálných čísel. Určitý integrál jsme definovali jako plochu pod křivkou určenou funkcí s~jedním parametrem probíhajícím po určitém intervalu. Tuto definici můžeme rozšířit na funkci se dvěma parametry probíhajícími po obdélníku, se třemi parametry probíhajícími po kvádru nebo obecně s~více parametry probíhajícími po hyperkvádru.
 
-Mějme funkci s~více parametry \(\mathrm{f}(x, y, ...)\), kterou budeme integrovat obecně na hyperkvádru se stranamy \(<a_x; b_x>\), \(<a_y; b_y>\) atd. Tyto strany rozdělíme na konečný počet intervalů \(<x_0, x_1>\), \(<x_1, x_2>\), ...,  \(<y_0, y_1>\), \(<y_1, y_2>\) atd. Tím vznikne mřížka dělící integrovaný hyperkvádr na malé hyperkvádry. Dolní mez integrálu je pak dána vztahem
+Mějme funkci s~více parametry \(\mathrm{f}(x, y, ...)\), kterou budeme integrovat obecně na hyperkvádru \(\Omega\) se stranamy \(<a_x; b_x>\), \(<a_y; b_y>\) atd. Tyto strany rozdělíme na konečný počet intervalů \(<x_0, x_1>\), \(<x_1, x_2>\), ...,  \(<y_0, y_1>\), \(<y_1, y_2>\) atd. Tím vznikne mřížka dělící hyperkvádr \(\Omega\) na malé hyperkvádry. Dolní mez integrálu je pak dána vztahem
 
 \begin{equation}
-\underline{\int}_a^b \mathrm{f}(x, y, ...) \cdot \mathrm{d}V = \sum_{i, j, ...} (x_{i+1} - x_i) \cdot (y_{j+1} - y_j) \cdot ... \cdot \min_{i, j, ..}(\mathrm{f})
+\label{eq:dolni_mez_vicerozmerneho_integralu}
+\underline{\int_{\Omega}} \mathrm{f}(x, y, ...) \cdot \mathrm{d}V = \sum_{i, j, ...} (x_{i+1} - x_i) \cdot (y_{j+1} - y_j) \cdot ... \cdot \min_{i, j, ..}(\mathrm{f})
 \end{equation}
 
 přičemž zápisem \(\min_{i, j, ..}(\mathrm{f})\) rozumíme minimální hodnotu funkce \(\mathrm{f}\) na malém hyperkvádru:
@@ -376,7 +377,8 @@ přičemž zápisem \(\min_{i, j, ..}(\mathrm{f})\) rozumíme minimální hodnot
 Horní mez integrálu je obdobně dána vztahem
 
 \begin{equation}
-\overline{\int}_a^b \mathrm{f}(x, y, ...) \cdot \mathrm{d}V = \sum_{i, j, ...} (x_{i+1} - x_i) \cdot (y_{j+1} - y_j) \cdot ... \cdot \max_{i, j, ..}(\mathrm{f})
+\label{eq:horni_mez_vicerozmerneho_integralu}
+\overline{\int_{\Omega}} \mathrm{f}(x, y, ...) \cdot \mathrm{d}V = \sum_{i, j, ...} (x_{i+1} - x_i) \cdot (y_{j+1} - y_j) \cdot ... \cdot \max_{i, j, ..}(\mathrm{f})
 \end{equation}
 
 přičemž zápisem \(\max_{i, j, ..}(\mathrm{f})\) rozumíme maximální hodnotu funkce \(\mathrm{f}\) na malém hyperkvádru:
@@ -384,6 +386,68 @@ přičemž zápisem \(\max_{i, j, ..}(\mathrm{f})\) rozumíme maximální hodnot
 \begin{equation}
 \max_{i, j, ..}(\mathrm{f}) = \max(\{\mathrm{f}(x, y, ...) | x_i \leq x \leq x_{i+1} \land y_j \leq y \leq y_{j+1} \land ...\})
 \end{equation}
+
+Dělení hyperkvádru \(\Omega\) nemusí být rovnoměrné. Označme toto dělení \(d\) a~nejdelší interval jakéhokoli parametru tohoto dělení \(\delta_d = \max(x_{i+1} - x_i, y_{i+1} - y_i, ...)\). Pak můžeme obdobně jako u~jednorozměrného integrálu spočítat limity dolních a~horních mezí. Pokud platí
+
+\begin{equation}
+\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int_{\Omega}} \mathrm{f}(x) \cdot \mathrm{d}V - \underline{\int_{\Omega}} \mathrm{f}(x) \cdot \mathrm{d}V \middle| \delta_d \leq \delta_m \right\}\right) = 0
+\end{equation}
+
+tedy pokud rozdíl a~dolní meze konverguje k~nule, pak jsou tyto limity rovny integrálu:
+
+\begin{equation}
+\begin{split}
+\int_{\Omega} \mathrm{f}(x) \cdot \mathrm{d}V = \\
+\lim_{\delta_m \to 0} \min \left(\left\{\underline{\int_{\Omega}} \mathrm{f}(x) \cdot \mathrm{d}V \middle| \delta_d \leq \delta_m \right\}\right) = \\
+\lim_{\delta_m \to 0} \max \left(\left\{\overline{\int_{\Omega}} \mathrm{f}(x) \cdot \mathrm{d}V \middle| \delta_d \leq \delta_m \right\}\right)
+\end{split}
+\end{equation}
+
+To tedy znamená, že k~integrálu bude konvergovat i~každá posloupnost, která vznikne tak, že sečteme libovolné body z~hyperkvádrům vzniklých dělením. Je tomu tak proto, že tyto body budou ležet mezi minimi a~maximy těchto hyperkvádrů:
+
+\begin{equation}
+\begin{split}
+\int_{\Omega} \mathrm{f}(x) \cdot \mathrm{d}V = \\
+\lim_{\delta_m \to 0} \sum_{i} (x_{i+1} - x_i) \cdot y_{j+1} - y_j) \cdot ... \cdot \mathrm{f}(x_i \leq x \leq x_{i+1}, y_j \leq y \leq y_{j+1}, ...)
+\end{split}
+\end{equation}
+
+Prozkoumejme existenci integrálu. Nechť je funkce \(\mathrm{f}(x, y, ...)\) spojitá na hyperkvádru \(\Omega\), to tedy předpokládá, že funkce zde má limitu. Z~definice limity tedy musí pro každý bod existovat (obecně různá) funkce \(\delta(\varepsilon)\). Označme \(\delta_{inf}(\varepsilon)\) její infimum přes všechny body. Dva body ležící v~\(n\)-rozměrném hyperkvádru se všemi hranami o~délce nejvýše \(\delta\) mohou mít vzdálenost nejvýše \(\sqrt{n} \cdot \delta\). Proto pokud \(\delta_d \leq \frac{\delta_{inf}(\epsilon)}{\sqrt{n}}\), pak musí platit: 
+
+\begin{equation}
+\max(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) - \min(\{\mathrm{f}(x) | x_i \leq x \leq x_{i+1}\}) < \varepsilon
+\end{equation}
+
+Je tomu tak proto, že \(\delta_{inf}\)-okolí jakéhokoli bodu intervalu obsahuje celý hyperkvádr vzniklý dělením. Proto pro každé dostatečně jemné dělení intervalu bude platit
+
+\begin{equation}
+\begin{split}
+\lim_{\delta_m \to 0} \left( \overline{\int_{\Omega}} \mathrm{f}(x) \cdot \mathrm{d}x - \underline{\int_{\Omega}} \mathrm{f}(x) \cdot \mathrm{d}x \right) = \\
+\lim_{\delta_m \to 0} \Bigg( \sum_{i} (x_{i+1} - x_i) \cdot \max_{i, j, ..}(\mathrm{f}) -
+\sum_{i} (x_{i+1} - x_i) \cdot \min_{i, j, ..}(\mathrm{f}) \Bigg) = \\
+\lim_{\delta_m \to 0} \Bigg( \sum_{i} (x_{i+1} - x_i) \cdot (\max_{i, j, ..}(\mathrm{f}) -
+\min_{i, j, ..}(\mathrm{f}) \Bigg) = \\
+\sum_{i} (x_{i+1} - x_i) \cdot \lim_{\delta_m \to 0} (\max_{i, j, ..}(\mathrm{f}) -
+\min_{i, j, ..}(\mathrm{f})) = 0
+\end{split}
+\end{equation}
+
+Proto každá spojitá funkce má integrál. Zvažme dále, co se stane, pokud by funkce nebyla spojitá v~konečném počtu hladkých \(n-1\) rozměrných hyperploch. Z~integrálu tyto hyperploch vyjmeme. Prozkoumejme, co se stane se sumou ve vztahu~\eqref{eq:dolni_mez_vicerozmerneho_integralu} respektive~\eqref{eq:horni_mez_vicerozmerneho_integralu}. Každá z~vyňatých hyperploch může být v~nejhorším případě obsažena \(\frac{C}{\delta_m^{n-1}}\) hyperkvádrů. Jejich součet v~uvedených sumách je proto v~limitě
+
+\begin{equation}
+\lim_{\delta_m \to 0} \frac{C}{\delta_m^{n-1}} \cdot \delta_m^n \cdot x = \lim_{\delta_m \to 0} C \cdot \delta_m \cdot x = 0 
+\end{equation}
+
+a~integrál proto neovlivní. Z~toho plynou závěry:
+
+\begin{fact}
+Každá funkce spojitá až na konečný počet hladkých \(n-1\) rozměrných hyperploch má \(n\)-rozměrný integrál.
+\end{fact}
+
+\begin{fact}
+Odebráním bodů ležících na konečném počtu hladkých \(n-1\) rozměrných hyperplochách z~integrované funkce se integrál nezmění.
+\end{fact}
+
 
 \section{Křivkový integrál}
 
