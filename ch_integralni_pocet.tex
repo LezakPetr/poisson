@@ -448,6 +448,24 @@ Každá funkce spojitá až na konečný počet hladkých \(n-1\) rozměrných h
 Odebráním bodů ležících na konečném počtu hladkých \(n-1\) rozměrných hyperplochách z~integrované funkce se integrál nezmění.
 \end{fact}
 
+Uvažujme dále konečnou oblast \(\Psi\) ohraničenou po částech hladkou hyperplochou. Pak oblasti \(\Psi\) lze opsat hyperkvádr \(\Omega\) a~lze definovat funkci
+
+\begin{equation}
+\mathrm{g}(x, y, ...) = 
+\begin{cases}
+\mathrm{f}(x, y, ...) & \mathrm{pro} \ [x, y, ...] \in \Psi \\
+0 & \mathrm{pro} \ [x, y, ...] \notin \Psi
+\end{cases}
+\end{equation} 
+
+a~je zřejmé, že
+
+\begin{equation}
+\int_{\Omega} \mathrm{g}(x, y, ...) \cdot \mathrm{d}V = \int_{\Psi} \mathrm{f}(x, y, ...) \cdot \mathrm{d}V 
+\end{equation}
+
+přičemž je-li funkce \(\mathrm{f}\) spojitá až na konečný počet hladkých hyperploch, pak je tomu tak i~u~funkce \(\mathrm{g}\). Přidali jsme k~ní pouze nespojitost na hranici oblasti \(\Psi\).  
+
 
 \section{Křivkový integrál}
 
