@@ -406,9 +406,10 @@ tedy pokud rozdíl a~dolní meze konverguje k~nule, pak jsou tyto limity rovny i
 To tedy znamená, že k~integrálu bude konvergovat i~každá posloupnost, která vznikne tak, že sečteme libovolné body z~hyperkvádrům vzniklých dělením. Je tomu tak proto, že tyto body budou ležet mezi minimi a~maximy těchto hyperkvádrů:
 
 \begin{equation}
+\label{eq:vypocet_vycerozmerneho_integralu}
 \begin{split}
 \int_{\Omega} \mathrm{f}(x) \cdot \mathrm{d}V = \\
-\lim_{\delta_m \to 0} \sum_{i} (x_{i+1} - x_i) \cdot y_{j+1} - y_j) \cdot ... \cdot \mathrm{f}(x_i \leq x \leq x_{i+1}, y_j \leq y \leq y_{j+1}, ...)
+\lim_{\delta_m \to 0} \sum_{i,j,...} (x_{i+1} - x_i) \cdot (y_{j+1} - y_j) \cdot ... \cdot \mathrm{f}(x_i \leq x \leq x_{i+1}, y_j \leq y \leq y_{j+1}, ...)
 \end{split}
 \end{equation}
 
@@ -466,6 +467,27 @@ a~je zřejmé, že
 
 přičemž je-li funkce \(\mathrm{f}\) spojitá až na konečný počet hladkých hyperploch, pak je tomu tak i~u~funkce \(\mathrm{g}\). Přidali jsme k~ní pouze nespojitost na hranici oblasti \(\Psi\).  
 
+Zabývejme se tím, jak vícerozměrný integrál vypočítat. Nechť \(\Omega\) je hyperkvádr se stranamy \(a \leq x \leq b\), \(c \leq y \leq d\) atd. Rozepišme vztah~\eqref{eq:vypocet_vycerozmerneho_integralu}: 
+
+\begin{equation}
+\begin{split}
+\int_{\Omega} \mathrm{f}(x) \cdot \mathrm{d}V = \\
+\lim_{\delta_m \to 0} \sum_{i,j,...} (x_{i+1} - x_i) \cdot (y_{j+1} - y_j) \cdot ... \cdot \mathrm{f}(x_i \leq x \leq x_{i+1}, y_j \leq y \leq y_{j+1}, ...) = \\
+\lim_{\delta_i \to 0} \sum_{i} (x_{i+1} - x_i) \cdot \lim_{\delta_i \to 0} \sum_{j,...} (y_{j+1} - y_j) \cdot ... \cdot \mathrm{f}(x_i \leq x \leq x_{i+1}, y_j \leq y \leq y_{j+1}, ...) = \\
+\int_a^b \left[ \int_c^d ... \ \mathrm{f}(x, y, ...) \cdot \mathrm{d}y \right] \cdot \mathrm{d}x
+\end{split}
+\end{equation}
+
+Vidíme, že vícerozměrný integrál můžeme vypočítat vícenásobnou integrací. Tomuto vztahu se říká Fibichova věta:
+
+\begin{fact}
+Pokud je \(\Omega\) hyperkvádr se stranamy \(a \leq x \leq b\), \(c \leq y \leq d\) atd, pak platí:
+
+\begin{equation}
+\int_{\Omega} \mathrm{f}(x) \cdot \mathrm{d}V = 
+\int_a^b \left[ \int_c^d ... \ \mathrm{f}(x, y, ...) \cdot \mathrm{d}y \right] \cdot \mathrm{d}x
+\end{equation}
+\end{fact}
 
 \section{Křivkový integrál}
 
