@@ -75,7 +75,95 @@ eval_formula(predicate(P, _, F), Y) :-
 	log_and(EF1, EF2, Y).
 
 
-print_formula(F) :-
+calc_file_path(L, PATH) :-
+	string_concat('../out/', L, T),
+	string_concat(T, '.tex', PATH).
+
+print_formula(L, F) :-
 	eval_formula(F, log_true),
-	print(F).
+	calc_file_path(L, PATH),
+	open(PATH, write, S),
+	writeln(S, '\\begin{equation}'),
+	write(S, '\\label{eq:'),
+	write(S, L),
+	writeln(S, '}'),
+	print_formula_term(S, F, root),
+	writeln(S, ''),
+	writeln(S, '\\end{equation}'),
+	close(S).
+
+
+print_formula_term(S, F, _) :-
+	atom(F),
+	write(S, F).
+
+print_formula_term(S, predicate(V, V, F), PR) :-
+	print_formula_term(S, F, PR).
+
+print_formula_term(S, equiv(A, B), PR) :-
+	print_bracket_if_needed(S, '(', PR, equiv), 
+	print_formula_term(S, A, equiv),
+	write(S, ' <=> '),
+	print_formula_term(S, B, equiv),
+	print_bracket_if_needed(S, ')', PR, equiv).
+
+print_formula_term(S, or(A, B), PR) :-
+	print_bracket_if_needed(S, '(', PR, or), 
+	print_formula_term(S, A, or),
+	write(S, ' \\lor '),
+	print_formula_term(S, B, or),
+	print_bracket_if_needed(S, ')', PR, or).
+
+print_formula_term(S, and(A, B), PR) :-
+	print_bracket_if_needed(S, '(', PR, and), 
+	print_formula_term(S, A, and),
+	write(S, ' \\land '),
+	print_formula_term(S, B, and),
+	print_bracket_if_needed(S, ')', PR, and).
+
+print_formula_term(S, not(F), _) :-
+	write(S, '\\overline{'),
+	print_formula_term(S, F, 7),
+	write(S, '}').
+
+
+print_bracket_if_needed(_, _, SUP, SUB) :-
+	bracket_not_needed(SUP, SUB),
+	!.
+
+print_bracket_if_needed(S, B, _, _) :-
+	write(S, B).
+
+
+bracket_not_needed(root, _).
+bracket_not_needed(or, or).
+bracket_not_needed(and, and).
+bracket_not_needed(and, or).
+bracket_not_needed(and, impl).
+bracket_not_needed(and, equiv).
+bracket_not_needed(or, impl).
+bracket_not_needed(or, equiv).
+bracket_not_needed(impl, equiv).
+
+
+
+?- print_formula(
+	de_morgan_or,
+	predicate(A, 'A', predicate(B, 'B',
+		equiv(
+			not(or(A, B)),
+			and(not(A), not(B))
+		)
+	))
+).
+
+?- print_formula(
+	de_morgan_and,
+	predicate(A, 'A', predicate(B, 'B',
+		equiv(
+			not(and(A, B)),
+			or(not(A), not(B))
+		)
+	))
+).
 
