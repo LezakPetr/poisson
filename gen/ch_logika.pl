@@ -2,64 +2,80 @@
 boolean(log_false).
 boolean(log_true).
 
+% Negation
+% Y = not(X)
+% log_not(X, Y)
 log_not(log_false, log_true).
 log_not(log_true, log_false).
 
+% Logical or
+% Y = A or B
+% log_or(A, B, Y)
 log_or(log_false, log_false, log_false).
+log_or(log_false, log_true,  log_true).
 log_or(log_true,  log_false, log_true).
-log_or(log_true,  log_true,  log_false).
 log_or(log_true,  log_true,  log_true).
 
+% Logical and
+% Y = A and B
+% log_and(A, B, Y)
 log_and(log_false, log_false, log_false).
-log_and(log_false, log_false, log_true).
 log_and(log_false, log_true,  log_false).
+log_and(log_true,  log_false, log_false).
 log_and(log_true,  log_true,  log_true).
 
+% Implication
+% Y = A => B
+% log_impl(A, B, Y)
+log_impl(log_false, log_false, log_true).
+log_impl(log_false, log_true,  log_true).
 log_impl(log_true,  log_false, log_false).
-log_impl(log_true,  log_false, log_true).
-log_impl(log_false, log_true,  log_false).
 log_impl(log_true,  log_true,  log_true).
 
-log_equiv(log_true,  log_false, log_false).
+% Logical equivalence
+% Y = A <=> B
+% log_equiv(A, B, Y)
 log_equiv(log_false, log_false, log_true).
 log_equiv(log_false, log_true,  log_false).
+log_equiv(log_true,  log_false, log_false).
 log_equiv(log_true,  log_true,  log_true).
 
 
-% Logicke operace
+% Evaluates logical formula
+% eval_formula(F, Y)
 eval_formula(log_false, log_false).
 eval_formula(log_true, log_true).
 
-eval_formula(Y, not(X)) :-
-	eval_formula(EX, X),
-	log_not(Y, EX).
+eval_formula(not(X), Y) :-
+	eval_formula(X, EX),
+	log_not(EX, Y).
 
-eval_formula(Y, or(A, B)) :-
-	eval_formula(EA, A),
-	eval_formula(EB, B),
-	log_or(Y, EA, EB).
+eval_formula(or(A, B), Y) :-
+	eval_formula(A, EA),
+	eval_formula(B, EB),
+	log_or(EA, EB, Y).
 
-eval_formula(Y, and(A, B)) :-
-	eval_formula(EA, A),
-	eval_formula(EB, B),
-	log_and(Y, EA, EB).
+eval_formula(and(A, B), Y) :-
+	eval_formula(A, EA),
+	eval_formula(B, EB),
+	log_and(EA, EB, Y).
 
-eval_formula(Y, impl(A, B)) :-
-	eval_formula(EA, A),
-	eval_formula(EB, B),
-	log_impl(Y, EA, EB).
+eval_formula(impl(A, B), Y) :-
+	eval_formula(A, EA),
+	eval_formula(B, EB),
+	log_impl(EA, EB, Y).
 
-eval_formula(Y, equiv(A, B)) :-
-	eval_formula(EA, A),
-	eval_formula(EB, B),
-	log_equiv(Y, EA, EB).
+eval_formula(equiv(A, B), Y) :-
+	eval_formula(A, EA),
+	eval_formula(B, EB),
+	log_equiv(EA, EB, Y).
 
-eval_formula(Y, predicate(P, _, F)) :-
-	findall(EF, (boolean(P), eval_formula(EF, F)), [EF1, EF2]),
-	log_and(Y, EF1, EF2).
+eval_formula(predicate(P, _, F), Y) :-
+	findall(EF, (boolean(P), eval_formula(F, EF)), [EF1, EF2]),
+	log_and(EF1, EF2, Y).
 
 
 print_formula(F) :-
-	eval_formula(log_true, F),
+	eval_formula(F, log_true),
 	print(F).
 
