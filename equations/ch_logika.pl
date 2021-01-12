@@ -167,3 +167,5 @@ bracket_not_needed(impl, equiv).
 	))
 ).
 
+?- halt.
+

@@ -1,12 +1,15 @@
 
 ALL: examples poisson.pdf
 
-.PHONY: examples
+.PHONY: examples equations
 
 examples:
 	cd examples && $(MAKE)
 
-poisson.pdf: poisson.tex ch_*.tex ap_*.tex
+equations:
+	cd equations && $(MAKE)
+
+poisson.pdf: poisson.tex equations ch_*.tex ap_*.tex
 	pdflatex $<
 	pdflatex $<
 
