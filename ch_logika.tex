@@ -1,3 +1,34 @@
 \chapter{Logika}
 
+Logika je nauka o~odvozování tvrzení z~jiných tvrzení. V~této kapitole budou představeny základy výrokové a~predikátové logiky prvního řádu, aby byly čtenářům zřejmé formule používané dále v~knize.
+
+Výrok je jakékoli tvrzení, o~kterém má smysl řící, že je pravdivé nebo nepravdivé. Výroky jsou proto:
+
+\begin{itemize}
+	\item 2 je sudé číslo. (pravdivý výrok)
+	\item \(4 > 5\) (nepravdivý výrok)
+	\item Počet planet ve vesmíru je dělitelný třemi. (výrok, jehož pravdivost nedokážeme určit)
+	\item Pro každé sudé číslo \(n\) platí, že \(n + 1\) je liché číslo. (výrok s~vázanou proměnnou)
+\end{itemize}
+
+Zavedeme konvenci, že pravdivý výrok budeme označovat \(\true\) a~nepravdivý výrok \(\false\).
+
+Predikát, někdy nezývaný výroková funkce, je výraz obsahující volné proměnné, ze které se dosazením za tyto volné proměnné stane výrok. Příklady predikátů jsou:
+
+\begin{itemize}
+	\item \(n\) je sudé číslo.
+	\item \(x > y\)
+\end{itemize}
+
+Vidíme, že o~těchto predikátech nemá smysl řící, zda jsou pravdivé nebo ne. Avšak například dosazením \(n = 2\) do prvního predikátu získáme pravdivý výrok "2 je sudé číslo", zatímco dosazením \(n = \mathrm{automobil}\) získáme nepravdivý výrok "automobil je sudé číslo". Z~důvodu obecnosti můžeme jakýkoli výrok považovat za predikát s~nula volnými proměnnými.
+
+Volné proměnné je nutné rozlišovat od vázaných proměnných. Volné proměnné nejsou v~predikátech nijak kvatnifikovány a~vstupují do nich "zvenku" jako parametry. Například již zmíněný predikát bychom mohli zapsat takto:
+
+\begin{equation}
+\mathrm{A}(n) = n \ \text{je sudé číslo}
+\end{equation}
+
+Naproti tomu výraz "Pro každé sudé číslo \(n\) platí, že \(n + 1\) je liché číslo" je výrokem. Proměnná \(n\) je zde kvantifikovaná tvrzením "pro každé sudé číslo \(n\)" a~nevstupuje tedy jako parametr. Tento výrok můžeme vyhodnotit aniž bychom znali konkrétní hodnotu vázané proměnné \(n\).
+
+
 \eeq{de_morgan_or}

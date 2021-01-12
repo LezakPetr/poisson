@@ -70,8 +70,8 @@ eval_formula(equiv(A, B), Y) :-
 	eval_formula(B, EB),
 	log_equiv(EA, EB, Y).
 
-eval_formula(predicate(P, _, F), Y) :-
-	findall(EF, (boolean(P), eval_formula(F, EF)), [EF1, EF2]),
+eval_formula(statement(S, _, F), Y) :-
+	findall(EF, (boolean(S), eval_formula(F, EF)), [EF1, EF2]),
 	log_and(EF1, EF2, Y).
 
 
@@ -79,8 +79,13 @@ calc_file_path(L, PATH) :-
 	string_concat('../out/', L, T),
 	string_concat(T, '.tex', PATH).
 
-print_formula(L, F) :-
+
+print_validated_formula(L, F) :-
 	eval_formula(F, log_true),
+	print_formula(L, F).
+
+
+print_formula(L, F) :-
 	calc_file_path(L, PATH),
 	open(PATH, write, S),
 	writeln(S, '\\begin{equation}'),
@@ -97,13 +102,20 @@ print_formula_term(S, F, _) :-
 	atom(F),
 	write(S, F).
 
-print_formula_term(S, predicate(V, V, F), PR) :-
+print_formula_term(S, statement(V, V, F), PR) :-
 	print_formula_term(S, F, PR).
+
+print_formula_term(S, impl(A, B), PR) :-
+	print_bracket_if_needed(S, '(', PR, impl), 
+	print_formula_term(S, A, equiv),
+	write(S, ' \\rightarrow '),
+	print_formula_term(S, B, equiv),
+	print_bracket_if_needed(S, ')', PR, impl).
 
 print_formula_term(S, equiv(A, B), PR) :-
 	print_bracket_if_needed(S, '(', PR, equiv), 
 	print_formula_term(S, A, equiv),
-	write(S, ' <=> '),
+	write(S, ' \\Leftrightarrow '),
 	print_formula_term(S, B, equiv),
 	print_bracket_if_needed(S, ')', PR, equiv).
 
@@ -146,10 +158,69 @@ bracket_not_needed(or, equiv).
 bracket_not_needed(impl, equiv).
 
 
+?- print_validated_formula(
+	or_symmetry,
+	statement(A, 'A', statement(B, 'B',
+		equiv(
+			or(A, B),
+			or(B, A)
+		)
+	))
+).
 
-?- print_formula(
+?- print_validated_formula(
+	and_symmetry,
+	statement(A, 'A', statement(B, 'B',
+		equiv(
+			and(A, B),
+			and(B, A)
+		)
+	))
+).
+
+?- print_validated_formula(
+	or_associativity,
+	statement(A, 'A', statement(B, 'B', statement(C, 'C',
+		equiv(
+			or(or(A, B), C),
+			or(A, or(B, C))
+		)
+	)))
+).
+
+?- print_validated_formula(
+	and_associativity,
+	statement(A, 'A', statement(B, 'B', statement(C, 'C',
+		equiv(
+			and(and(A, B), C),
+			and(A, and(B, C))
+		)
+	)))
+).
+
+?- print_validated_formula(
+	or_distributivity,
+	statement(A, 'A', statement(B, 'B', statement(C, 'C',
+		equiv(
+			or(and(A, B), C),
+			and(or(A, C), or(B, C))
+		)
+	)))
+).
+
+?- print_validated_formula(
+	and_distributivity,
+	statement(A, 'A', statement(B, 'B', statement(C, 'C',
+		equiv(
+			and(or(A, B), C),
+			or(and(A, C), and(B, C))
+		)
+	)))
+).
+
+?- print_validated_formula(
 	de_morgan_or,
-	predicate(A, 'A', predicate(B, 'B',
+	statement(A, 'A', statement(B, 'B',
 		equiv(
 			not(or(A, B)),
 			and(not(A), not(B))
@@ -157,15 +228,53 @@ bracket_not_needed(impl, equiv).
 	))
 ).
 
-?- print_formula(
+?- print_validated_formula(
 	de_morgan_and,
-	predicate(A, 'A', predicate(B, 'B',
+	statement(A, 'A', statement(B, 'B',
 		equiv(
 			not(and(A, B)),
 			or(not(A), not(B))
 		)
 	))
 ).
+
+?- print_validated_formula(
+	impl_definition,
+	statement(A, 'A', statement(B, 'B',
+		equiv(
+			impl(A, B),
+			or(not(A), B)
+		)
+	))
+).
+
+?- print_validated_formula(
+	impl_definition,
+	statement(A, 'A', statement(B, 'B',
+		impl(
+			and(
+				A,
+				impl(A, B)
+			),
+			B
+		)
+	))
+).
+
+
+?- print_validated_formula(
+	impl_transitivity,
+	statement(A, 'A', statement(B, 'B', statement(C, 'C',
+		impl(
+			and(
+				impl(A, B),
+				impl(B, C)
+			),
+			impl(A, C)
+		)
+	)))
+).
+
 
 ?- halt.
 
