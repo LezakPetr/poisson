@@ -1,8 +1,13 @@
 
 :- ensure_loaded(common).
 
+% Predicate succeeds for boolean values.
 boolean(log_false).
 boolean(log_true).
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Logical operations %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Negation
 % Y = not(X)
@@ -43,120 +48,139 @@ log_equiv(log_true,  log_false, log_false).
 log_equiv(log_true,  log_true,  log_true).
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Formula evaluation %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Evaluates logical formula
-% eval_formula(F, Y)
+% eval_formula(Formula, Value)
 eval_formula(log_false, log_false).
 eval_formula(log_true, log_true).
 
-eval_formula(not(X), Y) :-
+eval_formula(not(X), Value) :-
 	eval_formula(X, EX),
-	log_not(EX, Y).
+	log_not(EX, Value).
 
-eval_formula(or(A, B), Y) :-
+eval_formula(or(A, B), Value) :-
 	eval_formula(A, EA),
 	eval_formula(B, EB),
-	log_or(EA, EB, Y).
+	log_or(EA, EB, Value).
 
-eval_formula(and(A, B), Y) :-
+eval_formula(and(A, B), Value) :-
 	eval_formula(A, EA),
 	eval_formula(B, EB),
-	log_and(EA, EB, Y).
+	log_and(EA, EB, Value).
 
-eval_formula(impl(A, B), Y) :-
+eval_formula(impl(A, B), Value) :-
 	eval_formula(A, EA),
 	eval_formula(B, EB),
-	log_impl(EA, EB, Y).
+	log_impl(EA, EB, Value).
 
-eval_formula(equiv(A, B), Y) :-
+eval_formula(equiv(A, B), Value) :-
 	eval_formula(A, EA),
 	eval_formula(B, EB),
-	log_equiv(EA, EB, Y).
+	log_equiv(EA, EB, Value).
 
-eval_formula(statement(S, _, F), Y) :-
-	findall(EF, (boolean(S), eval_formula(F, EF)), [EF1, EF2]),
-	log_and(EF1, EF2, Y).
-
-
-print_formula(L, F) :-
-	calc_file_path(L, PATH),
-	open(PATH, write, S),
-	writeln(S, '\\begin{equation}'),
-	print_label(S, 'eq:', L),
-	print_formula_term(S, F),
-	writeln(S, ''),
-	writeln(S, '\\end{equation}'),
-	close(S).
+eval_formula(statement(StatementVariable, _, SubFormula), Value) :-
+	findall(SubFormulaValue, (boolean(StatementVariable), eval_formula(SubFormula, SubFormulaValue)), [EF1, EF2]),
+	log_and(EF1, EF2, Value).
 
 
-print_boolean(S, log_true) :-
-	write(S, '\\true').
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%% Formula print %%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Prints formula with given label to file calculated 
+print_formula(Label, Formula) :-
+	calc_file_path(Label, Path),
+	open(Path, write, Stream),
+	writeln(Stream, '\\begin{equation}'),
+	print_label(Stream, 'eq:', Label),
+	print_formula_term(Stream, Formula),
+	writeln(Stream, ''),
+	writeln(Stream, '\\end{equation}'),
+	close(Stream).
+
+
+% Prints boolean value into stream
+print_boolean(Stream, log_true) :-
+	write(Stream, '\\true').
 		
-print_boolean(S, log_false) :-
-	write(S, '\\false').
-
-print_boolean_in_math_mode(S, B) :-
-	write(S, '\\('),
-	print_boolean(S, B),
-	write(S, '\\)').
+print_boolean(Stream, log_false) :-
+	write(Stream, '\\false').
 
 
-print_formula_term(S, F) :-
-	print_formula_term(S, F, root).
+% Prints boolean value enclosed in math mode into stream
+print_boolean_in_math_mode(Stream, B) :-
+	write(Stream, '\\('),
+	print_boolean(Stream, B),
+	write(Stream, '\\)').
 
-print_formula_term(S, F, _) :-
+
+% Prints term of formula into stream
+print_formula_term(Stream, F) :-
+	print_formula_term(Stream, F, root).
+
+print_formula_term(Stream, F, _) :-
 	atom(F),
-	write(S, F).
+	write(Stream, F).
 
-print_formula_term(S, statement(V, L, F), PR) :-
+print_formula_term(Stream, statement(V, L, F), PR) :-
 	atomic_list_concat(['\\predicate{', L, '}'], V),
-	print_formula_term(S, F, PR).
+	print_formula_term(Stream, F, PR).
 
-print_formula_term(S, impl(A, B), PR) :-
-	print_bracket_if_needed(S, '(', PR, impl), 
-	print_formula_term(S, A, equiv),
-	write(S, ' \\impl '),
-	print_formula_term(S, B, equiv),
-	print_bracket_if_needed(S, ')', PR, impl).
+print_formula_term(Stream, impl(A, B), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, impl), 
+	print_formula_term(Stream, A, equiv),
+	write(Stream, ' \\impl '),
+	print_formula_term(Stream, B, equiv),
+	print_bracket_if_needed(Stream, ')', PR, impl).
 
-print_formula_term(S, equiv(A, B), PR) :-
-	print_bracket_if_needed(S, '(', PR, equiv), 
-	print_formula_term(S, A, equiv),
-	write(S, ' \\equivalent '),
-	print_formula_term(S, B, equiv),
-	print_bracket_if_needed(S, ')', PR, equiv).
+print_formula_term(Stream, equiv(A, B), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, equiv), 
+	print_formula_term(Stream, A, equiv),
+	write(Stream, ' \\equivalent '),
+	print_formula_term(Stream, B, equiv),
+	print_bracket_if_needed(Stream, ')', PR, equiv).
 
-print_formula_term(S, or(A, B), PR) :-
-	print_bracket_if_needed(S, '(', PR, or), 
-	print_formula_term(S, A, or),
-	write(S, ' \\lor '),
-	print_formula_term(S, B, or),
-	print_bracket_if_needed(S, ')', PR, or).
+print_formula_term(Stream, or(A, B), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, or), 
+	print_formula_term(Stream, A, or),
+	write(Stream, ' \\lor '),
+	print_formula_term(Stream, B, or),
+	print_bracket_if_needed(Stream, ')', PR, or).
 
-print_formula_term(S, and(A, B), PR) :-
-	print_bracket_if_needed(S, '(', PR, and), 
-	print_formula_term(S, A, and),
-	write(S, ' \\land '),
-	print_formula_term(S, B, and),
-	print_bracket_if_needed(S, ')', PR, and).
+print_formula_term(Stream, and(A, B), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, and), 
+	print_formula_term(Stream, A, and),
+	write(Stream, ' \\land '),
+	print_formula_term(Stream, B, and),
+	print_bracket_if_needed(Stream, ')', PR, and).
 
-print_formula_term(S, not(F), _) :-
-	write(S, '\\overline{'),
-	print_formula_term(S, F, 7),
-	write(S, '}').
+print_formula_term(Stream, not(F), _) :-
+	write(Stream, '\\overline{'),
+	print_formula_term(Stream, F, 7),
+	write(Stream, '}').
 
 
-print_validated_formula(L, F) :-
-	eval_formula(F, log_true),
-	print_formula(L, F).
+% Validates formula (checks that it is true) and prints it.
+print_validated_formula(Label, Formula) :-
+	eval_formula(Formula, log_true),
+	print_formula(Label, Formula).
 
-print_bracket_if_needed(_, _, SUP, SUB) :-
-	bracket_not_needed(SUP, SUB),
+
+% Prints bracket if it is needed.
+% print_bracket_if_needed(Stream, Bracket, SuperOperator, SubOperator)
+print_bracket_if_needed(_, _, SuperOperator, SubOperator) :-
+	bracket_not_needed(SuperOperator, SubOperator),
 	!.
 
-print_bracket_if_needed(S, B, _, _) :-
-	write(S, B).
+print_bracket_if_needed(Stream, Bracket, _, _) :-
+	write(Stream, Bracket).
 
 
+% Succeeds if bracket is not needed.
+% bracket_not_needed(SuperOperator, SubOperator)
 bracket_not_needed(root, _).
 bracket_not_needed(or, or).
 bracket_not_needed(and, and).
@@ -166,5 +190,4 @@ bracket_not_needed(and, equiv).
 bracket_not_needed(or, impl).
 bracket_not_needed(or, equiv).
 bracket_not_needed(impl, equiv).
-
 

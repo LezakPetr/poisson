@@ -1,8 +1,12 @@
 
 R1 = 10e-3;
 R2 = 11e-3;
-S = 10e-3;
-N = 1000;
+S1 = 0;
+S2 = 10e-3;
+S3 = 0;
+S4 = 10e-3;
+N1 = 1000;
+N2 = 1000;
 mu = 4e-7 * pi;
 
 steps = 10;
@@ -10,11 +14,11 @@ seq = 0:(steps - 1);
 
 # Dlouha civka
 Rs = (R1 + R2) / 2;
-L1 = mu * pi * Rs^2 * N^2 / S;
+L1 = mu * pi * Rs^2 * N1 * N2 / (S2 - S1);
 L1
 
 # Uplny vypocet integralu
-diff2 = (S / steps)^2 * ((R2 - R1) / steps)^2 * (2 * pi / steps);
+diff2 = ((S2 - S1) / steps) * ((S4 - S3) / steps) * ((R2 - R1) / steps)^2 * (2 * pi / steps);
 sum2 = 0;
 
 for iRa = seq
@@ -24,10 +28,10 @@ for iRa = seq
 		Rb = R1 + (0.5 + iRb) / steps * (R2 - R1);
 		
 		for iLa = seq
-			la = (0.5 + iLa) / steps * S;
+			la = S1 + (0.5 + iLa) / steps * (S2 - S1);
 			
 			for iLb = seq
-				lb = (0.5 + iLb) / steps * S;
+				lb = S3 + (0.5 + iLb) / steps * (S4 - S3);
 				
 				for iAlpha = seq
 					alpha = (0.5 + iAlpha) / steps * 2 * pi;
@@ -39,7 +43,7 @@ for iRa = seq
 	endfor
 endfor
 
-L2 = (N^2 * mu * diff2) / (2 * (R2 - R1)^2 * S^2) * sum2;
+L2 = (N1 * N2 * mu * diff2) / (2 * (R2 - R1)^2 * S^2) * sum2;
 L2
 
 # Slouceny 2 podelne integrace
