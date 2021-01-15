@@ -122,7 +122,8 @@
 
 ?- print_truth_table(
 	truth_equiv,
-	statement(A, 'A', statement(B, 'B', equiv(A, B)))
+	[statement(A, 'A'), statement(B, 'B')],
+	[equiv(A, B)]
 ).
 
 
