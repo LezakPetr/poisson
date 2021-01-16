@@ -10,4 +10,15 @@ print_label(Stream, Prefix, Label) :-
 	write(Stream, Label),
 	writeln(Stream, '}').
 
+% Prints horizontal line
+print_hline(Stream) :-
+	writeln(Stream, '\\hline').
+
+
+% Prints given text in case that list is not empty.
+% print_if_not_empty(Stream, Text, List)
+print_if_not_empty(_, _, []).
+
+print_if_not_empty(Stream, Text, [_ | _]) :-
+	write(Stream, Text).
 
