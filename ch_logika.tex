@@ -30,23 +30,86 @@ Volné proměnné je nutné rozlišovat od vázaných proměnných. Volné prom�
 
 Naproti tomu výraz "Pro každé sudé číslo \(n\) platí, že \(n + 1\) je liché číslo" je výrokem. Proměnná \(n\) je zde kvantifikovaná tvrzením "pro každé sudé číslo \(n\)" a~nevstupuje tedy jako parametr. Tento výrok můžeme vyhodnotit aniž bychom znali konkrétní hodnotu vázané proměnné \(n\).
 
+\section{Negace}
+
+Je-li \(\mathrm{A}\) predikát (nebo výrok), pak
+
+\begin{equation}
+\overline{\predicate{A}} 
+\end{equation}
+
+je predikát, který je pravdivý tehdy a jen tehdy, když \(A\) není pravdivý. Říkáme "není pravda \(\mathrm{A}\)".
+Ekvivalenci můžeme vyjádřit pravdivostní tabulkou:
+
+\eeq{truth_not}
+
+Příklad: Není pravda, že je den. \(\overline{\mathrm{den}}\).
+
+Je třeba upozornit, že negace není tzv. pravý opak, ale výrok, který je pravdivý právě tehdy, když není pravdivý výrok negovaný. Negací výroku "prší" proto není "svítí slunce", ale "neprší. Ne vždy, když neprší, tak svítí slunce - může být zataženo.
+
 \section{Ekvivalence}
 
-Jsou-li \(\mathrm{A}\) a~\(\mathrm{B}\) predikáty (nebo výroky), pak
+Jsou-li \(\mathrm{A}\) a~\(\mathrm{B}\) predikáty, pak
 
 \begin{equation}
 \predicate{A} \equivalent \predicate{B} 
 \end{equation}
 
-je mají oba predikáty stejnou pravdivost - jsou oba pravdivé nebo oba nepravdivé. Říkáme "\(\mathrm{A}\) je pravdivý tehdy a~jen tehdy, pokud je pravdivý \(\mathrm{B}\)" nebo "\(\mathrm{A}\) je pravdivý právě tehdy, když je pravdivý \(\mathrm{B}\)".
-Ekvivalenci můžeme vyjádřit pravostní tabulkou:
+je pravdivý, pokud mají oba predikáty stejnou pravdivost - jsou oba pravdivé nebo oba nepravdivé. Říkáme "\(\mathrm{A}\) je pravdivý tehdy a~jen tehdy, pokud je pravdivý \(\mathrm{B}\)" nebo "\(\mathrm{A}\) je pravdivý právě tehdy, když je pravdivý \(\mathrm{B}\)".
+Ekvivalenci můžeme vyjádřit pravdivostní tabulkou:
 
 \eeq{truth_equiv}
 
+Příklad: Den je tehdy a~jen tehdy, když není noc. \(\mathrm{Den} \equivalent \overline{\mathrm{noc}}\).
+
 \section{Konjunkce}
+
+Jsou-li \(\mathrm{A}\) a~\(\mathrm{B}\) predikáty, pak
+
+\begin{equation}
+\predicate{A} \land \predicate{B} 
+\end{equation}
+
+je pravdivý, pokud jsou oba výroky pravdivé. Říkáme "\(\mathrm{A}\) a~(zárověň) \(\mathrm{B}\)".
+Konjunkci můžeme vyjádřit pravdivostní tabulkou:
+
+\eeq{truth_and}
+
+Příklad: Země je kulatá a~obíhá okolo Slunce. Země je kulatá \(\land\) Země obíhá okolo Slunce.
+
 
 \section{Disjunkce}
 
+Jsou-li \(\mathrm{A}\) a~\(\mathrm{B}\) predikáty, pak
+
+\begin{equation}
+\predicate{A} \lor \predicate{B}
+\end{equation}
+
+je pravdivý, pokud je pravdivý alespoň jeden z~nich (tedy i~oba). Říkáme "\(\mathrm{A}\) nebo \(\mathrm{B}\)".
+Disjunkci můžeme vyjádřit pravdivostní tabulkou:
+
+\eeq{truth_or}
+
+Příklad: Buď je den nebo noc. Den \(\lor\) noc.
+
 \section{Implikace}
+
+Jsou-li \(\mathrm{A}\) a~\(\mathrm{B}\) predikáty, pak
+
+\begin{equation}
+\predicate{A} \impl \predicate{B}
+\end{equation}
+
+je pravdivý, pokud z~předpokladu \(A\) plyne závěr \(B\). Tedy pokud není splněn předpoklad \(A\) nebo je splněn předpoklad \(B\). Říkáme "z~\(\mathrm{A}\) plyne \(\mathrm{B}\)", "Pokud \(\mathrm{A}\) pak \(\mathrm{B}\)" nebo "\(\mathrm{A}\) implikuje \(\mathrm{B}\)".
+Implikaci můžeme vyjádřit pravdivostní tabulkou:
+
+\eeq{truth_impl}
+
+Příklad: Pokud prší, pak je mokro. Prší \(\impl\) mokro.
+
+Implikaci není možné obrátit. Z~výše uvedeného výroku tak nelze vyvodit "pokud je pokro, pak prší" - po cestě mohl například projet kropící vůz. Dále je poněkud neintuitivní, že je implikace pravdivá, pokud je nepravdivý předpoklad. Tedy pokud neprší, pak je výše uvedený výrok pravdivý ať už je mokro nebo ne. 
+
+
 
 \eeq{de_morgan_or}

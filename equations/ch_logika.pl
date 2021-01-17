@@ -119,12 +119,36 @@
 	)))
 ).
 
+?- print_truth_table(
+	truth_not,
+	[statement(A, 'A')],
+	[not(A)]
+).
 
 ?- print_truth_table(
 	truth_equiv,
 	[statement(A, 'A'), statement(B, 'B')],
 	[equiv(A, B)]
 ).
+
+?- print_truth_table(
+	truth_and,
+	[statement(A, 'A'), statement(B, 'B')],
+	[and(A, B)]
+).
+
+?- print_truth_table(
+	truth_or,
+	[statement(A, 'A'), statement(B, 'B')],
+	[or(A, B)]
+).
+
+?- print_truth_table(
+	truth_impl,
+	[statement(A, 'A'), statement(B, 'B')],
+	[impl(A, B)]
+).
+
 
 
 ?- halt.
