@@ -118,7 +118,7 @@ Je-li \(\predicate{A}(x)\) predikát, pak
 \forall x \ \predicate{A}(x)
 \end{equation}
 
-je výrok, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý pro všechny hodnoty \(x\). Obdobně, pokud \(\predicate{A}(x, y, ...)\) je predikát, pak
+je výrok, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý pro všechny hodnoty \(x\). Říkáme "pro každé \(x\) platí \(\predicate{A}(x)\)". Obdobně, pokud \(\predicate{A}(x, y, ...)\) je predikát, pak
 
 \begin{equation}
 \forall x \ \predicate{A}(x, y, ...)
@@ -132,14 +132,51 @@ V~uvedených příkladech může proměnná \(x\) nabývat jakékoli hodnoty - t
 \forall x \in \mathrm{S} \ \predicate{A}(x)
 \end{equation}
 
-který chápeme jako zkrácení zápisu:
+který chápeme jako zkrácení zápisu
 
 \begin{equation}
 \forall x \ \left( x \in \mathrm{S} \impl \predicate{A}(x) \right)
 \end{equation}
 
+tedy "pro každé \(x\) z~množiny \(\mathrm{S}\) platí \(\predicate{A}(x)\)" je shodné s~"pro každé \(x\) platí, že pokud \(x\) je prvkem množiny \(\mathrm{S}\), pak platí \(\predicate{A}(x)\)".
+
 Příklad: Každé přirozené číslo je větší než 0. 
 
 \(\forall x \in \mathbb{N} \ x > 0\) neboli \(\forall x \ (x \in \mathbb{N} \impl x > 0)\).
 
-\eeq{de_morgan_or}
+
+\section{Existenční kvantifikátor}
+
+Je-li \(\predicate{A}(x)\) predikát, pak
+
+\begin{equation}
+\exists x \ \predicate{A}(x)
+\end{equation}
+
+je výrok, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý alespoň pro jednu hodnotu \(x\). Říkáme "existuje \(x\) takové, že platí \(\predicate{A}(x)\)". Obdobně, pokud \(\predicate{A}(x, y, ...)\) je predikát, pak
+
+\begin{equation}
+\exists x \ \predicate{A}(x, y, ...)
+\end{equation}
+
+je predikát, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý alespoň pro jednu hodnotu \(x\). Tato hodnota ale může být závislá na volných proměnných \(y, ...\). Proměnná \(x\) je ve výrazu vázaná, již nevstupuje jako parametr zvenčí.
+
+V~uvedených příkladech může proměnná \(x\) nabývat jakékoli hodnoty. Často potřebujeme omezit proměnnou na určitou množinu hodnot. K~tomu použijeme zápis
+
+\begin{equation}
+\exists x \in \mathrm{S} \ \predicate{A}(x)
+\end{equation}
+
+který chápeme jako zkrácení zápisu
+
+\begin{equation}
+\exists x \ \left( x \in \mathrm{S} \land \predicate{A}(x) \right)
+\end{equation}
+
+tedy "existuje \(x\) z~množiny \(\mathrm{S}\) takové, že platí \(\predicate{A}(x)\)" je shodné s~"existuje \(x\) takové, že \(x\) je prvkem množiny \(\mathrm{S}\) a~zároveň platí \(\predicate{A}(x)\)".
+
+Příklad: Pro každé přirozené číslo existuje přirozené číslo větší. 
+
+\(\forall x \in \mathbb{N} \ \exists y \ y > x\)
+
+
