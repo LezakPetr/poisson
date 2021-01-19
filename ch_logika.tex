@@ -179,4 +179,23 @@ Příklad: Pro každé přirozené číslo existuje přirozené číslo větší
 
 \(\forall x \in \mathbb{N} \ \exists y \ y > x\)
 
+\section{Vyhodnocování logických výrazů}
 
+Logické výrazy, někdy nazývané formule, jsou obdobné matematickým výrazům. Skládají se z~predikátů, proměnných a~logických operátorů oposaných výše. Podobně jako u~matematických výrazů se pořadí vyhodnocování řídí závorkami a~prioritou operátorů. Operátory se vyhodnocují v~pořadí:
+
+\(\overline{A}\), \(\forall\), \(\exists\), \(\land\), \(\lor\), \(\impl\), \(\equivalent\)
+
+Příklad - určete pravdivost predikátu pro \(x = 5, y = 10\):
+\begin{equation}
+x < 3 \lor y = 10 \land (x = 5 \lor x < 5)
+\end{equation}
+
+Nejdříve uzávorkujeme výraz podle priority operátorů a~pak jej postupně vyhodnotíme:
+
+\begin{equation}
+\begin{split}
+x < 3 \lor (x \cdot y = 50 \land (x = 5 \lor x < 5)) = \\
+5 < 3 \lor (5 \cdot 10 = 50 \land (5 = 5 \lor 5 < 5)) = \\
+\false \lor (\true \land (\true \lor \false)) = \false \lor (\true \land \true) = \false \lor \true = \true 
+\end{split}
+\end{equation}
