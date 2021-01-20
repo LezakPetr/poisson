@@ -41,7 +41,7 @@ Je-li \(\predicate{A}\) predikát (nebo výrok), pak
 je predikát, který je pravdivý tehdy a jen tehdy, když \(A\) není pravdivý. Říkáme "není pravda \(\predicate{A}\)".
 Ekvivalenci můžeme vyjádřit pravdivostní tabulkou:
 
-\eeq{truth_not}
+\etab{truth_not}
 
 Příklad: Není pravda, že je den. \(\overline{\predicate{den}}\).
 
@@ -58,7 +58,7 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 je pravdivý, pokud mají oba predikáty stejnou pravdivost - jsou oba pravdivé nebo oba nepravdivé. Říkáme "\(\predicate{A}\) je pravdivý tehdy a~jen tehdy, pokud je pravdivý \(\predicate{B}\)" nebo "\(\predicate{A}\) je pravdivý právě tehdy, když je pravdivý \(\predicate{B}\)".
 Ekvivalenci můžeme vyjádřit pravdivostní tabulkou:
 
-\eeq{truth_equiv}
+\etab{truth_equiv}
 
 Příklad: Den je tehdy a~jen tehdy, když není noc. \(\predicate{Den} \equivalent \overline{\predicate{noc}}\).
 
@@ -73,7 +73,7 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 je pravdivý, pokud jsou oba výroky pravdivé. Říkáme "\(\predicate{A}\) a~(zárověň) \(\predicate{B}\)".
 Konjunkci můžeme vyjádřit pravdivostní tabulkou:
 
-\eeq{truth_and}
+\etab{truth_and}
 
 Příklad: Země je kulatá a~obíhá okolo Slunce. Země je kulatá \(\land\) Země obíhá okolo Slunce.
 
@@ -89,7 +89,7 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 je pravdivý, pokud je pravdivý alespoň jeden z~nich (tedy i~oba). Říkáme "\(\mathrm{A}\) nebo \(\mathrm{B}\)".
 Disjunkci můžeme vyjádřit pravdivostní tabulkou:
 
-\eeq{truth_or}
+\etab{truth_or}
 
 Příklad: Buď je den nebo noc. Den \(\lor\) noc.
 
@@ -104,7 +104,7 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 je pravdivý, pokud z~předpokladu \(A\) plyne závěr \(B\). Tedy pokud není splněn předpoklad \(A\) nebo je splněn předpoklad \(B\). Říkáme "z~\(\predicate{A}\) plyne \(\predicate{B}\)", "Pokud \(\predicate{A}\) pak \(\predicate{B}\)" nebo "\(\predicate{A}\) implikuje \(\predicate{B}\)".
 Implikaci můžeme vyjádřit pravdivostní tabulkou:
 
-\eeq{truth_impl}
+\etab{truth_impl}
 
 Příklad: Pokud prší, pak je mokro. Prší \(\impl\) mokro.
 
@@ -199,3 +199,18 @@ x < 3 \lor (x \cdot y = 50 \land (x = 5 \lor x < 5)) = \\
 \false \lor (\true \land (\true \lor \false)) = \false \lor (\true \land \true) = \false \lor \true = \true 
 \end{split}
 \end{equation}
+
+\section{Tautologie}
+
+Tautologie jsou výroky, které jsou pravdivé bez ohladu na pravdivost výroků v~nich obsažených. Tautologie můžeme dokázat vyzkoušením všech možnosí, kterých mohou tyto výroky nabývat. Ideálně zkonstruováním pravdivostní tabulky.
+
+Příklad: Nechť \(\predicate{A}\) a~\(\predicate{B}\) jsou výroky. Pak bez ohledu na jejich pravdivost platí:
+
+\eeq{de_morgan_example}
+
+Sestrojme pravdivostní tabulku, která vyhodnotí výrok~\eqref{eq:de_morgan_example} pro všechny možné kombinace výroků \(\predicate{A}\) a~\(\predicate{B}\). V~tabulce jsou uvedeny i~hodnoty pro podvýroky:
+
+\etab{de_morgan_example}
+
+Vidíme, že výrok~\eqref{eq:de_morgan_example} platí ve všech případech. Takto lze obecně dokazovat tautologie, které neobsahují kvantifikátory.
+

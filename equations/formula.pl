@@ -92,7 +92,7 @@ eval_formula(statement(StatementVariable, _, SubFormula), Value) :-
 
 % Prints formula with given label to file calculated 
 print_formula(Label, Formula) :-
-	calc_file_path(Label, Path),
+	calc_file_path('eq', Label, Path),
 	open(Path, write, Stream),
 	writeln(Stream, '\\begin{equation}'),
 	print_label(Stream, 'eq:', Label),

@@ -89,7 +89,7 @@ print_truth_table_formula_values(_, []).
 
 % Prints truth table.
 print_truth_table(Label, Statements, Formulas) :-
-	calc_file_path(Label, Path),
+	calc_file_path('tab', Label, Path),
 	open(Path, write, Stream),
 	print_truth_table_header(Stream, Statements, Formulas),
 	print_hline(Stream),

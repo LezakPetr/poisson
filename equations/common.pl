@@ -1,7 +1,7 @@
 
 % Calculates path to the file for given label
-calc_file_path(Label, Path) :-
-	atomic_list_concat(['../out/', Label, '.tex'], Path).
+calc_file_path(Prefix, Label, Path) :-
+	atomic_list_concat(['../out/', Prefix, '_', Label, '.tex'], Path).
 
 % Prints label
 print_label(Stream, Prefix, Label) :-

@@ -119,6 +119,33 @@
 	)))
 ).
 
+?- print_validated_formula(
+	de_morgan_example,
+	statement(A, 'A', statement(B, 'B',
+		equiv(
+			not(or(A, B)),
+			and(not(A), not(B))
+		)
+	))
+).
+
+?- print_truth_table(
+	de_morgan_example,
+	[statement(A, 'A'), statement(B, 'B')],
+	[
+		or(A, B),
+		not(or(A, B)),
+		not(A),
+		not(B),
+		and(not(A), not(B)),
+		equiv(
+			not(or(A, B)),
+			and(not(A), not(B))
+		)
+	]
+).
+
+
 ?- print_truth_table(
 	truth_not,
 	[statement(A, 'A')],
