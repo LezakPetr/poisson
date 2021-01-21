@@ -57,6 +57,9 @@ log_equiv(log_true,  log_true,  log_true).
 eval_formula(log_false, log_false).
 eval_formula(log_true, log_true).
 
+eval_formula(par(X), Value) :-
+	eval_formula(X, Value).
+
 eval_formula(not(X), Value) :-
 	eval_formula(X, EX),
 	log_not(EX, Value).
@@ -131,9 +134,9 @@ print_formula_term(Stream, statement(V, L, F), PR) :-
 
 print_formula_term(Stream, impl(A, B), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, impl), 
-	print_formula_term(Stream, A, equiv),
+	print_formula_term(Stream, A, impl),
 	write(Stream, ' \\impl '),
-	print_formula_term(Stream, B, equiv),
+	print_formula_term(Stream, B, impl),
 	print_bracket_if_needed(Stream, ')', PR, impl).
 
 print_formula_term(Stream, equiv(A, B), PR) :-
@@ -157,9 +160,14 @@ print_formula_term(Stream, and(A, B), PR) :-
 	print_formula_term(Stream, B, and),
 	print_bracket_if_needed(Stream, ')', PR, and).
 
+print_formula_term(Stream, par(F), _) :-
+	write(Stream, '('),
+	print_formula_term(Stream, F, root),
+	write(Stream, ')').
+
 print_formula_term(Stream, not(F), _) :-
 	write(Stream, '\\overline{'),
-	print_formula_term(Stream, F, 7),
+	print_formula_term(Stream, F, root),
 	write(Stream, '}').
 
 
@@ -184,10 +192,10 @@ print_bracket_if_needed(Stream, Bracket, _, _) :-
 bracket_not_needed(root, _).
 bracket_not_needed(or, or).
 bracket_not_needed(and, and).
-bracket_not_needed(and, or).
-bracket_not_needed(and, impl).
-bracket_not_needed(and, equiv).
-bracket_not_needed(or, impl).
-bracket_not_needed(or, equiv).
-bracket_not_needed(impl, equiv).
+bracket_not_needed(or, and).
+bracket_not_needed(impl, and).
+bracket_not_needed(equiv, and).
+bracket_not_needed(impl, or).
+bracket_not_needed(equiv, or).
+bracket_not_needed(equiv, impl).
 

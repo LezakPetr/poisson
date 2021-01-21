@@ -214,3 +214,42 @@ Sestrojme pravdivostní tabulku, která vyhodnotí výrok~\eqref{eq:de_morgan_ex
 
 Vidíme, že výrok~\eqref{eq:de_morgan_example} platí ve všech případech. Takto lze obecně dokazovat tautologie, které neobsahují kvantifikátory.
 
+Máme-li tautologii ve formě ekvivalence a~máme-li výraz, který obsahuje jednu stranu ekvivalence, pak ji můžeme nahradit druhou stranou ekvivalence podobně, jako to děláme s~operátorem rovnosti při úpravách matematických výrazů. Například máme výrok
+
+\begin{equation}
+\overline{\predicate{C}} \lor \overline{\predicate{C} \lor (\predicate{D} \land \predicate{E})}
+\end{equation}
+
+ve kterém můžeme na část výrazu použít uvedenou tautologii se substitucí \(\predicate{A} = \predicate{C}\) a~\(\predicate{B} = \predicate{D} \land \predicate{E}\):
+
+\begin{equation}
+\overline{\predicate{C}} \lor \overline{\predicate{C}} \land \overline{\predicate{D} \land \predicate{E}}
+\end{equation}
+
+Využitím další tautologie~\eqref{eq:or_specific} se celý výraz zjednoduší na
+
+\begin{equation}
+\overline{\predicate{C}}
+\end{equation}
+
+a~proto můžeme napsat
+
+\eeq{tautology_example}
+
+
+\begin{fact}
+\eeq{or_symmetry}
+\eeq{and_symmetry}
+\eeq{or_associativity}
+\eeq{and_associativity}
+\eeq{or_distributivity}
+\eeq{and_distributivity}
+\eeq{de_morgan_or}
+\eeq{de_morgan_and}
+\eeq{impl_definition}
+\eeq{impl_usage}
+\eeq{impl_transitivity}
+\eeq{or_both}
+\eeq{and_both}
+\eeq{or_specific}
+\end{fact}

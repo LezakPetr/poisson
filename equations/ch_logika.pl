@@ -2,6 +2,8 @@
 :- ensure_loaded(truth_table).
 
 
+%%%%% Tautologie %%%%%
+
 ?- print_validated_formula(
 	or_symmetry,
 	statement(A, 'A', statement(B, 'B',
@@ -26,8 +28,8 @@
 	or_associativity,
 	statement(A, 'A', statement(B, 'B', statement(C, 'C',
 		equiv(
-			or(or(A, B), C),
-			or(A, or(B, C))
+			or(par(or(A, B)), C),
+			or(A, par(or(B, C)))
 		)
 	)))
 ).
@@ -36,8 +38,8 @@
 	and_associativity,
 	statement(A, 'A', statement(B, 'B', statement(C, 'C',
 		equiv(
-			and(and(A, B), C),
-			and(A, and(B, C))
+			and(par(and(A, B)), C),
+			and(A, par(and(B, C)))
 		)
 	)))
 ).
@@ -46,7 +48,7 @@
 	or_distributivity,
 	statement(A, 'A', statement(B, 'B', statement(C, 'C',
 		equiv(
-			or(and(A, B), C),
+			or(par(and(A, B)), C),
 			and(or(A, C), or(B, C))
 		)
 	)))
@@ -57,7 +59,7 @@
 	statement(A, 'A', statement(B, 'B', statement(C, 'C',
 		equiv(
 			and(or(A, B), C),
-			or(and(A, C), and(B, C))
+			or(par(and(A, C)), par(and(B, C)))
 		)
 	)))
 ).
@@ -93,7 +95,7 @@
 ).
 
 ?- print_validated_formula(
-	impl_definition,
+	impl_usage,
 	statement(A, 'A', statement(B, 'B',
 		impl(
 			and(
@@ -104,7 +106,6 @@
 		)
 	))
 ).
-
 
 ?- print_validated_formula(
 	impl_transitivity,
@@ -118,6 +119,37 @@
 		)
 	)))
 ).
+
+?- print_validated_formula(
+	or_both,
+	statement(A, 'A',
+		or(A, not(A))
+	)
+).
+
+?- print_validated_formula(
+	and_both,
+	statement(A, 'A',
+		not(and(A, not(A)))
+	)
+).
+
+?- print_validated_formula(
+	or_specific,
+	statement(A, 'A', statement(B, 'B',
+		equiv(
+			or(
+				A,
+				par(and(A, B))
+			),
+			A
+		)
+	))
+).
+
+
+
+%%%%% Examples %%%%%
 
 ?- print_validated_formula(
 	de_morgan_example,
@@ -176,6 +208,16 @@
 	[impl(A, B)]
 ).
 
+
+?- print_validated_formula(
+	tautology_example,
+	statement(C, 'C', statement(D, 'D', statement(E, 'E',
+		equiv(
+			or(not(C), not(or(C, and(D, E)))),
+			not(C)
+		)
+	)))
+).
 
 
 ?- halt.
