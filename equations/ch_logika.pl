@@ -121,7 +121,27 @@
 ).
 
 ?- print_validated_formula(
-	or_both,
+	impl_swap,
+	statement(A, 'A', statement(B, 'B',
+		equiv(
+			impl(A, B),
+			impl(not(B), not(A))
+		)
+	))
+).
+
+?- print_validated_formula(
+	double_negation,
+	statement(A, 'A',
+		equiv(
+			not(not(A)),
+			A
+		)
+	)
+).
+
+?- print_validated_formula(
+	excluded_middle,
 	statement(A, 'A',
 		or(A, not(A))
 	)
@@ -143,6 +163,16 @@
 				par(and(A, B))
 			),
 			A
+		)
+	))
+).
+
+?- print_validated_formula(
+	equiv_to_impl,
+	statement(A, 'A', statement(B, 'B',
+		equiv(
+			and(impl(A, B), impl(B, A)),
+			equiv(A, B)
 		)
 	))
 ).

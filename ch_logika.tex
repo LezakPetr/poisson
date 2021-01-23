@@ -108,7 +108,7 @@ Implikaci můžeme vyjádřit pravdivostní tabulkou:
 
 Příklad: Pokud prší, pak je mokro. Prší \(\impl\) mokro.
 
-Implikaci není možné obrátit. Z~výše uvedeného výroku tak nelze vyvodit "pokud je pokro, pak prší" - po cestě mohl například projet kropící vůz. Dále je poněkud neintuitivní, že je implikace pravdivá, pokud je nepravdivý předpoklad. Tedy pokud neprší, pak je výše uvedený výrok pravdivý ať už je mokro nebo ne. 
+Implikaci není možné obrátit. Z~výše uvedeného výroku tak nelze vyvodit "pokud je pokro, pak prší" - po cestě mohl například projet kropící vůz. Také není možné pouze negovat výroky v~impliaci. Z uvedeného výroku nelze tedy odvodit "pokud neprší, pak není mokro" - opět mohl projet kropící vůz. Ale je možné impliaci obrátit~a~negovat výroky, tedy odvodit "pokud není mokro, pak neprší", viz tautologie~\eqref{eq:impl_swap}. Dále je poněkud neintuitivní, že je implikace pravdivá, pokud je nepravdivý předpoklad. Tedy pokud neprší, pak je výše uvedený výrok pravdivý ať už je mokro nebo ne. 
 
 \section{Obecný kvantifikátor}
 
@@ -249,7 +249,18 @@ a~proto můžeme napsat
 \eeq{impl_definition}
 \eeq{impl_usage}
 \eeq{impl_transitivity}
-\eeq{or_both}
+\eeq{impl_swap}
+\eeq{equiv_to_impl}
+\eeq{double_negation}
+\eeq{excluded_middle}
 \eeq{and_both}
 \eeq{or_specific}
 \end{fact}
+
+Tautologie~\eqref{eq:or_symmetry} a~\eqref{eq:and_symmetry} vyjadřují symetričnost disjunkce a~konjunkce, tedy možnost otočit pořadí operandů. Tautologie~\eqref{eq:or_associativity} a~\eqref{eq:and_associativity} pak jejich asociativitu, tedy možnost změnit pořadí vyhodnocování disjunkcí nebo konjunkcí. Tautologie~\eqref{eq:or_distributivity} a~\eqref{eq:and_distributivity} vyjadřují distributivitu disjunkce a~konjunkce, tedy možnost "roznásobit" výraz. Pomocí De-Morganových pravidel~\eqref{eq:de_morgan_or} a~\eqref{eq:de_morgan_and} lze posunou negaci skrz disjunkci a~konjunkci, při tom ale dojde k~záměně disjunkce za konjunkci a~naopak.
+
+Dálen následují vztahy týkající se implikace. Tautologie~\eqref{eq:impl_definition} představuje možnost vyjádřit implikaci pomocí disjunkce. Tautologie~\eqref{eq:impl_usage} odpovídá logickému usuzování: pokud platí \(\predicate{A}\) a~z~\(\predicate{A}\) plyne \(\predicate{B}\), pak musí platit \(\predicate{B}\). Tautologie~\eqref{eq:impl_transitivity} vyjadřuje tranzitivitu implikace: pokud z~\(\predicate{A}\) plyne \(\predicate{B}\) a~z~\(\predicate{B}\) plyne \(\predicate{C}\), pak z~\(\predicate{A}\) plyne \(\predicate{C}\). Tautologie~\eqref{eq:impl_swap} ukazuje, že výroky v~implikaci nelze pouze negovat, ale je také nutné implikaci otočit. Tautologie~\eqref{eq:equiv_to_impl} vyjadřuje fakt, že ekvivalence znamená obousměrnou implikaci.
+
+Tautologie~\eqref{eq:double_negation} se nazývá zákon dvojí negace a~vyjadřuje fakt, že dvojitou negací získáme původní výrok. Tautologie~\eqref{eq:excluded_middle} se nazývá zákon o~vyloučení třetího a~vyjadřuje fakt, že buď platí výrok, nebo jeho negace. Obdobně tautologie~\eqref{eq:and_both} vyjadřuje fakt, že nemůže platit zárověň výrok a~jeho negace.
+
+Tautologie~\eqref{eq:or_specific} vyjadřuje fakt, že disjunkce výroku a~jeho více specifické verze je rovna tomuto výroku. 
