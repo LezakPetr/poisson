@@ -47,6 +47,13 @@ log_equiv(log_false, log_true,  log_false).
 log_equiv(log_true,  log_false, log_false).
 log_equiv(log_true,  log_true,  log_true).
 
+% Logical and over list
+log_and_all([V | Tail], Value) :-
+	log_and_all(Tail, TailValue),
+	log_and(V, TailValue, Value).
+
+log_and_all([], log_true).
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Formula evaluation %%%%%
@@ -88,6 +95,9 @@ eval_formula(statement(StatementVariable, _, SubFormula), Value) :-
 	findall(SubFormulaValue, (boolean(StatementVariable), eval_formula(SubFormula, SubFormulaValue)), [EF1, EF2]),
 	log_and(EF1, EF2, Value).
 
+eval_formula(set(S, TestedSets, SubFormula), Value) :-
+	findall(SubFormulaValue, (member(SetValue), eval_formula(SubFormula, SetValue)), Results),
+	log_and_all(Results, Value).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Formula print %%%%%

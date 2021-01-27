@@ -110,6 +110,38 @@ Příklad: Pokud prší, pak je mokro. Prší \(\impl\) mokro.
 
 Implikaci není možné obrátit. Z~výše uvedeného výroku tak nelze vyvodit "pokud je pokro, pak prší" - po cestě mohl například projet kropící vůz. Také není možné pouze negovat výroky v~impliaci. Z uvedeného výroku nelze tedy odvodit "pokud neprší, pak není mokro" - opět mohl projet kropící vůz. Ale je možné impliaci obrátit~a~negovat výroky, tedy odvodit "pokud není mokro, pak neprší", viz tautologie~\eqref{eq:impl_swap}. Dále je poněkud neintuitivní, že je implikace pravdivá, pokud je nepravdivý předpoklad. Tedy pokud neprší, pak je výše uvedený výrok pravdivý ať už je mokro nebo ne. 
 
+\section{Množiny}
+
+Množina je neuspořádaný soubor prvků. Zápisem
+
+\begin{equation}
+\{x: \predicate{A}(x)\}
+\end{equation}
+
+rozumíme množinu všech prvků \(x\), pro které je predikát \(\predicate{A}(x)\) pravdivý. Je-li \(M\) množina, pak můžeme zavést predikát
+
+\begin{equation}
+x \in M
+\end{equation}
+
+který je pravdivý tehdy a~jen tehdy, pokud je prvek \(x\) obsažen v~množině \(M\). Jeho negaci označme
+
+\begin{equation}
+x \notin M \equivalent \negation{x \in M}
+\end{equation}
+
+Jsou-li \(M_1\) a~\(M_2\) množiny, pak \(M_1 \cap M_2\) je jejich průnik a~obsahuje prvky, které jsou obsaženy v~obou množinách. Proto platí:
+
+\begin{equation}
+\{x: \predicate{A}(x)\} \cap \{x: \predicate{B}(x)\} = \{x: \predicate{A}(x) \land \predicate{B}(x)\}
+\end{equation}
+
+Obdobně \(M_1 \cup M_2\) je sjednocení množin a~obsahuje prvky, které jsou obsaženy v~jedné nabo druhé množině. Proto platí:
+
+\begin{equation}
+\{x: \predicate{A}(x)\} \cup \{x: \predicate{B}(x)\} = \{x: \predicate{A}(x) \lor \predicate{B}(x)\}
+\end{equation}
+
 \section{Obecný kvantifikátor}
 
 Je-li \(\predicate{A}(x)\) predikát, pak
@@ -263,4 +295,5 @@ Dálen následují vztahy týkající se implikace. Tautologie~\eqref{eq:impl_de
 
 Tautologie~\eqref{eq:double_negation} se nazývá zákon dvojí negace a~vyjadřuje fakt, že dvojitou negací získáme původní výrok. Tautologie~\eqref{eq:excluded_middle} se nazývá zákon o~vyloučení třetího a~vyjadřuje fakt, že buď platí výrok, nebo jeho negace. Obdobně tautologie~\eqref{eq:and_both} vyjadřuje fakt, že nemůže platit zárověň výrok a~jeho negace.
 
-Tautologie~\eqref{eq:or_specific} vyjadřuje fakt, že disjunkce výroku a~jeho více specifické verze je rovna tomuto výroku. 
+Tautologie~\eqref{eq:or_specific} vyjadřuje fakt, že disjunkce výroku a~jeho více specifické verze je rovna tomuto výroku.
+
