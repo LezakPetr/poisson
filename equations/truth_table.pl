@@ -28,7 +28,7 @@ print_truth_table_header_statements(_, []).
 % Expects that statement labels has been assigned to statement variables.
 print_truth_table_header_formulas(Stream, [Formula | Tail]) :-
 	write(Stream, '\\('),
-	print_formula_term(Stream, Formula),
+	print_expression_term(Stream, Formula),
 	write(Stream, '\\)'),
 	print_if_not_empty(Stream, ' & ', Tail),
 	print_truth_table_header_formulas(Stream, Tail).
@@ -78,7 +78,7 @@ print_truth_table_statement_values(_, []).
 % Prints values of the formulas.
 % print_truth_table_formula_values(Stream, Formuas)
 print_truth_table_formula_values(Stream, [Formula | Tail]) :-
-	eval_formula(Formula, Value),
+	evaluate_expression(Formula, Value),
 	print_boolean_in_math_mode(Stream, Value),
 	print_if_not_empty(Stream, ' & ', Tail),
 	print_truth_table_formula_values(Stream, Tail).
