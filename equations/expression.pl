@@ -255,7 +255,7 @@ evaluate_list([Expression | Tail], [EvaluatedExpression | EvaluatedTail]) :-
 	evaluate_expression(Expression, EvaluatedExpression),
 	evaluate_list(Tail, EvaluatedTail).
 
-evaluate_expression(statement(StatementVariable, _, SubFormula), Value) :-
+evaluate_expression(declare_statement(StatementVariable, _, SubFormula), Value) :-
 	!,
 	findall(SubFormulaValue, (boolean(StatementVariable), evaluate_expression(SubFormula, SubFormulaValue)), [EF1, EF2]),
 	log_and(EF1, EF2, Value).
@@ -344,7 +344,7 @@ print_expression_term(Stream, F, _) :-
 	atom(F),
 	write(Stream, F).
 
-print_expression_term(Stream, statement(V, L, F), PR) :-
+print_expression_term(Stream, declare_statement(V, L, F), PR) :-
 	atomic_list_concat(['\\predicate{', L, '}'], V),
 	print_expression_term(Stream, F, PR).
 

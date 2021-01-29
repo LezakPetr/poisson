@@ -15,7 +15,7 @@ print_columns(Stream, []) :-
 % Prints statements in truth table header.
 % Also assigns statement labels to statement variables.
 % print_truth_table_header_statements(Stream, Statements)
-print_truth_table_header_statements(Stream, [statement(Label, Label) | Tail]) :-
+print_truth_table_header_statements(Stream, [declare_statement(Label, Label) | Tail]) :-
 	write(Stream, '\\(\\predicate{'),
 	write(Stream, Label),
 	write(Stream, '}\\) & '),
@@ -55,7 +55,7 @@ print_truth_table_header(Stream, Statements, Formulas) :-
 
 % Prints value rows in truth table. Combines all possible statement values.
 % print_truth_table_values_combine(Stream, NotYetAssignedStatements, AllStatements, Formulas)
-print_truth_table_values_combine(Stream, [statement(StatementVar, _) | Tail], AllStatements, Formulas) :-
+print_truth_table_values_combine(Stream, [declare_statement(StatementVar, _) | Tail], AllStatements, Formulas) :-
 	findall(Tmp, (boolean(StatementVar), Tmp = x, print_truth_table_values_combine(Stream, Tail, AllStatements, Formulas)), _),
 	!.
 
@@ -67,7 +67,7 @@ print_truth_table_values_combine(Stream, [], AllStatements, Formulas) :-
 
 % Prints values of the statements.
 % print_truth_table_statement_values(Stream, Statements)
-print_truth_table_statement_values(Stream, [statement(StatementVar, _) | Tail]) :-
+print_truth_table_statement_values(Stream, [declare_statement(StatementVar, _) | Tail]) :-
 	print_boolean_in_math_mode(Stream, StatementVar),
 	write(Stream, ' & '),
 	print_truth_table_statement_values(Stream, Tail).
