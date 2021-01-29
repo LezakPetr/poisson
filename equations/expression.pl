@@ -137,6 +137,21 @@ set_difference([], _, []).
 	make_set([d, e], Y),
 	set_difference(A, B, Y).
 
+
+set_equal(X, X, log_true) :-
+	!.
+
+set_equal(_, _, log_false).
+
+?-	make_set([a, b, c], A),
+	make_set([b, c, a], B),
+	set_equal(A, B, log_true).
+
+?-	make_set([a, b, c], A),
+	make_set([b, c, d], B),
+	set_equal(A, B, log_false).
+
+
 % Evaluates function. Arguments must be evaluated.
 evaluate_function(X, X) :-
 	boolean(X).
@@ -173,6 +188,9 @@ evaluate_function(union(set(A), set(B)), set(Value)) :-
 
 evaluate_function(difference(set(A), set(B)), set(Value)) :-
 	set_difference(A, B, Value).
+
+evaluate_function(set_equal(set(A), set(B)), Value) :-
+	set_equal(A, B, Value).
 
 evaluate_function(A + B, Y) :-
 	number(A),
@@ -238,13 +256,14 @@ evaluate_list([Expression | Tail], [EvaluatedExpression | EvaluatedTail]) :-
 	evaluate_list(Tail, EvaluatedTail).
 
 evaluate_expression(statement(StatementVariable, _, SubFormula), Value) :-
+	!,
 	findall(SubFormulaValue, (boolean(StatementVariable), evaluate_expression(SubFormula, SubFormulaValue)), [EF1, EF2]),
-	log_and(EF1, EF2, Value),
-	!.
+	log_and(EF1, EF2, Value).
 
-%evaluate_expression(set(S, TestedSets, SubFormula), Value) :-
-%	findall(SubFormulaValue, (member(SetValue), eval_formula(SubFormula, SetValue)), Results),
-%	log_and_all(Results, Value).
+evaluate_expression(declare_set(SetVariable, _, TestedSets, SubFormula), Value) :-
+	!,
+	findall(SubFormulaValue, (member(SetVariable, TestedSets), evaluate_expression(SubFormula, SubFormulaValue)), Results),
+	log_and_all(Results, Value).
 
 evaluate_expression(Expression, Value) :-
 	Expression =.. [Functor | Args],
@@ -258,6 +277,32 @@ evaluate_expression(Expression, Value) :-
 
 ?-	evaluate_expression(num_equal([1/(2+1), 2 / 6, 1 - (2/3)], 1e-14), log_true).
 ?-	evaluate_expression(num_equal([1, 2], 1e-14), log_false).
+
+?-	make_set([a, b, c], S1),
+	make_set([b, c, d], S2),
+	make_set([d, e], S3),
+	evaluate_expression(
+		declare_set(A, 'A', [set(S1), set(S2), set(S3)], declare_set(B, 'B', [set(S1), set(S2), set(S3)],
+			set_equal(
+				intersection(A, B),
+				intersection(B, A)
+			)
+		)),
+		log_true
+	).
+
+?-	make_set([a, b, c], S1),
+	make_set([b, c, d], S2),
+	make_set([d, e], S3),
+	evaluate_expression(
+		declare_set(A, 'A', [set(S1), set(S2), set(S3)], declare_set(B, 'B', [set(S1), set(S2), set(S3)],
+			set_equal(
+				intersection(A, B),
+				union(A, B)
+			)
+		)),
+		log_true
+	).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
