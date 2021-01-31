@@ -47,6 +47,18 @@ log_equiv(log_false, log_true,  log_false).
 log_equiv(log_true,  log_false, log_false).
 log_equiv(log_true,  log_true,  log_true).
 
+% Logical or over list
+log_or_all([V | Tail], Value) :-
+	log_or_all(Tail, TailValue),
+	log_or(V, TailValue, Value).
+
+log_or_all([], log_false).
+
+?- log_or_all([], log_false).
+?- log_or_all([log_false, log_false], log_false).
+?- log_or_all([log_false, log_true], log_true).
+?- log_or_all([log_true, log_false], log_true).
+
 % Logical and over list
 log_and_all([V | Tail], Value) :-
 	log_and_all(Tail, TailValue),
@@ -158,6 +170,8 @@ evaluate_function(X, X) :-
 
 evaluate_function(par(X), X).
 
+evaluate_function(set(S), set(S)).
+
 evaluate_function(not(X), Value) :-
 	log_not(X, Value).
 
@@ -255,15 +269,43 @@ evaluate_list([Expression | Tail], [EvaluatedExpression | EvaluatedTail]) :-
 	evaluate_expression(Expression, EvaluatedExpression),
 	evaluate_list(Tail, EvaluatedTail).
 
+
+evaluate_expression_or_fail(Expression, Value) :-
+	evaluate_expression(Expression, Value),
+	!.
+
+evaluate_expression_or_fail(_, failed).
+
+
 evaluate_expression(declare_statement(StatementVariable, _, SubFormula), Value) :-
 	!,
-	findall(SubFormulaValue, (boolean(StatementVariable), evaluate_expression(SubFormula, SubFormulaValue)), [EF1, EF2]),
+	findall(SubFormulaValue, (boolean(StatementVariable), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [EF1, EF2]),
 	log_and(EF1, EF2, Value).
 
 evaluate_expression(declare_set(SetVariable, _, TestedSets, SubFormula), Value) :-
 	!,
-	findall(SubFormulaValue, (member(SetVariable, TestedSets), evaluate_expression(SubFormula, SubFormulaValue)), Results),
+	findall(SubFormulaValue, (member(SetVariable, TestedSets), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
+
+evaluate_expression(declare_predicate(PredicateVariable, _, TestedPredicates, SubFormula), Value) :-
+	!,
+	findall(SubFormulaValue, (member(PredicateVariable, TestedPredicates), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
+	log_and_all(Results, Value).
+
+evaluate_expression(apply(Predicate, Args, ArgValues), Value) :-
+	!,
+	findall(SubFormulaValue, (Args = ArgValues, evaluate_expression_or_fail(Predicate, SubFormulaValue)), [Value]).
+
+evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
+	!,
+	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
+	log_and_all(Results, Value).
+
+evaluate_expression(exists(Variable, _, TestedValues, SubFormula), Value) :-
+	!,
+	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
+	log_or_all(Results, Value).
+
 
 evaluate_expression(Expression, Value) :-
 	Expression =.. [Functor | Args],
@@ -278,9 +320,9 @@ evaluate_expression(Expression, Value) :-
 ?-	evaluate_expression(num_equal([1/(2+1), 2 / 6, 1 - (2/3)], 1e-14), log_true).
 ?-	evaluate_expression(num_equal([1, 2], 1e-14), log_false).
 
-?-	make_set([a, b, c], S1),
-	make_set([b, c, d], S2),
-	make_set([d, e], S3),
+?-	make_set([1, 2, 3], S1),
+	make_set([2, 3, 4], S2),
+	make_set([4, 5], S3),
 	evaluate_expression(
 		declare_set(A, 'A', [set(S1), set(S2), set(S3)], declare_set(B, 'B', [set(S1), set(S2), set(S3)],
 			set_equal(
@@ -291,9 +333,9 @@ evaluate_expression(Expression, Value) :-
 		log_true
 	).
 
-?-	make_set([a, b, c], S1),
-	make_set([b, c, d], S2),
-	make_set([d, e], S3),
+?-	make_set([1, 2, 3], S1),
+	make_set([2, 3, 4], S2),
+	make_set([4, 5], S3),
 	evaluate_expression(
 		declare_set(A, 'A', [set(S1), set(S2), set(S3)], declare_set(B, 'B', [set(S1), set(S2), set(S3)],
 			set_equal(
@@ -301,8 +343,35 @@ evaluate_expression(Expression, Value) :-
 				union(A, B)
 			)
 		)),
+		log_false
+	).
+
+?-	P = X * Y,
+	evaluate_expression(
+		apply(P, [X, Y], [3, 4]) + apply(P, [X, Y], [5, 6]),
+		42
+	).
+
+?-	evaluate_expression(
+		forall(X, 'X', [1, 2], num_equal([X, 1], 0)),
+		log_false
+	).
+
+?-	evaluate_expression(
+		forall(X, 'X', [1, 2], or(num_equal([X, 1], 0), num_equal([X, 2], 0))),
 		log_true
 	).
+
+?-	evaluate_expression(
+		exists(X, 'X', [1, 2], num_equal([X, 3], 0)),
+		log_false
+	).
+
+?-	evaluate_expression(
+		exists(X, 'X', [1, 2], num_equal([X, 2], 0)),
+		log_true
+	).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -344,9 +413,13 @@ print_expression_term(Stream, F, _) :-
 	atom(F),
 	write(Stream, F).
 
-print_expression_term(Stream, declare_statement(V, L, F), PR) :-
-	atomic_list_concat(['\\predicate{', L, '}'], V),
-	print_expression_term(Stream, F, PR).
+print_expression_term(Stream, declare_statement(Value, Label, SubFormula), PR) :-
+	atomic_list_concat(['\\predicate{', Label, '}'], Value),
+	print_expression_term(Stream, SubFormula, PR).
+
+print_expression_term(Stream, declare_predicate(Variable, Label, _, SubFormula), PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
 
 print_expression_term(Stream, impl(A, B), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, impl), 
@@ -386,6 +459,42 @@ print_expression_term(Stream, not(F), _) :-
 	print_expression_term(Stream, F, root),
 	write(Stream, '}').
 
+print_expression_term(Stream, forall(Variable, Label, _, SubFormula), PR) :-
+	Variable = Label,
+	print_bracket_if_needed(Stream, '(', PR, forall), 
+	write(Stream, ' \\forall '),
+	write(Stream, Variable),
+	write(Stream, ' \\ '),
+	print_expression_term(Stream, SubFormula, forall),
+	print_bracket_if_needed(Stream, ')', PR, forall).
+
+print_expression_term(Stream, exists(Variable, Label, _, SubFormula), PR) :-
+	Variable = Label,
+	print_bracket_if_needed(Stream, '(', PR, exists), 
+	write(Stream, ' \\exists '),
+	write(Stream, Variable),
+	write(Stream, ' \\ '),
+	print_expression_term(Stream, SubFormula, exists),
+	print_bracket_if_needed(Stream, ')', PR, exists).
+
+print_expression_term(Stream, apply(Predicate, _, ArgValues), _) :-
+	write(Stream, '\\predicate{'),
+	write(Stream, Predicate),
+	write(Stream, '}('),
+	print_predicate_args(Stream, ArgValues),
+	write(Stream, ')').
+
+
+print_predicate_args(Stream, [Arg | Tail]) :-
+	write(Stream, Arg),
+	write(', '),
+	print_predicate_args(Stream, Tail).
+
+print_predicate_args(Stream, [Arg]) :-
+	write(Stream, Arg).
+
+print_predicate_args(_, []).
+
 
 % Prints bracket if it is needed.
 % print_bracket_if_needed(Stream, Bracket, SuperOperator, SubOperator)
@@ -400,11 +509,19 @@ print_bracket_if_needed(Stream, Bracket, _, _) :-
 % Succeeds if bracket is not needed.
 % bracket_not_needed(SuperOperator, SubOperator)
 bracket_not_needed(root, _).
-bracket_not_needed(or, or).
-bracket_not_needed(and, and).
+bracket_not_needed(and, forall).
+bracket_not_needed(or, forall).
+bracket_not_needed(impl, forall).
+bracket_not_needed(equiv, forall).
+bracket_not_needed(and, exists).
+bracket_not_needed(or, exists).
+bracket_not_needed(impl, exists).
+bracket_not_needed(equiv, exists).
 bracket_not_needed(or, and).
 bracket_not_needed(impl, and).
 bracket_not_needed(equiv, and).
+bracket_not_needed(and, and).
+bracket_not_needed(or, or).
 bracket_not_needed(impl, or).
 bracket_not_needed(equiv, or).
 bracket_not_needed(equiv, impl).

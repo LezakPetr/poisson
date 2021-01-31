@@ -177,7 +177,27 @@
 	))
 ).
 
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'forall_not_eq_not_exists',
+		declare_predicate(P, 'P', [num_equal([Y, 1], 0), log_true, log_false],
+			equiv(
+				forall(X, 'x', Values, not(apply(P, [Y], [X]))),
+				not(exists(X, 'x', Values, apply(P, [Y], [X])))
+			)
+		)
+	).
 
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'exists_not_eq_not_forall',
+		declare_predicate(P, 'P', [num_equal([Y, 1], 0), log_true, log_false],
+			equiv(
+				exists(X, 'x', Values, not(apply(P, [Y], [X]))),
+				not(forall(X, 'x', Values, apply(P, [Y], [X])))
+			)
+		)
+	).
 
 %%%%% Examples %%%%%
 
