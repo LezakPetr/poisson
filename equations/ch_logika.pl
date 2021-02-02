@@ -199,6 +199,59 @@
 		)
 	).
 
+
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'intersection_definition',
+		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+				set_equal([
+					intersection(
+						set_by(X, 'x', Values, apply(A, [Y], [X])),
+						set_by(X, 'x', Values, apply(B, [Y], [X]))
+					),
+					set_by(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X])))
+				])
+			)
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'union_definition',
+		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+				set_equal([
+					union(
+						set_by(X, 'x', Values, apply(A, [Y], [X])),
+						set_by(X, 'x', Values, apply(B, [Y], [X]))
+					),
+					set_by(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X])))
+				])
+			)
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'difference_definition',
+		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+				set_equal([
+					difference(
+						set_by(X, 'x', Values, apply(A, [Y], [X])),
+						set_by(X, 'x', Values, apply(B, [Y], [X]))
+					),
+					set_by(X, 'x', Values, and(apply(A, [Y], [X]), not(apply(B, [Y], [X])))),
+					set_by(X, 'x', Values, not(impl(apply(A, [Y], [X]), apply(B, [Y], [X]))))
+				])
+			)
+		)
+	).
+
+
+
 %%%%% Examples %%%%%
 
 ?- print_validated_formula(

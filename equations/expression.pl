@@ -203,8 +203,12 @@ evaluate_function(union(set(A), set(B)), set(Value)) :-
 evaluate_function(difference(set(A), set(B)), set(Value)) :-
 	set_difference(A, B, Value).
 
-evaluate_function(set_equal(set(A), set(B)), Value) :-
-	set_equal(A, B, Value).
+evaluate_function(set_equal([set(A), set(B) | Tail]), Value) :-
+	set_equal(A, B, SetsEqual),
+	evaluate_function(set_equal([set(B) | Tail]), RestEqual),
+	log_and(SetsEqual, RestEqual, Value).
+
+evaluate_function(set_equal([set(_)]), log_true).
 
 evaluate_function(A + B, Y) :-
 	number(A),
@@ -306,6 +310,12 @@ evaluate_expression(exists(Variable, _, TestedValues, SubFormula), Value) :-
 	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_or_all(Results, Value).
 
+evaluate_expression(set_by(Variable, _, Values, Formula), Value) :-
+	!,
+	findall(Variable, (member(Variable, Values), evaluate_expression_or_fail(Formula, log_true)), Results),
+	make_set(Results, ResultsSet),
+	Value = set(ResultsSet).
+
 
 evaluate_expression(Expression, Value) :-
 	Expression =.. [Functor | Args],
@@ -325,10 +335,10 @@ evaluate_expression(Expression, Value) :-
 	make_set([4, 5], S3),
 	evaluate_expression(
 		declare_set(A, 'A', [set(S1), set(S2), set(S3)], declare_set(B, 'B', [set(S1), set(S2), set(S3)],
-			set_equal(
+			set_equal([
 				intersection(A, B),
 				intersection(B, A)
-			)
+			])
 		)),
 		log_true
 	).
@@ -338,10 +348,10 @@ evaluate_expression(Expression, Value) :-
 	make_set([4, 5], S3),
 	evaluate_expression(
 		declare_set(A, 'A', [set(S1), set(S2), set(S3)], declare_set(B, 'B', [set(S1), set(S2), set(S3)],
-			set_equal(
+			set_equal([
 				intersection(A, B),
 				union(A, B)
-			)
+			])
 		)),
 		log_false
 	).
@@ -372,6 +382,11 @@ evaluate_expression(Expression, Value) :-
 		log_true
 	).
 
+?-	make_set([1, 2], Value),
+	evaluate_expression(
+		set_by(X, 'x', [1, 2, 3, 4], or(num_equal([X, 1], 0), num_equal([X, 2], 0))),
+		set(Value)
+	).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -484,11 +499,42 @@ print_expression_term(Stream, apply(Predicate, _, ArgValues), _) :-
 	print_predicate_args(Stream, ArgValues),
 	write(Stream, ')').
 
+print_expression_term(Stream, set_by(Variable, Label, _, Formula), _) :-
+	Variable = Label,
+	write(Stream, '\\{'),
+	write(Stream, Label),
+	write(Stream, ' : '),
+	print_expression_term(Stream, Formula, root),
+	write(Stream, '\\}').
 
-print_predicate_args(Stream, [Arg | Tail]) :-
+print_expression_term(Stream, set_equal([A, B | Tail]), _) :-
+	print_expression_term(Stream, A, eq),
+	write(Stream, ' = '),
+	print_expression_term(Stream, set_equal([B | Tail]), eq).
+
+print_expression_term(Stream, set_equal([A]), _) :-
+	print_expression_term(Stream, A, eq).
+
+print_expression_term(Stream, union(A, B), _) :-
+	print_expression_term(Stream, A, eq),
+	write(Stream, ' \\cup '),
+	print_expression_term(Stream, B, eq).
+
+print_expression_term(Stream, intersection(A, B), _) :-
+	print_expression_term(Stream, A, eq),
+	write(Stream, ' \\cap '),
+	print_expression_term(Stream, B, eq).
+
+print_expression_term(Stream, difference(A, B), _) :-
+	print_expression_term(Stream, A, eq),
+	write(Stream, ' \\setminus '),
+	print_expression_term(Stream, B, eq).
+
+
+print_predicate_args(Stream, [Arg, Next | Tail]) :-
 	write(Stream, Arg),
-	write(', '),
-	print_predicate_args(Stream, Tail).
+	write(Stream, ', '),
+	print_predicate_args(Stream, [Next | Tail]).
 
 print_predicate_args(Stream, [Arg]) :-
 	write(Stream, Arg).
