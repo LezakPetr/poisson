@@ -397,11 +397,8 @@ evaluate_expression(Expression, Value) :-
 print_expression(Label, Formula) :-
 	calc_file_path('eq', Label, Path),
 	open(Path, write, Stream),
-	writeln(Stream, '\\begin{equation}'),
-	print_label(Stream, 'eq:', Label),
 	print_expression_term(Stream, Formula),
 	writeln(Stream, ''),
-	writeln(Stream, '\\end{equation}'),
 	close(Stream).
 
 

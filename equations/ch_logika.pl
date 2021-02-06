@@ -311,6 +311,28 @@
 	[impl(A, B)]
 ).
 
+?- print_truth_table(
+	or_associativity,
+	[declare_statement(A, 'A'), declare_statement(B, 'B'), declare_statement(C, 'C')],
+	[
+		or(A, B),
+		or(B, C),
+		or(par(or(A, B)), C),
+		or(A, par(or(B, C)))
+	]
+).
+
+?- print_truth_table(
+	and_associativity,
+	[declare_statement(A, 'A'), declare_statement(B, 'B'), declare_statement(C, 'C')],
+	[
+		and(A, B),
+		and(B, C),
+		and(par(and(A, B)), C),
+		and(A, par(and(B, C)))
+	]
+).
+
 
 ?- print_validated_formula(
 	tautology_example,

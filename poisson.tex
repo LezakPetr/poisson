@@ -8,7 +8,23 @@
 \usepackage{environ}
 \usetikzlibrary{math}
 
-\newcommand{\eeq}[1]{\input{out/eq_#1}}
+\newcommand{\eeql}[2]{
+	\begin{equation}
+	\label{#2}
+	\input{out/eq_#1}
+	\end{equation}
+}
+
+\newcommand{\eeq}[1]{
+\eeql{#1}{eq:#1}
+}
+
+\newcommand{\eeqn}[1]{
+	\begin{equation}
+	\input{out/eq_#1}
+	\end{equation}
+}
+
 \newcommand{\etab}[1]{\input{out/tab_#1}}
 
 \newcommand{\true}{\mathcal{P}}

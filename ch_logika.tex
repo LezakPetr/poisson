@@ -110,25 +110,71 @@ Příklad: Pokud prší, pak je mokro. Prší \(\impl\) mokro.
 
 Implikaci není možné obrátit. Z~výše uvedeného výroku tak nelze vyvodit "pokud je pokro, pak prší" - po cestě mohl například projet kropící vůz. Také není možné pouze negovat výroky v~impliaci. Z uvedeného výroku nelze tedy odvodit "pokud neprší, pak není mokro" - opět mohl projet kropící vůz. Ale je možné impliaci obrátit~a~negovat výroky, tedy odvodit "pokud není mokro, pak neprší", viz tautologie~\eqref{eq:impl_swap}. Dále je poněkud neintuitivní, že je implikace pravdivá, pokud je nepravdivý předpoklad. Tedy pokud neprší, pak je výše uvedený výrok pravdivý ať už je mokro nebo ne. 
 
+\section{Vyhodnocování logických výrazů}
+
+Logické výrazy, někdy nazývané formule, jsou obdobné matematickým výrazům. Skládají se z~predikátů, proměnných a~logických operátorů oposaných výše. Podobně jako u~matematických výrazů se pořadí vyhodnocování řídí závorkami a~prioritou operátorů. Operátory se vyhodnocují v~pořadí:
+
+\(\overline{A}\), \(\forall\), \(\exists\), \(\land\), \(\lor\), \(\impl\), \(\equivalent\)
+
+Příklad - určete pravdivost predikátu pro \(x = 5, y = 10\):
+\begin{equation}
+x < 3 \lor y = 10 \land (x = 5 \lor x < 5)
+\end{equation}
+
+Nejdříve uzávorkujeme výraz podle priority operátorů a~pak jej postupně vyhodnotíme:
+
+\begin{equation}
+\begin{split}
+x < 3 \lor (x \cdot y = 50 \land (x = 5 \lor x < 5)) = \\
+5 < 3 \lor (5 \cdot 10 = 50 \land (5 = 5 \lor 5 < 5)) = \\
+\false \lor (\true \land (\true \lor \false)) = \false \lor (\true \land \true) = \false \lor \true = \true 
+\end{split}
+\end{equation}
+
 \section{Množiny}
 
-Množina je neuspořádaný soubor prvků. Zápisem
+Množina je neuspořádaný soubor prvků, říkáme, že množina své prvky obsahuje. Zápisem
+
+\begin{equation}
+\{1, 2, 3\}
+\end{equation}
+
+rozumíme množinu, která obsahuje prvky 1, 2 a~3. Podobně zápisem
 
 \begin{equation}
 \{x: \predicate{A}(x)\}
 \end{equation}
 
-rozumíme množinu všech prvků \(x\), pro které je predikát \(\predicate{A}(x)\) pravdivý. Je-li \(M\) množina, pak můžeme zavést predikát
+rozumíme množinu všech prvků \(x\), pro které je predikát \(\predicate{A}(x)\) pravdivý. Proto
+
+\begin{equation}
+\{1, 2, 3\} = \{x: x = 1 \lor x = 2 \lor x = 3\}
+\end{equation}
+
+Symbolem \(\emptyset\) rozumíme prázdnou množinu - množinu, která neobsahuje žádný prvek:
+
+\begin{equation}
+\{\} = \{x: \false\} = \emptyset
+\end{equation}
+
+Je-li \(M\) množina, pak můžeme zavést predikát
 
 \begin{equation}
 x \in M
 \end{equation}
 
-který je pravdivý tehdy a~jen tehdy, pokud je prvek \(x\) obsažen v~množině \(M\). Jeho negaci označme
+který je pravdivý tehdy a~jen tehdy, pokud je prvek \(x\) obsažen v~množině \(M\). Proto platí
+
+\begin{equation}
+x \in \{ y : \predicate{A}(y) \} \equivalent \predicate{A}(x)
+\end{equation}
+
+Jeho negaci označme
 
 \begin{equation}
 x \notin M \equivalent \negation{x \in M}
 \end{equation}
+
 
 Jsou-li \(M_1\) a~\(M_2\) množiny, pak \(M_1 \cap M_2\) je jejich průnik a~obsahuje prvky, které jsou obsaženy v~obou množinách. Proto platí:
 
@@ -211,27 +257,6 @@ Příklad: Pro každé přirozené číslo existuje přirozené číslo větší
 
 \(\forall x \in \mathbb{N} \ \exists y \ y > x\)
 
-\section{Vyhodnocování logických výrazů}
-
-Logické výrazy, někdy nazývané formule, jsou obdobné matematickým výrazům. Skládají se z~predikátů, proměnných a~logických operátorů oposaných výše. Podobně jako u~matematických výrazů se pořadí vyhodnocování řídí závorkami a~prioritou operátorů. Operátory se vyhodnocují v~pořadí:
-
-\(\overline{A}\), \(\forall\), \(\exists\), \(\land\), \(\lor\), \(\impl\), \(\equivalent\)
-
-Příklad - určete pravdivost predikátu pro \(x = 5, y = 10\):
-\begin{equation}
-x < 3 \lor y = 10 \land (x = 5 \lor x < 5)
-\end{equation}
-
-Nejdříve uzávorkujeme výraz podle priority operátorů a~pak jej postupně vyhodnotíme:
-
-\begin{equation}
-\begin{split}
-x < 3 \lor (x \cdot y = 50 \land (x = 5 \lor x < 5)) = \\
-5 < 3 \lor (5 \cdot 10 = 50 \land (5 = 5 \lor 5 < 5)) = \\
-\false \lor (\true \land (\true \lor \false)) = \false \lor (\true \land \true) = \false \lor \true = \true 
-\end{split}
-\end{equation}
-
 \section{Tautologie}
 
 Tautologie jsou výroky, které jsou pravdivé bez ohladu na pravdivost výroků v~nich obsažených. Tautologie můžeme dokázat vyzkoušením všech možnosí, kterých mohou tyto výroky nabývat. Ideálně zkonstruováním pravdivostní tabulky.
@@ -268,12 +293,33 @@ a~proto můžeme napsat
 
 \eeq{tautology_example}
 
+\section{Důležité vztahy}
 
-\begin{fact}
+Proberme nyní důležité logické vztahy. Začněme symetričností disjunkce~\eqref{eq:or_symmetry} a~konjunkce~\eqref{eq:and_symmetry}:
+
 \eeq{or_symmetry}
 \eeq{and_symmetry}
+
+Tyto vztahy vyjadřují fakt, že můžeme prohodit operandy aniž bychom změnily výraz. Jejich platnost je vidět přímo z~pravdivostních tabulek - hodnota na dvou řádcích s~rozdílnýmí vstupy (odpovídající prohození vstupů) je shodná.
+
+Disjunkce a~konjunkce jsou také asociativní operace, jak udávají tautologie~\eqref{eq:or_associativity} a~\eqref{eq:and_associativity}. Můžeme proto změnit pořadí vyhodnocování disjunkcí nebo konjunkcí, neboli je jinak uzávorkovat.
+
 \eeq{or_associativity}
 \eeq{and_associativity}
+
+Vztahy dokážeme pomocí pravdivostních tabulek:
+
+\etab{or_associativity}
+
+\etab{and_associativity}
+
+V~tabulkách je také vidět, že disjunkce více výrazů je pravdivá právě tehdy, pokud je pravdivý alespoň jeden výraz. Podobně konjunkce více výrazů je pravdivá tehdy a~jen tehdy, pokud jsou pravdivé všechny výrazy.
+
+\begin{fact}
+\eeqn{or_symmetry}
+\eeqn{and_symmetry}
+\eeqn{or_associativity}
+\eeqn{and_associativity}
 \eeq{or_distributivity}
 \eeq{and_distributivity}
 \eeq{de_morgan_or}
@@ -291,7 +337,7 @@ a~proto můžeme napsat
 \eeq{exists_not_eq_not_forall}
 \end{fact}
 
-Tautologie~\eqref{eq:or_symmetry} a~\eqref{eq:and_symmetry} vyjadřují symetričnost disjunkce a~konjunkce, tedy možnost otočit pořadí operandů. Tautologie~\eqref{eq:or_associativity} a~\eqref{eq:and_associativity} pak jejich asociativitu, tedy možnost změnit pořadí vyhodnocování disjunkcí nebo konjunkcí. Tautologie~\eqref{eq:or_distributivity} a~\eqref{eq:and_distributivity} vyjadřují distributivitu disjunkce a~konjunkce, tedy možnost "roznásobit" výraz. Pomocí De-Morganových pravidel~\eqref{eq:de_morgan_or} a~\eqref{eq:de_morgan_and} lze posunou negaci skrz disjunkci a~konjunkci, při tom ale dojde k~záměně disjunkce za konjunkci a~naopak.
+ Tautologie~\eqref{eq:or_distributivity} a~\eqref{eq:and_distributivity} vyjadřují distributivitu disjunkce a~konjunkce, tedy možnost "roznásobit" výraz. Pomocí De-Morganových pravidel~\eqref{eq:de_morgan_or} a~\eqref{eq:de_morgan_and} lze posunou negaci skrz disjunkci a~konjunkci, při tom ale dojde k~záměně disjunkce za konjunkci a~naopak.
 
 Dálen následují vztahy týkající se implikace. Tautologie~\eqref{eq:impl_definition} představuje možnost vyjádřit implikaci pomocí disjunkce. Tautologie~\eqref{eq:impl_usage} odpovídá logickému usuzování: pokud platí \(\predicate{A}\) a~z~\(\predicate{A}\) plyne \(\predicate{B}\), pak musí platit \(\predicate{B}\). Tautologie~\eqref{eq:impl_transitivity} vyjadřuje tranzitivitu implikace: pokud z~\(\predicate{A}\) plyne \(\predicate{B}\) a~z~\(\predicate{B}\) plyne \(\predicate{C}\), pak z~\(\predicate{A}\) plyne \(\predicate{C}\). Tautologie~\eqref{eq:impl_swap} ukazuje, že výroky v~implikaci nelze pouze negovat, ale je také nutné implikaci otočit. Tautologie~\eqref{eq:equiv_to_impl} vyjadřuje fakt, že ekvivalence znamená obousměrnou implikaci.
 
