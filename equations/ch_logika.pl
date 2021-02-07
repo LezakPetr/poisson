@@ -333,6 +333,31 @@
 	]
 ).
 
+?- print_truth_table(
+	or_distributivity,
+	[declare_statement(A, 'A'), declare_statement(B, 'B'), declare_statement(C, 'C')],
+	[
+		and(A, B),
+		or(A, C),
+		or(B, C),
+		or(par(and(A, B)), C),
+		and(or(A, C), or(B, C))
+	]
+).
+
+?- print_truth_table(
+	and_distributivity,
+	[declare_statement(A, 'A'), declare_statement(B, 'B'), declare_statement(C, 'C')],
+	[
+		or(A, B),
+		and(A, C),
+		and(B, C),
+		and(or(A, B), C),
+		or(par(and(A, C)), par(and(B, C)))
+	]
+).
+
+
 
 ?- print_validated_formula(
 	tautology_example,

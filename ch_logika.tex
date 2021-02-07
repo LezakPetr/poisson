@@ -302,7 +302,7 @@ Proberme nyní důležité logické vztahy. Začněme symetričností disjunkce~
 
 Tyto vztahy vyjadřují fakt, že můžeme prohodit operandy aniž bychom změnily výraz. Jejich platnost je vidět přímo z~pravdivostních tabulek - hodnota na dvou řádcích s~rozdílnýmí vstupy (odpovídající prohození vstupů) je shodná.
 
-Disjunkce a~konjunkce jsou také asociativní operace, jak udávají tautologie~\eqref{eq:or_associativity} a~\eqref{eq:and_associativity}. Můžeme proto změnit pořadí vyhodnocování disjunkcí nebo konjunkcí, neboli je jinak uzávorkovat.
+Disjunkce a~konjunkce jsou také asociativní operace, jak udávají tautologie~\eqref{eq:or_associativity} a~\eqref{eq:and_associativity}. Můžeme proto změnit pořadí vyhodnocování disjunkcí nebo konjunkcí, neboli je jinak uzávorkovat. Proto také při zápisu konjunkce a~disjunkce více výrazů nemusíme závorky psát vůbec, protože na pořadí jejich vyhodnocení nezáleží. 
 
 \eeq{or_associativity}
 \eeq{and_associativity}
@@ -313,15 +313,24 @@ Vztahy dokážeme pomocí pravdivostních tabulek:
 
 \etab{and_associativity}
 
-V~tabulkách je také vidět, že disjunkce více výrazů je pravdivá právě tehdy, pokud je pravdivý alespoň jeden výraz. Podobně konjunkce více výrazů je pravdivá tehdy a~jen tehdy, pokud jsou pravdivé všechny výrazy.
+V~tabulkách je také vidět, že disjunkce více výrazů je pravdivá právě tehdy, pokud je pravdivý alespoň jeden výraz. Podobně konjunkce více výrazů je pravdivá tehdy a~jen tehdy, pokud jsou pravdivé všechny výrazy. V~ohledu symetričnosti a~asociativity se tedy disjunkce a~konjunkce chová jako sčítání a~násobení. Podobně je to s~distributivitou, která umožňuje "roznásobit" disjunkci konjunkcí, ale i~konjunkci disjunkcí:
+
+\eeq{or_distributivity}
+\eeq{and_distributivity}
+
+Vztahy dokážeme opět pomocí pravdivostních tabulek:
+
+\etab{or_distributivity}
+
+\etab{and_distributivity}
 
 \begin{fact}
 \eeqn{or_symmetry}
 \eeqn{and_symmetry}
 \eeqn{or_associativity}
 \eeqn{and_associativity}
-\eeq{or_distributivity}
-\eeq{and_distributivity}
+\eeqn{or_distributivity}
+\eeqn{and_distributivity}
 \eeq{de_morgan_or}
 \eeq{de_morgan_and}
 \eeq{impl_definition}
