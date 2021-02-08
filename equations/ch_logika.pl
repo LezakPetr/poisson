@@ -357,6 +357,31 @@
 	]
 ).
 
+?- print_truth_table(
+	de_morgan_or,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[
+		or(A, B),
+		not(A),
+		not(B),
+		not(or(A, B)),
+		and(not(A), not(B))
+	]
+).
+
+?- print_truth_table(
+	de_morgan_and,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[
+		and(A, B),
+		not(A),
+		not(B),
+		not(and(A, B)),
+		or(not(A), not(B))
+	]
+).
+
+
 
 
 ?- print_validated_formula(
