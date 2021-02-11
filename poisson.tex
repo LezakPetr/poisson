@@ -10,8 +10,10 @@
 
 \newcommand{\eeql}[2]{
 	\begin{equation}
+	\begin{split}
 	\label{#2}
 	\input{out/eq_#1}
+	\end{split}
 	\end{equation}
 }
 
@@ -21,7 +23,9 @@
 
 \newcommand{\eeqn}[1]{
 	\begin{equation}
+	\begin{split}
 	\input{out/eq_#1}
+	\end{split}
 	\end{equation}
 }
 

@@ -5,6 +5,9 @@
 boolean(log_false).
 boolean(log_true).
 
+hint(linebreak).
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Logical operations %%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -70,6 +73,17 @@ log_and_all([], log_true).
 ?- log_and_all([log_true, log_true], log_true).
 ?- log_and_all([log_false, log_true], log_false).
 ?- log_and_all([log_true, log_false], log_false).
+
+log_equiv_all([A, B | Tail], Value) :-
+	log_equiv(A, B, ABEquiv),
+	log_equiv_all([B | Tail], BTailEquiv),
+	log_and(ABEquiv, BTailEquiv, Value).
+
+log_equiv_all([_], log_true).
+
+?- log_equiv_all([log_true, log_true, log_true], log_true).
+?- log_equiv_all([log_false, log_false, log_false], log_true).
+?- log_equiv_all([log_true, log_false, log_true], log_false).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -168,6 +182,9 @@ set_equal(_, _, log_false).
 evaluate_function(X, X) :-
 	boolean(X).
 
+evaluate_function(X, X) :-
+	hint(X).
+
 evaluate_function(par(X), X).
 
 evaluate_function(set(S), set(S)).
@@ -187,12 +204,11 @@ evaluate_function(impl(A, B), Value) :-
 evaluate_function(equiv(A, B), Value) :-
 	log_equiv(A, B, Value).
 
+evaluate_function(equiv([A | Tail]), Value) :-
+	log_equiv_all([A | Tail], Value).
+
 evaluate_function(X, X) :-
 	number(X).
-
-evaluate_function(List, EvaluatedList) :-
-	is_list(List),
-	evaluate_list(List, EvaluatedList).
 
 evaluate_function(intersection(set(A), set(B)), set(Value)) :-
 	set_intersection(A, B, Value).
@@ -269,6 +285,11 @@ evaluate_function(num_equal(List, Tolerance), Value) :-
 
 evaluate_list([], []).
 
+evaluate_list([Expression | Tail], EvaluatedTail) :-
+	hint(Expression),
+	!,
+	evaluate_list(Tail, EvaluatedTail).
+
 evaluate_list([Expression | Tail], [EvaluatedExpression | EvaluatedTail]) :-
 	evaluate_expression(Expression, EvaluatedExpression),
 	evaluate_list(Tail, EvaluatedTail).
@@ -316,6 +337,10 @@ evaluate_expression(set_by(Variable, _, Values, Formula), Value) :-
 	make_set(Results, ResultsSet),
 	Value = set(ResultsSet).
 
+evaluate_expression(List, EvaluatedList) :-
+	is_list(List),
+	!,
+	evaluate_list(List, EvaluatedList).
 
 evaluate_expression(Expression, Value) :-
 	Expression =.. [Functor | Args],
@@ -323,6 +348,9 @@ evaluate_expression(Expression, Value) :-
 	SubEvaluatedExpression =.. [Functor | EvaluatedArgs],
 	evaluate_function(SubEvaluatedExpression, Value).
 
+
+?-	evaluate_list([log_true, linebreak, log_false], [log_true, log_false]).
+?-	evaluate_expression([log_true, linebreak, log_false], [log_true, log_false]).
 
 ?-	evaluate_expression(3*4 - 2*5, 2).
 ?-	evaluate_expression(3 * (4 - 2) * 5, 30).
@@ -421,6 +449,11 @@ print_boolean_in_math_mode(Stream, B) :-
 print_expression_term(Stream, F) :-
 	print_expression_term(Stream, F, root).
 
+print_expression_term(Stream, B, _) :-
+	boolean(B),
+	!,
+	print_boolean(Stream, B).
+
 print_expression_term(Stream, F, _) :-
 	atom(F),
 	write(Stream, F).
@@ -445,6 +478,11 @@ print_expression_term(Stream, equiv(A, B), PR) :-
 	print_expression_term(Stream, A, equiv),
 	write(Stream, ' \\equivalent '),
 	print_expression_term(Stream, B, equiv),
+	print_bracket_if_needed(Stream, ')', PR, equiv).
+
+print_expression_term(Stream, equiv([A | Tail]), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, equiv),
+	print_equiv_chain(Stream, [A | Tail]), 
 	print_bracket_if_needed(Stream, ')', PR, equiv).
 
 print_expression_term(Stream, or(A, B), PR) :-
@@ -539,6 +577,21 @@ print_predicate_args(Stream, [Arg]) :-
 print_predicate_args(_, []).
 
 
+print_equiv_chain(Stream, [A | Tail]) :-
+	hint(A),
+	!,
+	print_hint(Stream, A),
+	print_equiv_chain(Stream, Tail).
+
+print_equiv_chain(Stream, [A, B | Tail]) :-
+	print_expression_term(Stream, A, equiv),
+	write(Stream, ' \\equivalent '),
+	print_equiv_chain(Stream, [B | Tail]).
+
+print_equiv_chain(Stream, [A]) :-
+	print_expression_term(Stream, A, equiv).
+
+
 % Prints bracket if it is needed.
 % print_bracket_if_needed(Stream, Bracket, SuperOperator, SubOperator)
 print_bracket_if_needed(_, _, SuperOperator, SubOperator) :-
@@ -560,7 +613,7 @@ bracket_not_needed(and, exists).
 bracket_not_needed(or, exists).
 bracket_not_needed(impl, exists).
 bracket_not_needed(equiv, exists).
-bracket_not_needed(or, and).
+%bracket_not_needed(or, and).
 bracket_not_needed(impl, and).
 bracket_not_needed(equiv, and).
 bracket_not_needed(and, and).
@@ -568,4 +621,9 @@ bracket_not_needed(or, or).
 bracket_not_needed(impl, or).
 bracket_not_needed(equiv, or).
 bracket_not_needed(equiv, impl).
+
+
+
+print_hint(Stream, linebreak) :-
+	writeln(Stream, ' \\\\').
 

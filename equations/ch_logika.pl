@@ -48,7 +48,7 @@
 	or_distributivity,
 	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
 		equiv(
-			or(par(and(A, B)), C),
+			or(and(A, B), C),
 			and(or(A, C), or(B, C))
 		)
 	)))
@@ -59,7 +59,7 @@
 	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
 		equiv(
 			and(or(A, B), C),
-			or(par(and(A, C)), par(and(B, C)))
+			or(and(A, C), and(B, C))
 		)
 	)))
 ).
@@ -160,7 +160,7 @@
 		equiv(
 			or(
 				A,
-				par(and(A, B))
+				and(A, B)
 			),
 			A
 		)
@@ -250,6 +250,36 @@
 		)
 	).
 
+?- print_validated_formula(
+	impl_usage_proof,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv([
+			impl(and(A, impl(A, B)), B),
+			impl(and(A, or(not(A), B)), B),
+			impl(or(and(A, not(A)), and(A, B)), B),
+			linebreak,
+			impl(or(log_false, and(A, B)), B),
+			impl(and(A, B), B),
+			or(not(and(A, B)), B),
+			or(or(not(A), not(B)), B),
+			linebreak,
+			or(log_true, B),
+			log_true
+		])
+	))
+).
+
+?- print_validated_formula(
+	impl_transitivity_proof,
+	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+		equiv([
+			impl(and(impl(A, B), impl(B, C)), impl(A, C)),
+			impl(and(or(not(A), B), or(not(B), C)), or(not(A), C)),
+			linebreak,
+			impl(or(and(not(A), not(B)), or(and(not(A), C), or(and(B, not(B)), and(B, C)))), or(not(A), C))
+		])
+	)))
+).
 
 
 %%%%% Examples %%%%%
@@ -340,7 +370,7 @@
 		and(A, B),
 		or(A, C),
 		or(B, C),
-		or(par(and(A, B)), C),
+		or(and(A, B), C),
 		and(or(A, C), or(B, C))
 	]
 ).
@@ -353,7 +383,7 @@
 		and(A, C),
 		and(B, C),
 		and(or(A, B), C),
-		or(par(and(A, C)), par(and(B, C)))
+		or(and(A, C), and(B, C))
 	]
 ).
 
@@ -378,6 +408,16 @@
 		not(B),
 		not(and(A, B)),
 		or(not(A), not(B))
+	]
+).
+
+?- print_truth_table(
+	impl_definition,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[
+		not(A),
+		or(not(A), B),
+		impl(A, B)
 	]
 ).
 

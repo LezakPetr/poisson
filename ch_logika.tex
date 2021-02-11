@@ -295,17 +295,17 @@ a~proto můžeme napsat
 
 \section{Důležité vztahy}
 
-Proberme nyní důležité logické vztahy. Začněme symetričností disjunkce~\eqref{eq:or_symmetry} a~konjunkce~\eqref{eq:and_symmetry}:
+Proberme nyní důležité logické vztahy. Začněme symetričností disjunkce a~konjunkce:
 
-\eeq{or_symmetry}
-\eeq{and_symmetry}
+\eeqn{or_symmetry}
+\eeqn{and_symmetry}
 
 Tyto vztahy vyjadřují fakt, že můžeme prohodit operandy aniž bychom změnily výraz. Jejich platnost je vidět přímo z~pravdivostních tabulek - hodnota na dvou řádcích s~rozdílnýmí vstupy (odpovídající prohození vstupů) je shodná.
 
-Disjunkce a~konjunkce jsou také asociativní operace, jak udávají tautologie~\eqref{eq:or_associativity} a~\eqref{eq:and_associativity}. Můžeme proto změnit pořadí vyhodnocování disjunkcí nebo konjunkcí, neboli je jinak uzávorkovat. Proto také při zápisu konjunkce a~disjunkce více výrazů nemusíme závorky psát vůbec, protože na pořadí jejich vyhodnocení nezáleží. 
+Disjunkce a~konjunkce jsou také asociativní operace. Můžeme proto změnit pořadí vyhodnocování disjunkcí nebo konjunkcí, neboli je jinak uzávorkovat. Proto také při zápisu konjunkce a~disjunkce více výrazů nemusíme závorky psát vůbec, protože na pořadí jejich vyhodnocení nezáleží:
 
-\eeq{or_associativity}
-\eeq{and_associativity}
+\eeqn{or_associativity}
+\eeqn{and_associativity}
 
 Vztahy dokážeme pomocí pravdivostních tabulek:
 
@@ -315,8 +315,8 @@ Vztahy dokážeme pomocí pravdivostních tabulek:
 
 V~tabulkách je také vidět, že disjunkce více výrazů je pravdivá právě tehdy, pokud je pravdivý alespoň jeden výraz. Podobně konjunkce více výrazů je pravdivá tehdy a~jen tehdy, pokud jsou pravdivé všechny výrazy. V~ohledu symetričnosti a~asociativity se tedy disjunkce a~konjunkce chová jako sčítání a~násobení. Podobně je to s~distributivitou, která umožňuje "roznásobit" disjunkci konjunkcí, ale i~konjunkci disjunkcí:
 
-\eeq{or_distributivity}
-\eeq{and_distributivity}
+\eeqn{or_distributivity}
+\eeqn{and_distributivity}
 
 Vztahy dokážeme opět pomocí pravdivostních tabulek:
 
@@ -326,7 +326,7 @@ Vztahy dokážeme opět pomocí pravdivostních tabulek:
 
 Přejděme dále ke vztahům s~negací. Zákon dvojí negace vyjadřuje fakt, že dvojitou negací získáme původní výrok a~je zřejmý z~pravidostní tabulky negace:
 
-\eeq{double_negation}
+\eeqn{double_negation}
 
 Zákon o~vyloučení třetího a~vyjadřuje fakt, že buď platí výrok, nebo jeho negace. Opět je zřejmý z~pravidostní tabulky negace:
 
@@ -334,12 +334,12 @@ Zákon o~vyloučení třetího a~vyjadřuje fakt, že buď platí výrok, nebo j
 
 Podobně nemůže zároveň platit výrok i~jeho negace: 
 
-\eeq{and_both}
+\eeqn{and_both}
 
 Dále pomocí De-Morganových pravidel lze posunou negaci skrz disjunkci a~konjunkci, při tom ale dojde k~záměně disjunkce za konjunkci a~naopak:
 
-\eeq{de_morgan_or}
-\eeq{de_morgan_and}
+\eeqn{de_morgan_or}
+\eeqn{de_morgan_and}
 
 Důkaz provedeme opět pomocí pravdivostních tabulek:
 
@@ -347,21 +347,35 @@ Důkaz provedeme opět pomocí pravdivostních tabulek:
 
 \etab{de_morgan_and}
 
+Dále se podívejme na vztahy s~implikací. Začněme vyjádřením implikaci pomocí disjunkce:
 
+\eeqn{impl_definition}
 
+Vztah dokážeme pomocí pravdivostní tabulky:
+
+\etab{impl_definition}
+
+Dále dokážeme, že v~implikaci z~předpokladu plyne závěr. Důkaz provedeme postupným upravováním výrazu pomocí dříve dokázaných vztahů. Důkaz je záměrně proveden krok po kroku, aby bylo zřejmé, kterých vztahů využíváme:
+
+\eeq{impl_usage_proof}
+
+Nejdřív jsme rozepsali první implikaci na disjunkci. Pak jsme použili distributivitu konjunkce a~"roznásobili" disjunkci. První takto vzniklý člen je vždy nepravdivý, protože nemůže být pravdivý výrok \(\predicate{A}\) i~jeho negace. Protože se tento nepravdivý člen vyskytuje v~disjunkci, tak ho můžeme odstranit. Následně nahradíme zbývající implikaci disjunkcí. Na takto vzniklou negaci konjunkce použijeme De-Morganovo pravdidlo. Vznikne tak disjunkce, ve které se vyskytuje výrok 
+\(\predicate{B}\) i~jeho negace. Díky zákonu o~vyloučení třetího je pak tato disjunkce vždy pravdivá a~tím i celý výrok.
+
+\eeq{impl_transitivity_proof}
 
 \begin{fact}
-\eeqn{or_symmetry}
-\eeqn{and_symmetry}
-\eeqn{or_associativity}
-\eeqn{and_associativity}
-\eeqn{or_distributivity}
-\eeqn{and_distributivity}
-\eeqn{double_negation}
-\eeqn{excluded_middle}
-\eeqn{and_both}
-\eeqn{de_morgan_or}
-\eeqn{de_morgan_and}
+\eeq{or_symmetry}
+\eeq{and_symmetry}
+\eeq{or_associativity}
+\eeq{and_associativity}
+\eeq{or_distributivity}
+\eeq{and_distributivity}
+\eeq{double_negation}
+\eeq{excluded_middle}
+\eeq{and_both}
+\eeq{de_morgan_or}
+\eeq{de_morgan_and}
 \eeq{impl_definition}
 \eeq{impl_usage}
 \eeq{impl_transitivity}
