@@ -210,6 +210,9 @@ evaluate_function(equiv([A | Tail]), Value) :-
 evaluate_function(X, X) :-
 	number(X).
 
+evaluate_function(empty_set, set(Value)) :-
+	make_set([], Value).
+
 evaluate_function(intersection(set(A), set(B)), set(Value)) :-
 	set_intersection(A, B, Value).
 
@@ -225,6 +228,10 @@ evaluate_function(set_equal([set(A), set(B) | Tail]), Value) :-
 	log_and(SetsEqual, RestEqual, Value).
 
 evaluate_function(set_equal([set(_)]), log_true).
+
+evaluate_function(set_not_equal(set(A), set(B)), Value) :-
+	set_equal(A, B, SetsEqual),
+	log_not(SetsEqual, Value).
 
 evaluate_function(A + B, Y) :-
 	number(A),
@@ -358,6 +365,32 @@ evaluate_expression(Expression, Value) :-
 ?-	evaluate_expression(num_equal([1/(2+1), 2 / 6, 1 - (2/3)], 1e-14), log_true).
 ?-	evaluate_expression(num_equal([1, 2], 1e-14), log_false).
 
+?-	make_set([1, 2], S1),
+	make_set([1, 2], S2),
+	evaluate_expression(set_equal([set(S1), set(S2)]), log_true).
+
+?-	make_set([1, 2], S1),
+	make_set([1, 2], S2),
+	make_set([1, 2], S3),
+	evaluate_expression(set_equal([set(S1), set(S2), set(S3)]), log_true).
+
+?-	make_set([1, 2], S1),
+	make_set([1, 3], S2),
+	make_set([1, 2], S3),
+	evaluate_expression(set_equal([set(S1), set(S2), set(S3)]), log_false).
+
+?-	evaluate_expression(set_equal([empty_set, empty_set]), log_true).
+
+?-	make_set([1, 2], S1),
+	make_set([1, 2], S2),
+	evaluate_expression(set_not_equal(set(S1), set(S2)), log_false).
+
+?-	make_set([1, 2], S1),
+	make_set([1, 3], S2),
+	evaluate_expression(set_not_equal(set(S1), set(S2)), log_true).
+
+?-	evaluate_expression(set_not_equal(empty_set, empty_set), log_false).
+
 ?-	make_set([1, 2, 3], S1),
 	make_set([2, 3, 4], S2),
 	make_set([4, 5], S3),
@@ -454,6 +487,10 @@ print_expression_term(Stream, B, _) :-
 	!,
 	print_boolean(Stream, B).
 
+print_expression_term(Stream, empty_set, _) :-
+	!,
+	write(Stream, ' \\emptyset ').
+
 print_expression_term(Stream, F, _) :-
 	atom(F),
 	write(Stream, F).
@@ -549,6 +586,11 @@ print_expression_term(Stream, set_equal([A, B | Tail]), _) :-
 
 print_expression_term(Stream, set_equal([A]), _) :-
 	print_expression_term(Stream, A, eq).
+
+print_expression_term(Stream, set_not_equal(A, B), _) :-
+	print_expression_term(Stream, A, eq),
+	write(Stream, ' \\neq '),
+	print_expression_term(Stream, B, eq).
 
 print_expression_term(Stream, union(A, B), _) :-
 	print_expression_term(Stream, A, eq),

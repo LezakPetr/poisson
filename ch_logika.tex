@@ -222,6 +222,12 @@ Příklad: Každé přirozené číslo je větší než 0.
 
 \(\forall x \in \mathbb{N} \ x > 0\) neboli \(\forall x \ (x \in \mathbb{N} \impl x > 0)\).
 
+Kvantifikátory úzce souvisí s~množinami. Pravdivost predikátu \(\predicate{A}(x)\) závisí na proměnné \(x\). Možné hodnoty
+proměnné \(x\) můžeme tedy rozdělit do dvou disjunktních množin - množiny hodnot, ve kterých je predikát pravdivý a~množiny hodnot, ve kterých je predikát nepravdivý. Proto platí:
+
+\eeq{forall_set}
+
+Neboli, výrok, že predikát \(\predicate{A}(x)\) je pravdivý pro všechny možné hodnoty proměnné \(x\) je ekvivalentní výroku, že množina hodnot, pro které je tento predikát nepravdivý, je prázdná.
 
 \section{Existenční kvantifikátor}
 
@@ -256,6 +262,10 @@ tedy "existuje \(x\) z~množiny \(\mathrm{S}\) takové, že platí \(\predicate{
 Příklad: Pro každé přirozené číslo existuje přirozené číslo větší. 
 
 \(\forall x \in \mathbb{N} \ \exists y \ y > x\)
+
+Obdobně jako u~obecného kvantifikátoru můžeme existenční kvantifikátor zapsat pomocí množiny. Výrok, že existuje hodnota \(x\), pro kterou je predikát \(\predicate{A}(x)\) pravdivý je ekvivalentní výroku, že množina hodnot, pro které tento predikát pravdivý je neprázdná:
+
+\eeq{exists_set}
 
 \section{Tautologie}
 
@@ -324,6 +334,11 @@ Vztahy dokážeme opět pomocí pravdivostních tabulek:
 
 \etab{and_distributivity}
 
+Důležité jsou i~vztahy umožňující zjednodušit disjunkci a~konjunkci se dvou stejných výroků, nebo výrok naopak zduplikovat. Jejich platnost je vidět z~pravdivostních tabulek disjunkce a~konjunkce:
+
+\eeqn{double_or}
+\eeqn{double_and}
+
 Přejděme dále ke vztahům s~negací. Zákon dvojí negace vyjadřuje fakt, že dvojitou negací získáme původní výrok a~je zřejmý z~pravidostní tabulky negace:
 
 \eeqn{double_negation}
@@ -355,14 +370,34 @@ Vztah dokážeme pomocí pravdivostní tabulky:
 
 \etab{impl_definition}
 
-Dále dokážeme, že v~implikaci z~předpokladu plyne závěr. Důkaz provedeme postupným upravováním výrazu pomocí dříve dokázaných vztahů. Důkaz je záměrně proveden krok po kroku, aby bylo zřejmé, kterých vztahů využíváme:
+Snadno dokážeme, že při negaci výroků v~implikaci je nutné implikaci obrátit. Důkaz provedeme postupným upravováním výroku pomocí dříve dokázaných vztahů:
+
+\eeq{impl_swap_proof}
+
+Pro další dokazování je nutný následující vztah umožňující zjednodušit výrok \((\negation{\predicate{A}} \land \predicate{B}) \lor \predicate{A}\):
+
+\eeq{or_generalization_proof}
+
+V~prvních dvou krocích jsme výrok \(\predicate{A}\) zapsali jako \((\predicate{A} \land \predicate{B}) \lor (\predicate{A} \land \negation{\predicate{B}})\). Dále jsme výrok \(\predicate{A} \land \predicate{B}\) zduplikovali, abychom mohli z~výroků vytknout a~využitím zákonu vyloučení třetího celý výrok zjednodušit.
+
+Dále dokážeme, že v~implikaci z~předpokladu plyne závěr:
 
 \eeq{impl_usage_proof}
 
-Nejdřív jsme rozepsali první implikaci na disjunkci. Pak jsme použili distributivitu konjunkce a~"roznásobili" disjunkci. První takto vzniklý člen je vždy nepravdivý, protože nemůže být pravdivý výrok \(\predicate{A}\) i~jeho negace. Protože se tento nepravdivý člen vyskytuje v~disjunkci, tak ho můžeme odstranit. Následně nahradíme zbývající implikaci disjunkcí. Na takto vzniklou negaci konjunkce použijeme De-Morganovo pravdidlo. Vznikne tak disjunkce, ve které se vyskytuje výrok 
-\(\predicate{B}\) i~jeho negace. Díky zákonu o~vyloučení třetího je pak tato disjunkce vždy pravdivá a~tím i celý výrok.
+Nejdříve jsme rozepsali druhou implikaci na disjunkci. Pak jsme na první člen použili De-Morganovo pravidlo. Poté jsme zbývající implikaci opět nahradili disjunkcí a~použili na ni De-Morganovo pravdilo. Nakonec jsme použili vztah~\eqref{eq:or_generalization_proof}. Vznikne tak disjunkce, ve které se vyskytuje výrok 
+\(\predicate{A}\) i~jeho negace. Díky zákonu o~vyloučení třetího je pak tato disjunkce vždy pravdivá a~tím i celý výrok.
+
+Pokračujme důkazem tranzitivity implikace:
 
 \eeq{impl_transitivity_proof}
+
+Nakonec dokážeme vztah mezi implikací a~ekvivalencí pomocí pravdivostní tabulky:
+
+\eeqn{equiv_to_impl}
+
+\etab{equiv_to_impl}
+
+Shrňme si vztahy, které jsme doposud odvodili:
 
 \begin{fact}
 \eeq{or_symmetry}
@@ -371,6 +406,8 @@ Nejdřív jsme rozepsali první implikaci na disjunkci. Pak jsme použili distri
 \eeq{and_associativity}
 \eeq{or_distributivity}
 \eeq{and_distributivity}
+\eeq{double_or}
+\eeq{double_and}
 \eeq{double_negation}
 \eeq{excluded_middle}
 \eeq{and_both}
@@ -381,14 +418,11 @@ Nejdřív jsme rozepsali první implikaci na disjunkci. Pak jsme použili distri
 \eeq{impl_transitivity}
 \eeq{impl_swap}
 \eeq{equiv_to_impl}
-\eeq{or_specific}
+\end{fact}
+
+\section{Vztahy s~kvantifikátory}
+
+\begin{fact}
 \eeq{forall_not_eq_not_exists}
 \eeq{exists_not_eq_not_forall}
 \end{fact}
-
- Tautologie~\eqref{eq:or_distributivity} a~\eqref{eq:and_distributivity} vyjadřují distributivitu disjunkce a~konjunkce, tedy možnost "roznásobit" výraz. Pomocí De-Morganových pravidel~\eqref{eq:de_morgan_or} a~\eqref{eq:de_morgan_and} lze posunou negaci skrz disjunkci a~konjunkci, při tom ale dojde k~záměně disjunkce za konjunkci a~naopak.
-
-Dálen následují vztahy týkající se implikace. Tautologie~\eqref{eq:impl_definition} představuje možnost vyjádřit implikaci pomocí disjunkce. Tautologie~\eqref{eq:impl_usage} odpovídá logickému usuzování: pokud platí \(\predicate{A}\) a~z~\(\predicate{A}\) plyne \(\predicate{B}\), pak musí platit \(\predicate{B}\). Tautologie~\eqref{eq:impl_transitivity} vyjadřuje tranzitivitu implikace: pokud z~\(\predicate{A}\) plyne \(\predicate{B}\) a~z~\(\predicate{B}\) plyne \(\predicate{C}\), pak z~\(\predicate{A}\) plyne \(\predicate{C}\). Tautologie~\eqref{eq:impl_swap} ukazuje, že výroky v~implikaci nelze pouze negovat, ale je také nutné implikaci otočit. Tautologie~\eqref{eq:equiv_to_impl} vyjadřuje fakt, že ekvivalence znamená obousměrnou implikaci.
-
-Tautologie~\eqref{eq:or_specific} vyjadřuje fakt, že disjunkce výroku a~jeho více specifické verze je rovna tomuto výroku.
-

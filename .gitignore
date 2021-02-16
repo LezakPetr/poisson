@@ -2,3 +2,7 @@
 /*.out
 /*.pdf
 /examples/*.png
+/out/*
+/poisson.toc
+/poisson.log
+/pic/by-nc-nd-eu-eps-converted-to.pdf

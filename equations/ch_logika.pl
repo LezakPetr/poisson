@@ -25,6 +25,26 @@
 ).
 
 ?- print_validated_formula(
+	double_or,
+	declare_statement(A, 'A',
+		equiv(
+			or(A, A),
+			A
+		)
+	)
+).
+
+?- print_validated_formula(
+	double_and,
+	declare_statement(A, 'A',
+		equiv(
+			and(A, A),
+			A
+		)
+	)
+).
+
+?- print_validated_formula(
 	or_associativity,
 	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
 		equiv(
@@ -155,19 +175,6 @@
 ).
 
 ?- print_validated_formula(
-	or_specific,
-	declare_statement(A, 'A', declare_statement(B, 'B',
-		equiv(
-			or(
-				A,
-				and(A, B)
-			),
-			A
-		)
-	))
-).
-
-?- print_validated_formula(
 	equiv_to_impl,
 	declare_statement(A, 'A', declare_statement(B, 'B',
 		equiv(
@@ -176,6 +183,28 @@
 		)
 	))
 ).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'forall_set',
+		declare_predicate(A, 'A', [num_equal([Y, 1], 0), log_true, log_false],
+			equiv(
+				forall(X, 'x', Values, apply(A, [Y], [X])),
+				set_equal([set_by(X, 'x', Values, not(apply(A, [Y], [X]))), empty_set])
+			)
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'exists_set',
+		declare_predicate(A, 'A', [num_equal([Y, 1], 0), log_true, log_false],
+			equiv(
+				exists(X, 'x', Values, apply(A, [Y], [X])),
+				set_not_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set)
+			)
+		)
+	).
 
 ?- 	Values = [1, 2],
 	print_validated_formula(
@@ -251,19 +280,49 @@
 	).
 
 ?- print_validated_formula(
+	impl_swap_proof,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv([
+			impl(A, B),
+			or(not(A), B),
+			or(not(not(B)), not(A)),
+			impl(not(B), not(A))
+		])
+	))
+).
+
+?- print_validated_formula(
+	or_generalization_proof,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv([
+			or(and(not(A), B), A),
+			or(and(not(A), B), and(A, or(B, not(B)))),
+			linebreak,
+			or(and(not(A), B), par(or(and(A, B), and(A, not(B))))),
+			linebreak,
+			or(and(not(A), B), or(and(A, B), or(and(A, B), and(A, not(B))))),
+			linebreak,
+			or(and(or(not(A), A), B), and(A, or(B, not(B)))),
+			or(B, A),
+			or(A, B)
+		])
+	))
+).
+
+
+?- print_validated_formula(
 	impl_usage_proof,
 	declare_statement(A, 'A', declare_statement(B, 'B',
 		equiv([
 			impl(and(A, impl(A, B)), B),
-			impl(and(A, or(not(A), B)), B),
-			impl(or(and(A, not(A)), and(A, B)), B),
+			or(not(and(A, impl(A, B))), B),
+			or(or(not(A), not(impl(A, B))), B),
 			linebreak,
-			impl(or(log_false, and(A, B)), B),
-			impl(and(A, B), B),
-			or(not(and(A, B)), B),
-			or(or(not(A), not(B)), B),
+			or(or(not(A), not(or(not(A), B))), B),
+			or(or(not(A), and(A, not(B))), B),
+			or(not(A), par(or(and(A, not(B)), B))),
 			linebreak,
-			or(log_true, B),
+			or(not(A), par(or(B, A))),
 			log_true
 		])
 	))
@@ -274,9 +333,16 @@
 	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
 		equiv([
 			impl(and(impl(A, B), impl(B, C)), impl(A, C)),
-			impl(and(or(not(A), B), or(not(B), C)), or(not(A), C)),
+			or(not(and(impl(A, B), impl(B, C))), impl(A, C)),
 			linebreak,
-			impl(or(and(not(A), not(B)), or(and(not(A), C), or(and(B, not(B)), and(B, C)))), or(not(A), C))
+			or(or(not(impl(A, B)), not(impl(B, C))), impl(A, C)),
+			or(or(not(or(not(A), B)), not(or(not(B), C))), or(not(A), C)),
+			linebreak,
+			or(or(and(A, not(B)), and(B, not(C))), or(not(A), C)),
+			or(par(or(and(A, not(B)), not(A))), par(or(and(B, not(C)), C))),
+			linebreak,
+			or(par(or(not(A), not(B))), par(or(C, B))),
+			log_true
 		])
 	)))
 ).
@@ -421,7 +487,16 @@
 	]
 ).
 
-
+?- print_truth_table(
+	equiv_to_impl,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[
+		impl(A, B),
+		impl(B, A),
+		and(impl(A, B), impl(B, A)),
+		equiv(A, B)
+	]
+).
 
 
 ?- print_validated_formula(
