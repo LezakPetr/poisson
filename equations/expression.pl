@@ -229,6 +229,9 @@ evaluate_function(set_equal([set(A), set(B) | Tail]), Value) :-
 
 evaluate_function(set_equal([set(_)]), log_true).
 
+evaluate_function(set_equal(set(A), set(B)), Value) :-
+	set_equal(A, B, Value).
+
 evaluate_function(set_not_equal(set(A), set(B)), Value) :-
 	set_equal(A, B, SetsEqual),
 	log_not(SetsEqual, Value).
@@ -368,6 +371,10 @@ evaluate_expression(Expression, Value) :-
 ?-	make_set([1, 2], S1),
 	make_set([1, 2], S2),
 	evaluate_expression(set_equal([set(S1), set(S2)]), log_true).
+
+?-	make_set([1, 2], S1),
+	make_set([1, 2], S2),
+	evaluate_expression(set_equal(set(S1), set(S2)), log_true).
 
 ?-	make_set([1, 2], S1),
 	make_set([1, 2], S2),
@@ -586,6 +593,11 @@ print_expression_term(Stream, set_equal([A, B | Tail]), _) :-
 
 print_expression_term(Stream, set_equal([A]), _) :-
 	print_expression_term(Stream, A, eq).
+
+print_expression_term(Stream, set_equal(A, B), _) :-
+	print_expression_term(Stream, A, eq),
+	write(Stream, ' = '),
+	print_expression_term(Stream, B, eq).
 
 print_expression_term(Stream, set_not_equal(A, B), _) :-
 	print_expression_term(Stream, A, eq),

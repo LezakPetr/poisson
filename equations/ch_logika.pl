@@ -219,6 +219,19 @@
 
 ?- 	Values = [1, 2],
 	print_validated_formula(
+		'forall_not_eq_not_exists_proof',
+		declare_predicate(P, 'P', [num_equal([Y, 1], 0), log_true, log_false],
+			equiv([
+				forall(X, 'x', Values, not(apply(P, [Y], [X]))),
+				set_equal(set_by(X, 'x', Values, not(not(apply(P, [Y], [X])))), empty_set),
+				set_equal(set_by(X, 'x', Values, apply(P, [Y], [X])), empty_set),
+				not(exists(X, 'x', Values, apply(P, [Y], [X])))
+			])
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
 		'exists_not_eq_not_forall',
 		declare_predicate(P, 'P', [num_equal([Y, 1], 0), log_true, log_false],
 			equiv(
@@ -228,6 +241,110 @@
 		)
 	).
 
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'exists_not_eq_not_forall_proof',
+		declare_predicate(P, 'P', [num_equal([Y, 1], 0), log_true, log_false],
+			equiv([
+				exists(X, 'x', Values, not(apply(P, [Y], [X]))),
+				set_not_equal(set_by(X, 'x', Values, not(apply(P, [Y], [X]))), empty_set),
+				not(forall(X, 'x', Values, apply(P, [Y], [X])))
+			])
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'forall_and',
+		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+				equiv(
+					forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+					and(
+						forall(X, 'x', Values, apply(A, [Y], [X])),
+						forall(X, 'x', Values, apply(B, [Y], [X]))
+					)
+				)
+			)
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'forall_and_proof',
+		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+				equiv([
+					forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+					set_equal(set_by(X, 'x', Values, not(and(apply(A, [Y], [X]), apply(B, [Y], [X])))), empty_set),
+					linebreak,
+					set_equal(set_by(X, 'x', Values, or(not(apply(A, [Y], [X])), not(apply(B, [Y], [X])))), empty_set),
+					set_equal(
+						union(
+							set_by(X, 'x', Values, not(apply(A, [Y], [X]))),
+							set_by(X, 'x', Values, not(apply(B, [Y], [X])))
+						),
+						empty_set
+					),
+					linebreak,
+					and(
+						set_equal(set_by(X, 'x', Values, not(apply(A, [Y], [X]))), empty_set),
+						set_equal(set_by(X, 'x', Values, not(apply(B, [Y], [X]))), empty_set)
+					),
+					and(
+						forall(X, 'x', Values, apply(A, [Y], [X])),
+						forall(X, 'x', Values, apply(B, [Y], [X]))
+					)
+				])
+			)
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'exists_or',
+		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+				equiv(
+					exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+					or(
+						exists(X, 'x', Values, apply(A, [Y], [X])),
+						exists(X, 'x', Values, apply(B, [Y], [X]))
+					)
+				)
+			)
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'exists_or_proof',
+		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+				equiv([
+					exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+					set_not_equal(set_by(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))), empty_set),
+					linebreak,
+					set_not_equal(
+						union(
+							set_by(X, 'x', Values, apply(A, [Y], [X])),
+							set_by(X, 'x', Values, apply(B, [Y], [X]))
+						),
+						empty_set
+					),
+					or(
+						set_not_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set),
+						set_not_equal(set_by(X, 'x', Values, apply(B, [Y], [X])), empty_set)
+					),
+					linebreak,
+					or(
+						exists(X, 'x', Values, apply(A, [Y], [X])),
+						exists(X, 'x', Values, apply(B, [Y], [X]))
+					)
+				])
+			)
+		)
+	).
 
 
 ?- 	Values = [1, 2],

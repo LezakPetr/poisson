@@ -47,21 +47,6 @@ Příklad: Není pravda, že je den. \(\overline{\predicate{den}}\).
 
 Je třeba upozornit, že negace není tzv. pravý opak, ale výrok, který je pravdivý právě tehdy, když není pravdivý výrok negovaný. Negací výroku "prší" proto není "svítí slunce", ale "neprší. Ne vždy, když neprší, tak svítí slunce - může být zataženo.
 
-\section{Ekvivalence}
-
-Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
-
-\begin{equation}
-\predicate{A} \equivalent \predicate{B} 
-\end{equation}
-
-je pravdivý, pokud mají oba predikáty stejnou pravdivost - jsou oba pravdivé nebo oba nepravdivé. Říkáme "\(\predicate{A}\) je pravdivý tehdy a~jen tehdy, pokud je pravdivý \(\predicate{B}\)" nebo "\(\predicate{A}\) je pravdivý právě tehdy, když je pravdivý \(\predicate{B}\)".
-Ekvivalenci můžeme vyjádřit pravdivostní tabulkou:
-
-\etab{truth_equiv}
-
-Příklad: Den je tehdy a~jen tehdy, když není noc. \(\predicate{Den} \equivalent \overline{\predicate{noc}}\).
-
 \section{Konjunkce}
 
 Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
@@ -76,7 +61,6 @@ Konjunkci můžeme vyjádřit pravdivostní tabulkou:
 \etab{truth_and}
 
 Příklad: Země je kulatá a~obíhá okolo Slunce. Země je kulatá \(\land\) Země obíhá okolo Slunce.
-
 
 \section{Disjunkce}
 
@@ -109,6 +93,33 @@ Implikaci můžeme vyjádřit pravdivostní tabulkou:
 Příklad: Pokud prší, pak je mokro. Prší \(\impl\) mokro.
 
 Implikaci není možné obrátit. Z~výše uvedeného výroku tak nelze vyvodit "pokud je pokro, pak prší" - po cestě mohl například projet kropící vůz. Také není možné pouze negovat výroky v~impliaci. Z uvedeného výroku nelze tedy odvodit "pokud neprší, pak není mokro" - opět mohl projet kropící vůz. Ale je možné impliaci obrátit~a~negovat výroky, tedy odvodit "pokud není mokro, pak neprší", viz tautologie~\eqref{eq:impl_swap}. Dále je poněkud neintuitivní, že je implikace pravdivá, pokud je nepravdivý předpoklad. Tedy pokud neprší, pak je výše uvedený výrok pravdivý ať už je mokro nebo ne. 
+
+\section{Ekvivalence}
+
+Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
+
+\begin{equation}
+\predicate{A} \equivalent \predicate{B} 
+\end{equation}
+
+je pravdivý, pokud mají oba predikáty stejnou pravdivost - jsou oba pravdivé nebo oba nepravdivé. Říkáme "\(\predicate{A}\) je pravdivý tehdy a~jen tehdy, pokud je pravdivý \(\predicate{B}\)" nebo "\(\predicate{A}\) je pravdivý právě tehdy, když je pravdivý \(\predicate{B}\)".
+Ekvivalenci můžeme vyjádřit pravdivostní tabulkou:
+
+\etab{truth_equiv}
+
+Příklad: Den je tehdy a~jen tehdy, když není noc. \(\predicate{Den} \equivalent \overline{\predicate{noc}}\).
+
+Konvence: často pozřebujeme vyjádřit, že nekolik výroků je vzájemně ekvivalentních. Zavedeme proto zápis obdobný rovnosti výrazů. Zápisem
+
+\begin{equation}
+\predicate{A} \equivalent \predicate{B} \equivalent \predicate{C} \equivalent \predicate{D} ... 
+\end{equation}
+
+proto rozumíme
+
+\begin{equation}
+(\predicate{A} \equivalent \predicate{B}) \land (\predicate{B} \equivalent \predicate{C}) \land (\predicate{C} \equivalent \predicate{D}) \land ... 
+\end{equation}
 
 \section{Vyhodnocování logických výrazů}
 
@@ -422,7 +433,23 @@ Shrňme si vztahy, které jsme doposud odvodili:
 
 \section{Vztahy s~kvantifikátory}
 
+Začněme vztahy mezi kvantifikátory, které nám umožní přesunout negaci z/do kvantifikátoru. Pro jejich dokázání využejeme
+vztahy~\eqref{eq:forall_set} a~\eqref{eq:exists_set}. Vztah~\eqref{eq:forall_not_eq_not_exists_proof} udává, že výrok "pro každé \(x\) je predikát nepravdivý" je ekvivalentní výroku "neexistuje \(x\), pro které je predikát pravdivý". Vztah~\eqref{eq:exists_not_eq_not_forall_proof} udává, že výrok "existuje \(x\) pro které je predikát nepravdivý" je ekvivalentní výroku "ne pro všechna \(x\) je predikát pravdivý":
+
+\eeq{forall_not_eq_not_exists_proof}
+\eeq{exists_not_eq_not_forall_proof}
+
+Dále můžeme odvodit vztah pro konjunkci v~obecném kvantifikátoru. Vztah~\eqref{eq:forall_and_proof} říká, že výrok "každé \(x\) má vlastnost \(\predicate{A}\) i~\(\predicate{B}\)" je ekvivalentní výroku "každé \(x\) má vlastnost \(\predicate{A}\) a~každé \(x\) má vlastnost~\(\predicate{B}\)".
+
+\eeq{forall_and_proof}
+
+Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. Vztah~\eqref{eq:exists_or_proof} říká, že výrok "existuje \(x\) takové, že má vlastnost \(\predicate{A}\) nebo \(\predicate{B}\)" je ekvivalentní výroku "existuje \(x\), které má vlastnost \(\predicate{A}\) nebo existuje \(x\), které má vlastnost~\(\predicate{B}\)".
+
+\eeq{exists_or_proof}
+
 \begin{fact}
 \eeq{forall_not_eq_not_exists}
 \eeq{exists_not_eq_not_forall}
+\eeq{forall_and}
+\eeq{exists_or}
 \end{fact}
