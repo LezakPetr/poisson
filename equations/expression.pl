@@ -107,6 +107,17 @@ in_set(V, [_ | Tail]) :-
 
 ?- make_set([a, b, c], S), \+ in_set(d, S).
 
+log_in_set(Value, Set, log_true) :-
+	in_set(Value, Set),
+	!.       
+
+log_in_set(_, _, log_false).
+
+?- make_set([a, b, c], S), log_in_set(b, S, log_true).
+
+?- make_set([a, b, c], S), log_in_set(d, S, log_false).
+
+
 % Calculates set intersection.
 % set_intersection(A, B, Intersection)
 set_intersection([V | Tail], B, [V | IntersectionTail]) :-
@@ -212,6 +223,9 @@ evaluate_function(X, X) :-
 
 evaluate_function(empty_set, set(Value)) :-
 	make_set([], Value).
+
+evaluate_function(in(X, set(S)), Value) :-
+	log_in_set(X, S, Value).
 
 evaluate_function(intersection(set(A), set(B)), set(Value)) :-
 	set_intersection(A, B, Value).
@@ -510,6 +524,10 @@ print_expression_term(Stream, declare_predicate(Variable, Label, _, SubFormula),
 	Variable = Label,
 	print_expression_term(Stream, SubFormula, PR).
 
+print_expression_term(Stream, declare_set(Variable, Label, _, SubFormula), PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
+
 print_expression_term(Stream, impl(A, B), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, impl), 
 	print_expression_term(Stream, A, impl),
@@ -598,6 +616,11 @@ print_expression_term(Stream, set_equal(A, B), _) :-
 	print_expression_term(Stream, A, eq),
 	write(Stream, ' = '),
 	print_expression_term(Stream, B, eq).
+
+print_expression_term(Stream, in(X, S), _) :-
+	print_expression_term(Stream, X, in),
+	write(Stream, ' \\in '),
+	print_expression_term(Stream, S, in).
 
 print_expression_term(Stream, set_not_equal(A, B), _) :-
 	print_expression_term(Stream, A, eq),

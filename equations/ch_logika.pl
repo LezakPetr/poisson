@@ -346,6 +346,23 @@
 		)
 	).
 
+?- 	Values = [1, 2],
+	make_set([], S1),
+	make_set([1], S2),
+	make_set([2], S3),
+	make_set([1, 2], S4),
+	Sets = [set(S1), set(S2), set(S3), set(S4)],
+	print_validated_formula(
+		'set_equal_definition',
+		declare_set(SA, 'S_A', Sets,
+			declare_set(SB, 'S_B', Sets,
+				equiv(
+					set_equal(SA, SB),
+					forall(X, 'x', Values, equiv(in(X, SA), in(X, SB)))
+				)
+			)
+		)
+	).
 
 ?- 	Values = [1, 2],
 	print_validated_formula(
