@@ -227,6 +227,10 @@ evaluate_function(empty_set, set(Value)) :-
 evaluate_function(in(X, set(S)), Value) :-
 	log_in_set(X, S, Value).
 
+evaluate_function(not_in(X, set(S)), Value) :-
+	log_in_set(X, S, InSet),
+	log_not(InSet, Value).
+
 evaluate_function(intersection(set(A), set(B)), set(Value)) :-
 	set_intersection(A, B, Value).
 
@@ -344,6 +348,11 @@ evaluate_expression(declare_predicate(PredicateVariable, _, TestedPredicates, Su
 evaluate_expression(apply(Predicate, Args, ArgValues), Value) :-
 	!,
 	findall(SubFormulaValue, (Args = ArgValues, evaluate_expression_or_fail(Predicate, SubFormulaValue)), [Value]).
+
+evaluate_expression(declare_variable(Variable, _, TestedValues, SubFormula), Value) :-
+	!,
+	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
+	log_and_all(Results, Value).
 
 evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
@@ -571,6 +580,10 @@ print_expression_term(Stream, not(F), _) :-
 	print_expression_term(Stream, F, root),
 	write(Stream, '}').
 
+print_expression_term(Stream, declare_variable(Variable, Label, _, SubFormula), PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
+
 print_expression_term(Stream, forall(Variable, Label, _, SubFormula), PR) :-
 	Variable = Label,
 	print_bracket_if_needed(Stream, '(', PR, forall), 
@@ -620,6 +633,11 @@ print_expression_term(Stream, set_equal(A, B), _) :-
 print_expression_term(Stream, in(X, S), _) :-
 	print_expression_term(Stream, X, in),
 	write(Stream, ' \\in '),
+	print_expression_term(Stream, S, in).
+
+print_expression_term(Stream, not_in(X, S), _) :-
+	print_expression_term(Stream, X, in),
+	write(Stream, ' \\notin '),
 	print_expression_term(Stream, S, in).
 
 print_expression_term(Stream, set_not_equal(A, B), _) :-

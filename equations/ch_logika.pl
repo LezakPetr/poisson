@@ -413,6 +413,23 @@
 		)
 	).
 
+?-	make_set([], S1),
+	make_set([1], S2),
+	make_set([2], S3),
+	make_set([1, 2], S4),
+	Sets = [set(S1), set(S2), set(S3), set(S4)],
+	print_validated_formula(
+		'union_empty_sets',
+		declare_set(SA, 'S_A', Sets,
+			declare_set(SB, 'S_B', Sets,
+				equiv(
+					set_equal(union(SA, SB), empty_set),
+					and(set_equal(SA, empty_set), set_equal(SB, empty_set))
+				)
+			)
+		)
+	).
+
 ?- print_validated_formula(
 	impl_swap_proof,
 	declare_statement(A, 'A', declare_statement(B, 'B',
@@ -480,6 +497,92 @@
 		])
 	)))
 ).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'in_set_definition',
+		declare_predicate(A, 'A', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+			declare_variable(X, 'x', Values,
+				equiv(
+					in(X, set_by(Y, 'y', Values, apply(A, [Z], [Y]))),
+					apply(A, [Z], [X])
+				)
+			)
+		)
+	).
+	
+?- 	make_set([], S1),
+	make_set([1], S2),
+	make_set([2], S3),
+	make_set([1, 2], S4),
+	Sets = [set(S1), set(S2), set(S3), set(S4)],
+	Values = [1, 2],
+	print_validated_formula(
+		'not_in_set_definition',
+		declare_set(M, 'M', Sets,
+			declare_variable(X, 'x', Values,
+				equiv(
+					not_in(X, M),
+					not(in(X, M))
+				)
+			)
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'intersection_in_1',
+		declare_predicate(A, 'A', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+				declare_variable(Y, 'y', Values, equiv(and(apply(A, [Z], [Y]), apply(B, [Z], [Y])), and(apply(A, [Z], [Y]), apply(B, [Z], [Y]))))
+			)
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'intersection_in_2',
+		declare_predicate(A, 'A', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, set_by(X, 'x', Values, and(apply(A, [Z], [X]), apply(B, [Z], [X])))),
+					and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
+				))
+			)
+		)
+	).
+
+?- 	Values = [1, 2],
+	print_validated_formula(
+		'intersection_in_3',
+		declare_predicate(A, 'A', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+			declare_predicate(B, 'B', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, intersection(set_by(X, 'x', Values, apply(A, [Z], [X])), set_by(X, 'x', Values, apply(B, [Z], [X])))),
+					and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
+				))
+			)
+		)
+	).
+
+?- 	make_set([], S1),
+	make_set([1], S2),
+	make_set([2], S3),
+	make_set([1, 2], S4),
+	Sets = [set(S1), set(S2), set(S3), set(S4)],
+	Values = [1, 2],
+	print_validated_formula(
+		'intersection_in_4',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, intersection(MA, MB)),
+					and(in(Y, MA), in(Y, MB))
+				))
+			)
+		)
+	).
+
 
 
 %%%%% Examples %%%%%

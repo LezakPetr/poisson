@@ -176,28 +176,11 @@ x \in M
 
 který je pravdivý tehdy a~jen tehdy, pokud je prvek \(x\) obsažen v~množině \(M\). Proto platí
 
-\begin{equation}
-x \in \{ y : \predicate{A}(y) \} \equivalent \predicate{A}(x)
-\end{equation}
+\eeq{in_set_definition}
 
 Jeho negaci označme
 
-\begin{equation}
-x \notin M \equivalent \negation{x \in M}
-\end{equation}
-
-
-Jsou-li \(M_1\) a~\(M_2\) množiny, pak \(M_1 \cap M_2\) je jejich průnik a~obsahuje prvky, které jsou obsaženy v~obou množinách. Proto platí:
-
-\eeq{intersection_definition}
-
-Obdobně \(M_1 \cup M_2\) je sjednocení množin a~obsahuje prvky, které jsou obsaženy v~jedné nabo druhé množině. Proto platí:
-
-\eeq{union_definition}
-
-Rozdíl množin \(M_1 \setminus M_2\) obsahuje prvky, které jsou obsaženy v~množině \(M_1\) a~nejsou obsaženy v~množině \(M_2\). Proto platí:
-
-\eeq{difference_definition}
+\eeq{not_in_set_definition}
 
 \section{Obecný kvantifikátor}
 
@@ -313,12 +296,6 @@ Využitím další tautologie~\eqref{eq:or_specific} se celý výraz zjednoduš�
 a~proto můžeme napsat
 
 \eeq{tautology_example}
-
-\section{Množiny - pokračování}
-
-Dvě množiny jsou shodné, pokud mají stejné prvky:
-
-\eeq{set_equal_definition}
 
 \section{Důležité vztahy}
 
@@ -436,6 +413,61 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \eeq{impl_swap}
 \eeq{equiv_to_impl}
 \end{fact}
+
+\section{Množiny - pokračování}
+
+Dvě množiny jsou shodné, pokud mají stejné prvky:
+
+\eeq{set_equal_definition}
+
+Jsou-li \(M_1\) a~\(M_2\) množiny, pak \(M_1 \cap M_2\) je jejich průnik a~obsahuje prvky, které jsou obsaženy v~obou množinách. Proto platí:
+
+\eeq{intersection_definition}
+
+Toto sjednocení můžeme zapsat i~pomocí operátoru \(\in\). Zkusme to odvodit. Začněme identitou:
+\eeq{intersection_in_1}
+
+Dále třikrát použijeme vztah~\eqref{eq:in_set_definition}:
+\eeq{intersection_in_2}
+
+Použijeme vztah~\eqref{eq:intersection_definition}:
+\eeq{intersection_in_3}
+
+A~nakonec zavedeme substituci \(M_A = \{x: \predicate{A}(x)\}\) a~\(M_B = \{x: \predicate{B}(x)\}\):
+\eeq{intersection_in_4}
+
+Obdobně \(M_1 \cup M_2\) je sjednocení množin a~obsahuje prvky, které jsou obsaženy v~jedné nabo druhé množině. Proto platí:
+
+\eeq{union_definition}
+
+Rozdíl množin \(M_1 \setminus M_2\) obsahuje prvky, které jsou obsaženy v~množině \(M_1\) a~nejsou obsaženy v~množině \(M_2\). Proto platí:
+
+\eeq{difference_definition}
+
+
+Dále dokážeme, že sjednocení dvou množin je prázdnou množinou tehdy a~jen tehdy, pokud jsou obě množiny prázdné:
+
+\eeq{union_empty_sets}
+
+Podle vztahu~\eqref{eq:equiv_to_impl} musíme dokázat, že sjednocení dvou prázdných množin je prázdná množina - to je triviální - a~že sjednocení množin může být prázdná množina pouze pokud sjednocované množiny jsou prázdné. To dokážeme nyní. Mějme sjednocení dvou množin o~kterém tvrdíme, že je prázdnou množinou:
+
+\begin{equation}
+\{x: \predicate{A}(x)\} \cup \{x: \predicate{B}(x)\} = \{x: \predicate{A}(x) \lor \predicate{B}(x)\} = \{x: \false\}
+\end{equation}
+
+To tedy znamená:
+
+\begin{equation}
+\predicate{A}(x) \lor \predicate{B}(x) = \false
+\end{equation}
+
+Podle pravdivostní tabulky disjunkce vidíme, že tato situace může nastat pouze pokud jsou oba predikáty nepravdivé:
+
+\begin{equation}
+\predicate{A}(x) = \predicate{B}(x) = \false
+\end{equation}
+
+Obě sjednocované množiny tedy musí být prázdné.
 
 \section{Vztahy s~kvantifikátory}
 
