@@ -189,6 +189,37 @@ set_equal(_, _, log_false).
 	set_equal(A, B, log_false).
 
 
+subset([], _).
+
+subset([V | Tail], SuperSet) :-
+	in_set(V, SuperSet),
+	subset(Tail, SuperSet).
+
+?-	make_set([a, b, c], A),
+	make_set([a, b, c, d, e], B),
+	subset(A, B).
+
+?-	make_set([a, b, c], A),
+	make_set([a, b, d, e], B),
+	\+ subset(A, B).
+
+
+log_subset(A, B, Value) :-
+	subset(A, B),
+	!,
+	Value = log_true.
+
+log_subset(_, _, log_false).
+
+?-	make_set([a, b, c], A),
+	make_set([a, b, c, d, e], B),
+	log_subset(A, B, log_true).
+
+?-	make_set([a, b, c], A),
+	make_set([a, b, d, e], B),
+	log_subset(A, B, log_false).
+
+
 % Evaluates function. Arguments must be evaluated.
 evaluate_function(X, X) :-
 	boolean(X).
