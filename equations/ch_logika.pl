@@ -1,6 +1,16 @@
 :- ensure_loaded(formula).
 :- ensure_loaded(truth_table).
 
+make_test_values([1, 2]).
+
+make_test_sets([set(S1), set(S2), set(S3), set(S4)]) :-
+	make_set([], S1),
+	make_set([1], S2),
+	make_set([2], S3),
+	make_set([1, 2], S4).
+
+make_test_predicates(Y, [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false]).
+
 
 %%%%% Tautologie %%%%%
 
@@ -184,10 +194,11 @@
 	))
 ).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_set',
-		declare_predicate(A, 'A', [num_equal([Y, 1], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
 			equiv(
 				forall(X, 'x', Values, apply(A, [Y], [X])),
 				set_equal([set_by(X, 'x', Values, not(apply(A, [Y], [X]))), empty_set])
@@ -195,10 +206,11 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_set',
-		declare_predicate(A, 'A', [num_equal([Y, 1], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
 			equiv(
 				exists(X, 'x', Values, apply(A, [Y], [X])),
 				set_not_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set)
@@ -206,10 +218,11 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_not_eq_not_exists',
-		declare_predicate(P, 'P', [num_equal([Y, 1], 0), log_true, log_false],
+		declare_predicate(P, 'P', Predicates,
 			equiv(
 				forall(X, 'x', Values, not(apply(P, [Y], [X]))),
 				not(exists(X, 'x', Values, apply(P, [Y], [X])))
@@ -217,10 +230,11 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_not_eq_not_exists_proof',
-		declare_predicate(P, 'P', [num_equal([Y, 1], 0), log_true, log_false],
+		declare_predicate(P, 'P', Predicates,
 			equiv([
 				forall(X, 'x', Values, not(apply(P, [Y], [X]))),
 				set_equal(set_by(X, 'x', Values, not(not(apply(P, [Y], [X])))), empty_set),
@@ -230,10 +244,10 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values), make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_not_eq_not_forall',
-		declare_predicate(P, 'P', [num_equal([Y, 1], 0), log_true, log_false],
+		declare_predicate(P, 'P', Predicates,
 			equiv(
 				exists(X, 'x', Values, not(apply(P, [Y], [X]))),
 				not(forall(X, 'x', Values, apply(P, [Y], [X])))
@@ -241,10 +255,11 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_not_eq_not_forall_proof',
-		declare_predicate(P, 'P', [num_equal([Y, 1], 0), log_true, log_false],
+		declare_predicate(P, 'P', Predicates,
 			equiv([
 				exists(X, 'x', Values, not(apply(P, [Y], [X]))),
 				set_not_equal(set_by(X, 'x', Values, not(apply(P, [Y], [X]))), empty_set),
@@ -253,11 +268,12 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_and',
-		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				equiv(
 					forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
 					and(
@@ -269,11 +285,12 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?-	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_and_proof',
-		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				equiv([
 					forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
 					set_equal(set_by(X, 'x', Values, not(and(apply(A, [Y], [X]), apply(B, [Y], [X])))), empty_set),
@@ -300,11 +317,12 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_or',
-		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				equiv(
 					exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
 					or(
@@ -316,11 +334,12 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_or_proof',
-		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				equiv([
 					exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
 					set_not_equal(set_by(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))), empty_set),
@@ -346,12 +365,8 @@
 		)
 	).
 
-?- 	Values = [1, 2],
-	make_set([], S1),
-	make_set([1], S2),
-	make_set([2], S3),
-	make_set([1, 2], S4),
-	Sets = [set(S1), set(S2), set(S3), set(S4)],
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
 	print_validated_formula(
 		'set_equal_definition',
 		declare_set(SA, 'S_A', Sets,
@@ -364,11 +379,12 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'intersection_definition',
-		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				set_equal([
 					intersection(
 						set_by(X, 'x', Values, apply(A, [Y], [X])),
@@ -380,11 +396,12 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'union_definition',
-		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				set_equal([
 					union(
 						set_by(X, 'x', Values, apply(A, [Y], [X])),
@@ -396,11 +413,12 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'difference_definition',
-		declare_predicate(A, 'A', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				set_equal([
 					difference(
 						set_by(X, 'x', Values, apply(A, [Y], [X])),
@@ -413,11 +431,7 @@
 		)
 	).
 
-?-	make_set([], S1),
-	make_set([1], S2),
-	make_set([2], S3),
-	make_set([1, 2], S4),
-	Sets = [set(S1), set(S2), set(S3), set(S4)],
+?-	make_test_sets(Sets),
 	print_validated_formula(
 		'union_empty_sets',
 		declare_set(SA, 'S_A', Sets,
@@ -498,10 +512,11 @@
 	)))
 ).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Z, Predicates),
 	print_validated_formula(
 		'in_set_definition',
-		declare_predicate(A, 'A', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
 			declare_variable(X, 'x', Values,
 				equiv(
 					in(X, set_by(Y, 'y', Values, apply(A, [Z], [Y]))),
@@ -511,12 +526,8 @@
 		)
 	).
 	
-?- 	make_set([], S1),
-	make_set([1], S2),
-	make_set([2], S3),
-	make_set([1, 2], S4),
-	Sets = [set(S1), set(S2), set(S3), set(S4)],
-	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
 	print_validated_formula(
 		'not_in_set_definition',
 		declare_set(M, 'M', Sets,
@@ -529,21 +540,23 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'intersection_in_1',
-		declare_predicate(A, 'A', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				declare_variable(Y, 'y', Values, equiv(and(apply(A, [Z], [Y]), apply(B, [Z], [Y])), and(apply(A, [Z], [Y]), apply(B, [Z], [Y]))))
 			)
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'intersection_in_2',
-		declare_predicate(A, 'A', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				declare_variable(Y, 'y', Values, equiv(
 					in(Y, set_by(X, 'x', Values, and(apply(A, [Z], [X]), apply(B, [Z], [X])))),
 					and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
@@ -552,11 +565,12 @@
 		)
 	).
 
-?- 	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'intersection_in_3',
-		declare_predicate(A, 'A', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
-			declare_predicate(B, 'B', [num_equal([Z, 1], 0), num_equal([Z, 2], 0), log_true, log_false],
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
 				declare_variable(Y, 'y', Values, equiv(
 					in(Y, intersection(set_by(X, 'x', Values, apply(A, [Z], [X])), set_by(X, 'x', Values, apply(B, [Z], [X])))),
 					and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
@@ -565,12 +579,8 @@
 		)
 	).
 
-?- 	make_set([], S1),
-	make_set([1], S2),
-	make_set([2], S3),
-	make_set([1, 2], S4),
-	Sets = [set(S1), set(S2), set(S3), set(S4)],
-	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
 	print_validated_formula(
 		'intersection_in_4',
 		declare_set(MA, 'M_A', Sets,
@@ -583,12 +593,8 @@
 		)
 	).
 
-?- 	make_set([], S1),
-	make_set([1], S2),
-	make_set([2], S3),
-	make_set([1, 2], S4),
-	Sets = [set(S1), set(S2), set(S3), set(S4)],
-	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
 	print_validated_formula(
 		'union_in',
 		declare_set(MA, 'M_A', Sets,
@@ -601,12 +607,8 @@
 		)
 	).
 
-?- 	make_set([], S1),
-	make_set([1], S2),
-	make_set([2], S3),
-	make_set([1, 2], S4),
-	Sets = [set(S1), set(S2), set(S3), set(S4)],
-	Values = [1, 2],
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
 	print_validated_formula(
 		'difference_in',
 		declare_set(MA, 'M_A', Sets,
