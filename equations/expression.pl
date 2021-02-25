@@ -630,6 +630,11 @@ print_expression_term(Stream, set_equal(A, B), _) :-
 	write(Stream, ' = '),
 	print_expression_term(Stream, B, eq).
 
+print_expression_term(Stream, set_not_equal(A, B), _) :-
+	print_expression_term(Stream, A, eq),
+	write(Stream, ' \\neq '),
+	print_expression_term(Stream, B, eq).
+
 print_expression_term(Stream, in(X, S), _) :-
 	print_expression_term(Stream, X, in),
 	write(Stream, ' \\in '),
@@ -640,25 +645,26 @@ print_expression_term(Stream, not_in(X, S), _) :-
 	write(Stream, ' \\notin '),
 	print_expression_term(Stream, S, in).
 
-print_expression_term(Stream, set_not_equal(A, B), _) :-
-	print_expression_term(Stream, A, eq),
-	write(Stream, ' \\neq '),
-	print_expression_term(Stream, B, eq).
-
-print_expression_term(Stream, union(A, B), _) :-
+print_expression_term(Stream, union(A, B), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, union),
 	print_expression_term(Stream, A, eq),
 	write(Stream, ' \\cup '),
-	print_expression_term(Stream, B, eq).
+	print_expression_term(Stream, B, eq),
+	print_bracket_if_needed(Stream, ')', PR, union).
 
-print_expression_term(Stream, intersection(A, B), _) :-
+print_expression_term(Stream, intersection(A, B), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, intersection),
 	print_expression_term(Stream, A, eq),
 	write(Stream, ' \\cap '),
-	print_expression_term(Stream, B, eq).
+	print_expression_term(Stream, B, eq),
+	print_bracket_if_needed(Stream, ')', PR, intersection).
 
-print_expression_term(Stream, difference(A, B), _) :-
+print_expression_term(Stream, difference(A, B), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, difference),
 	print_expression_term(Stream, A, eq),
 	write(Stream, ' \\setminus '),
-	print_expression_term(Stream, B, eq).
+	print_expression_term(Stream, B, eq),
+	print_bracket_if_needed(Stream, ')', PR, difference).
 
 
 print_predicate_args(Stream, [Arg, Next | Tail]) :-

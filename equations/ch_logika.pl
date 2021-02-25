@@ -583,6 +583,42 @@
 		)
 	).
 
+?- 	make_set([], S1),
+	make_set([1], S2),
+	make_set([2], S3),
+	make_set([1, 2], S4),
+	Sets = [set(S1), set(S2), set(S3), set(S4)],
+	Values = [1, 2],
+	print_validated_formula(
+		'union_in',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, union(MA, MB)),
+					or(in(Y, MA), in(Y, MB))
+				))
+			)
+		)
+	).
+
+?- 	make_set([], S1),
+	make_set([1], S2),
+	make_set([2], S3),
+	make_set([1, 2], S4),
+	Sets = [set(S1), set(S2), set(S3), set(S4)],
+	Values = [1, 2],
+	print_validated_formula(
+		'difference_in',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, difference(MA, MB)),
+					and(in(Y, MA), not_in(Y, MB))
+				))
+			)
+		)
+	).
+
 
 
 %%%%% Examples %%%%%
