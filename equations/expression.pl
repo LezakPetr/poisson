@@ -285,6 +285,12 @@ evaluate_function(set_not_equal(set(A), set(B)), Value) :-
 	set_equal(A, B, SetsEqual),
 	log_not(SetsEqual, Value).
 
+evaluate_function(subset(set(A), set(B)), Value) :-
+	log_subset(A, B, Value).
+
+evaluate_function(superset(set(A), set(B)), Value) :-
+	log_subset(B, A, Value).
+
 evaluate_function(A + B, Y) :-
 	number(A),
 	number(B),
@@ -665,6 +671,16 @@ print_expression_term(Stream, set_not_equal(A, B), _) :-
 	print_expression_term(Stream, A, eq),
 	write(Stream, ' \\neq '),
 	print_expression_term(Stream, B, eq).
+
+print_expression_term(Stream, subset(A, B), _) :-
+	print_expression_term(Stream, A, subset),
+	write(Stream, ' \\subset '),
+	print_expression_term(Stream, B, subset).
+
+print_expression_term(Stream, superset(A, B), _) :-
+	print_expression_term(Stream, A, subset),
+	write(Stream, ' \\supset '),
+	print_expression_term(Stream, B, subset).
 
 print_expression_term(Stream, in(X, S), _) :-
 	print_expression_term(Stream, X, in),

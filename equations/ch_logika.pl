@@ -369,11 +369,59 @@ make_test_predicates(Y, [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, l
 	make_test_sets(Sets),
 	print_validated_formula(
 		'set_equal_definition',
-		declare_set(SA, 'S_A', Sets,
-			declare_set(SB, 'S_B', Sets,
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
 				equiv(
-					set_equal(SA, SB),
-					forall(X, 'x', Values, equiv(in(X, SA), in(X, SB)))
+					set_equal(MA, MB),
+					forall(X, 'x', Values, equiv(in(X, MA), in(X, MB)))
+				)
+			)
+		)
+	).
+
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
+	print_validated_formula(
+		'subset_definition',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				equiv(
+					subset(MA, MB),
+					forall(X, 'x', Values, impl(in(X, MA), in(X, MB)))
+				)
+			)
+		)
+	).
+
+?-	make_test_sets(Sets),
+	print_validated_formula(
+		'superset_definition',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				equiv(
+					superset(MB, MA),
+					subset(MA, MB)
+				)
+			)
+		)
+	).
+
+?-	make_test_sets(Sets),
+	print_validated_formula(
+		'subset_reflexivity',
+		declare_set(M, 'M', Sets,
+			subset(M, M)
+		)
+	).
+
+?-	make_test_sets(Sets),
+	print_validated_formula(
+		'subset_to_equal',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				equiv(
+					set_equal(MA, MB),
+					and(subset(MA, MB), superset(MA, MB))
 				)
 			)
 		)
@@ -434,11 +482,11 @@ make_test_predicates(Y, [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, l
 ?-	make_test_sets(Sets),
 	print_validated_formula(
 		'union_empty_sets',
-		declare_set(SA, 'S_A', Sets,
-			declare_set(SB, 'S_B', Sets,
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
 				equiv(
-					set_equal(union(SA, SB), empty_set),
-					and(set_equal(SA, empty_set), set_equal(SB, empty_set))
+					set_equal(union(MA, MB), empty_set),
+					and(set_equal(MA, empty_set), set_equal(MB, empty_set))
 				)
 			)
 		)

@@ -420,7 +420,22 @@ Dvě množiny jsou shodné, pokud mají stejné prvky:
 
 \eeq{set_equal_definition}
 
-Jsou-li \(M_1\) a~\(M_2\) množiny, pak \(M_1 \cap M_2\) je jejich průnik a~obsahuje prvky, které jsou obsaženy v~obou množinách. Proto platí:
+Jsou-li \(M_A\) a~\(M_B\) množiny, pak \(M_A\) je podmnožinou \(M_B\) pokud každý prvek množiny \(M_A\) je také prvkem množiny \(M_B\). Naopak můžeme říci, že \(M_B\) je nadmonožinou množiny \(M_A\):
+
+\eeq{subset_definition}
+\eeq{superset_definition}
+
+Z~výše uvedeného plyne, že každá množina je sama sobě podmnožonou:
+
+\eeq{subset_reflexivity}
+
+Dále pak, že dvě množiny jsou si rovny právě tehdy, pokud jsou zároveň podmnožiny a~nadmnožiny:
+
+\eeq{subset_to_equal}
+
+Důkaz nechám na čtenářích.
+
+Jsou-li \(M_A\) a~\(M_B\) množiny, pak \(M_A \cap M_B\) je jejich průnik a~obsahuje prvky, které jsou obsaženy v~obou množinách. Proto platí:
 
 \eeq{intersection_definition}
 
@@ -436,12 +451,12 @@ Použijeme vztah~\eqref{eq:intersection_definition}:
 A~nakonec zavedeme substituci \(M_A = \{x: \predicate{A}(x)\}\) a~\(M_B = \{x: \predicate{B}(x)\}\):
 \eeq{intersection_in_4}
 
-Obdobně \(M_1 \cup M_2\) je sjednocení množin a~obsahuje prvky, které jsou obsaženy v~jedné nabo druhé množině. Proto platí:
+Obdobně \(M_A \cup M_B\) je sjednocení množin a~obsahuje prvky, které jsou obsaženy v~jedné nabo druhé množině. Proto platí:
 
 \eeq{union_definition}
 \eeq{union_in}
 
-Rozdíl množin \(M_1 \setminus M_2\) obsahuje prvky, které jsou obsaženy v~množině \(M_1\) a~nejsou obsaženy v~množině \(M_2\). Proto platí:
+Rozdíl množin \(M_A \setminus M_B\) obsahuje prvky, které jsou obsaženy v~množině \(M_A\) a~nejsou obsaženy v~množině \(M_B\). Proto platí:
 
 \eeq{difference_definition}
 \eeq{difference_in}
