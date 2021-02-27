@@ -223,6 +223,21 @@ proměnné \(x\) můžeme tedy rozdělit do dvou disjunktních množin - množin
 
 Neboli, výrok, že predikát \(\predicate{A}(x)\) je pravdivý pro všechny možné hodnoty proměnné \(x\) je ekvivalentní výroku, že množina hodnot, pro které je tento predikát nepravdivý, je prázdná.
 
+Mějme větu (pravdivý predikát, který není součástí jiného predikátu) ve tvaru
+
+\begin{equation}
+\predicate{A}(x, y, ...)
+\end{equation}
+
+neboli predikát \(\predicate{A}(x, y, ...)\) je pravdivý pro nespecifikované proměnné \(x\), \(y\) atd. Pak to znamená,
+že je predikát pravdivý pro všechny možné hodnoty (kombinace hodnot) těchto proměnných, protože je do věty můžeme dosadit a~věta nám říká, že vzniklý výrok bude pravdivý. Proto je tato věta ekvivalentní větě:
+
+\begin{equation}
+\forall x \forall y ... \predicate{A}(x, y, ...)
+\end{equation}
+
+Před větu tedy můžeme dopsat obecné kvantifikátory pro volné proměnné nebo "vnější" obecné kvantifikátory můžeme vypustit. Je důležité upozornit, že toto nelze provést v~nějakém podpredikátu (uvnitř věty).
+
 \section{Existenční kvantifikátor}
 
 Je-li \(\predicate{A}(x)\) predikát, pak
