@@ -238,6 +238,8 @@ neboli predikát \(\predicate{A}(x, y, ...)\) je pravdivý pro nespecifikované 
 
 Před větu tedy můžeme dopsat obecné kvantifikátory pro volné proměnné nebo "vnější" obecné kvantifikátory můžeme vypustit. Je důležité upozornit, že toto nelze provést v~nějakém podpredikátu (uvnitř věty).
 
+Příklad: vztah \((a + b) \cdot (a - b) = a^2 - b^2\) tedy znamená \(\forall a \in \real \ \forall b \in \real \ (a + b) \cdot (a - b) = a^2 - b^2\) 
+
 \section{Existenční kvantifikátor}
 
 Je-li \(\predicate{A}(x)\) predikát, pak
@@ -275,6 +277,14 @@ Příklad: Pro každé přirozené číslo existuje přirozené číslo větší
 Obdobně jako u~obecného kvantifikátoru můžeme existenční kvantifikátor zapsat pomocí množiny. Výrok, že existuje hodnota \(x\), pro kterou je predikát \(\predicate{A}(x)\) pravdivý je ekvivalentní výroku, že množina hodnot, pro které tento predikát pravdivý je neprázdná:
 
 \eeq{exists_set}
+
+Prozkoumejme, jak můžeme věty s~existenčními kvantifikátory dokázat. Začněme větami ve tvaru \(\exists x \ \predicate{A}(x)\). Takovéto věty říkají, že predikát \(\predicate{A}(x)\) je pravdivý alespoň pro jednu hodnotu proměnné \(x\).  Nalezením této hodnoty tedy větu dokážeme.
+
+Příklad: Věta \(\exists x \in \real \ \forall y \in \real \ x + y = y\) tvrdí, že existuje jedno konkrétní reálné číslo \(x\), které můžeme přičíst k~libovolnému reálnému číslu \(y\) a~toto číslo se nezmění. Dokážeme ji nalezením takového čísla: \(x = 0\). Platí totiž \(\forall y \in \real \ 0 + y = y\).
+
+Pokračujme větavi ve tvaru \(\forall x \ \exists y \ \predicate{A}(x, y)\). Tato věta říká, že pro každou hodnotu proměnné \(x\) existuje hodnota \(y\) taková, že je predikát \(\predicate{A}(x, y)\) pravdivý. Tuto větu tedy opět dokážeme tak, že nalezneme hodnotu \(y\), pro kterou je predikát \(\predicate{A}(x, y)\) pravdivý, nicméně nyní už tato hodnota může záviset na proměnné \(x\). Hledáme tedy funkci \(y(x)\) takovou, že predikát \(\predicate{A}(x, y(x))\) je pravdivý pro všechny hodnoty \(x\). Obdobně můžeme postupovat, pokud před existenčním kvantifikátorem je více obecných kvantifikátorů, hledaná funkce bude mít více parametrů.
+
+Příklad: Věta \(\forall x \in \real \ \exists y \in \real \ x + y = 0\) říká, že ke každému reálnému číslu \(x\) existuje reálné číslo \(y\) takové, že jejich součet je 0. To splňuje opačné číslo \(y = -x\), kterým dokážeme pravdivost uvedené věty.
 
 \section{Tautologie}
 
