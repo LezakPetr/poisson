@@ -29,7 +29,14 @@
 	\end{equation}
 }
 
-\newcommand{\etab}[1]{\input{out/tab_#1}}
+\newcommand{\etab}[2]{
+	\begin{table}[ht]
+		\centering
+		\input{out/tab_#1}
+		\caption{#2}
+		\label{tab:#1}
+	\end{table}
+}
 
 \newcommand{\true}{\mathcal{P}}
 \newcommand{\false}{\mathcal{N}}
@@ -49,8 +56,46 @@
 \newcommand{\tg}{\mathrm{tg}}
 \newcommand{\arctg}{\mathrm{arctg}}
 
-\NewEnviron{fact}{%
+\NewEnviron{fact}{
 	\fbox{\parbox{\textwidth}{\BODY}}
+}
+
+\NewEnviron{abstract}{
+	\textit{\BODY}
+}
+
+\NewEnviron{fig}[2]{
+	\begin{figure}[ht]
+	\begin{center}
+	\BODY
+	\end{center}
+	\caption{#2}
+	\label{img:#1}
+	\end{figure}
+}
+
+\newcommand{\drawvenn}[8]{
+	\begin{tikzpicture}
+
+	\pgfmathsetmacro{\r}{2}
+	\pgfmathsetmacro{\yintersect}{\r * sin(60)}
+	\pgfmathsetmacro{\xcentre}{\r / 2}
+	
+	\path[fill=#3] (0, \yintersect) arc(60:300:\r) arc(240:120:\r); 
+	\path[fill=#5] (0, \yintersect) arc(120:240:\r) arc(-60:60:\r);
+	\path[fill=#7] (0, \yintersect) arc(60:-60:\r) arc(-120:120:\r);
+	
+	\draw (-\xcentre, \r) node[anchor=south]{#1};
+	\draw (-\xcentre, 0) circle[radius=\r];
+	
+	\draw (\xcentre, \r) node[anchor=south]{#2};
+	\draw (\xcentre, 0) circle[radius=\r];
+	
+	\draw (-\r, 0) node[anchor=center]{#4};
+	\draw (0, 0) node[anchor=center]{#6};
+	\draw (\r, 0) node[anchor=center]{#8};
+	
+	\end{tikzpicture}
 }
 
 \newcommand{\drawcross}[3]{   -- x, y, d

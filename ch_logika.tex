@@ -1,34 +1,38 @@
 \chapter{Logika}
 
+\begin{abstract}
 Logika je nauka o~odvozování tvrzení z~jiných tvrzení. V~této kapitole budou představeny základy výrokové a~predikátové logiky prvního řádu, aby byly čtenářům zřejmé formule používané dále v~knize.
+\end{abstract}
 
 Výrok je jakékoli tvrzení, o~kterém má smysl řící, že je pravdivé nebo nepravdivé. Výroky jsou proto:
 
 \begin{itemize}
-	\item 2 je sudé číslo. (pravdivý výrok)
+	\item \uv{2 je sudé číslo.} (pravdivý výrok)
 	\item \(4 > 5\) (nepravdivý výrok)
-	\item Počet planet ve vesmíru je dělitelný třemi. (výrok, jehož pravdivost nedokážeme určit)
-	\item Pro každé sudé číslo \(n\) platí, že \(n + 1\) je liché číslo. (výrok s~vázanou proměnnou)
+	\item \uv{Počet planet ve vesmíru je dělitelný třemi.} (výrok, jehož pravdivost nedokážeme určit)
+	\item \uv{Pro každé sudé číslo \(n\) platí, že \(n + 1\) je liché číslo.} (výrok s~vázanou proměnnou)
 \end{itemize}
 
 Zavedeme konvenci, že pravdivý výrok budeme označovat \(\true\) a~nepravdivý výrok \(\false\).
 
-Predikát, někdy nezývaný výroková funkce, je výraz obsahující volné proměnné, ze které se dosazením za tyto volné proměnné stane výrok. Příklady predikátů jsou:
+Predikát, někdy nezývaný výroková funkce, je výraz obsahující volné proměnné, ze kterého se dosazením za tyto volné proměnné stane výrok. Příklady predikátů jsou:
 
 \begin{itemize}
-	\item \(n\) je sudé číslo.
+	\item \uv{\(n\) je sudé číslo.}
 	\item \(x > y\)
 \end{itemize}
 
-Vidíme, že o~těchto predikátech nemá smysl řící, zda jsou pravdivé nebo ne. Avšak například dosazením \(n = 2\) do prvního predikátu získáme pravdivý výrok "2 je sudé číslo", zatímco dosazením \(n = \mathrm{automobil}\) získáme nepravdivý výrok "automobil je sudé číslo". Z~důvodu obecnosti můžeme jakýkoli výrok považovat za predikát s~nula volnými proměnnými.
+Vidíme, že o~těchto predikátech nemá smysl řící, zda jsou pravdivé nebo ne. Avšak například dosazením \(n = 2\) do prvního predikátu získáme pravdivý výrok \uv{2 je sudé číslo}, zatímco dosazením \(n = \mathrm{automobil}\) získáme nepravdivý výrok \uv{automobil je sudé číslo}. Z~důvodu obecnosti můžeme jakýkoli výrok považovat za predikát s~nula volnými proměnnými.
 
-Volné proměnné je nutné rozlišovat od vázaných proměnných. Volné proměnné nejsou v~predikátech nijak kvatnifikovány a~vstupují do nich "zvenku" jako parametry. Například již zmíněný predikát bychom mohli zapsat takto:
+Volné proměnné je nutné rozlišovat od vázaných proměnných. Volné proměnné nejsou v~predikátech nijak kvatnifikovány a~vstupují do nich \uv{zvenku} jako parametry. Například již zmíněný predikát bychom mohli zapsat takto:
 
 \begin{equation}
-\predicate{A}(n) = n \ \text{je sudé číslo}
+\predicate{A}(n) = \text{\uv{\(n\) je sudé číslo}}
 \end{equation}
 
-Naproti tomu výraz "Pro každé sudé číslo \(n\) platí, že \(n + 1\) je liché číslo" je výrokem. Proměnná \(n\) je zde kvantifikovaná tvrzením "pro každé sudé číslo \(n\)" a~nevstupuje tedy jako parametr. Tento výrok můžeme vyhodnotit aniž bychom znali konkrétní hodnotu vázané proměnné \(n\).
+Naproti tomu výraz \uv{Pro každé sudé číslo \(n\) platí, že \(n + 1\) je liché číslo} je výrokem. Proměnná \(n\) je zde kvantifikovaná tvrzením \uv{Pro každé sudé číslo \(n\)} a~nevstupuje tedy jako parametr. Tento výrok můžeme vyhodnotit aniž bychom znali konkrétní hodnotu vázané proměnné \(n\).
+
+Z~výroků a~predikátů lze sestavovat jiné výroky a~predikáty pomocí logických operátorů. Nyní se s~nimi seznámíme.
 
 \section{Negace}
 
@@ -38,14 +42,13 @@ Je-li \(\predicate{A}\) predikát (nebo výrok), pak
 \overline{\predicate{A}} 
 \end{equation}
 
-je predikát, který je pravdivý tehdy a jen tehdy, když \(A\) není pravdivý. Říkáme "není pravda \(\predicate{A}\)".
-Ekvivalenci můžeme vyjádřit pravdivostní tabulkou:
+je predikát, který je pravdivý tehdy a jen tehdy, když \(\predicate{A}\) není pravdivý. Říkáme \uv{není pravda \(\predicate{A}\)}. Negaci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_not}. Pravdivostní tabulka obsahuje pravdivost složeného výroku v~závislosti na pravdivosti výroků, z~nichž je tento výrok složen. V~levé části tabulky jsou vypsány všechny kombinace těchto výroků, v~pravé části tabulky pak pravdivost složeného výroku pro tyto kombinace.  
 
-\etab{truth_not}
+\etab{truth_not}{Pravdivostní tabulka negace}
 
-Příklad: Není pravda, že je den. \(\overline{\predicate{den}}\).
+Příklad: \uv{Není pravda, že je den.} neboli \(\overline{\predicate{\text{\uv{Je den}}}}\).
 
-Je třeba upozornit, že negace není tzv. pravý opak, ale výrok, který je pravdivý právě tehdy, když není pravdivý výrok negovaný. Negací výroku "prší" proto není "svítí slunce", ale "neprší. Ne vždy, když neprší, tak svítí slunce - může být zataženo.
+Je třeba upozornit, že negace není tzv. pravý opak, ale výrok, který je pravdivý právě tehdy, když není pravdivý výrok negovaný. Negací výroku \uv{prší} proto není \uv{svítí slunce}, ale \uv{neprší}. Ne vždy, když neprší, tak svítí slunce - může být zataženo.
 
 \section{Konjunkce}
 
@@ -55,12 +58,12 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 \predicate{A} \land \predicate{B} 
 \end{equation}
 
-je pravdivý, pokud jsou oba výroky pravdivé. Říkáme "\(\predicate{A}\) a~(zárověň) \(\predicate{B}\)".
-Konjunkci můžeme vyjádřit pravdivostní tabulkou:
+je predikát, který je pravdivý, pokud jsou oba predikáty \(\predicate{A}\) a~\(\predicate{B}\) pravdivé. Říkáme \uv{\(\predicate{A}\) a~(zárověň) \(\predicate{B}\)}.
+Konjunkci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_and}.
 
-\etab{truth_and}
+\etab{truth_and}{Pravdivostní tabulka konjunkce}
 
-Příklad: Země je kulatá a~obíhá okolo Slunce. Země je kulatá \(\land\) Země obíhá okolo Slunce.
+Příklad: \uv{Země je kulatá a~obíhá okolo Slunce.} neboli \uv{Země je kulatá} \(\land\) \uv{Země obíhá okolo Slunce}.
 
 \section{Disjunkce}
 
@@ -70,12 +73,12 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 \predicate{A} \lor \predicate{B}
 \end{equation}
 
-je pravdivý, pokud je pravdivý alespoň jeden z~nich (tedy i~oba). Říkáme "\(\mathrm{A}\) nebo \(\mathrm{B}\)".
-Disjunkci můžeme vyjádřit pravdivostní tabulkou:
+je predikát, který je pravdivý, pokud je pravdivý alespoň jeden z~predikátů \(\predicate{A}\) a~\(\predicate{B}\) (tedy i~oba) . Říkáme \uv{\(\mathrm{A}\) nebo \(\mathrm{B}\)}.
+Disjunkci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_or}.
 
-\etab{truth_or}
+\etab{truth_or}{Pravdivostní tabulka disjunkce}
 
-Příklad: Buď je den nebo noc. Den \(\lor\) noc.
+Příklad: \uv{Je den nebo je noc}. neboli \uv{Je den} \(\lor\) \uv{je noc}.
 
 \section{Implikace}
 
@@ -85,14 +88,14 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 \predicate{A} \impl \predicate{B}
 \end{equation}
 
-je pravdivý, pokud z~předpokladu \(A\) plyne závěr \(B\). Tedy pokud není splněn předpoklad \(A\) nebo je splněn předpoklad \(B\). Říkáme "z~\(\predicate{A}\) plyne \(\predicate{B}\)", "Pokud \(\predicate{A}\) pak \(\predicate{B}\)" nebo "\(\predicate{A}\) implikuje \(\predicate{B}\)".
-Implikaci můžeme vyjádřit pravdivostní tabulkou:
+je predikát, který je pravdivý, pokud z~předpokladu \(\predicate{A}\) plyne závěr \(\predicate{B}\). Tedy pokud není splněn předpoklad \(\predicate{A}\) nebo je splněn závěr \(\predicate{B}\). Říkáme \uv{Z~\(\predicate{A}\) plyne \(\predicate{B}\)}, \uv{Pokud \(\predicate{A}\) pak \(\predicate{B}\)} nebo \uv{\(\predicate{A}\) implikuje \(\predicate{B}\)}.
+Implikaci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_impl}.
 
-\etab{truth_impl}
+\etab{truth_impl}{Pravdivostní tabulka implikace}
 
-Příklad: Pokud prší, pak je mokro. Prší \(\impl\) mokro.
+Příklad: \uv{Pokud prší, pak je mokro.} neboli \uv{Prší} \(\impl\) \uv{je mokro}.
 
-Implikaci není možné obrátit. Z~výše uvedeného výroku tak nelze vyvodit "pokud je pokro, pak prší" - po cestě mohl například projet kropící vůz. Také není možné pouze negovat výroky v~impliaci. Z uvedeného výroku nelze tedy odvodit "pokud neprší, pak není mokro" - opět mohl projet kropící vůz. Ale je možné impliaci obrátit~a~negovat výroky, tedy odvodit "pokud není mokro, pak neprší", viz tautologie~\eqref{eq:impl_swap}. Dále je poněkud neintuitivní, že je implikace pravdivá, pokud je nepravdivý předpoklad. Tedy pokud neprší, pak je výše uvedený výrok pravdivý ať už je mokro nebo ne. 
+Implikaci není možné obrátit. Z~výše uvedeného výroku tak nelze vyvodit \uv{pokud je mokro, pak prší} - nemuselo nutně pršet, po cestě mohl například projet kropící vůz. Také není možné pouze negovat výroky v~impliaci. Z uvedeného výroku nelze tedy odvodit \uv{pokud neprší, pak není mokro} - opět mohl projet kropící vůz. Ale je možné impliaci obrátit a~zároveň negovat výroky, tedy odvodit \uv{pokud není mokro, pak neprší}, viz tautologie~\eqref{eq:impl_swap}. Dále je poněkud neintuitivní, že je implikace pravdivá, pokud je nepravdivý předpoklad. Tedy pokud neprší, pak je výše uvedený výrok pravdivý ať už je mokro nebo není. 
 
 \section{Ekvivalence}
 
@@ -102,12 +105,12 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 \predicate{A} \equivalent \predicate{B} 
 \end{equation}
 
-je pravdivý, pokud mají oba predikáty stejnou pravdivost - jsou oba pravdivé nebo oba nepravdivé. Říkáme "\(\predicate{A}\) je pravdivý tehdy a~jen tehdy, pokud je pravdivý \(\predicate{B}\)" nebo "\(\predicate{A}\) je pravdivý právě tehdy, když je pravdivý \(\predicate{B}\)".
-Ekvivalenci můžeme vyjádřit pravdivostní tabulkou:
+je predikát, který je pravdivý, pokud mají oba predikáty stejnou pravdivost - jsou oba pravdivé nebo oba nepravdivé. Říkáme \uv{\(\predicate{A}\) je pravdivý tehdy a~jen tehdy, pokud je pravdivý \(\predicate{B}\)} nebo \uv{\(\predicate{A}\) je pravdivý právě tehdy, když je pravdivý \(\predicate{B}\)}.
+Ekvivalenci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_equiv}.
 
-\etab{truth_equiv}
+\etab{truth_equiv}{Pravdivostní tabulka ekvivalence}
 
-Příklad: Den je tehdy a~jen tehdy, když není noc. \(\predicate{Den} \equivalent \overline{\predicate{noc}}\).
+Příklad: \uv{Den je tehdy a~jen tehdy, když není noc}. \uv{Je den} \(\equivalent\) \uv{není noc}.
 
 Konvence: často pozřebujeme vyjádřit, že nekolik výroků je vzájemně ekvivalentních. Zavedeme proto zápis obdobný rovnosti výrazů. Zápisem
 
@@ -123,24 +126,26 @@ proto rozumíme
 
 \section{Vyhodnocování logických výrazů}
 
-Logické výrazy, někdy nazývané formule, jsou obdobné matematickým výrazům. Skládají se z~predikátů, proměnných a~logických operátorů oposaných výše. Podobně jako u~matematických výrazů se pořadí vyhodnocování řídí závorkami a~prioritou operátorů. Operátory se vyhodnocují v~pořadí:
+Logické výrazy, někdy nazývané formule, jsou obdobné matematickým výrazům. Skládají se z~predikátů, proměnných a~logických operátorů popsaných výše. Podobně jako u~matematických výrazů se pořadí vyhodnocování řídí závorkami a~prioritou operátorů. Operátory se vyhodnocují v~pořadí:
 
-\(\overline{A}\), \(\forall\), \(\exists\), \(\land\), \(\lor\), \(\impl\), \(\equivalent\)
+\(\overline{\predicate{A}}\), \(\forall\), \(\exists\), \(\land\), \(\lor\), \(\impl\), \(\equivalent\)
 
 Příklad - určete pravdivost predikátu pro \(x = 5, y = 10\):
 \begin{equation}
-x < 3 \lor y = 10 \land (x = 5 \lor x < 5)
+x < 3 \lor x \cdot y = 50 \land (x = 5 \lor x < 5)
 \end{equation}
 
 Nejdříve uzávorkujeme výraz podle priority operátorů a~pak jej postupně vyhodnotíme:
 
 \begin{equation}
 \begin{split}
-x < 3 \lor (x \cdot y = 50 \land (x = 5 \lor x < 5)) = \\
-5 < 3 \lor (5 \cdot 10 = 50 \land (5 = 5 \lor 5 < 5)) = \\
-\false \lor (\true \land (\true \lor \false)) = \false \lor (\true \land \true) = \false \lor \true = \true 
+x < 3 \lor (x \cdot y = 50 \land (x = 5 \lor x < 5)) \equivalent \\
+5 < 3 \lor (5 \cdot 10 = 50 \land (5 = 5 \lor 5 < 5)) \equivalent \\
+\false \lor (\true \land (\true \lor \false)) \equivalent \false \lor (\true \land \true) \equivalent \false \lor \true \equivalent \true 
 \end{split}
 \end{equation}
+
+Predikát je tedy pro uvedené hodnoty proměnných pravdivý.
 
 \section{Množiny}
 
@@ -182,6 +187,8 @@ Jeho negaci označme
 
 \eeq{not_in_set_definition}
 
+Uvedené definice odpovídají tzv. naivní teorii množin. Tato teorie vede k~některým paradoxům (např. Russelův paradox) a~je dnes již překonaná axiomatickými teoriemi množin. Nicméně je poměrně jednoduchá a~pro naše účely plně postačující. 
+
 \section{Obecný kvantifikátor}
 
 Je-li \(\predicate{A}(x)\) predikát, pak
@@ -190,13 +197,13 @@ Je-li \(\predicate{A}(x)\) predikát, pak
 \forall x \ \predicate{A}(x)
 \end{equation}
 
-je výrok, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý pro všechny hodnoty \(x\). Říkáme "pro každé \(x\) platí \(\predicate{A}(x)\)". Obdobně, pokud \(\predicate{A}(x, y, ...)\) je predikát, pak
+je výrok, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý pro všechny hodnoty \(x\). Říkáme \uv{pro každé \(x\) platí \(\predicate{A}(x)\)}. Obdobně, pokud \(\predicate{A}(x, y, ...)\) je predikát, pak
 
 \begin{equation}
 \forall x \ \predicate{A}(x, y, ...)
 \end{equation}
 
-je predikát, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý pro všechny hodnoty \(x\). Tentokrát však již není výrokem, protože obsahuje volné proměnné \(y, ...\). Proměnná \(x\) je ve výrazu vázaná, již nevstupuje jako parametr zvenčí.
+je predikát, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý pro všechny hodnoty \(x\). Tentokrát však již není výrokem, protože obsahuje volné proměnné \(y, ...\). Proměnná \(x\) je v~predikátu vázaná, již nevstupuje jako parametr zvenčí.
 
 V~uvedených příkladech může proměnná \(x\) nabývat jakékoli hodnoty - tedy například 1, -2.5, automobil atd. Často potřebujeme omezit proměnnou na určitou množinu hodnot. K~tomu použijeme zápis
 
@@ -210,7 +217,7 @@ který chápeme jako zkrácení zápisu
 \forall x \ \left( x \in \mathrm{S} \impl \predicate{A}(x) \right)
 \end{equation}
 
-tedy "pro každé \(x\) z~množiny \(\mathrm{S}\) platí \(\predicate{A}(x)\)" je shodné s~"pro každé \(x\) platí, že pokud \(x\) je prvkem množiny \(\mathrm{S}\), pak platí \(\predicate{A}(x)\)".
+tedy \uv{pro každé \(x\) z~množiny \(\mathrm{S}\) platí \(\predicate{A}(x)\)} je shodné s~\uv{pro každé \(x\) platí, že pokud \(x\) je prvkem množiny \(\mathrm{S}\), pak platí \(\predicate{A}(x)\)}.
 
 Příklad: Každé přirozené číslo je větší než 0. 
 
@@ -229,16 +236,16 @@ Mějme větu (pravdivý predikát, který není součástí jiného predikátu) 
 \predicate{A}(x, y, ...)
 \end{equation}
 
-neboli predikát \(\predicate{A}(x, y, ...)\) je pravdivý pro nespecifikované proměnné \(x\), \(y\) atd. Pak to znamená,
+neboli predikát \(\predicate{A}(x, y, ...)\) je pravdivý pro volné proměnné \(x\), \(y\) atd. Pak to znamená,
 že je predikát pravdivý pro všechny možné hodnoty (kombinace hodnot) těchto proměnných, protože je do věty můžeme dosadit a~věta nám říká, že vzniklý výrok bude pravdivý. Proto je tato věta ekvivalentní větě:
 
 \begin{equation}
 \forall x \forall y ... \predicate{A}(x, y, ...)
 \end{equation}
 
-Před větu tedy můžeme dopsat obecné kvantifikátory pro volné proměnné nebo "vnější" obecné kvantifikátory můžeme vypustit. Je důležité upozornit, že toto nelze provést v~nějakém podpredikátu (uvnitř věty).
+Před větu tedy můžeme dopsat obecné kvantifikátory pro volné proměnné nebo \uv{vnější} obecné kvantifikátory můžeme vypustit. Je důležité upozornit, že toto nelze provést v~nějakém podpredikátu (uvnitř věty).
 
-Příklad: vztah \((a + b) \cdot (a - b) = a^2 - b^2\) tedy znamená \(\forall a \in \real \ \forall b \in \real \ (a + b) \cdot (a - b) = a^2 - b^2\) 
+Příklad: vztah \((a + b) \cdot (a - b) = a^2 - b^2\) mezi reálnými proměnnými \(a\) a~\(b\) tedy znamená \(\forall a \in \real \ \forall b \in \real \ (a + b) \cdot (a - b) = a^2 - b^2\)
 
 \section{Existenční kvantifikátor}
 
@@ -248,13 +255,13 @@ Je-li \(\predicate{A}(x)\) predikát, pak
 \exists x \ \predicate{A}(x)
 \end{equation}
 
-je výrok, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý alespoň pro jednu hodnotu \(x\). Říkáme "existuje \(x\) takové, že platí \(\predicate{A}(x)\)". Obdobně, pokud \(\predicate{A}(x, y, ...)\) je predikát, pak
+je výrok, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý alespoň pro jednu hodnotu \(x\). Říkáme \uv{existuje \(x\) takové, že platí \(\predicate{A}(x)\)}. Obdobně, pokud \(\predicate{A}(x, y, ...)\) je predikát, pak
 
 \begin{equation}
 \exists x \ \predicate{A}(x, y, ...)
 \end{equation}
 
-je predikát, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý alespoň pro jednu hodnotu \(x\). Tato hodnota ale může být závislá na volných proměnných \(y, ...\). Proměnná \(x\) je ve výrazu vázaná, již nevstupuje jako parametr zvenčí.
+je predikát, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je pravdivý alespoň pro jednu hodnotu \(x\). Tato hodnota ale může být závislá na volných proměnných \(y, ...\). Proměnná \(x\) je v~predikátu vázaná, již nevstupuje jako parametr zvenčí.
 
 V~uvedených příkladech může proměnná \(x\) nabývat jakékoli hodnoty. Často potřebujeme omezit proměnnou na určitou množinu hodnot. K~tomu použijeme zápis
 
@@ -268,7 +275,7 @@ který chápeme jako zkrácení zápisu
 \exists x \ \left( x \in \mathrm{S} \land \predicate{A}(x) \right)
 \end{equation}
 
-tedy "existuje \(x\) z~množiny \(\mathrm{S}\) takové, že platí \(\predicate{A}(x)\)" je shodné s~"existuje \(x\) takové, že \(x\) je prvkem množiny \(\mathrm{S}\) a~zároveň platí \(\predicate{A}(x)\)".
+tedy \uv{existuje \(x\) z~množiny \(\mathrm{S}\) takové, že platí \(\predicate{A}(x)\)} je shodné s~\uv{existuje \(x\) takové, že \(x\) je prvkem množiny \(\mathrm{S}\) a~zároveň platí \(\predicate{A}(x)\)}.
 
 Příklad: Pro každé přirozené číslo existuje přirozené číslo větší. 
 
@@ -288,7 +295,7 @@ Příklad: Věta \(\forall x \in \real \ \exists y \in \real \ x + y = 0\) řík
 
 \section{Tautologie}
 
-Tautologie jsou výroky, které jsou pravdivé bez ohladu na pravdivost výroků v~nich obsažených. Tautologie můžeme dokázat vyzkoušením všech možnosí, kterých mohou tyto výroky nabývat. Ideálně zkonstruováním pravdivostní tabulky.
+Tautologie jsou výroky, které jsou pravdivé bez ohledu na pravdivost výroků v~nich obsažených. Tautologie můžeme dokázat vyzkoušením všech možnosí, kterých mohou tyto výroky nabývat. Ideálně zkonstruováním pravdivostní tabulky.
 
 Příklad: Nechť \(\predicate{A}\) a~\(\predicate{B}\) jsou výroky. Pak bez ohledu na jejich pravdivost platí:
 
@@ -296,7 +303,7 @@ Příklad: Nechť \(\predicate{A}\) a~\(\predicate{B}\) jsou výroky. Pak bez oh
 
 Sestrojme pravdivostní tabulku, která vyhodnotí výrok~\eqref{eq:de_morgan_example} pro všechny možné kombinace výroků \(\predicate{A}\) a~\(\predicate{B}\). V~tabulce jsou uvedeny i~hodnoty pro podvýroky:
 
-\etab{de_morgan_example}
+\etab{de_morgan_example}{Pravdivostní tabulka vztahu \(\eqref{eq:de_morgan_example}\)}
 
 Vidíme, že výrok~\eqref{eq:de_morgan_example} platí ve všech případech. Takto lze obecně dokazovat tautologie, které neobsahují kvantifikátory.
 
@@ -306,13 +313,13 @@ Máme-li tautologii ve formě ekvivalence a~máme-li výraz, který obsahuje jed
 \overline{\predicate{C}} \lor \overline{\predicate{C} \lor (\predicate{D} \land \predicate{E})}
 \end{equation}
 
-ve kterém můžeme na část výrazu použít uvedenou tautologii se substitucí \(\predicate{A} = \predicate{C}\) a~\(\predicate{B} = \predicate{D} \land \predicate{E}\):
+ve kterém můžeme na část výrazu použít tautologii~\eqref{eq:de_morgan_example} se substitucí \(\predicate{A} = \predicate{C}\) a~\(\predicate{B} = \predicate{D} \land \predicate{E}\):
 
 \begin{equation}
-\overline{\predicate{C}} \lor \overline{\predicate{C}} \land \overline{\predicate{D} \land \predicate{E}}
+\overline{\predicate{C}} \lor (\overline{\predicate{C}} \land \overline{\predicate{D} \land \predicate{E}})
 \end{equation}
 
-Využitím další tautologie~\eqref{eq:or_specific} se celý výraz zjednoduší na
+Využitím další tautologie~\eqref{eq:or_specific} se celý výrok zjednoduší na
 
 \begin{equation}
 \overline{\predicate{C}}
@@ -324,36 +331,34 @@ a~proto můžeme napsat
 
 \section{Důležité vztahy}
 
-Proberme nyní důležité logické vztahy. Začněme symetričností disjunkce a~konjunkce:
+Proberme nyní důležité tautologie. Začněme symetričností disjunkce a~konjunkce:
 
 \eeqn{or_symmetry}
 \eeqn{and_symmetry}
 
-Tyto vztahy vyjadřují fakt, že můžeme prohodit operandy aniž bychom změnily výraz. Jejich platnost je vidět přímo z~pravdivostních tabulek - hodnota na dvou řádcích s~rozdílnýmí vstupy (odpovídající prohození vstupů) je shodná.
+Tyto vztahy vyjadřují fakt, že můžeme prohodit operandy aniž bychom změnily predikát. Jejich platnost je vidět přímo z~pravdivostních tabulek - hodnota na dvou řádcích s~rozdílnýmí vstupy (odpovídající prohození vstupů) je shodná.
 
 Disjunkce a~konjunkce jsou také asociativní operace. Můžeme proto změnit pořadí vyhodnocování disjunkcí nebo konjunkcí, neboli je jinak uzávorkovat. Proto také při zápisu konjunkce a~disjunkce více výrazů nemusíme závorky psát vůbec, protože na pořadí jejich vyhodnocení nezáleží:
 
 \eeqn{or_associativity}
 \eeqn{and_associativity}
 
-Vztahy dokážeme pomocí pravdivostních tabulek:
+Vztahy dokážeme pomocí pravdivostních tabulek~\ref{tab:or_associativity} a~\ref{tab:and_associativity}.
 
-\etab{or_associativity}
+\etab{or_associativity}{Pravdivostní tabulka vztahu \(\eqref{eq:or_associativity}\)}
+\etab{and_associativity}{Pravdivostní tabulka vztahu \(\eqref{eq:and_associativity}\)}
 
-\etab{and_associativity}
-
-V~tabulkách je také vidět, že disjunkce více výrazů je pravdivá právě tehdy, pokud je pravdivý alespoň jeden výraz. Podobně konjunkce více výrazů je pravdivá tehdy a~jen tehdy, pokud jsou pravdivé všechny výrazy. V~ohledu symetričnosti a~asociativity se tedy disjunkce a~konjunkce chová jako sčítání a~násobení. Podobně je to s~distributivitou, která umožňuje "roznásobit" disjunkci konjunkcí, ale i~konjunkci disjunkcí:
+V~tabulkách je také vidět, že disjunkce více výrazů je pravdivá právě tehdy, pokud je pravdivý alespoň jeden výraz. Podobně konjunkce více výrazů je pravdivá tehdy a~jen tehdy, pokud jsou pravdivé všechny výrazy. V~ohledu symetričnosti a~asociativity se tedy disjunkce a~konjunkce chová jako sčítání a~násobení. Podobně je to s~distributivitou, která umožňuje \uv{roznásobit} disjunkci konjunkcí, ale i~konjunkci disjunkcí:
 
 \eeqn{or_distributivity}
 \eeqn{and_distributivity}
 
-Vztahy dokážeme opět pomocí pravdivostních tabulek:
+Vztahy dokážeme opět pomocí pravdivostních tabulek~\ref{tab:or_distributivity} a~\ref{tab:and_distributivity}.
 
-\etab{or_distributivity}
+\etab{or_distributivity}{Pravdivostní tabulka vztahu \(\eqref{eq:or_distributivity}\)}
+\etab{and_distributivity}{Pravdivostní tabulka vztahu \(\eqref{eq:and_distributivity}\)}
 
-\etab{and_distributivity}
-
-Důležité jsou i~vztahy umožňující zjednodušit disjunkci a~konjunkci se dvou stejných výroků, nebo výrok naopak zduplikovat. Jejich platnost je vidět z~pravdivostních tabulek disjunkce a~konjunkce:
+Důležité jsou i~vztahy umožňující zjednodušit disjunkci a~konjunkci dvou stejných výroků, nebo výrok naopak zduplikovat. Jejich platnost je vidět z~pravdivostních tabulek disjunkce a~konjunkce:
 
 \eeqn{double_or}
 \eeqn{double_and}
@@ -375,19 +380,18 @@ Dále pomocí De-Morganových pravidel lze posunou negaci skrz disjunkci a~konju
 \eeqn{de_morgan_or}
 \eeqn{de_morgan_and}
 
-Důkaz provedeme opět pomocí pravdivostních tabulek:
+Důkaz provedeme opět pomocí pravdivostních tabulek~\ref{tab:de_morgan_or} a~\ref{tab:de_morgan_and}.
 
-\etab{de_morgan_or}
-
-\etab{de_morgan_and}
+\etab{de_morgan_or}{Pravdivostní tabulka vztahu \(\eqref{eq:de_morgan_or}\)}
+\etab{de_morgan_and}{Pravdivostní tabulka vztahu \(\eqref{eq:de_morgan_and}\)}
 
 Dále se podívejme na vztahy s~implikací. Začněme vyjádřením implikaci pomocí disjunkce:
 
 \eeqn{impl_definition}
 
-Vztah dokážeme pomocí pravdivostní tabulky:
+Vztah dokážeme pomocí pravdivostní tabulky~\ref{tab:impl_definition}.
 
-\etab{impl_definition}
+\etab{impl_definition}{Pravdivostní tabulka vztahu \(\eqref{eq:impl_definition}\)}
 
 Snadno dokážeme, že při negaci výroků v~implikaci je nutné implikaci obrátit. Důkaz provedeme postupným upravováním výroku pomocí dříve dokázaných vztahů:
 
@@ -414,7 +418,7 @@ Nakonec dokážeme vztah mezi implikací a~ekvivalencí pomocí pravdivostní ta
 
 \eeqn{equiv_to_impl}
 
-\etab{equiv_to_impl}
+\etab{equiv_to_impl}{Pravdivostní tabulka vztahu \(eqref{eq:equiv_to_impl}\)}
 
 Shrňme si vztahy, které jsme doposud odvodili:
 
@@ -437,10 +441,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \eeq{impl_transitivity}
 \eeq{impl_swap}
 \eeq{equiv_to_impl}
+\eeq{or_specific}
 \end{fact}
 
 \section{Množiny - pokračování}
 
+\subsection{Rovnost, podmnožiny}
 Dvě množiny jsou shodné, pokud mají stejné prvky:
 
 \eeq{set_equal_definition}
@@ -460,6 +466,21 @@ Dále pak, že dvě množiny jsou si rovny právě tehdy, pokud jsou zároveň p
 
 Důkaz nechám na čtenářích.
 
+Příklady:
+
+\begin{equation}
+\{1, 2, 3\} = \{3, 2, 1\}
+\end{equation}
+
+\begin{equation}
+\{1, 2\} \subset \{1, 2, 3\}
+\end{equation}
+
+\begin{equation}
+\{1, 2\} \supset \{1\}
+\end{equation}
+
+\subsection{Průnik}
 Jsou-li \(M_A\) a~\(M_B\) množiny, pak \(M_A \cap M_B\) je jejich průnik a~obsahuje prvky, které jsou obsaženy v~obou množinách. Proto platí:
 
 \eeq{intersection_definition}
@@ -476,15 +497,34 @@ Použijeme vztah~\eqref{eq:intersection_definition}:
 A~nakonec zavedeme substituci \(M_A = \{x: \predicate{A}(x)\}\) a~\(M_B = \{x: \predicate{B}(x)\}\):
 \eeq{intersection_in_4}
 
+Graficky můžeme průnik množin zakraslit ve Vennově diagramu, který je na obrázku~\ref{img:venn_intersection}. Dva kruhy znázornňují množiny \(M_A\) a~\(M_B\). Diagram se skládá ze tří oblastí. Vlevo je oblast znázorňující prvky, které jsou obsaženy pouze v~množině \(M_A\). Vpravo je oblast znázorňující prvky, které jsou obsaženy pouze v~množině \(M_B\). Průnik kruhů uprostřed znázorňuje oblast obsaženou v~obou množinách. Šedě vybarvená plocha pak ukazuje, co je součástí průniku množin.
+
+\begin{fig}{venn_intersection}{Vennův diagram průniku množin}
+\drawvenn{\(M_A\)}{\(M_B\)}{white}{}{lightgray}{}{white}{}
+\end{fig}
+
+Příklad:
+
+\begin{equation}
+\{1, 2, 3\} \cap \{2, 3, 4\} = \{2, 3\}
+\end{equation}
+
+\begin{fig}{venn_difference_example}{Vennův diagram příkladu}
+\drawvenn{\{1, 2, 3\}}{\{2, 3, 4\}}{white}{1}{lightgray}{2, 3}{white}{4}
+\end{fig}
+
+\subsection{Sjednocení}
+
 Obdobně \(M_A \cup M_B\) je sjednocení množin a~obsahuje prvky, které jsou obsaženy v~jedné nabo druhé množině. Proto platí:
 
 \eeq{union_definition}
 \eeq{union_in}
 
-Rozdíl množin \(M_A \setminus M_B\) obsahuje prvky, které jsou obsaženy v~množině \(M_A\) a~nejsou obsaženy v~množině \(M_B\). Proto platí:
+Na obrázku~\ref{img:venn_union} je sjednocení množin zakresleno ve Vennově diagramu.
 
-\eeq{difference_definition}
-\eeq{difference_in}
+\begin{fig}{venn_union}{Vennův diagram sjednocení množin}
+\drawvenn{\(M_A\)}{\(M_B\)}{lightgray}{}{lightgray}{}{lightgray}{}
+\end{fig}
 
 Dále dokážeme, že sjednocení dvou množin je prázdnou množinou tehdy a~jen tehdy, pokud jsou obě množiny prázdné:
 
@@ -510,19 +550,52 @@ Podle pravdivostní tabulky disjunkce vidíme, že tato situace může nastat po
 
 Obě sjednocované množiny tedy musí být prázdné.
 
+Příklad:
+
+\begin{equation}
+\{1, 2, 3\} \cup \{2, 3, 4\} = \{1, 2, 3, 4\}
+\end{equation}
+
+\begin{fig}{venn_difference_example}{Vennův diagram příkladu}
+\drawvenn{\{1, 2, 3\}}{\{2, 3, 4\}}{lightgray}{1}{lightgray}{2, 3}{lightgray}{4}
+\end{fig}
+
+\subsection{Rozdíl}
+
+Rozdíl množin \(M_A \setminus M_B\) obsahuje prvky, které jsou obsaženy v~množině \(M_A\) a~nejsou obsaženy v~množině \(M_B\). Proto platí:
+
+\eeq{difference_definition}
+\eeq{difference_in}
+
+Na obrázku~\ref{img:venn_difference} je rozdíl množin zakreslen ve Vennově diagramu.
+
+\begin{fig}{venn_difference}{Vennův diagram průniku množin}
+\drawvenn{\(M_A\)}{\(M_B\)}{lightgray}{}{white}{}{white}{}
+\end{fig}
+
+Příklad:
+
+\begin{equation}
+\{1, 2, 3\} \setminus \{2, 3, 4\} = \{1\}
+\end{equation}
+
+\begin{fig}{venn_difference_example}{Vennův diagram příkladu}
+\drawvenn{\{1, 2, 3\}}{\{2, 3, 4\}}{lightgray}{1}{white}{2, 3}{white}{4}
+\end{fig}
+
 \section{Vztahy s~kvantifikátory}
 
 Začněme vztahy mezi kvantifikátory, které nám umožní přesunout negaci z/do kvantifikátoru. Pro jejich dokázání využejeme
-vztahy~\eqref{eq:forall_set} a~\eqref{eq:exists_set}. Vztah~\eqref{eq:forall_not_eq_not_exists_proof} udává, že výrok "pro každé \(x\) je predikát nepravdivý" je ekvivalentní výroku "neexistuje \(x\), pro které je predikát pravdivý". Vztah~\eqref{eq:exists_not_eq_not_forall_proof} udává, že výrok "existuje \(x\) pro které je predikát nepravdivý" je ekvivalentní výroku "ne pro všechna \(x\) je predikát pravdivý":
+vztahy~\eqref{eq:forall_set} a~\eqref{eq:exists_set}. Vztah~\eqref{eq:forall_not_eq_not_exists_proof} udává, že výrok \uv{pro každé \(x\) je predikát nepravdivý} je ekvivalentní výroku \uv{neexistuje \(x\), pro které je predikát pravdivý}. Vztah~\eqref{eq:exists_not_eq_not_forall_proof} udává, že výrok \uv{existuje \(x\) pro které je predikát nepravdivý} je ekvivalentní výroku \uv{ne pro všechna \(x\) je predikát pravdivý}:
 
 \eeq{forall_not_eq_not_exists_proof}
 \eeq{exists_not_eq_not_forall_proof}
 
-Dále můžeme odvodit vztah pro konjunkci v~obecném kvantifikátoru. Vztah~\eqref{eq:forall_and_proof} říká, že výrok "každé \(x\) má vlastnost \(\predicate{A}\) i~\(\predicate{B}\)" je ekvivalentní výroku "každé \(x\) má vlastnost \(\predicate{A}\) a~každé \(x\) má vlastnost~\(\predicate{B}\)".
+Dále můžeme odvodit vztah pro konjunkci v~obecném kvantifikátoru. Vztah~\eqref{eq:forall_and_proof} říká, že výrok \uv{každé \(x\) má vlastnost \(\predicate{A}\) i~\(\predicate{B}\)} je ekvivalentní výroku \uv{každé \(x\) má vlastnost \(\predicate{A}\) a~každé \(x\) má vlastnost~\(\predicate{B}\)}.
 
 \eeq{forall_and_proof}
 
-Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. Vztah~\eqref{eq:exists_or_proof} říká, že výrok "existuje \(x\) takové, že má vlastnost \(\predicate{A}\) nebo \(\predicate{B}\)" je ekvivalentní výroku "existuje \(x\), které má vlastnost \(\predicate{A}\) nebo existuje \(x\), které má vlastnost~\(\predicate{B}\)".
+Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. Vztah~\eqref{eq:exists_or_proof} říká, že výrok \uv{existuje \(x\) takové, že má vlastnost \(\predicate{A}\) nebo \(\predicate{B}\)} je ekvivalentní výroku \uv{existuje \(x\), které má vlastnost \(\predicate{A}\) nebo existuje \(x\), které má vlastnost~\(\predicate{B}\)}.
 
 \eeq{exists_or_proof}
 

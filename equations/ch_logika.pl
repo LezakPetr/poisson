@@ -351,6 +351,18 @@ make_test_predicates(Y, [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, l
 						),
 						empty_set
 					),
+					not(set_equal(
+						union(
+							set_by(X, 'x', Values, apply(A, [Y], [X])),
+							set_by(X, 'x', Values, apply(B, [Y], [X]))
+						),
+						empty_set
+					)),
+					linebreak,
+					not(and(
+						set_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set),
+						set_equal(set_by(X, 'x', Values, apply(B, [Y], [X])), empty_set)
+					)),
 					or(
 						set_not_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set),
 						set_not_equal(set_by(X, 'x', Values, apply(B, [Y], [X])), empty_set)
@@ -808,6 +820,19 @@ make_test_predicates(Y, [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, l
 		or(not(A), B),
 		impl(A, B)
 	]
+).
+
+?- print_validated_formula(
+	or_specific,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			or(
+				A,
+				and(A, B)
+			),
+			A
+		)
+	))
 ).
 
 ?- print_truth_table(
