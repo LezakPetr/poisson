@@ -252,6 +252,9 @@ evaluate_function(equiv([A | Tail]), Value) :-
 evaluate_function(X, X) :-
 	number(X).
 
+evaluate_function(set_of(Values), set(Set)) :-
+	make_set(Values, Set).
+
 evaluate_function(empty_set, set(Value)) :-
 	make_set([], Value).
 
@@ -396,10 +399,16 @@ evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
 	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
 
+evaluate_expression(forall_in(Variable, _, Set, TestedValues, SubFormula), Value) :-
+	evaluate_expression(forall(Variable, _, TestedValues, impl(in(Variable, Set), SubFormula)), Value).
+
 evaluate_expression(exists(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
 	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_or_all(Results, Value).
+
+evaluate_expression(exists_in(Variable, _, Set, TestedValues, SubFormula), Value) :-
+	evaluate_expression(exists(Variable, _, TestedValues, and(in(Variable, Set), SubFormula)), Value).
 
 evaluate_expression(set_by(Variable, _, Values, Formula), Value) :-
 	!,
@@ -554,9 +563,20 @@ print_expression_term(Stream, B, _) :-
 	!,
 	print_boolean(Stream, B).
 
+print_expression_term(Stream, N, _) :-
+	number(N),
+	!,
+	write(Stream, N).
+
 print_expression_term(Stream, empty_set, _) :-
 	!,
 	write(Stream, ' \\emptyset ').
+
+print_expression_term(Stream, set_of(Values), _) :-
+	!,
+	write(Stream, ' \\{ '),
+	print_expression_list(Stream, Values),
+	write(Stream, ' \\} ').
 
 print_expression_term(Stream, F, _) :-
 	atom(F),
@@ -630,11 +650,33 @@ print_expression_term(Stream, forall(Variable, Label, _, SubFormula), PR) :-
 	print_expression_term(Stream, SubFormula, forall),
 	print_bracket_if_needed(Stream, ')', PR, forall).
 
+print_expression_term(Stream, forall_in(Variable, Label, Set, _, SubFormula), PR) :-
+	Variable = Label,
+	print_bracket_if_needed(Stream, '(', PR, forall), 
+	write(Stream, ' \\forall '),
+	write(Stream, Variable),
+	write(Stream, ' \\in '),
+	print_expression_term(Stream, Set, in),
+	write(Stream, ' \\ '),
+	print_expression_term(Stream, SubFormula, forall),
+	print_bracket_if_needed(Stream, ')', PR, forall).
+
 print_expression_term(Stream, exists(Variable, Label, _, SubFormula), PR) :-
 	Variable = Label,
 	print_bracket_if_needed(Stream, '(', PR, exists), 
 	write(Stream, ' \\exists '),
 	write(Stream, Variable),
+	write(Stream, ' \\ '),
+	print_expression_term(Stream, SubFormula, exists),
+	print_bracket_if_needed(Stream, ')', PR, exists).
+
+print_expression_term(Stream, exists_in(Variable, Label, Set, _, SubFormula), PR) :-
+	Variable = Label,
+	print_bracket_if_needed(Stream, '(', PR, exists), 
+	write(Stream, ' \\exists '),
+	write(Stream, Variable),
+	write(Stream, ' \\in '),
+	print_expression_term(Stream, Set, in),
 	write(Stream, ' \\ '),
 	print_expression_term(Stream, SubFormula, exists),
 	print_bracket_if_needed(Stream, ')', PR, exists).
@@ -725,6 +767,17 @@ print_predicate_args(Stream, [Arg]) :-
 print_predicate_args(_, []).
 
 
+print_expression_list(Stream, [Arg, Next | Tail]) :-
+	print_expression_term(Stream, Arg, root),
+	write(Stream, ', '),
+	print_expression_list(Stream, [Next | Tail]).
+
+print_expression_list(Stream, [Arg]) :-
+	print_expression_term(Stream, Arg, root).
+
+print_expression_list(_, []).
+
+
 print_equiv_chain(Stream, [A | Tail]) :-
 	hint(A),
 	!,
@@ -769,6 +822,9 @@ bracket_not_needed(or, or).
 bracket_not_needed(impl, or).
 bracket_not_needed(equiv, or).
 bracket_not_needed(equiv, impl).
+bracket_not_needed(eq, union).
+bracket_not_needed(eq, intersection).
+bracket_not_needed(eq, difference).
 
 
 

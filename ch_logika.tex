@@ -1,5 +1,21 @@
 \chapter{Logika}
 
+\begin{prolog}
+:- ensure_loaded("../equations/formula").
+:- ensure_loaded("../equations/truth_table").
+
+make_test_values([1, 2]).
+
+make_test_sets([set(S1), set(S2), set(S3), set(S4)]) :-
+	make_set([], S1),
+	make_set([1], S2),
+	make_set([2], S3),
+	make_set([1, 2], S4).
+
+make_test_predicates(Y, [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false]).
+\end{prolog}
+
+
 \begin{abstract}
 Logika je nauka o~odvozování tvrzení z~jiných tvrzení. V~této kapitole budou představeny základy výrokové a~predikátové logiky prvního řádu, aby byly čtenářům zřejmé formule používané dále v~knize.
 \end{abstract}
@@ -44,6 +60,13 @@ Je-li \(\predicate{A}\) predikát (nebo výrok), pak
 
 je predikát, který je pravdivý tehdy a jen tehdy, když \(\predicate{A}\) není pravdivý. Říkáme \uv{není pravda \(\predicate{A}\)}. Negaci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_not}. Pravdivostní tabulka obsahuje pravdivost složeného výroku v~závislosti na pravdivosti výroků, z~nichž je tento výrok složen. V~levé části tabulky jsou vypsány všechny kombinace těchto výroků, v~pravé části tabulky pak pravdivost složeného výroku pro tyto kombinace.  
 
+\begin{prolog}
+?- print_truth_table(
+	truth_not,
+	[declare_statement(A, 'A')],
+	[not(A)]
+).
+\end{prolog}
 \etab{truth_not}{Pravdivostní tabulka negace}
 
 Příklad: \uv{Není pravda, že je den.} neboli \(\overline{\predicate{\text{\uv{Je den}}}}\).
@@ -61,6 +84,13 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 je predikát, který je pravdivý, pokud jsou oba predikáty \(\predicate{A}\) a~\(\predicate{B}\) pravdivé. Říkáme \uv{\(\predicate{A}\) a~(zárověň) \(\predicate{B}\)}.
 Konjunkci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_and}.
 
+\begin{prolog}
+?- print_truth_table(
+	truth_and,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[and(A, B)]
+).
+\end{prolog}
 \etab{truth_and}{Pravdivostní tabulka konjunkce}
 
 Příklad: \uv{Země je kulatá a~obíhá okolo Slunce.} neboli \uv{Země je kulatá} \(\land\) \uv{Země obíhá okolo Slunce}.
@@ -76,6 +106,13 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 je predikát, který je pravdivý, pokud je pravdivý alespoň jeden z~predikátů \(\predicate{A}\) a~\(\predicate{B}\) (tedy i~oba) . Říkáme \uv{\(\mathrm{A}\) nebo \(\mathrm{B}\)}.
 Disjunkci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_or}.
 
+\begin{prolog}
+?- print_truth_table(
+	truth_or,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[or(A, B)]
+).
+\end{prolog}
 \etab{truth_or}{Pravdivostní tabulka disjunkce}
 
 Příklad: \uv{Je den nebo je noc}. neboli \uv{Je den} \(\lor\) \uv{je noc}.
@@ -91,6 +128,13 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 je predikát, který je pravdivý, pokud z~předpokladu \(\predicate{A}\) plyne závěr \(\predicate{B}\). Tedy pokud není splněn předpoklad \(\predicate{A}\) nebo je splněn závěr \(\predicate{B}\). Říkáme \uv{Z~\(\predicate{A}\) plyne \(\predicate{B}\)}, \uv{Pokud \(\predicate{A}\) pak \(\predicate{B}\)} nebo \uv{\(\predicate{A}\) implikuje \(\predicate{B}\)}.
 Implikaci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_impl}.
 
+\begin{prolog}
+?- print_truth_table(
+	truth_impl,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[impl(A, B)]
+).
+\end{prolog}
 \etab{truth_impl}{Pravdivostní tabulka implikace}
 
 Příklad: \uv{Pokud prší, pak je mokro.} neboli \uv{Prší} \(\impl\) \uv{je mokro}.
@@ -108,6 +152,13 @@ Jsou-li \(\predicate{A}\) a~\(\predicate{B}\) predikáty, pak
 je predikát, který je pravdivý, pokud mají oba predikáty stejnou pravdivost - jsou oba pravdivé nebo oba nepravdivé. Říkáme \uv{\(\predicate{A}\) je pravdivý tehdy a~jen tehdy, pokud je pravdivý \(\predicate{B}\)} nebo \uv{\(\predicate{A}\) je pravdivý právě tehdy, když je pravdivý \(\predicate{B}\)}.
 Ekvivalenci můžeme vyjádřit pravdivostní tabulkou~\ref{tab:truth_equiv}.
 
+\begin{prolog}
+?- print_truth_table(
+	truth_equiv,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[equiv(A, B)]
+).
+\end{prolog}
 \etab{truth_equiv}{Pravdivostní tabulka ekvivalence}
 
 Příklad: \uv{Den je tehdy a~jen tehdy, když není noc}. \uv{Je den} \(\equivalent\) \uv{není noc}.
@@ -169,9 +220,18 @@ rozumíme množinu všech prvků \(x\), pro které je predikát \(\predicate{A}(
 
 Symbolem \(\emptyset\) rozumíme prázdnou množinu - množinu, která neobsahuje žádný prvek:
 
-\begin{equation}
-\{\} = \{x: \false\} = \emptyset
-\end{equation}
+\begin{prolog}
+?-	make_test_values(Values),
+	print_validated_formula(
+		'empty_set_definition',
+		set_equal([
+			set_of([]),
+			set_by(_, 'x', Values, log_false),
+			empty_set
+		])
+	).
+\end{prolog}
+\eeq{empty_set_definition}
 
 Je-li \(M\) množina, pak můžeme zavést predikát
 
@@ -181,10 +241,40 @@ x \in M
 
 který je pravdivý tehdy a~jen tehdy, pokud je prvek \(x\) obsažen v~množině \(M\). Proto platí
 
+\begin{prolog}
+?-	make_test_values(Values),
+	make_test_predicates(Z, Predicates),
+	print_validated_formula(
+		'in_set_definition',
+		declare_predicate(A, 'A', Predicates,
+			declare_variable(X, 'x', Values,
+				equiv(
+					in(X, set_by(Y, 'y', Values, apply(A, [Z], [Y]))),
+					apply(A, [Z], [X])
+				)
+			)
+		)
+	).
+\end{prolog}
 \eeq{in_set_definition}
 
 Jeho negaci označme
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
+	print_validated_formula(
+		'not_in_set_definition',
+		declare_set(M, 'M', Sets,
+			declare_variable(X, 'x', Values,
+				equiv(
+					not_in(X, M),
+					not(in(X, M))
+				)
+			)
+		)
+	).
+\end{prolog}
 \eeq{not_in_set_definition}
 
 Uvedené definice odpovídají tzv. naivní teorii množin. Tato teorie vede k~některým paradoxům (např. Russelův paradox) a~je dnes již překonaná axiomatickými teoriemi množin. Nicméně je poměrně jednoduchá a~pro naše účely plně postačující. 
@@ -208,16 +298,30 @@ je predikát, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je 
 V~uvedených příkladech může proměnná \(x\) nabývat jakékoli hodnoty - tedy například 1, -2.5, automobil atd. Často potřebujeme omezit proměnnou na určitou množinu hodnot. K~tomu použijeme zápis
 
 \begin{equation}
-\forall x \in \mathrm{S} \ \predicate{A}(x)
+\forall x \in M \ \predicate{A}(x)
 \end{equation}
 
-který chápeme jako zkrácení zápisu
+který chápeme jako zkrácení zápisu:
 
-\begin{equation}
-\forall x \ \left( x \in \mathrm{S} \impl \predicate{A}(x) \right)
-\end{equation}
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	make_test_sets(Sets),
+	print_validated_formula(
+		'forall_in',
+		declare_predicate(A, 'A', Predicates,
+			declare_set(M, 'M', Sets,
+				equiv(
+					forall_in(X, 'x', M, Values, apply(A, [Y], [X])),
+					forall(X, 'x', Values, impl(in(X, M), apply(A, [Y], [X])))
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{forall_in}
 
-tedy \uv{pro každé \(x\) z~množiny \(\mathrm{S}\) platí \(\predicate{A}(x)\)} je shodné s~\uv{pro každé \(x\) platí, že pokud \(x\) je prvkem množiny \(\mathrm{S}\), pak platí \(\predicate{A}(x)\)}.
+Tedy \uv{pro každé \(x\) z~množiny \(\mathrm{S}\) platí \(\predicate{A}(x)\)} je shodné s~\uv{pro každé \(x\) platí, že pokud \(x\) je prvkem množiny \(\mathrm{S}\), pak platí \(\predicate{A}(x)\)}.
 
 Příklad: Každé přirozené číslo je větší než 0. 
 
@@ -226,6 +330,19 @@ Příklad: Každé přirozené číslo je větší než 0.
 Kvantifikátory úzce souvisí s~množinami. Pravdivost predikátu \(\predicate{A}(x)\) závisí na proměnné \(x\). Možné hodnoty
 proměnné \(x\) můžeme tedy rozdělit do dvou disjunktních množin - množiny hodnot, ve kterých je predikát pravdivý a~množiny hodnot, ve kterých je predikát nepravdivý. Proto platí:
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'forall_set',
+		declare_predicate(A, 'A', Predicates,
+			equiv(
+				forall(X, 'x', Values, apply(A, [Y], [X])),
+				set_equal([set_by(X, 'x', Values, not(apply(A, [Y], [X]))), empty_set])
+			)
+		)
+	).
+\end{prolog}
 \eeq{forall_set}
 
 Neboli, výrok, že predikát \(\predicate{A}(x)\) je pravdivý pro všechny možné hodnoty proměnné \(x\) je ekvivalentní výroku, že množina hodnot, pro které je tento predikát nepravdivý, je prázdná.
@@ -266,16 +383,30 @@ je predikát, který je pravdivý tehdy a~jen tehdy, když \(\predicate{A}\) je 
 V~uvedených příkladech může proměnná \(x\) nabývat jakékoli hodnoty. Často potřebujeme omezit proměnnou na určitou množinu hodnot. K~tomu použijeme zápis
 
 \begin{equation}
-\exists x \in \mathrm{S} \ \predicate{A}(x)
+\exists x \in \mathrm{M} \ \predicate{A}(x)
 \end{equation}
 
-který chápeme jako zkrácení zápisu
+který chápeme jako zkrácení zápisu:
 
-\begin{equation}
-\exists x \ \left( x \in \mathrm{S} \land \predicate{A}(x) \right)
-\end{equation}
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	make_test_sets(Sets),
+	print_validated_formula(
+		'exists_in',
+		declare_predicate(A, 'A', Predicates,
+			declare_set(M, 'M', Sets,
+				equiv(
+					exists_in(X, 'x', M, Values, apply(A, [Y], [X])),
+					exists(X, 'x', Values, and(in(X, M), apply(A, [Y], [X])))
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{exists_in}
 
-tedy \uv{existuje \(x\) z~množiny \(\mathrm{S}\) takové, že platí \(\predicate{A}(x)\)} je shodné s~\uv{existuje \(x\) takové, že \(x\) je prvkem množiny \(\mathrm{S}\) a~zároveň platí \(\predicate{A}(x)\)}.
+Tedy \uv{existuje \(x\) z~množiny \(\mathrm{S}\) takové, že platí \(\predicate{A}(x)\)} je shodné s~\uv{existuje \(x\) takové, že \(x\) je prvkem množiny \(\mathrm{S}\) a~zároveň platí \(\predicate{A}(x)\)}.
 
 Příklad: Pro každé přirozené číslo existuje přirozené číslo větší. 
 
@@ -283,6 +414,19 @@ Příklad: Pro každé přirozené číslo existuje přirozené číslo větší
 
 Obdobně jako u~obecného kvantifikátoru můžeme existenční kvantifikátor zapsat pomocí množiny. Výrok, že existuje hodnota \(x\), pro kterou je predikát \(\predicate{A}(x)\) pravdivý je ekvivalentní výroku, že množina hodnot, pro které tento predikát pravdivý je neprázdná:
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'exists_set',
+		declare_predicate(A, 'A', Predicates,
+			equiv(
+				exists(X, 'x', Values, apply(A, [Y], [X])),
+				set_not_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set)
+			)
+		)
+	).
+\end{prolog}
 \eeq{exists_set}
 
 Prozkoumejme, jak můžeme věty s~existenčními kvantifikátory dokázat. Začněme větami ve tvaru \(\exists x \ \predicate{A}(x)\). Takovéto věty říkají, že predikát \(\predicate{A}(x)\) je pravdivý alespoň pro jednu hodnotu proměnné \(x\).  Nalezením této hodnoty tedy větu dokážeme.
@@ -299,10 +443,38 @@ Tautologie jsou výroky, které jsou pravdivé bez ohledu na pravdivost výroků
 
 Příklad: Nechť \(\predicate{A}\) a~\(\predicate{B}\) jsou výroky. Pak bez ohledu na jejich pravdivost platí:
 
+\begin{prolog}
+?- print_validated_formula(
+	'de_morgan_example',
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			not(or(A, B)),
+			and(not(A), not(B))
+		)
+	))
+).
+\end{prolog}
 \eeq{de_morgan_example}
 
 Sestrojme pravdivostní tabulku, která vyhodnotí výrok~\eqref{eq:de_morgan_example} pro všechny možné kombinace výroků \(\predicate{A}\) a~\(\predicate{B}\). V~tabulce jsou uvedeny i~hodnoty pro podvýroky:
 
+\begin{prolog}
+?- print_truth_table(
+	de_morgan_example,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[
+		or(A, B),
+		not(or(A, B)),
+		not(A),
+		not(B),
+		and(not(A), not(B)),
+		equiv(
+			not(or(A, B)),
+			and(not(A), not(B))
+		)
+	]
+).
+\end{prolog}
 \etab{de_morgan_example}{Pravdivostní tabulka vztahu \(\eqref{eq:de_morgan_example}\)}
 
 Vidíme, že výrok~\eqref{eq:de_morgan_example} platí ve všech případech. Takto lze obecně dokazovat tautologie, které neobsahují kvantifikátory.
@@ -327,6 +499,17 @@ Využitím další tautologie~\eqref{eq:or_specific} se celý výrok zjednoduš�
 
 a~proto můžeme napsat
 
+\begin{prolog}
+?- print_validated_formula(
+	'tautology_example',
+	declare_statement(C, 'C', declare_statement(D, 'D', declare_statement(E, 'E',
+		equiv(
+			or(not(C), not(or(C, and(D, E)))),
+			not(C)
+		)
+	)))
+).
+\end{prolog}
 \eeq{tautology_example}
 
 \section{Důležité vztahy}
@@ -345,7 +528,32 @@ Disjunkce a~konjunkce jsou také asociativní operace. Můžeme proto změnit po
 
 Vztahy dokážeme pomocí pravdivostních tabulek~\ref{tab:or_associativity} a~\ref{tab:and_associativity}.
 
+\begin{prolog}
+?- print_truth_table(
+	or_associativity,
+	[declare_statement(A, 'A'), declare_statement(B, 'B'), declare_statement(C, 'C')],
+	[
+		or(A, B),
+		or(B, C),
+		or(par(or(A, B)), C),
+		or(A, par(or(B, C)))
+	]
+).
+\end{prolog}
 \etab{or_associativity}{Pravdivostní tabulka vztahu \(\eqref{eq:or_associativity}\)}
+
+\begin{prolog}
+?- print_truth_table(
+	and_associativity,
+	[declare_statement(A, 'A'), declare_statement(B, 'B'), declare_statement(C, 'C')],
+	[
+		and(A, B),
+		and(B, C),
+		and(par(and(A, B)), C),
+		and(A, par(and(B, C)))
+	]
+).
+\end{prolog}
 \etab{and_associativity}{Pravdivostní tabulka vztahu \(\eqref{eq:and_associativity}\)}
 
 V~tabulkách je také vidět, že disjunkce více výrazů je pravdivá právě tehdy, pokud je pravdivý alespoň jeden výraz. Podobně konjunkce více výrazů je pravdivá tehdy a~jen tehdy, pokud jsou pravdivé všechny výrazy. V~ohledu symetričnosti a~asociativity se tedy disjunkce a~konjunkce chová jako sčítání a~násobení. Podobně je to s~distributivitou, která umožňuje \uv{roznásobit} disjunkci konjunkcí, ale i~konjunkci disjunkcí:
@@ -355,7 +563,34 @@ V~tabulkách je také vidět, že disjunkce více výrazů je pravdivá právě 
 
 Vztahy dokážeme opět pomocí pravdivostních tabulek~\ref{tab:or_distributivity} a~\ref{tab:and_distributivity}.
 
+\begin{prolog}
+?- print_truth_table(
+	or_distributivity,
+	[declare_statement(A, 'A'), declare_statement(B, 'B'), declare_statement(C, 'C')],
+	[
+		and(A, B),
+		or(A, C),
+		or(B, C),
+		or(and(A, B), C),
+		and(or(A, C), or(B, C))
+	]
+).
+\end{prolog}
 \etab{or_distributivity}{Pravdivostní tabulka vztahu \(\eqref{eq:or_distributivity}\)}
+
+\begin{prolog}
+?- print_truth_table(
+	and_distributivity,
+	[declare_statement(A, 'A'), declare_statement(B, 'B'), declare_statement(C, 'C')],
+	[
+		or(A, B),
+		and(A, C),
+		and(B, C),
+		and(or(A, B), C),
+		or(and(A, C), and(B, C))
+	]
+).
+\end{prolog}
 \etab{and_distributivity}{Pravdivostní tabulka vztahu \(\eqref{eq:and_distributivity}\)}
 
 Důležité jsou i~vztahy umožňující zjednodušit disjunkci a~konjunkci dvou stejných výroků, nebo výrok naopak zduplikovat. Jejich platnost je vidět z~pravdivostních tabulek disjunkce a~konjunkce:
@@ -382,7 +617,34 @@ Dále pomocí De-Morganových pravidel lze posunou negaci skrz disjunkci a~konju
 
 Důkaz provedeme opět pomocí pravdivostních tabulek~\ref{tab:de_morgan_or} a~\ref{tab:de_morgan_and}.
 
+\begin{prolog}
+?- print_truth_table(
+	de_morgan_or,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[
+		or(A, B),
+		not(A),
+		not(B),
+		not(or(A, B)),
+		and(not(A), not(B))
+	]
+).
+\end{prolog}
 \etab{de_morgan_or}{Pravdivostní tabulka vztahu \(\eqref{eq:de_morgan_or}\)}
+
+\begin{prolog}
+?- print_truth_table(
+	de_morgan_and,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[
+		and(A, B),
+		not(A),
+		not(B),
+		not(and(A, B)),
+		or(not(A), not(B))
+	]
+).
+\end{prolog}
 \etab{de_morgan_and}{Pravdivostní tabulka vztahu \(\eqref{eq:de_morgan_and}\)}
 
 Dále se podívejme na vztahy s~implikací. Začněme vyjádřením implikaci pomocí disjunkce:
@@ -391,20 +653,82 @@ Dále se podívejme na vztahy s~implikací. Začněme vyjádřením implikaci po
 
 Vztah dokážeme pomocí pravdivostní tabulky~\ref{tab:impl_definition}.
 
+\begin{prolog}
+?- print_truth_table(
+	impl_definition,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[
+		not(A),
+		or(not(A), B),
+		impl(A, B)
+	]
+).
+\end{prolog}
 \etab{impl_definition}{Pravdivostní tabulka vztahu \(\eqref{eq:impl_definition}\)}
 
 Snadno dokážeme, že při negaci výroků v~implikaci je nutné implikaci obrátit. Důkaz provedeme postupným upravováním výroku pomocí dříve dokázaných vztahů:
 
+\begin{prolog}
+?- print_validated_formula(
+	impl_swap_proof,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv([
+			impl(A, B),
+			or(not(A), B),
+			or(not(not(B)), not(A)),
+			impl(not(B), not(A))
+		])
+	))
+).
+\end{prolog}
 \eeq{impl_swap_proof}
 
 Pro další dokazování je nutný následující vztah umožňující zjednodušit výrok \((\negation{\predicate{A}} \land \predicate{B}) \lor \predicate{A}\):
 
+\begin{prolog}
+?- print_validated_formula(
+	or_generalization_proof,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv([
+			or(and(not(A), B), A),
+			or(and(not(A), B), and(A, or(B, not(B)))),
+			linebreak,
+			or(and(not(A), B), par(or(and(A, B), and(A, not(B))))),
+			linebreak,
+			or(and(not(A), B), or(and(A, B), or(and(A, B), and(A, not(B))))),
+			linebreak,
+			or(and(or(not(A), A), B), and(A, or(B, not(B)))),
+			or(B, A),
+			or(A, B)
+		])
+	))
+).
+\end{prolog}
 \eeq{or_generalization_proof}
 
 V~prvních dvou krocích jsme výrok \(\predicate{A}\) zapsali jako \((\predicate{A} \land \predicate{B}) \lor (\predicate{A} \land \negation{\predicate{B}})\). Dále jsme výrok \(\predicate{A} \land \predicate{B}\) zduplikovali, abychom mohli z~výroků vytknout a~využitím zákonu vyloučení třetího celý výrok zjednodušit.
 
 Dále dokážeme, že v~implikaci z~předpokladu plyne závěr:
 
+\begin{prolog}
+?- print_validated_formula(
+	impl_usage_proof,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv([
+			impl(and(A, impl(A, B)), B),
+			or(not(and(A, impl(A, B))), B),
+			or(or(not(A), not(impl(A, B))), B),
+			linebreak,
+			or(or(not(A), not(or(not(A), B))), B),
+			or(or(not(A), and(A, not(B))), B),
+			or(not(A), par(or(and(A, not(B)), B))),
+			linebreak,
+			or(not(A), par(or(B, A))),
+			log_true
+		])
+	))
+).
+\end{prolog}
 \eeq{impl_usage_proof}
 
 Nejdříve jsme rozepsali druhou implikaci na disjunkci. Pak jsme na první člen použili De-Morganovo pravidlo. Poté jsme zbývající implikaci opět nahradili disjunkcí a~použili na ni De-Morganovo pravdilo. Nakonec jsme použili vztah~\eqref{eq:or_generalization_proof}. Vznikne tak disjunkce, ve které se vyskytuje výrok 
@@ -412,35 +736,297 @@ Nejdříve jsme rozepsali druhou implikaci na disjunkci. Pak jsme na první čle
 
 Pokračujme důkazem tranzitivity implikace:
 
+\begin{prolog}
+?- print_validated_formula(
+	impl_transitivity_proof,
+	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+		equiv([
+			impl(and(impl(A, B), impl(B, C)), impl(A, C)),
+			or(not(and(impl(A, B), impl(B, C))), impl(A, C)),
+			linebreak,
+			or(or(not(impl(A, B)), not(impl(B, C))), impl(A, C)),
+			or(or(not(or(not(A), B)), not(or(not(B), C))), or(not(A), C)),
+			linebreak,
+			or(or(and(A, not(B)), and(B, not(C))), or(not(A), C)),
+			or(par(or(and(A, not(B)), not(A))), par(or(and(B, not(C)), C))),
+			linebreak,
+			or(par(or(not(A), not(B))), par(or(C, B))),
+			log_true
+		])
+	)))
+).
+\end{prolog}
 \eeq{impl_transitivity_proof}
 
 Nakonec dokážeme vztah mezi implikací a~ekvivalencí pomocí pravdivostní tabulky:
 
 \eeqn{equiv_to_impl}
 
-\etab{equiv_to_impl}{Pravdivostní tabulka vztahu \(eqref{eq:equiv_to_impl}\)}
+\begin{prolog}
+?- print_truth_table(
+	equiv_to_impl,
+	[declare_statement(A, 'A'), declare_statement(B, 'B')],
+	[
+		impl(A, B),
+		impl(B, A),
+		and(impl(A, B), impl(B, A)),
+		equiv(A, B)
+	]
+).
+\end{prolog}
+\etab{equiv_to_impl}{Pravdivostní tabulka vztahu \(\eqref{eq:equiv_to_impl}\)}
 
 Shrňme si vztahy, které jsme doposud odvodili:
 
 \begin{fact}
+\begin{prolog}
+?- print_validated_formula(
+	or_symmetry,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			or(A, B),
+			or(B, A)
+		)
+	))
+).
+\end{prolog}
 \eeq{or_symmetry}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	and_symmetry,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			and(A, B),
+			and(B, A)
+		)
+	))
+).
+\end{prolog}
 \eeq{and_symmetry}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	or_associativity,
+	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+		equiv(
+			or(par(or(A, B)), C),
+			or(A, par(or(B, C)))
+		)
+	)))
+).
+\end{prolog}
 \eeq{or_associativity}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	and_associativity,
+	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+		equiv(
+			and(par(and(A, B)), C),
+			and(A, par(and(B, C)))
+		)
+	)))
+).
+\end{prolog}
 \eeq{and_associativity}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	or_distributivity,
+	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+		equiv(
+			or(and(A, B), C),
+			and(or(A, C), or(B, C))
+		)
+	)))
+).
+\end{prolog}
 \eeq{or_distributivity}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	and_distributivity,
+	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+		equiv(
+			and(or(A, B), C),
+			or(and(A, C), and(B, C))
+		)
+	)))
+).
+\end{prolog}
 \eeq{and_distributivity}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	double_or,
+	declare_statement(A, 'A',
+		equiv(
+			or(A, A),
+			A
+		)
+	)
+).
+\end{prolog}
 \eeq{double_or}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	double_and,
+	declare_statement(A, 'A',
+		equiv(
+			and(A, A),
+			A
+		)
+	)
+).
+\end{prolog}
 \eeq{double_and}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	double_negation,
+	declare_statement(A, 'A',
+		equiv(
+			not(not(A)),
+			A
+		)
+	)
+).
+\end{prolog}
 \eeq{double_negation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	excluded_middle,
+	declare_statement(A, 'A',
+		or(A, not(A))
+	)
+).
+\end{prolog}
 \eeq{excluded_middle}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	and_both,
+	declare_statement(A, 'A',
+		not(and(A, not(A)))
+	)
+).
+\end{prolog}
 \eeq{and_both}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	de_morgan_or,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			not(or(A, B)),
+			and(not(A), not(B))
+		)
+	))
+).
+\end{prolog}
 \eeq{de_morgan_or}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	de_morgan_and,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			not(and(A, B)),
+			or(not(A), not(B))
+		)
+	))
+).
+\end{prolog}
 \eeq{de_morgan_and}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	impl_definition,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			impl(A, B),
+			or(not(A), B)
+		)
+	))
+).
+\end{prolog}
 \eeq{impl_definition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	impl_usage,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		impl(
+			and(
+				A,
+				impl(A, B)
+			),
+			B
+		)
+	))
+).
+\end{prolog}
 \eeq{impl_usage}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	impl_transitivity,
+	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+		impl(
+			and(
+				impl(A, B),
+				impl(B, C)
+			),
+			impl(A, C)
+		)
+	)))
+).
+\end{prolog}
 \eeq{impl_transitivity}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	impl_swap,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			impl(A, B),
+			impl(not(B), not(A))
+		)
+	))
+).
+\end{prolog}
 \eeq{impl_swap}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	equiv_to_impl,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			and(impl(A, B), impl(B, A)),
+			equiv(A, B)
+		)
+	))
+).
+\end{prolog}
 \eeq{equiv_to_impl}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- print_validated_formula(
+	or_specific,
+	declare_statement(A, 'A', declare_statement(B, 'B',
+		equiv(
+			or(
+				A,
+				and(A, B)
+			),
+			A
+		)
+	))
+).
+\end{prolog}
 \eeq{or_specific}
 \end{fact}
 
@@ -449,52 +1035,216 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \subsection{Rovnost, podmnožiny}
 Dvě množiny jsou shodné, pokud mají stejné prvky:
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
+	print_validated_formula(
+		'set_equal_definition',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				equiv(
+					set_equal(MA, MB),
+					forall(X, 'x', Values, equiv(in(X, MA), in(X, MB)))
+				)
+			)
+		)
+	).
+\end{prolog}
 \eeq{set_equal_definition}
 
 Jsou-li \(M_A\) a~\(M_B\) množiny, pak \(M_A\) je podmnožinou \(M_B\) pokud každý prvek množiny \(M_A\) je také prvkem množiny \(M_B\). Naopak můžeme říci, že \(M_B\) je nadmonožinou množiny \(M_A\):
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
+	print_validated_formula(
+		'subset_definition',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				equiv(
+					subset(MA, MB),
+					forall(X, 'x', Values, impl(in(X, MA), in(X, MB)))
+				)
+			)
+		)
+	).
+\end{prolog}
 \eeq{subset_definition}
+
+\begin{prolog}
+?-	make_test_sets(Sets),
+	print_validated_formula(
+		'superset_definition',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				equiv(
+					superset(MB, MA),
+					subset(MA, MB)
+				)
+			)
+		)
+	).
+\end{prolog}
 \eeq{superset_definition}
 
 Z~výše uvedeného plyne, že každá množina je sama sobě podmnožonou:
 
+\begin{prolog}
+?-	make_test_sets(Sets),
+	print_validated_formula(
+		'subset_reflexivity',
+		declare_set(M, 'M', Sets,
+			subset(M, M)
+		)
+	).
+\end{prolog}
 \eeq{subset_reflexivity}
 
 Dále pak, že dvě množiny jsou si rovny právě tehdy, pokud jsou zároveň podmnožiny a~nadmnožiny:
 
+\begin{prolog}
+?-	make_test_sets(Sets),
+	print_validated_formula(
+		'subset_to_equal',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				equiv(
+					set_equal(MA, MB),
+					and(subset(MA, MB), superset(MA, MB))
+				)
+			)
+		)
+	).
+\end{prolog}
 \eeq{subset_to_equal}
 
 Důkaz nechám na čtenářích.
 
 Příklady:
 
-\begin{equation}
-\{1, 2, 3\} = \{3, 2, 1\}
-\end{equation}
-
-\begin{equation}
-\{1, 2\} \subset \{1, 2, 3\}
-\end{equation}
-
-\begin{equation}
-\{1, 2\} \supset \{1\}
-\end{equation}
+\begin{prolog}
+?-	print_validated_formula(
+		'example_set_equal',
+		set_equal(
+			set_of([1, 2, 3]),
+			set_of([3, 2, 1])
+		)
+	).
+\end{prolog}
+\eeq{example_set_equal}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	print_validated_formula(
+		'example_subset',
+		subset(
+			set_of([1, 2]),
+			set_of([1, 2, 3])
+		)
+	).
+\end{prolog}
+\eeq{example_subset}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	print_validated_formula(
+		'example_superset',
+		superset(
+			set_of([1, 2]),
+			set_of([1])
+		)
+	).
+\end{prolog}
+\eeq{example_superset}
 
 \subsection{Průnik}
 Jsou-li \(M_A\) a~\(M_B\) množiny, pak \(M_A \cap M_B\) je jejich průnik a~obsahuje prvky, které jsou obsaženy v~obou množinách. Proto platí:
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'intersection_definition',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				set_equal([
+					intersection(
+						set_by(X, 'x', Values, apply(A, [Y], [X])),
+						set_by(X, 'x', Values, apply(B, [Y], [X]))
+					),
+					set_by(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X])))
+				])
+			)
+		)
+	).
+\end{prolog}
 \eeq{intersection_definition}
 
 Toto sjednocení můžeme zapsat i~pomocí operátoru \(\in\). Zkusme to odvodit. Začněme identitou:
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'intersection_in_1',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				declare_variable(Y, 'y', Values, equiv(and(apply(A, [Z], [Y]), apply(B, [Z], [Y])), and(apply(A, [Z], [Y]), apply(B, [Z], [Y]))))
+			)
+		)
+	).
+\end{prolog}
 \eeq{intersection_in_1}
 
 Dále třikrát použijeme vztah~\eqref{eq:in_set_definition}:
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'intersection_in_2',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, set_by(X, 'x', Values, and(apply(A, [Z], [X]), apply(B, [Z], [X])))),
+					and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
+				))
+			)
+		)
+	).
+\end{prolog}
 \eeq{intersection_in_2}
 
 Použijeme vztah~\eqref{eq:intersection_definition}:
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'intersection_in_3',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, intersection(set_by(X, 'x', Values, apply(A, [Z], [X])), set_by(X, 'x', Values, apply(B, [Z], [X])))),
+					and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
+				))
+			)
+		)
+	).
+\end{prolog}
 \eeq{intersection_in_3}
 
 A~nakonec zavedeme substituci \(M_A = \{x: \predicate{A}(x)\}\) a~\(M_B = \{x: \predicate{B}(x)\}\):
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
+	print_validated_formula(
+		'intersection_in_4',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, intersection(MA, MB)),
+					and(in(Y, MA), in(Y, MB))
+				))
+			)
+		)
+	).
+\end{prolog}
 \eeq{intersection_in_4}
 
 Graficky můžeme průnik množin zakraslit ve Vennově diagramu, který je na obrázku~\ref{img:venn_intersection}. Dva kruhy znázornňují množiny \(M_A\) a~\(M_B\). Diagram se skládá ze tří oblastí. Vlevo je oblast znázorňující prvky, které jsou obsaženy pouze v~množině \(M_A\). Vpravo je oblast znázorňující prvky, které jsou obsaženy pouze v~množině \(M_B\). Průnik kruhů uprostřed znázorňuje oblast obsaženou v~obou množinách. Šedě vybarvená plocha pak ukazuje, co je součástí průniku množin.
@@ -505,9 +1255,19 @@ Graficky můžeme průnik množin zakraslit ve Vennově diagramu, který je na o
 
 Příklad:
 
-\begin{equation}
-\{1, 2, 3\} \cap \{2, 3, 4\} = \{2, 3\}
-\end{equation}
+\begin{prolog}
+?-	print_validated_formula(
+		'example_intersection',
+		set_equal(
+			intersection(
+				set_of([1, 2, 3]),
+				set_of([2, 3, 4])
+			),
+			set_of([2, 3])
+		)
+	).
+\end{prolog}
+\eeq{example_intersection}
 
 \begin{fig}{venn_difference_example}{Vennův diagram příkladu}
 \drawvenn{\{1, 2, 3\}}{\{2, 3, 4\}}{white}{1}{lightgray}{2, 3}{white}{4}
@@ -517,7 +1277,41 @@ Příklad:
 
 Obdobně \(M_A \cup M_B\) je sjednocení množin a~obsahuje prvky, které jsou obsaženy v~jedné nabo druhé množině. Proto platí:
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'union_definition',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				set_equal([
+					union(
+						set_by(X, 'x', Values, apply(A, [Y], [X])),
+						set_by(X, 'x', Values, apply(B, [Y], [X]))
+					),
+					set_by(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X])))
+				])
+			)
+		)
+	).
+\end{prolog}
 \eeq{union_definition}
+
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
+	print_validated_formula(
+		'union_in',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, union(MA, MB)),
+					or(in(Y, MA), in(Y, MB))
+				))
+			)
+		)
+	).
+\end{prolog}
 \eeq{union_in}
 
 Na obrázku~\ref{img:venn_union} je sjednocení množin zakresleno ve Vennově diagramu.
@@ -527,7 +1321,20 @@ Na obrázku~\ref{img:venn_union} je sjednocení množin zakresleno ve Vennově d
 \end{fig}
 
 Dále dokážeme, že sjednocení dvou množin je prázdnou množinou tehdy a~jen tehdy, pokud jsou obě množiny prázdné:
-
+\begin{prolog}
+?-	make_test_sets(Sets),
+	print_validated_formula(
+		'union_empty_sets',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				equiv(
+					set_equal(union(MA, MB), empty_set),
+					and(set_equal(MA, empty_set), set_equal(MB, empty_set))
+				)
+			)
+		)
+	).
+\end{prolog}
 \eeq{union_empty_sets}
 
 Podle vztahu~\eqref{eq:equiv_to_impl} musíme dokázat, že sjednocení dvou prázdných množin je prázdná množina - to je triviální - a~že sjednocení množin může být prázdná množina pouze pokud sjednocované množiny jsou prázdné. To dokážeme nyní. Mějme sjednocení dvou množin o~kterém tvrdíme, že je prázdnou množinou:
@@ -552,9 +1359,19 @@ Obě sjednocované množiny tedy musí být prázdné.
 
 Příklad:
 
-\begin{equation}
-\{1, 2, 3\} \cup \{2, 3, 4\} = \{1, 2, 3, 4\}
-\end{equation}
+\begin{prolog}
+?-	print_validated_formula(
+		'example_union',
+		set_equal(
+			union(
+				set_of([1, 2, 3]),
+				set_of([2, 3, 4])
+			),
+			set_of([1, 2, 3, 4])
+		)
+	).
+\end{prolog}
+\eeq{example_union}
 
 \begin{fig}{venn_difference_example}{Vennův diagram příkladu}
 \drawvenn{\{1, 2, 3\}}{\{2, 3, 4\}}{lightgray}{1}{lightgray}{2, 3}{lightgray}{4}
@@ -564,7 +1381,42 @@ Příklad:
 
 Rozdíl množin \(M_A \setminus M_B\) obsahuje prvky, které jsou obsaženy v~množině \(M_A\) a~nejsou obsaženy v~množině \(M_B\). Proto platí:
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'difference_definition',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				set_equal([
+					difference(
+						set_by(X, 'x', Values, apply(A, [Y], [X])),
+						set_by(X, 'x', Values, apply(B, [Y], [X]))
+					),
+					set_by(X, 'x', Values, and(apply(A, [Y], [X]), not(apply(B, [Y], [X])))),
+					set_by(X, 'x', Values, not(impl(apply(A, [Y], [X]), apply(B, [Y], [X]))))
+				])
+			)
+		)
+	).
+\end{prolog}
 \eeq{difference_definition}
+
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_sets(Sets),
+	print_validated_formula(
+		'difference_in',
+		declare_set(MA, 'M_A', Sets,
+			declare_set(MB, 'M_B', Sets,
+				declare_variable(Y, 'y', Values, equiv(
+					in(Y, difference(MA, MB)),
+					and(in(Y, MA), not_in(Y, MB))
+				))
+			)
+		)
+	).
+\end{prolog}
 \eeq{difference_in}
 
 Na obrázku~\ref{img:venn_difference} je rozdíl množin zakreslen ve Vennově diagramu.
@@ -575,9 +1427,19 @@ Na obrázku~\ref{img:venn_difference} je rozdíl množin zakreslen ve Vennově d
 
 Příklad:
 
-\begin{equation}
-\{1, 2, 3\} \setminus \{2, 3, 4\} = \{1\}
-\end{equation}
+\begin{prolog}
+?-	print_validated_formula(
+		'example_difference',
+		set_equal(
+			difference(
+				set_of([1, 2, 3]),
+				set_of([2, 3, 4])
+			),
+			set_of([1])
+		)
+	).
+\end{prolog}
+\eeq{example_difference}
 
 \begin{fig}{venn_difference_example}{Vennův diagram příkladu}
 \drawvenn{\{1, 2, 3\}}{\{2, 3, 4\}}{lightgray}{1}{white}{2, 3}{white}{4}
@@ -588,20 +1450,191 @@ Příklad:
 Začněme vztahy mezi kvantifikátory, které nám umožní přesunout negaci z/do kvantifikátoru. Pro jejich dokázání využejeme
 vztahy~\eqref{eq:forall_set} a~\eqref{eq:exists_set}. Vztah~\eqref{eq:forall_not_eq_not_exists_proof} udává, že výrok \uv{pro každé \(x\) je predikát nepravdivý} je ekvivalentní výroku \uv{neexistuje \(x\), pro které je predikát pravdivý}. Vztah~\eqref{eq:exists_not_eq_not_forall_proof} udává, že výrok \uv{existuje \(x\) pro které je predikát nepravdivý} je ekvivalentní výroku \uv{ne pro všechna \(x\) je predikát pravdivý}:
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'forall_not_eq_not_exists_proof',
+		declare_predicate(P, 'P', Predicates,
+			equiv([
+				forall(X, 'x', Values, not(apply(P, [Y], [X]))),
+				set_equal(set_by(X, 'x', Values, not(not(apply(P, [Y], [X])))), empty_set),
+				set_equal(set_by(X, 'x', Values, apply(P, [Y], [X])), empty_set),
+				not(exists(X, 'x', Values, apply(P, [Y], [X])))
+			])
+		)
+	).
+\end{prolog}
 \eeq{forall_not_eq_not_exists_proof}
+
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'exists_not_eq_not_forall_proof',
+		declare_predicate(P, 'P', Predicates,
+			equiv([
+				exists(X, 'x', Values, not(apply(P, [Y], [X]))),
+				set_not_equal(set_by(X, 'x', Values, not(apply(P, [Y], [X]))), empty_set),
+				not(forall(X, 'x', Values, apply(P, [Y], [X])))
+			])
+		)
+	).
+\end{prolog}
 \eeq{exists_not_eq_not_forall_proof}
 
 Dále můžeme odvodit vztah pro konjunkci v~obecném kvantifikátoru. Vztah~\eqref{eq:forall_and_proof} říká, že výrok \uv{každé \(x\) má vlastnost \(\predicate{A}\) i~\(\predicate{B}\)} je ekvivalentní výroku \uv{každé \(x\) má vlastnost \(\predicate{A}\) a~každé \(x\) má vlastnost~\(\predicate{B}\)}.
 
+\begin{prolog}
+?-	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'forall_and_proof',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				equiv([
+					forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+					set_equal(set_by(X, 'x', Values, not(and(apply(A, [Y], [X]), apply(B, [Y], [X])))), empty_set),
+					linebreak,
+					set_equal(set_by(X, 'x', Values, or(not(apply(A, [Y], [X])), not(apply(B, [Y], [X])))), empty_set),
+					set_equal(
+						union(
+							set_by(X, 'x', Values, not(apply(A, [Y], [X]))),
+							set_by(X, 'x', Values, not(apply(B, [Y], [X])))
+						),
+						empty_set
+					),
+					linebreak,
+					and(
+						set_equal(set_by(X, 'x', Values, not(apply(A, [Y], [X]))), empty_set),
+						set_equal(set_by(X, 'x', Values, not(apply(B, [Y], [X]))), empty_set)
+					),
+					and(
+						forall(X, 'x', Values, apply(A, [Y], [X])),
+						forall(X, 'x', Values, apply(B, [Y], [X]))
+					)
+				])
+			)
+		)
+	).
+\end{prolog}
 \eeq{forall_and_proof}
 
 Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. Vztah~\eqref{eq:exists_or_proof} říká, že výrok \uv{existuje \(x\) takové, že má vlastnost \(\predicate{A}\) nebo \(\predicate{B}\)} je ekvivalentní výroku \uv{existuje \(x\), které má vlastnost \(\predicate{A}\) nebo existuje \(x\), které má vlastnost~\(\predicate{B}\)}.
 
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'exists_or_proof',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				equiv([
+					exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+					set_not_equal(set_by(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))), empty_set),
+					linebreak,
+					set_not_equal(
+						union(
+							set_by(X, 'x', Values, apply(A, [Y], [X])),
+							set_by(X, 'x', Values, apply(B, [Y], [X]))
+						),
+						empty_set
+					),
+					not(set_equal(
+						union(
+							set_by(X, 'x', Values, apply(A, [Y], [X])),
+							set_by(X, 'x', Values, apply(B, [Y], [X]))
+						),
+						empty_set
+					)),
+					linebreak,
+					not(and(
+						set_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set),
+						set_equal(set_by(X, 'x', Values, apply(B, [Y], [X])), empty_set)
+					)),
+					or(
+						set_not_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set),
+						set_not_equal(set_by(X, 'x', Values, apply(B, [Y], [X])), empty_set)
+					),
+					linebreak,
+					or(
+						exists(X, 'x', Values, apply(A, [Y], [X])),
+						exists(X, 'x', Values, apply(B, [Y], [X]))
+					)
+				])
+			)
+		)
+	).
+\end{prolog}
 \eeq{exists_or_proof}
 
 \begin{fact}
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'forall_not_eq_not_exists',
+		declare_predicate(P, 'P', Predicates,
+			equiv(
+				forall(X, 'x', Values, not(apply(P, [Y], [X]))),
+				not(exists(X, 'x', Values, apply(P, [Y], [X])))
+			)
+		)
+	).
+\end{prolog}
 \eeq{forall_not_eq_not_exists}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- 	make_test_values(Values), make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'exists_not_eq_not_forall',
+		declare_predicate(P, 'P', Predicates,
+			equiv(
+				exists(X, 'x', Values, not(apply(P, [Y], [X]))),
+				not(forall(X, 'x', Values, apply(P, [Y], [X])))
+			)
+		)
+	).
+\end{prolog}
 \eeq{exists_not_eq_not_forall}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'forall_and',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				equiv(
+					forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+					and(
+						forall(X, 'x', Values, apply(A, [Y], [X])),
+						forall(X, 'x', Values, apply(B, [Y], [X]))
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
 \eeq{forall_and}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'exists_or',
+		declare_predicate(A, 'A', Predicates,
+			declare_predicate(B, 'B', Predicates,
+				equiv(
+					exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+					or(
+						exists(X, 'x', Values, apply(A, [Y], [X])),
+						exists(X, 'x', Values, apply(B, [Y], [X]))
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
 \eeq{exists_or}
 \end{fact}
