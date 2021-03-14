@@ -118,6 +118,20 @@ log_in_set(_, _, log_false).
 ?- make_set([a, b, c], S), log_in_set(d, S, log_false).
 
 
+% Checks if value is in set of natural numbers
+log_in_naturals(X, log_true) :-
+	integer(X),
+	X >= 1,
+	!.
+
+log_in_naturals(_, log_false).
+
+?- log_in_naturals(42, log_true).
+?- log_in_naturals(0, log_false).
+?- log_in_naturals(-25, log_false).
+?- log_in_naturals(1.25, log_false).
+?- log_in_naturals(something, log_false).
+
 % Calculates set intersection.
 % set_intersection(A, B, Intersection)
 set_intersection([V | Tail], B, [V | IntersectionTail]) :-
@@ -252,17 +266,27 @@ evaluate_function(equiv([A | Tail]), Value) :-
 evaluate_function(X, X) :-
 	number(X).
 
+evaluate_function(A + B, Y) :-
+	number(A),
+	number(B),
+	Y is A + B.
+
 evaluate_function(set_of(Values), set(Set)) :-
 	make_set(Values, Set).
 
 evaluate_function(empty_set, set(Value)) :-
 	make_set([], Value).
 
+evaluate_function(natural_numbers, natural_numbers).
+
 evaluate_function(in(X, set(S)), Value) :-
 	log_in_set(X, S, Value).
 
-evaluate_function(not_in(X, set(S)), Value) :-
-	log_in_set(X, S, InSet),
+evaluate_function(in(X, natural_numbers), Value) :-
+	log_in_naturals(X, Value).
+
+evaluate_function(not_in(X, S), Value) :-
+	evaluate_function(in(X, S), InSet),
 	log_not(InSet, Value).
 
 evaluate_function(intersection(set(A), set(B)), set(Value)) :-
@@ -572,6 +596,10 @@ print_expression_term(Stream, empty_set, _) :-
 	!,
 	write(Stream, ' \\emptyset ').
 
+print_expression_term(Stream, natural_numbers, _) :-
+	!,
+	write(Stream, ' \\naturalnumbers ').
+
 print_expression_term(Stream, set_of(Values), _) :-
 	!,
 	write(Stream, ' \\{ '),
@@ -755,6 +783,21 @@ print_expression_term(Stream, difference(A, B), PR) :-
 	print_expression_term(Stream, B, eq),
 	print_bracket_if_needed(Stream, ')', PR, difference).
 
+print_expression_term(Stream, A + B, PR) :-
+	print_bracket_if_needed(Stream, '(', PR, plus),
+	print_expression_term(Stream, A, plus),
+	write(Stream, ' + '),
+	print_expression_term(Stream, B, plus),
+	print_bracket_if_needed(Stream, ')', PR, plus).
+
+print_expression_term(Stream, num_equal([A, B | Tail], Tolerance), _) :-
+	print_expression_term(Stream, A, eq),
+	write(Stream, ' = '),
+	print_expression_term(Stream, num_equal([B | Tail], Tolerance), eq).
+
+print_expression_term(Stream, num_equal([A], _), _) :-
+	print_expression_term(Stream, A, eq).
+
 
 print_predicate_args(Stream, [Arg, Next | Tail]) :-
 	write(Stream, Arg),
@@ -825,7 +868,7 @@ bracket_not_needed(equiv, impl).
 bracket_not_needed(eq, union).
 bracket_not_needed(eq, intersection).
 bracket_not_needed(eq, difference).
-
+bracket_not_needed(eq, plus).
 
 
 print_hint(Stream, linebreak) :-

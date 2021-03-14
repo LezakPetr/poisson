@@ -50,6 +50,7 @@ process_pl_line(InputFile, TexFile, PlFile, Line) :-
 
 ?- 	InputDir = '../',
 	OutputDir = '../out/',
-	preprocess_file(InputDir, OutputDir, 'ch_logika').
+	preprocess_file(InputDir, OutputDir, 'ch_logika'),
+	preprocess_file(InputDir, OutputDir, 'ch_cisla').
 
 ?- halt.

@@ -1,0 +1,87 @@
+\chapter{Čísla}
+
+\begin{prolog}
+:- ensure_loaded("../equations/formula").
+:- ensure_loaded("../equations/truth_table").
+
+make_test_numbers([-1, 0, 1, 2, 3, 1.5]).
+make_test_predicates(Y, [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false]).
+\end{prolog}
+
+
+\begin{abstract}
+V~této kapitole definujeme obory čísel a~prozkoumáme jejich vlastnosti.
+\end{abstract}
+
+\section{Přirozená čísla}
+
+Začněme nějjednoduššími tzv. přirozenými čísly. Přirozenými čísly rozumíme čísla 1, 2, 3 atd. Upozorňuji, že literatura není jednotná v~tom, zda je nula přirozené číslo. V~této knize nulu nepovažujeme za přirozené číslo. Přirozená čísla typicky vyjadřují počet nějakých objektů. Množinu všech přirozených čísel značíme \(\natural\). Tato množina je nekonečná, neexistuje největší přirozené číslo.
+
+Prozkoumejme, jak můžeme přirozená čísla definovat. Nejnižší přirozené číslo je 1. Každé přirozené číslo \(n\) má
+následovníka, označme ho \(n + 1\). Naopak můžeme říci, že přirozené číslo je buď 1, nebo je následník jiného 
+přirozeného čísla. To nás vede k definici:
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'natural_numbers_definition',
+		declare_variable(N, 'n', Values,
+			equiv(
+				in(N, natural_numbers),
+				or(
+					num_equal([N, 1], 0),
+					exists_in(M, 'm', natural_numbers, Values, num_equal([M + 1, N], 0)) 
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{natural_numbers_definition}.
+
+Číslo 2 tedy můžeme zapsat jako \(1 + 1\), číslo 3 jako \(2 + 1 = (1 + 1) + 1\) atd. Zápis a~význam přirozených čísel nám shrnuje tabulka~\ref{tab:natural_numbers}. Vidíme, že počet jedniček v~zápisu odpovídá počtu reprezentovaných objektů.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|}
+Číslo & Zápis & Význam \\
+1 & 1 & \(\bigcirc\) \\
+2 & 1 + 1 & \(\bigcirc \bigcirc\) \\
+3 & (1 + 1) + 1 & \(\bigcirc \bigcirc \bigcirc\) \\
+4 & ((1 + 1) + 1) + 1 & \(\bigcirc \bigcirc \bigcirc \bigcirc\)
+\end{tabular}
+\caption{Přirozená čísla}
+\label{tab:natural_numbers}
+\end{table}
+
+
+Fakt, že každé přirozené číslo kromě jedničky je následník jiného přirozeného čísla, nám umožňuje zavést důkaz matematickou indukcí. Máme-li predikát \(\predicate{A}(n)\), který je pravdivý pro \(n=1\) a~z~jeho pravdivosti pro \(n\) plyne  pravdivost pro \(n + 1\), pak je tento predikát pravdivý pro všechna přirozená čísla. Důkaz matematickou
+indukcí popisuje vztah~\eqref{eq:mathematical_induction}.
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	make_test_predicates(Z, Predicates),
+	print_validated_formula(
+		'mathematical_induction',
+		declare_predicate(A, 'A', Predicates,
+			impl(			
+				and(
+					apply(A, [Z], [1]),
+					forall_in(N, 'n', natural_numbers, Values,
+						impl(
+							apply(A, [Z], [N]),
+							apply(A, [Z], [N + 1])
+						)
+					)
+				),
+				forall_in(N, 'n', natural_numbers, Values,
+					apply(A, [Z], [N])
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{mathematical_induction}.
+
+Intuitivně je princip důkazu matematickou indukcí zřejmý. Víme, že predikát \(\predicate{A}(n)\) je pravdivý pro \(n=1\). Z~jeho pravdivosti pro \(n=1\) plyne pravdivost pro \(n=2\), z~ní pak pro \(n=3\) atd. Jedná se vlastně o~tranzitivitu implikace prodlouženou do nekonečna. Obdobně lze dokazovat platnost predikátů pro přirozená čísla, jen nezačínáme nulou ale jedničkou.
+
+Nyní, když už víme, co jsou přirozená čísla, tak si zkusme definovat jejich součet. 
