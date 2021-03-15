@@ -638,7 +638,7 @@ print_expression_term(Stream, equiv(A, B), PR) :-
 
 print_expression_term(Stream, equiv([A | Tail]), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, equiv),
-	print_equiv_chain(Stream, [A | Tail]), 
+	print_chain(Stream, [A | Tail], ' \\equivalent '), 
 	print_bracket_if_needed(Stream, ')', PR, equiv).
 
 print_expression_term(Stream, or(A, B), PR) :-
@@ -790,13 +790,8 @@ print_expression_term(Stream, A + B, PR) :-
 	print_expression_term(Stream, B, plus),
 	print_bracket_if_needed(Stream, ')', PR, plus).
 
-print_expression_term(Stream, num_equal([A, B | Tail], Tolerance), _) :-
-	print_expression_term(Stream, A, eq),
-	write(Stream, ' = '),
-	print_expression_term(Stream, num_equal([B | Tail], Tolerance), eq).
-
-print_expression_term(Stream, num_equal([A], _), _) :-
-	print_expression_term(Stream, A, eq).
+print_expression_term(Stream, num_equal(List, _), _) :-
+	print_chain(Stream, List, ' = '). 
 
 
 print_predicate_args(Stream, [Arg, Next | Tail]) :-
@@ -821,18 +816,18 @@ print_expression_list(Stream, [Arg]) :-
 print_expression_list(_, []).
 
 
-print_equiv_chain(Stream, [A | Tail]) :-
+print_chain(Stream, [A | Tail], Delim) :-
 	hint(A),
 	!,
 	print_hint(Stream, A),
-	print_equiv_chain(Stream, Tail).
+	print_chain(Stream, Tail, Delim).
 
-print_equiv_chain(Stream, [A, B | Tail]) :-
+print_chain(Stream, [A, B | Tail], Delim) :-
 	print_expression_term(Stream, A, equiv),
-	write(Stream, ' \\equivalent '),
-	print_equiv_chain(Stream, [B | Tail]).
+	write(Stream,  Delim),
+	print_chain(Stream, [B | Tail], Delim).
 
-print_equiv_chain(Stream, [A]) :-
+print_chain(Stream, [A], _) :-
 	print_expression_term(Stream, A, equiv).
 
 
@@ -857,6 +852,10 @@ bracket_not_needed(and, exists).
 bracket_not_needed(or, exists).
 bracket_not_needed(impl, exists).
 bracket_not_needed(equiv, exists).
+bracket_not_needed(forall, forall).
+bracket_not_needed(exists, exists).
+bracket_not_needed(forall, exists).
+bracket_not_needed(exists, forall).
 %bracket_not_needed(or, and).
 bracket_not_needed(impl, and).
 bracket_not_needed(equiv, and).

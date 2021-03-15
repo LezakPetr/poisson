@@ -36,14 +36,14 @@ přirozeného čísla. To nás vede k definici:
 		)
 	).
 \end{prolog}
-\eeq{natural_numbers_definition}.
+\eeq{natural_numbers_definition}
 
 Číslo 2 tedy můžeme zapsat jako \(1 + 1\), číslo 3 jako \(2 + 1 = (1 + 1) + 1\) atd. Zápis a~význam přirozených čísel nám shrnuje tabulka~\ref{tab:natural_numbers}. Vidíme, že počet jedniček v~zápisu odpovídá počtu reprezentovaných objektů.
 
 \begin{table}[ht]
 \centering
-\begin{tabular}{|c|c|c|}
-Číslo & Zápis & Význam \\
+\begin{tabular}{|c|c|l|}
+Číslo & Reprezentace & Význam \\
 1 & 1 & \(\bigcirc\) \\
 2 & 1 + 1 & \(\bigcirc \bigcirc\) \\
 3 & (1 + 1) + 1 & \(\bigcirc \bigcirc \bigcirc\) \\
@@ -80,8 +80,75 @@ indukcí popisuje vztah~\eqref{eq:mathematical_induction}.
 		)
 	).
 \end{prolog}
-\eeq{mathematical_induction}.
+\eeq{mathematical_induction}
 
 Intuitivně je princip důkazu matematickou indukcí zřejmý. Víme, že predikát \(\predicate{A}(n)\) je pravdivý pro \(n=1\). Z~jeho pravdivosti pro \(n=1\) plyne pravdivost pro \(n=2\), z~ní pak pro \(n=3\) atd. Jedná se vlastně o~tranzitivitu implikace prodlouženou do nekonečna. Obdobně lze dokazovat platnost predikátů pro přirozená čísla, jen nezačínáme nulou ale jedničkou.
 
-Nyní, když už víme, co jsou přirozená čísla, tak si zkusme definovat jejich součet. 
+Nyní, když už víme, co jsou přirozená čísla, tak si zkusme definovat jejich součet. Jak se sčítají přirozená čísla všichni víme od~první třídy základní školy. Chceme-li sečíst čísla \(a\) a~\(b\), pak k~číslu \(a\) \(b\)-krát přičteme jedničku:
+
+\begin{equation}
+\label{eq:soucet_n_definice}
+c = a + b = a + \overbrace{1 + 1 + 1 + ...}^{b \times}
+\end{equation}
+
+Povšimněme si, že výraz pod složenou závorkou odpovídá reprezentaci čísla \(b\) až na pořadí přičítání jedniček. Proto pokud bychom tento vztah rozepsali pomocí zavedené reprezentace přirozených čísel, tak by \uv{počet jedniček} v~jednotlivých částech rovnice~\eqref{eq:soucet_n_definice} byl stejný, pouze by byli jinak uzávorkované. Například pro \(a=2\), \(b=3\) bychom dostali:
+
+\begin{equation}
+\begin{split}
+5 = 2 + 3 = ((2 + 1) + 1) + 1 \\
+(((1 + 1) + 1) + 1) + 1 = (1 + 1) + ((1 + 1) + 1)
+\end{split}
+\end{equation}
+
+To je logické, součet má představovat počet objektů, které ze dvou skupin dáme dohromady. Přesunutím objektů do jedné skupiny se tyto objekty nemohou vytvořit nebo ztratit. Každý objekt je reprezentován jednou jedničkou, proto se tyto jedničky mohou pouze přeskupovat, ale jejich počet se nemůže změnit. Se součtem, popřípadě součty, můžeme proto provádět takové operace, které nezmění počet jedniček ve výrazu s~reprezentacemi přirozených čísel. Máme dvě takovéto operace. Můžeme prohodit operandy součtu beze změny jeho hodnoty. Tato vlastnost se nazývá komutativita sčítání a~popisuje ji rovnice~\eqref{eq:natural_numbers_comutativity}. Dále můžeme změnit uzávorkování součtů beze změny celkového součtu. Tato vlastnost se nazývá asociativita sčítání a~popisuje ji rovnice~\eqref{eq:natural_numbers_asociativity}.
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'natural_numbers_comutativity',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				num_equal([A + B, B + A], 0)
+			)
+		)
+	).
+\end{prolog}
+\eeq{natural_numbers_comutativity}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'natural_numbers_asociativity',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				forall_in(C, 'c', natural_numbers, Values,
+					num_equal([par(A + B) + C, A + par(B + C)], 0)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{natural_numbers_asociativity}
+
+Nyní můžeme zapomenout na původní definici součtu pomocí přičítání jedniček. Rovnice~\eqref{eq:natural_numbers_comutativity} a~\eqref{eq:natural_numbers_asociativity} spolu s~definicí, jak jdou čísla po sobě~v~tabulce~\ref{tab:natural_numbers} nám plně definují součet dvou čísel. Pro každý součet dvou čísel totiž můžeme postupně snižovat jedno číslo a~zvyšovat druhé, až získáme výsledek. Ukážeme si to na příkladu součtu 5 + 3:
+
+\begin{prolog}
+?-	print_validated_formula(
+		'natural_numbers_add_example',
+		num_equal([
+			5 + 3,
+			5 + par(2 + 1),
+			5 + par(1 + 2),
+			par(5 + 1) + 2,
+			linebreak,
+			6 + 2,
+			6 + par(1 + 1),
+			par(6 + 1) + 1,
+			linebreak,
+			7 + 1,
+			8
+		], 0)
+	).
+\end{prolog}
+\eeq{natural_numbers_add_example}
+
