@@ -15,53 +15,66 @@ V~této kapitole definujeme obory čísel a~prozkoumáme jejich vlastnosti.
 
 \section{Přirozená čísla}
 
-Začněme nějjednoduššími tzv. přirozenými čísly. Přirozenými čísly rozumíme čísla 1, 2, 3 atd. Upozorňuji, že literatura není jednotná v~tom, zda je nula přirozené číslo. V~této knize nulu nepovažujeme za přirozené číslo. Přirozená čísla typicky vyjadřují počet nějakých objektů. Množinu všech přirozených čísel značíme \(\natural\). Tato množina je nekonečná, neexistuje největší přirozené číslo.
+Začněme nějjednoduššími tzv. přirozenými čísly. Přirozenými čísly rozumíme čísla 1, 2, 3 atd. Upozorňuji, že literatura není jednotná v~tom, zda je nula přirozené číslo. V~této knize nulu nepovažujeme za přirozené číslo. Přirozená čísla typicky vyjadřují počet nějakých objektů. Množinu všech přirozených čísel značíme \(\naturalnumbers\). Tato množina je nekonečná, neexistuje největší přirozené číslo.
 
 Prozkoumejme, jak můžeme přirozená čísla definovat. Nejnižší přirozené číslo je 1. Každé přirozené číslo \(n\) má
-následovníka, označme ho \(n + 1\). Naopak můžeme říci, že přirozené číslo je buď 1, nebo je následník jiného 
-přirozeného čísla. To nás vede k definici:
+následníka, označme ho \(n + 1\). Každé přirozené číslo, vyjma čísla 1, je následníkem právě jednoho čísla. To nás vede k~axiomům~\eqref{eq:natural_numbers_definition_1} až~\eqref{eq:natural_numbers_definition_4}.
 
+\begin{fact}
+\begin{prolog}
+?-	print_validated_formula(
+		'natural_numbers_definition_1',
+		in(1, natural_numbers)
+	).
+\end{prolog}
+\eeq{natural_numbers_definition_1}
+%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
 ?-	make_test_numbers(Values),
 	print_validated_formula(
-		'natural_numbers_definition',
-		declare_variable(N, 'n', Values,
-			equiv(
-				in(N, natural_numbers),
-				or(
-					num_equal([N, 1], 0),
-					exists_in(M, 'm', natural_numbers, Values, num_equal([M + 1, N], 0)) 
+		'natural_numbers_definition_2',
+		forall_in(N, 'n', natural_numbers, Values,
+				in(N + 1, natural_numbers)
+		)
+	).
+\end{prolog}
+\eeq{natural_numbers_definition_2}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'natural_numbers_definition_3',
+		forall_in(M, 'm', natural_numbers, Values,
+			forall_in(N, 'n', natural_numbers, Values,
+				equiv(
+					num_equal([M, N], 1e-12),				
+					num_equal([M + 1, N + 1], 1e-12)
 				)
 			)
 		)
 	).
 \end{prolog}
-\eeq{natural_numbers_definition}
-
-Číslo 2 tedy můžeme zapsat jako \(1 + 1\), číslo 3 jako \(2 + 1 = (1 + 1) + 1\) atd. Zápis a~význam přirozených čísel nám shrnuje tabulka~\ref{tab:natural_numbers}. Vidíme, že počet jedniček v~zápisu odpovídá počtu reprezentovaných objektů.
-
-\begin{table}[ht]
-\centering
-\begin{tabular}{|c|c|l|}
-Číslo & Reprezentace & Význam \\
-1 & 1 & \(\bigcirc\) \\
-2 & 1 + 1 & \(\bigcirc \bigcirc\) \\
-3 & (1 + 1) + 1 & \(\bigcirc \bigcirc \bigcirc\) \\
-4 & ((1 + 1) + 1) + 1 & \(\bigcirc \bigcirc \bigcirc \bigcirc\)
-\end{tabular}
-\caption{Přirozená čísla}
-\label{tab:natural_numbers}
-\end{table}
-
-
-Fakt, že každé přirozené číslo kromě jedničky je následník jiného přirozeného čísla, nám umožňuje zavést důkaz matematickou indukcí. Máme-li predikát \(\predicate{A}(n)\), který je pravdivý pro \(n=1\) a~z~jeho pravdivosti pro \(n\) plyne  pravdivost pro \(n + 1\), pak je tento predikát pravdivý pro všechna přirozená čísla. Důkaz matematickou
-indukcí popisuje vztah~\eqref{eq:mathematical_induction}.
-
+\eeq{natural_numbers_definition_3}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'natural_numbers_definition_4',
+		not(
+			exists_in(N, 'n', natural_numbers, Values,
+				num_equal([N + 1, 1], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{natural_numbers_definition_4}
+%%%%%%%%%%%%%%%%%%%%%
+Pro každý predikát \(\predicate{A}(n)\) platí:
 \begin{prolog}
 ?-	make_test_numbers(Values),
 	make_test_predicates(Z, Predicates),
 	print_validated_formula(
-		'mathematical_induction',
+		'natural_numbers_definition_induction',
 		declare_predicate(A, 'A', Predicates,
 			impl(			
 				and(
@@ -80,9 +93,45 @@ indukcí popisuje vztah~\eqref{eq:mathematical_induction}.
 		)
 	).
 \end{prolog}
-\eeq{mathematical_induction}
+\eeq{natural_numbers_definition_induction}
+\end{fact}
 
-Intuitivně je princip důkazu matematickou indukcí zřejmý. Víme, že predikát \(\predicate{A}(n)\) je pravdivý pro \(n=1\). Z~jeho pravdivosti pro \(n=1\) plyne pravdivost pro \(n=2\), z~ní pak pro \(n=3\) atd. Jedná se vlastně o~tranzitivitu implikace prodlouženou do nekonečna. Obdobně lze dokazovat platnost predikátů pro přirozená čísla, jen nezačínáme nulou ale jedničkou.
+Číslo 2 tedy můžeme zapsat jako \(1 + 1\), číslo 3 jako \(2 + 1 = (1 + 1) + 1\) atd. Zápis a~význam přirozených čísel nám shrnuje tabulka~\ref{tab:natural_numbers}. Vidíme, že počet jedniček v~zápisu odpovídá počtu reprezentovaných objektů.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|r|l|l|l|}
+\hline
+Číslo & Pořadí & Reprezentace & Význam \\
+\hline
+1 & 1 & 1 & \(\bigcirc\) \\
+2 & 1 + 1 & 1 + 1 & \(\bigcirc \bigcirc\) \\
+3 & 2 + 1 & (1 + 1) + 1 & \(\bigcirc \bigcirc \bigcirc\) \\
+4 & 3 + 1 & ((1 + 1) + 1) + 1 & \(\bigcirc \bigcirc \bigcirc \bigcirc\) \\
+\ldots & \ldots & \ldots & \ldots \\
+\hline
+\end{tabular}
+\caption{Přirozená čísla}
+\label{tab:natural_numbers}
+\end{table}
+
+Fakt, že každé přirozené číslo kromě jedničky je následník jiného přirozeného čísla, nám umožňuje zavést důkaz matematickou indukcí. Máme-li predikát \(\predicate{A}(n)\), který je pravdivý pro \(n=1\) a~z~jeho pravdivosti pro \(n\) plyne  pravdivost pro \(n + 1\), pak je tento predikát pravdivý pro všechna přirozená čísla. Důkaz matematickou
+indukcí popisuje vztah~\eqref{eq:natural_numbers_definition_induction}.
+
+Intuitivně je princip důkazu matematickou indukcí zřejmý. Víme, že predikát \(\predicate{A}(n)\) je pravdivý pro \(n=1\). Z~jeho pravdivosti pro \(n=1\) plyne pravdivost pro \(n=2\), z~ní pak pro \(n=3\) atd. Jedná se vlastně o~tranzitivitu implikace prodlouženou do nekonečna.
+
+Aximom~\eqref{eq:natural_numbers_definition_induction} má ještě jeden význam. Axiomy~\eqref{eq:natural_numbers_definition_1} až~\eqref{eq:natural_numbers_definition_4} nám definují, že existují přirozená čísla mající strukturu podle tabulky~\ref{tab:natural_numbers}. Nezaručují nám ale, že existují pouze takováto přirozená čísla. To nám zaručuje právě axiom~\eqref{eq:natural_numbers_definition_induction}, stačí zvolit \(\predicate{A}(n) = \) \uv{\(n\) lze vyjádřit postupným přičítáním 1 k~číslu 1}. Tento predikát je pravdivý pro každé přirozené číslo, které odpovídá tabulce ~\ref{tab:natural_numbers}, ale pouze pro ně. Zkuste ho dokázat matematickou indukcí. Z~toho ale vyplývá, že množina přirozených čísel nemůže obsahovat čísla nesplňující tento predikát, protože jinak by axiom~\eqref{eq:natural_numbers_definition_induction} udával, že predikát je pravdivý i~pro tato čísla. Tím bychom získali spor.
+
+Přirozená čísla lze také znázornit na číselné ose, jak je zobrazeno na obrázku~\ref{img:ciselna_osa}. Osa začíná číslem 1 a~pokračuje do nekonečna.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawhnaturalnumberline{0}{0}{4}	
+\end{tikzpicture}
+\caption{Číselná osa}
+\label{img:ciselna_osa}
+\end{figure}
 
 Nyní, když už víme, co jsou přirozená čísla, tak si zkusme definovat jejich součet. Jak se sčítají přirozená čísla všichni víme od~první třídy základní školy. Chceme-li sečíst čísla \(a\) a~\(b\), pak k~číslu \(a\) \(b\)-krát přičteme jedničku:
 
@@ -93,15 +142,26 @@ c = a + b = a + \overbrace{1 + 1 + 1 + ...}^{b \times}
 
 Povšimněme si, že výraz pod složenou závorkou odpovídá reprezentaci čísla \(b\) až na pořadí přičítání jedniček. Proto pokud bychom tento vztah rozepsali pomocí zavedené reprezentace přirozených čísel, tak by \uv{počet jedniček} v~jednotlivých částech rovnice~\eqref{eq:soucet_n_definice} byl stejný, pouze by byli jinak uzávorkované. Například pro \(a=2\), \(b=3\) bychom dostali:
 
-\begin{equation}
-\begin{split}
-5 = 2 + 3 = ((2 + 1) + 1) + 1 \\
-(((1 + 1) + 1) + 1) + 1 = (1 + 1) + ((1 + 1) + 1)
-\end{split}
-\end{equation}
+\begin{prolog}
+?-	print_validated_formula(
+		'add_example',
+		num_equal(
+			[
+				2 + 3,
+				par(1 + 1) + par(par(1 + 1) + 1),
+				linebreak,
+				par(par(par(1 + 1) + 1) + 1) + 1,
+				5
+			],
+			0
+		)
+	).
+\end{prolog}
+\eeq{add_example}
 
 To je logické, součet má představovat počet objektů, které ze dvou skupin dáme dohromady. Přesunutím objektů do jedné skupiny se tyto objekty nemohou vytvořit nebo ztratit. Každý objekt je reprezentován jednou jedničkou, proto se tyto jedničky mohou pouze přeskupovat, ale jejich počet se nemůže změnit. Se součtem, popřípadě součty, můžeme proto provádět takové operace, které nezmění počet jedniček ve výrazu s~reprezentacemi přirozených čísel. Máme dvě takovéto operace. Můžeme prohodit operandy součtu beze změny jeho hodnoty. Tato vlastnost se nazývá komutativita sčítání a~popisuje ji rovnice~\eqref{eq:natural_numbers_comutativity}. Dále můžeme změnit uzávorkování součtů beze změny celkového součtu. Tato vlastnost se nazývá asociativita sčítání a~popisuje ji rovnice~\eqref{eq:natural_numbers_asociativity}.
 
+\begin{fact}
 \begin{prolog}
 ?-	make_test_numbers(Values),
 	print_validated_formula(
@@ -129,6 +189,7 @@ To je logické, součet má představovat počet objektů, které ze dvou skupin
 	).
 \end{prolog}
 \eeq{natural_numbers_asociativity}
+\end{fact}
 
 Nyní můžeme zapomenout na původní definici součtu pomocí přičítání jedniček. Rovnice~\eqref{eq:natural_numbers_comutativity} a~\eqref{eq:natural_numbers_asociativity} spolu s~definicí, jak jdou čísla po sobě~v~tabulce~\ref{tab:natural_numbers} nám plně definují součet dvou čísel. Pro každý součet dvou čísel totiž můžeme postupně snižovat jedno číslo a~zvyšovat druhé, až získáme výsledek. Ukážeme si to na příkladu součtu 5 + 3:
 
@@ -152,3 +213,269 @@ Nyní můžeme zapomenout na původní definici součtu pomocí přičítání j
 \end{prolog}
 \eeq{natural_numbers_add_example}
 
+Součet můžeme také zobrazit na číselné ose, jak je vidět na obrázku \ref{img:soucet_ciselna_osa}. Na obrázku~\ref{img:komutativita_souctu_ciselna_osa} je znázorněna komutativita součtu a~na obrázku~\ref{img:asociativita_souctu_ciselna_osa} asociativita součtu.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawhnaturalnumberline{0}{0}{5}
+\drawboxrow{0}{0}{2}{fill=cyan}
+\drawboxrow{2}{0}{3}{fill=orange}
+\end{tikzpicture}
+\caption{Grafické znázornění součtu \(\textcolor{cyan}{2} + \textcolor{orange}{3}\)}
+\label{img:soucet_ciselna_osa}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawhnaturalnumberline{0}{2}{8}
+\drawboxrow{0}{2}{5}{fill=orange}
+\drawboxrow{5}{2}{3}{fill=cyan}
+
+\drawhnaturalnumberline{0}{0}{8}
+\drawboxrow{0}{0}{3}{fill=cyan}
+\drawboxrow{3}{0}{5}{fill=orange}
+\end{tikzpicture}
+\caption{Grafické znázornění komutativity součtu \(\textcolor{orange}{5} + \textcolor{cyan}{3} = \textcolor{cyan}{3} + \textcolor{orange}{5}\)}
+\label{img:komutativita_souctu_ciselna_osa}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawhnaturalnumberline{0}{2.5}{9}
+\drawboxrow{0}{3}{2}{fill=cyan}
+\drawboxrow{2}{3}{3}{fill=orange}
+\drawboxrow{5}{2.5}{4}{fill=green}
+
+\drawhnaturalnumberline{0}{0}{9}
+\drawboxrow{0}{0.5}{2}{fill=cyan}
+\drawboxrow{2}{0}{3}{fill=orange}
+\drawboxrow{5}{0}{4}{fill=green}
+\end{tikzpicture}
+\caption{Grafické znázornění asociativity součtu \((\textcolor{cyan}{2} + \textcolor{orange}{3}) + \textcolor{green}{4} = \textcolor{cyan}{2} + (\textcolor{orange}{3} + \textcolor{green}{4})\)}
+\label{img:asociativita_souctu_ciselna_osa}
+\end{figure}
+
+Pokračujme definicí součinu. Chceme-li vynásobit čísla \(a\) a~\(b\), pak \(b\)-krát sečteme číslo \(a\).
+
+\begin{equation}
+\label{eq:multiplication_definition}
+c = a \cdot b = \overbrace{a + a + a + ...}^{b \times}
+\end{equation}
+
+Násobení můžeme znázornit graficky pomocí obdélníka. Podle definice \eqref{eq:multiplication_definition} musíme při výpočtu součinu \(a \cdot b\) sečíst \(b\) čísel \(a\). Pokud tedy číslo \(a\) představuje \(a\) objektů a~my je vyskládáme do jedné řady, pak součin \(a \cdot b\) může být zakreslen jako \(b\) takovýchto řad nad sebou. Například součin \(3 \cdot 4\) je zobrazen na obrázku~\ref{img:multiplication_definition}. 
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawnaturalnumberplane{0}{0}{3}{4};
+\drawboxrect{0}{0}{3}{4}{fill=lightgray};
+\end{tikzpicture}
+\caption{Grafické znázornění součinu \(3 \cdot 4\)}
+\label{img:multiplication_definition}
+\end{figure}
+
+Z~definice~\eqref{eq:multiplication_definition} přímo plynou dva vztahy. Vztah \eqref{eq:natural_multiply_by_one} nám udává, co znamená násobit číslem 1. Vztah~\eqref{eq:multiplication_distributivity} je tzv. distributivita násobení a~udává vztah mezi nádobením a~sčítáním.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'natural_multiply_by_one',
+		forall_in(A, 'a', natural_numbers, Values,
+			num_equal([A * 1, A], 0)
+		)
+	).				
+\end{prolog}
+\eeq{natural_multiply_by_one}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'multiplication_distributivity',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				forall_in(C, 'c', natural_numbers, Values,
+					num_equal([A * (B + C), A * B + A * C], 1e-12)
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{multiplication_distributivity}
+\end{fact}
+
+Distributivitu součinu můžeme odvodit rozepsáním součinu pomocí definice, jak je vidět v rovnici~\ref{eq:multiplication_distributivity_proof}. Graficky je distributivita znázorněna na obrázku~\ref{img:multiplication_distributivity}.
+
+\begin{equation}
+\label{eq:multiplication_distributivity_proof}
+a \cdot (b + c) = \overbrace{a + a + a + ...}^{(b + c) \times} = \overbrace{a + a + a + ...}^{b \times} + \overbrace{a + a + a + ...}^{c \times} = a \cdot b + a \cdot c
+\end{equation}
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawnaturalnumberplane{0}{0}{4}{5};
+\drawboxrect{0}{0}{4}{2}{fill=cyan};
+\drawboxrect{0}{2}{4}{3}{fill=orange};
+\end{tikzpicture}
+\caption{Grafické znázornění distributivity součinu \(4 \cdot (\textcolor{cyan}{2} + \textcolor{orange}{3}) = 4 \cdot \textcolor{cyan}{2} + 4 \cdot \textcolor{orange}{3}\)}
+\label{img:multiplication_distributivity}
+\end{figure}
+
+Zamyslíme-li se nad vztahy~\ref{eq:natural_multiply_by_one} a~\ref{eq:multiplication_distributivity}, tak zjistíme, že nám plně definují součin přirozených čísel. Pravý operand totiž můžeme postupně snižovat o~jedničku a~rozepsat součin na součet. Například pro součin \(3 \cdot 4\) získáme:
+
+\begin{prolog}
+?-	print_validated_formula(
+		'multiplication_example',
+		num_equal([
+			3 * 4,
+			3 * (3 + 1),
+			3 * 3 + 3 * 1,
+			3 * (2 + 1) + 3 * 1,
+			linebreak,
+			3 * 2 + 3 * 1 + 3 * 1,
+			3 * (1 + 1) + 3 * 1 + 3 * 1,
+			linebreak,
+			3 * 1 + 3 * 1 + 3 * 1 + 3 * 1,
+			3 + 3 + 3 + 3,
+			12
+		], 1e-12)
+	).				
+\end{prolog}
+\eeq{multiplication_example}
+
+Původní definici tedy můžeme snížit nahradit formálními rovnicemi~\ref{eq:natural_multiply_by_one} a~\ref{eq:multiplication_distributivity}.
+
+Z~grafické reprezentace součinu je také vidět, že součin je komutativní operace. Obdélníku totiž můžeme prohodit strany, aniž by se tím změnil jeho obsah. Počet objektů, na obrázku~\ref{img:multiplication_comutativity} znázorněných počtem čtverců, se tím nezmění. Jinak řečeno, máme-li \(b\) skupin (na levém obrázku řádků) po \(a\) objektech, pak je můžeme přeskupit tak, že budeme mít \(a\) skupin po \(b\) objektech. Přeskupením se počet objektů nezmění. Komutativitu součinu popisuje rovnice~\eqref{eq:multiplication_comutativity}.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawnaturalnumberplane{0}{0}{3}{4};
+\drawboxrect{0}{0}{3}{4}{fill=lightgray};
+
+\drawnaturalnumberplane{5}{0}{4}{3};
+\drawboxrect{5}{0}{4}{3}{fill=lightgray};
+\end{tikzpicture}
+\caption{Grafické znázornění komutativity součinu \(3 \cdot 4 = 4 \cdot 3\)}
+\label{img:multiplication_comutativity}
+\end{figure}
+
+Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{eq:multiplication_asociativity}. Výraz \(a \cdot b \cdot c\) odpovídá objemu kvádru, v~případě přirozených čísel \(a\), \(b\) a~\(c\) počtu jednotkových krychlí naskládaných do kvádru. Postavením kvádru na jinou stranu se jeho objem - počet jednotkových krychlí - nezmění. Proto součin musí být asociativní operace.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'multiplication_comutativity',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				num_equal([A * B, B * A], 1e-12)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{multiplication_comutativity}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'multiplication_asociativity',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				forall_in(C, 'c', natural_numbers, Values,
+					num_equal([par(A * B) * C, A * par(B * C)], 1e-12)
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{multiplication_asociativity}
+\end{fact}
+
+\section{Celá čísla}
+
+Zkusme dále definovat rozdíl jako opačnou operaci k~součtu pomocí rovnice~\eqref{eq:difference_definition}.
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'difference_definition',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				declare_variable(C, 'c', Values,
+					equiv(
+						num_equal([C, A - B], 1e-12),
+						num_equal([B + C, A], 1e-12)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{difference_definition}
+
+Z této rovnice například vyplývá, že \(5 - 2 = 3\) protože \(2 + 3 = 5\). Vidíme ale, že pro některé dvojice přirozených čísel rozdíl neexistuje. Například nelze vypočítat \(2 - 3\), proto6e neexistuje přirozené číslo, které kdybychom přičetli k číslu 3, tak dostaneme číslo 2. Potřebovali bychom číslo, které je menší než nejmenší přirozené číslo 1. Abychom mohli taková čísla zavést, tak musíme opustit náš dosavadní model reprezentace čísel pomocí počtu jedniček nebo objektů a~definovat čísla jejich pořadím podle tabulky~\ref{tab:integers}.
+
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|r|r|}
+\hline
+Číslo & Pořadí \\
+\hline
+\ldots & \ldots \\
+-4 & -5 + 1 \\
+-3 & -4 + 1 \\
+-2 & -3 + 1 \\
+-1 & -2 + 1 \\
+0 & -1 + 1 \\
+1 & 0 + 1 \\
+2 & 1 + 1 \\
+3 & 2 + 1 \\
+4 & 3 + 1 \\
+\ldots & \ldots \\
+\hline
+\end{tabular}
+\caption{Celá čísla}
+\label{tab:integers}
+\end{table}
+
+Operace součtu zůstává definovaná pomocí tohoto pořadí a~rovnic~\eqref{eq:natural_numbers_comutativity} a~\eqref{eq:natural_numbers_asociativity}. Operace rozdílu je definovaná rovnicí~\ref{eq:difference_definition} a~každé dvojici celých čísel přiřazuje celé číslo. Říkáme, že množina celých čísel je uzavřená pro operaci odčítání (to množina přirozených čísel nebyla).
+
+
+Mezi celými čísly najdeme zvláštní číslo 0. Z~definice čísla 1 v~tabulce~\ref{tab:integers} vidíme, že \(0 + 1 = 1\), tedy když k~jedničce přičteme nulu, tak získáme zase jedničku. To platí obecně:
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'add_zero_proof_1',
+		declare_variable(B, 'b', Values,
+			num_equal([
+				(B + 1) + 0,
+				B + (0 + 1),
+				B + 1
+			], 1e-12)
+		)
+	).
+\end{prolog}
+\eeq{add_zero_proof_1}
+
+V~prvním kroku jsme s~využitím komutativity a~asociativity sčítání výraz přeuspořádali. Ve druhém kroku jsme využili definice čásla 1. Protože každé celé číslo má svého předchůdce, tak můžeme zavést substituci \(a = b + 1\)
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'add_zero_proof_2',
+		declare_variable(A, 'a', Values,
+			num_equal([
+				A + 0,
+				A
+			], 1e-12)
+		)
+	).
+\end{prolog}
+\eeq{add_zero_proof_2}

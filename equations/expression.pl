@@ -132,6 +132,19 @@ log_in_naturals(_, log_false).
 ?- log_in_naturals(1.25, log_false).
 ?- log_in_naturals(something, log_false).
 
+% Checks if value is in set of integers
+log_in_integers(X, log_true) :-
+	integer(X),
+	!.
+
+log_in_integers(_, log_false).
+
+?- log_in_integers(42, log_true).
+?- log_in_integers(0, log_true).
+?- log_in_integers(-25, log_true).
+?- log_in_integers(1.25, log_false).
+?- log_in_integers(something, log_false).
+
 % Calculates set intersection.
 % set_intersection(A, B, Intersection)
 set_intersection([V | Tail], B, [V | IntersectionTail]) :-
@@ -266,11 +279,6 @@ evaluate_function(equiv([A | Tail]), Value) :-
 evaluate_function(X, X) :-
 	number(X).
 
-evaluate_function(A + B, Y) :-
-	number(A),
-	number(B),
-	Y is A + B.
-
 evaluate_function(set_of(Values), set(Set)) :-
 	make_set(Values, Set).
 
@@ -278,12 +286,16 @@ evaluate_function(empty_set, set(Value)) :-
 	make_set([], Value).
 
 evaluate_function(natural_numbers, natural_numbers).
+evaluate_function(integers, integers).
 
 evaluate_function(in(X, set(S)), Value) :-
 	log_in_set(X, S, Value).
 
 evaluate_function(in(X, natural_numbers), Value) :-
 	log_in_naturals(X, Value).
+
+evaluate_function(in(X, integers), Value) :-
+	log_in_integers(X, Value).
 
 evaluate_function(not_in(X, S), Value) :-
 	evaluate_function(in(X, S), InSet),
@@ -600,6 +612,10 @@ print_expression_term(Stream, natural_numbers, _) :-
 	!,
 	write(Stream, ' \\naturalnumbers ').
 
+print_expression_term(Stream, integers, _) :-
+	!,
+	write(Stream, ' \\integers ').
+
 print_expression_term(Stream, set_of(Values), _) :-
 	!,
 	write(Stream, ' \\{ '),
@@ -623,37 +639,21 @@ print_expression_term(Stream, declare_set(Variable, Label, _, SubFormula), PR) :
 	print_expression_term(Stream, SubFormula, PR).
 
 print_expression_term(Stream, impl(A, B), PR) :-
-	print_bracket_if_needed(Stream, '(', PR, impl), 
-	print_expression_term(Stream, A, impl),
-	write(Stream, ' \\impl '),
-	print_expression_term(Stream, B, impl),
-	print_bracket_if_needed(Stream, ')', PR, impl).
+	print_binary_operator(Stream, A, B, PR, impl, ' \\impl ').
 
 print_expression_term(Stream, equiv(A, B), PR) :-
-	print_bracket_if_needed(Stream, '(', PR, equiv), 
-	print_expression_term(Stream, A, equiv),
-	write(Stream, ' \\equivalent '),
-	print_expression_term(Stream, B, equiv),
-	print_bracket_if_needed(Stream, ')', PR, equiv).
+	print_binary_operator(Stream, A, B, PR, equiv, ' \\equivalent ').
 
 print_expression_term(Stream, equiv([A | Tail]), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, equiv),
-	print_chain(Stream, [A | Tail], ' \\equivalent '), 
+	print_chain(Stream, [A | Tail], ' \\equivalent ', equiv), 
 	print_bracket_if_needed(Stream, ')', PR, equiv).
 
 print_expression_term(Stream, or(A, B), PR) :-
-	print_bracket_if_needed(Stream, '(', PR, or), 
-	print_expression_term(Stream, A, or),
-	write(Stream, ' \\lor '),
-	print_expression_term(Stream, B, or),
-	print_bracket_if_needed(Stream, ')', PR, or).
+	print_binary_operator(Stream, A, B, PR, or, ' \\lor ').
 
 print_expression_term(Stream, and(A, B), PR) :-
-	print_bracket_if_needed(Stream, '(', PR, and), 
-	print_expression_term(Stream, A, and),
-	write(Stream, ' \\land '),
-	print_expression_term(Stream, B, and),
-	print_bracket_if_needed(Stream, ')', PR, and).
+	print_binary_operator(Stream, A, B, PR, and, ' \\land ').
 
 print_expression_term(Stream, par(F), _) :-
 	write(Stream, '('),
@@ -724,74 +724,64 @@ print_expression_term(Stream, set_by(Variable, Label, _, Formula), _) :-
 	print_expression_term(Stream, Formula, root),
 	write(Stream, '\\}').
 
-print_expression_term(Stream, set_equal([A, B | Tail]), _) :-
-	print_expression_term(Stream, A, eq),
-	write(Stream, ' = '),
-	print_expression_term(Stream, set_equal([B | Tail]), eq).
+print_expression_term(Stream, set_equal(List), PR) :-
+	is_list(List),
+	print_bracket_if_needed(Stream, '(', PR, equal),
+	print_chain(Stream, List, ' = ', equal), 
+	print_bracket_if_needed(Stream, ')', PR, equal).
 
 print_expression_term(Stream, set_equal([A]), _) :-
 	print_expression_term(Stream, A, eq).
 
-print_expression_term(Stream, set_equal(A, B), _) :-
-	print_expression_term(Stream, A, eq),
-	write(Stream, ' = '),
-	print_expression_term(Stream, B, eq).
+print_expression_term(Stream, set_equal(A, B), PR) :-
+	print_binary_operator(Stream, A, B, PR, equal, ' = ').
 
-print_expression_term(Stream, set_not_equal(A, B), _) :-
-	print_expression_term(Stream, A, eq),
-	write(Stream, ' \\neq '),
-	print_expression_term(Stream, B, eq).
+print_expression_term(Stream, set_not_equal(A, B), PR) :-
+	print_binary_operator(Stream, A, B, PR, plus, ' \\neq ').
 
-print_expression_term(Stream, subset(A, B), _) :-
-	print_expression_term(Stream, A, subset),
-	write(Stream, ' \\subset '),
-	print_expression_term(Stream, B, subset).
+print_expression_term(Stream, subset(A, B), PR) :-
+	print_binary_operator(Stream, A, B, PR, subset, ' \\subset ').
 
-print_expression_term(Stream, superset(A, B), _) :-
-	print_expression_term(Stream, A, subset),
-	write(Stream, ' \\supset '),
-	print_expression_term(Stream, B, subset).
+print_expression_term(Stream, superset(A, B), PR) :-
+	print_binary_operator(Stream, A, B, PR, subset, ' \\supset ').
 
-print_expression_term(Stream, in(X, S), _) :-
-	print_expression_term(Stream, X, in),
-	write(Stream, ' \\in '),
-	print_expression_term(Stream, S, in).
+print_expression_term(Stream, in(X, S), PR) :-
+	print_binary_operator(Stream, X, S, PR, in, ' \\in ').
 
-print_expression_term(Stream, not_in(X, S), _) :-
-	print_expression_term(Stream, X, in),
-	write(Stream, ' \\notin '),
-	print_expression_term(Stream, S, in).
+print_expression_term(Stream, not_in(X, S), PR) :-
+	print_binary_operator(Stream, X, S, PR, in, ' \\notin ').
 
 print_expression_term(Stream, union(A, B), PR) :-
-	print_bracket_if_needed(Stream, '(', PR, union),
-	print_expression_term(Stream, A, eq),
-	write(Stream, ' \\cup '),
-	print_expression_term(Stream, B, eq),
-	print_bracket_if_needed(Stream, ')', PR, union).
+	print_binary_operator(Stream, A, B, PR, union, ' \\cup ').
 
 print_expression_term(Stream, intersection(A, B), PR) :-
-	print_bracket_if_needed(Stream, '(', PR, intersection),
-	print_expression_term(Stream, A, eq),
-	write(Stream, ' \\cap '),
-	print_expression_term(Stream, B, eq),
-	print_bracket_if_needed(Stream, ')', PR, intersection).
+	print_binary_operator(Stream, A, B, PR, intersection, ' \\cap ').
 
 print_expression_term(Stream, difference(A, B), PR) :-
-	print_bracket_if_needed(Stream, '(', PR, difference),
-	print_expression_term(Stream, A, eq),
-	write(Stream, ' \\setminus '),
-	print_expression_term(Stream, B, eq),
-	print_bracket_if_needed(Stream, ')', PR, difference).
+	print_binary_operator(Stream, A, B, PR, difference, ' \\setminus ').
 
 print_expression_term(Stream, A + B, PR) :-
-	print_bracket_if_needed(Stream, '(', PR, plus),
-	print_expression_term(Stream, A, plus),
-	write(Stream, ' + '),
-	print_expression_term(Stream, B, plus),
-	print_bracket_if_needed(Stream, ')', PR, plus).
+	print_binary_operator(Stream, A, B, PR, plus, ' + ').
 
-print_expression_term(Stream, num_equal(List, _), _) :-
-	print_chain(Stream, List, ' = '). 
+print_expression_term(Stream, A - B, PR) :-
+	print_binary_operator(Stream, A, B, PR, minus, ' - ').
+
+print_expression_term(Stream, A * B, PR) :-
+	print_binary_operator(Stream, A, B, PR, multiply, ' \\cdot ').
+
+print_expression_term(Stream, num_equal(List, _), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, equal),
+	print_chain(Stream, List, ' = ', equal),
+	print_bracket_if_needed(Stream, ')', PR, equal).
+
+
+print_binary_operator(Stream, A, B, SuperOperator, SubOperator, Label) :-
+	print_bracket_if_needed(Stream, '(', SuperOperator, SubOperator),
+	print_expression_term(Stream, A, SubOperator),
+	write(Stream, Label),
+	print_expression_term(Stream, B, SubOperator),
+	print_bracket_if_needed(Stream, ')', SuperOperator, SubOperator).
+
 
 
 print_predicate_args(Stream, [Arg, Next | Tail]) :-
@@ -816,19 +806,19 @@ print_expression_list(Stream, [Arg]) :-
 print_expression_list(_, []).
 
 
-print_chain(Stream, [A | Tail], Delim) :-
+print_chain(Stream, [A | Tail], Delim, Operator) :-
 	hint(A),
 	!,
 	print_hint(Stream, A),
-	print_chain(Stream, Tail, Delim).
+	print_chain(Stream, Tail, Delim, Operator).
 
-print_chain(Stream, [A, B | Tail], Delim) :-
-	print_expression_term(Stream, A, equiv),
+print_chain(Stream, [A, B | Tail], Delim, Operator) :-
+	print_expression_term(Stream, A, Operator),
 	write(Stream,  Delim),
-	print_chain(Stream, [B | Tail], Delim).
+	print_chain(Stream, [B | Tail], Delim, Operator).
 
-print_chain(Stream, [A], _) :-
-	print_expression_term(Stream, A, equiv).
+print_chain(Stream, [A], _, Operator) :-
+	print_expression_term(Stream, A, Operator).
 
 
 % Prints bracket if it is needed.
@@ -841,34 +831,45 @@ print_bracket_if_needed(Stream, Bracket, _, _) :-
 	write(Stream, Bracket).
 
 
+
+operator_priority(multiply, 201).
+operator_priority(plus, 200).
+operator_priority(minus, 200).
+
+operator_priority(in, 102).
+operator_priority(difference, 101).
+operator_priority(union, 101).
+operator_priority(intersection, 101).
+operator_priority(equal, 100).
+
+operator_priority(not, 6).
+operator_priority(forall, 5).
+operator_priority(exists, 4).
+operator_priority(and, 3).
+operator_priority(or, 2).
+operator_priority(impl, 1).
+operator_priority(equiv, 0).
+
+operator_priority(root, -1).
+
 % Succeeds if bracket is not needed.
 % bracket_not_needed(SuperOperator, SubOperator)
-bracket_not_needed(root, _).
-bracket_not_needed(and, forall).
-bracket_not_needed(or, forall).
-bracket_not_needed(impl, forall).
-bracket_not_needed(equiv, forall).
-bracket_not_needed(and, exists).
-bracket_not_needed(or, exists).
-bracket_not_needed(impl, exists).
-bracket_not_needed(equiv, exists).
-bracket_not_needed(forall, forall).
-bracket_not_needed(exists, exists).
-bracket_not_needed(forall, exists).
-bracket_not_needed(exists, forall).
-%bracket_not_needed(or, and).
-bracket_not_needed(impl, and).
-bracket_not_needed(equiv, and).
-bracket_not_needed(and, and).
-bracket_not_needed(or, or).
-bracket_not_needed(impl, or).
-bracket_not_needed(equiv, or).
-bracket_not_needed(equiv, impl).
-bracket_not_needed(eq, union).
-bracket_not_needed(eq, intersection).
-bracket_not_needed(eq, difference).
-bracket_not_needed(eq, plus).
+bracket_not_needed(SuperOperator, SubOperator) :-
+	operator_priority(SuperOperator, SuperOperatorPriority),
+	operator_priority(SubOperator, SubOperatorPriority),
+	SuperOperatorPriority < SubOperatorPriority.
 
+bracket_not_needed(or, or).
+bracket_not_needed(and, and).
+bracket_not_needed(plus, plus).
+bracket_not_needed(multiply, multiply).
+
+bracket_not_needed(SuperOperator, SubOperator) :-
+	quantifier(SuperOperator),
+	quantifier(SubOperator).
+
+quantifier(forall).
+quantifier(exists).
 
 print_hint(Stream, linebreak) :-
 	writeln(Stream, ' \\\\').
