@@ -5,6 +5,7 @@
 :- ensure_loaded("../equations/truth_table").
 
 make_test_numbers([-1, 0, 1, 2, 3, 1.5]).
+make_test_natural_numbers([1, 2, 3, 4, 5]).
 make_test_predicates(Y, [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false]).
 \end{prolog}
 
@@ -163,7 +164,7 @@ To je logické, součet má představovat počet objektů, které ze dvou skupin
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_numbers(Values),
+?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'natural_numbers_comutativity',
 		forall_in(A, 'a', natural_numbers, Values,
@@ -176,7 +177,7 @@ To je logické, součet má představovat počet objektů, které ze dvou skupin
 \eeq{natural_numbers_comutativity}
 %%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_numbers(Values),
+?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'natural_numbers_asociativity',
 		forall_in(A, 'a', natural_numbers, Values,
@@ -281,7 +282,7 @@ Z~definice~\eqref{eq:multiplication_definition} přímo plynou dva vztahy. Vztah
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_numbers(Values),
+?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'natural_multiply_by_one',
 		forall_in(A, 'a', natural_numbers, Values,
@@ -292,7 +293,7 @@ Z~definice~\eqref{eq:multiplication_definition} přímo plynou dva vztahy. Vztah
 \eeq{natural_multiply_by_one}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_numbers(Values),
+?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'multiplication_distributivity',
 		forall_in(A, 'a', natural_numbers, Values,
@@ -368,7 +369,7 @@ Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_numbers(Values),
+?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'multiplication_comutativity',
 		forall_in(A, 'a', natural_numbers, Values,
@@ -381,7 +382,7 @@ Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{
 \eeq{multiplication_comutativity}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_numbers(Values),
+?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'multiplication_asociativity',
 		forall_in(A, 'a', natural_numbers, Values,
@@ -395,6 +396,120 @@ Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{
 \end{prolog}
 \eeq{multiplication_asociativity}
 \end{fact}
+
+Nakonec rovnicí~\eqref{eq:power_definition} definujeme mocninu jako opakované násobení.
+
+\begin{equation}
+\label{eq:power_definition}
+a^b = \overbrace{a \cdot a \cdot a \cdot ...}^{b \times}
+\end{equation}
+
+Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} a~\eqref{eq:power_distributivity}, které nám plně definují mocniny přirozených čísel.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'natural_power_by_one',
+		forall_in(A, 'a', natural_numbers, Values,
+			num_equal([A^1, A], 0)
+		)
+	).				
+\end{prolog}
+\eeq{natural_power_by_one}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'power_distributivity',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				forall_in(C, 'c', natural_numbers, Values,
+					num_equal([A^(B + C), A^B * A^C], 1e-12)
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{power_distributivity}
+\end{fact}
+
+Na rozdíl od sčítání a~násobení není umocňování komutativní operace (\(2^3 = 8 \neq 3^2 = 9\)) ani asociativní operace (\((4^3)^2 = 4096 \neq 4^{(3^2)} = 262144\)). Nicméně některé zákonitosti zde platí. Dokážeme rovnici~\eqref{eq:power_by_multiplication_proof}.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'power_by_multiplication_proof',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				forall_in(C, 'c', natural_numbers, Values,
+					num_equal([(A^B)^C, A^(B * C)], 1e-12)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_by_multiplication_proof}
+\end{fact}
+
+Mocniny bohužel není možné jednoduše graficky znázornit jako násobení nebo sčítání. Rovnici proto dokážeme matematickou indukcí. Nejdříve ověříme platnost rovnice pro \(c = 1\):
+
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'power_by_multiplication_proof_1',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				num_equal([(A^B)^1, A^B, A^(B * 1)], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_by_multiplication_proof_1}
+
+Dále ověříme platnost výroku~\eqref{eq:power_by_multiplication_proof_2} a~to pomocí rovnice~\eqref{eq:power_by_multiplication_proof_3}.
+
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'power_by_multiplication_proof_2',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				forall_in(C, 'c', natural_numbers, Values,
+					impl(
+						num_equal([(A^B)^C, 	A^(B*C)], 1e-12),
+						num_equal([(A^B)^(C+1), 	A^(B*(C+1))], 1e-12)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_by_multiplication_proof_2}
+
+V~prvním kroku jsme využili distributivitu násobení. Ve druhém kroku jsme využili předpoklad z~výroku~\eqref{eq:power_by_multiplication_proof_2}. Nakonec jsme opět využili distributivitu násobení, tentokrát opačným směrem, a~upravili exponent do požadovaného tvaru. Tím je rovnice~\eqref{eq:power_by_multiplication_proof} dokázána pro všechna přirozená čísla.
+
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'power_by_multiplication_proof_3',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				declare_variable(C, 'c', Values,
+					num_equal([
+						(A^B)^(C + 1),
+						(A^B)^C * (A^B)^1,
+						A^(B*C) * A^B,
+						A^(B*C + B),
+						A^(B*(C+1))
+					], 1e-12)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_by_multiplication_proof_3}
 
 \section{Celá čísla}
 

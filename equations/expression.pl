@@ -350,6 +350,11 @@ evaluate_function(A / B, Y) :-
 	number(B),
 	Y is A / B.
 
+evaluate_function(A^B, Y) :-
+	number(A),
+	number(B),
+	Y is A^B.
+
 evaluate_function(num_equal(List, Tolerance), Value) :-
 	min_list(List, Min),
 	max_list(List, Max),
@@ -769,6 +774,15 @@ print_expression_term(Stream, A - B, PR) :-
 print_expression_term(Stream, A * B, PR) :-
 	print_binary_operator(Stream, A, B, PR, multiply, ' \\cdot ').
 
+print_expression_term(Stream, A^B, PR) :-
+	print_bracket_if_needed(Stream, '(', PR, pow),
+	write(Stream, '{'),
+	print_expression_term(Stream, A, pow),
+	write(Stream, '}^{'),
+	print_expression_term(Stream, B, root),   % root = no need of brackets in exponent
+	write(Stream, '}'),
+	print_bracket_if_needed(Stream, ')', PR, pow).
+
 print_expression_term(Stream, num_equal(List, _), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, equal),
 	print_chain(Stream, List, ' = ', equal),
@@ -832,6 +846,7 @@ print_bracket_if_needed(Stream, Bracket, _, _) :-
 
 
 
+operator_priority(pow, 202).
 operator_priority(multiply, 201).
 operator_priority(plus, 200).
 operator_priority(minus, 200).
