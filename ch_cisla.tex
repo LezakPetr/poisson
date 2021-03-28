@@ -570,7 +570,22 @@ Z této rovnice například vyplývá, že \(5 - 2 = 3\) protože \(2 + 3 = 5\).
 \label{img:integer_number_line}
 \end{figure}
 
-Operace součtu zůstává definovaná pomocí tohoto pořadí a~rovnic~\eqref{eq:natural_numbers_comutativity} a~\eqref{eq:natural_numbers_asociativity}. Operace rozdílu je definovaná rovnicí~\ref{eq:difference_definition} a~každé dvojici celých čísel přiřazuje celé číslo. Říkáme, že množina celých čísel je uzavřená pro operaci odčítání (to množina přirozených čísel nebyla).
+Operace součtu zůstává definovaná pomocí tohoto pořadí a~rovnic~\eqref{eq:natural_numbers_comutativity} a~\eqref{eq:natural_numbers_asociativity}.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawhintegerline{0}{0}{-4}{4};
+\draw[dotted] (0, 0) -- (0, 0.5);
+\draw[->, color=cyan] (0, 0.5) -- (2, 0.5);
+\draw[dotted] (2, 0.5) -- (2, 1);
+\draw[->, color=orange] (2, 1) -- (-1, 1);
+\end{tikzpicture}
+\caption{Grafické znázornění součtu \(\textcolor{cyan}{2} + (-\textcolor{orange}{3})\)}
+\label{img:integer_add}
+\end{figure}
+
+Operace rozdílu je definovaná rovnicí~\eqref{eq:difference_definition} a~každé dvojici celých čísel přiřazuje celé číslo. Říkáme, že množina celých čísel je uzavřená pro operaci odčítání (to množina přirozených čísel nebyla).
 
 
 Mezi celými čísly najdeme zvláštní číslo 0. Z~definice čísla 1 v~tabulce~\ref{tab:integers} vidíme, že \(0 + 1 = 1\), tedy když k~jedničce přičteme nulu, tak získáme zase jedničku. To platí obecně:
