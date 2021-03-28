@@ -276,6 +276,11 @@ evaluate_function(equiv(A, B), Value) :-
 evaluate_function(equiv([A | Tail]), Value) :-
 	log_equiv_all([A | Tail], Value).
 
+evaluate_function(proof(Axioms, Conclusions), Value) :-
+	log_and_all(Axioms, AxiomsTrue),
+	log_and_all(Conclusions, ConclusionsTrue),
+	log_impl(AxiomsTrue, ConclusionsTrue, Value).
+
 evaluate_function(X, X) :-
 	number(X).
 
@@ -340,6 +345,15 @@ evaluate_function(A - B, Y) :-
 	number(B),
 	Y is A - B.
 
+evaluate_function(plus_minus(A, B, PM), Y) :-
+	number(A),
+	number(B),
+	Y is A + B * PM.
+
+evaluate_function(-A, Y) :-
+	number(A),
+	Y is -A.
+
 evaluate_function(A * B, Y) :-
 	number(A),
 	number(B),
@@ -360,6 +374,9 @@ evaluate_function(num_equal(List, Tolerance), Value) :-
 	max_list(List, Max),
 	less_or_equal(Max - Min, Tolerance, Value).
 
+evaluate_function(num_not_equal(A, B, Tolerance), Value) :-
+	evaluate_function(num_equal([A, B], Tolerance), IsEqual),
+	log_not(IsEqual, Value).
 
 ?-	make_set([a, b, c], A),
 	make_set([b, c, d], B),
@@ -391,6 +408,10 @@ evaluate_function(num_equal(List, Tolerance), Value) :-
 
 ?-	evaluate_function(num_equal([0.35, 0.35, 0.36], 0.011), log_true).
 ?-	evaluate_function(num_equal([0.35, 0.35, 0.36], 0.009), log_false).
+
+?-	evaluate_function(num_not_equal(0.35, 0.36, 0.011), log_false).
+?-	evaluate_function(num_not_equal(0.35, 0.36, 0.009), log_true).
+
 
 evaluate_list([], []).
 
@@ -434,6 +455,11 @@ evaluate_expression(declare_variable(Variable, _, TestedValues, SubFormula), Val
 	!,
 	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
+
+evaluate_expression(declare_plus_minus(Variable, SubFormula), Value) :-
+	!,
+	findall(SubFormulaValue, (member(Variable, [+1, -1]), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [EF1, EF2]),
+	log_and(EF1, EF2, Value).
 
 evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
@@ -674,6 +700,9 @@ print_expression_term(Stream, declare_variable(Variable, Label, _, SubFormula), 
 	Variable = Label,
 	print_expression_term(Stream, SubFormula, PR).
 
+print_expression_term(Stream, declare_plus_minus(_, SubFormula), PR) :-
+	print_expression_term(Stream, SubFormula, PR).
+
 print_expression_term(Stream, forall(Variable, Label, _, SubFormula), PR) :-
 	Variable = Label,
 	print_bracket_if_needed(Stream, '(', PR, forall), 
@@ -769,10 +798,23 @@ print_expression_term(Stream, A + B, PR) :-
 	print_binary_operator(Stream, A, B, PR, plus, ' + ').
 
 print_expression_term(Stream, A - B, PR) :-
-	print_binary_operator(Stream, A, B, PR, minus, ' - ').
+	print_binary_operator_with_position(Stream, A, B, PR, minus(left), minus(right), ' - ').
+
+print_expression_term(Stream, plus_minus(A, B, _), PR) :-
+	print_binary_operator(Stream, A, B, PR, plus, ' \\pm ').
+
+print_expression_term(Stream, -A, PR) :-
+	print_prefix_operator(Stream, A, PR, opposite, ' -').
 
 print_expression_term(Stream, A * B, PR) :-
 	print_binary_operator(Stream, A, B, PR, multiply, ' \\cdot ').
+
+print_expression_term(Stream, A / B, _) :-
+	write(Stream, '\\frac{'),
+	print_expression_term(Stream, A, root),   % root = no need of brackets
+	write(Stream, '}{'),
+	print_expression_term(Stream, B, root),   % root = no need of brackets
+	write(Stream, '}').
 
 print_expression_term(Stream, A^B, PR) :-
 	print_bracket_if_needed(Stream, '(', PR, pow),
@@ -788,15 +830,29 @@ print_expression_term(Stream, num_equal(List, _), PR) :-
 	print_chain(Stream, List, ' = ', equal),
 	print_bracket_if_needed(Stream, ')', PR, equal).
 
+print_expression_term(Stream, num_not_equal(A, B, _), PR) :-
+	print_binary_operator(Stream, A, B, PR, equal, ' \\neq ').
 
-print_binary_operator(Stream, A, B, SuperOperator, SubOperator, Label) :-
+print_expression_term(Stream, proof(Axioms, Conclusions), _) :-
+	print_chain(Stream, Axioms, ' \\\\ ', root),
+	write(Stream, ' \\\\ '),
+	print_chain(Stream, Conclusions, ' \\\\ ', root).
+
+print_prefix_operator(Stream, A, SuperOperator, SubOperator, Label) :-
 	print_bracket_if_needed(Stream, '(', SuperOperator, SubOperator),
-	print_expression_term(Stream, A, SubOperator),
 	write(Stream, Label),
-	print_expression_term(Stream, B, SubOperator),
+	print_expression_term(Stream, A, SubOperator),
 	print_bracket_if_needed(Stream, ')', SuperOperator, SubOperator).
 
+print_binary_operator_with_position(Stream, A, B, SuperOperator, LeftSubOperator, RightSubOperator, Label) :-
+	print_bracket_if_needed(Stream, '(', SuperOperator, SubOperator),
+	print_expression_term(Stream, A, LeftSubOperator),
+	write(Stream, Label),
+	print_expression_term(Stream, B, RightSubOperator),
+	print_bracket_if_needed(Stream, ')', SuperOperator, SubOperator).
 
+print_binary_operator(Stream, A, B, SuperOperator, SubOperator, Label) :-
+	print_binary_operator_with_position(Stream, A, B, SuperOperator, SubOperator, SubOperator, Label).
 
 print_predicate_args(Stream, [Arg, Next | Tail]) :-
 	write(Stream, Arg),
@@ -846,10 +902,11 @@ print_bracket_if_needed(Stream, Bracket, _, _) :-
 
 
 
-operator_priority(pow, 202).
-operator_priority(multiply, 201).
+operator_priority(pow, 203).
+operator_priority(multiply, 202).
+operator_priority(opposite, 201).
 operator_priority(plus, 200).
-operator_priority(minus, 200).
+operator_priority(minus(_), 200).
 
 operator_priority(in, 102).
 operator_priority(difference, 101).
@@ -877,6 +934,7 @@ bracket_not_needed(SuperOperator, SubOperator) :-
 bracket_not_needed(or, or).
 bracket_not_needed(and, and).
 bracket_not_needed(plus, plus).
+bracket_not_needed(minus(left), plus).
 bracket_not_needed(multiply, multiply).
 
 bracket_not_needed(SuperOperator, SubOperator) :-

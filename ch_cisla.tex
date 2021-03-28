@@ -5,6 +5,9 @@
 :- ensure_loaded("../equations/truth_table").
 
 make_test_numbers([-1, 0, 1, 2, 3, 1.5]).
+make_test_nonzero_numbers([-1, 1, 2, 3, 1.5]).
+make_test_integers([-3, -2, -1, 0, 1, 2, 3]).
+make_test_nonzero_integers([-3, -2, -1, 1, 2, 3]).
 make_test_natural_numbers([1, 2, 3, 4, 5]).
 make_test_predicates(Y, [num_equal([Y, 1], 0), num_equal([Y, 2], 0), log_true, log_false]).
 \end{prolog}
@@ -533,8 +536,7 @@ Zkusme dále definovat rozdíl jako opačnou operaci k~součtu pomocí rovnice~\
 \end{prolog}
 \eeq{difference_definition}
 
-Z této rovnice například vyplývá, že \(5 - 2 = 3\) protože \(2 + 3 = 5\). Vidíme ale, že pro některé dvojice přirozených čísel rozdíl neexistuje. Například nelze vypočítat \(2 - 3\), proto6e neexistuje přirozené číslo, které kdybychom přičetli k číslu 3, tak dostaneme číslo 2. Potřebovali bychom číslo, které je menší než nejmenší přirozené číslo 1. Abychom mohli taková čísla zavést, tak musíme opustit náš dosavadní model reprezentace čísel pomocí počtu jedniček nebo objektů a~definovat čísla jejich pořadím podle tabulky~\ref{tab:integers}.
-
+Z této rovnice například vyplývá, že \(5 - 2 = 3\) protože \(2 + 3 = 5\). Vidíme ale, že pro některé dvojice přirozených čísel rozdíl neexistuje. Například nelze vypočítat \(2 - 3\), protože neexistuje přirozené číslo, které kdybychom přičetli k číslu 3, tak dostaneme číslo 2. Potřebovali bychom číslo, které je menší než nejmenší přirozené číslo 1. Abychom mohli taková čísla zavést, tak musíme opustit náš dosavadní model reprezentace čísel pomocí počtu jedniček nebo objektů a~definovat čísla jejich pořadím podle tabulky~\ref{tab:integers}. Celá čísla můžeme zobrazit na číselné ose jako na obrázku~\ref{img:integer_number_line}.
 
 \begin{table}[ht]
 \centering
@@ -559,6 +561,15 @@ Z této rovnice například vyplývá, že \(5 - 2 = 3\) protože \(2 + 3 = 5\).
 \label{tab:integers}
 \end{table}
 
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawhintegerline{0}{0}{-4}{4};
+\end{tikzpicture}
+\caption{Číselná osa}
+\label{img:integer_number_line}
+\end{figure}
+
 Operace součtu zůstává definovaná pomocí tohoto pořadí a~rovnic~\eqref{eq:natural_numbers_comutativity} a~\eqref{eq:natural_numbers_asociativity}. Operace rozdílu je definovaná rovnicí~\ref{eq:difference_definition} a~každé dvojici celých čísel přiřazuje celé číslo. Říkáme, že množina celých čísel je uzavřená pro operaci odčítání (to množina přirozených čísel nebyla).
 
 
@@ -570,8 +581,8 @@ Mezi celými čísly najdeme zvláštní číslo 0. Z~definice čísla 1 v~tabul
 		'add_zero_proof_1',
 		declare_variable(B, 'b', Values,
 			num_equal([
-				(B + 1) + 0,
-				B + (0 + 1),
+				par(B + 1) + 0,
+				B + par(0 + 1),
 				B + 1
 			], 1e-12)
 		)
@@ -579,7 +590,7 @@ Mezi celými čísly najdeme zvláštní číslo 0. Z~definice čísla 1 v~tabul
 \end{prolog}
 \eeq{add_zero_proof_1}
 
-V~prvním kroku jsme s~využitím komutativity a~asociativity sčítání výraz přeuspořádali. Ve druhém kroku jsme využili definice čásla 1. Protože každé celé číslo má svého předchůdce, tak můžeme zavést substituci \(a = b + 1\)
+V~prvním kroku jsme s~využitím komutativity a~asociativity sčítání výraz přeuspořádali. Ve druhém kroku jsme využili definice čásla 1. Protože každé celé číslo má svého předchůdce, tak můžeme zavést substituci \(a = b + 1\):
 
 \begin{prolog}
 ?-	make_test_numbers(Values),
@@ -594,3 +605,450 @@ V~prvním kroku jsme s~využitím komutativity a~asociativity sčítání výraz
 	).
 \end{prolog}
 \eeq{add_zero_proof_2}
+
+Srovnáme-li tento vztah se vztahem \eqref{eq:difference_definition}, dostaneme:
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'difference_itself',
+		declare_variable(A, 'a', Values,
+			num_equal([
+				A - A,
+				0
+			], 1e-12)
+		)
+	).
+\end{prolog}
+\eeq{difference_itself}
+
+Vidíme, že rovnicí~\eqref{eq:opposite_number_definition} můžeme ke každému číslu \(a\) zavést tzv. opačné číslo \(-a\). Toto číslo můžeme vypočítat podle vztahu~\eqref{eq:opposite_number_calculation}. Teď už také rozumíme proč se záporná čísla zapisují se znaménkem minus.
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'opposite_number_definition',
+		declare_variable(A, 'a', Values,
+			num_equal([
+				A + par(-A),
+				0
+			], 1e-12)
+		)
+	).
+\end{prolog}
+\eeq{opposite_number_definition}
+%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'opposite_number_calculation',
+		declare_variable(A, 'a', Values,
+			num_equal([
+				-A,
+				0 - A
+			], 1e-12)
+		)
+	).
+\end{prolog}
+\eeq{opposite_number_calculation}
+
+Opačná čísla nám umožňují vypočítat rozdíl pomocí součtu jak je vidět v~rovnici~\eqref{eq:difference_by_add}.
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'difference_by_add',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				num_equal([
+					A - B,
+					A + 0 - B,
+					A + par(-B)
+				], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{difference_by_add}
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawhintegerline{0}{0}{-4}{4};
+\end{tikzpicture}
+\caption{Číselná osa}
+\label{img:integer_number_line}
+\end{figure}
+
+Pokračujme rozšířením součinu na celá čísla. Začněme nulou. Srovnáním členů v~rovnici~\eqref{eq:multiplication_by_zero_1} lze odvodit vztah~\eqref{eq:multiplication_by_zero_2}.
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'multiplication_by_zero_1',
+		declare_variable(A, 'a', Values,
+			num_equal([
+				A * 1,
+				A * (1 + 0),
+				A * 1 + A * 0
+			], 1e-12)
+		)
+	).
+\end{prolog}
+\eeq{multiplication_by_zero_1}
+%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'multiplication_by_zero_2',
+		declare_variable(A, 'a', Values,
+			num_equal([A * 0, 0], 1e-12)
+		)
+	).
+\end{prolog}
+\eeq{multiplication_by_zero_2}
+
+Pokračujme součinem, kde je jeden operand záporný. Z~rovnice~\eqref{eq:multiplication_by_negative_1} plyne vztah~\eqref{eq:multiplication_by_negative_2}. Díky komutativitě součinu můžeme v~rovnici~\eqref{eq:multiplication_by_negative_3} odvodit totéž pro první operand. 
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'multiplication_by_negative_1',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				num_equal([
+					0,
+					A * (-B + B),
+					A * (-B) + A * B
+				], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{multiplication_by_negative_1}
+%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'multiplication_by_negative_2',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				num_equal([
+					A * (-B), -par(A * B)
+				], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{multiplication_by_negative_2}
+%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'multiplication_by_negative_3',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				num_equal([
+					(-A) * B,
+					B * (-A),
+					-par(B * A),
+					-par(A * B)
+				], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{multiplication_by_negative_3}
+
+Nakonec v~rovnici~\eqref{eq:multiplication_by_negative_4} vyšetříme případ, kdy jsou oba operandy záporné.
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'multiplication_by_negative_4',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				num_equal([
+					(-A) * (-B),
+					-par(A * (-B)),
+					-par(-par(A * B)),
+					A * B
+				], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{multiplication_by_negative_4}
+
+Nakonec rozšiřme definici mocniny na celá čísla. Začněme rozšířením mocněnce. Podle definice~\eqref{eq:power_definition} je zřejmé, že mezi sebou budeme násobit záporná čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:power_distributivity} proto zůstanou zachovány i~pro záporné mocněnce. Přejděme dále k~rozšíření mocnitele (exponentu) na celá čísla. Rovnici~\eqref{eq:power_by_zero_1} můžeme vydělit \(a^1\) a~získáme vztah~\eqref{eq:power_by_zero_2}.
+
+\begin{prolog}
+?-	make_test_nonzero_integers(Values),
+	print_validated_formula(
+		'power_by_zero_1',
+		declare_variable(A, 'a', Values,
+			num_equal([
+				A^1,
+				A^(0 + 1),
+				A^0 * A^1
+			], 1e-12)
+		)
+	).
+\end{prolog}
+\eeq{power_by_zero_1}
+%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'power_by_zero_2',
+		declare_variable(A, 'a', Values,
+			impl(
+				num_not_equal(A, 0, 1e-12),
+				num_equal([A^0, 1], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_by_zero_2}
+
+Zbývá vyšetřit hodnotu \(0^0\). Vztah~\eqref{eq:power_by_zero_2} naznačuje, že by mohlo platit \(0^0 = 1\), protože pro ostatní mocněnce umocnené na nulu dostáváme hodnotu 1. Naopak definice~\eqref{eq:power_definition} naznačuje, že by mohlo platit \(0^0 = 0\), protože nula na cokoli je rovna nula - násobíme mezi sebou samé nuly. Proto výraz \(0^0\) nemá definovanou hodnotu.
+
+\section{Racionální čísla}
+
+Definujme podíl jako opačnou operaci k~násobení pomocí rovnice~\eqref{eq:division_definition}.
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonzero_numbers(NonzeroNumbers),
+	print_validated_formula(
+		'division_definition',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', NonzeroNumbers,
+				declare_variable(C, 'c', Numbers,
+					equiv(
+						num_equal([C, A / B], 1e-12),
+						num_equal([B * C, A], 1e-12)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{division_definition}
+
+Z~této věty například vyplývá, že \(\frac{6}{3} = 2\) protože \(3 \cdot 2 = 6\). Vidíme ale, že pro některé dvojice celých čísel podíl neexistuje. Například nelze vypočítat \(\frac{3}{2}\), protože neexistuje celé číslo, které kdybychom vynásobili číslem 2, tak dostaneme číslo 3. Potřebovali bychom číslo, které je větší než 1 a~menší než 2. Toto omezení celách čísel můžeme obejít tak, že jako číslo definujeme podíl dvou celých čísel a~nazveme ho racionální číslo. Množinu všech racionálních čísel označíme \(\rationals\):
+
+\begin{equation}
+\forall a \in \integers \ \forall b \in (\integers \setminus \{0\}) \ \frac{a}{b} \in \rationals
+\end{equation}
+
+Racionální čísla jsou tedy zlomky. Číslu, které dělíme, říkáme čitatel. Číslu, kterým děláme, říkáme jmenovatel. Jmenovatel nemůže být nulový. Podle věty~\eqref{eq:division_definition} bychom pro \(b = 0\) totiž museli najít hodnotu \(c\) splňující podmínku \(0 \cdot c = a\). Mohou nastat dva případy:
+
+\begin{itemize}
+	\item \(a = 0\), pak může být \(c\) jakékoli.
+	\item \(a \neq 0\), pak odpovídající hodnota \(c\) neexistuje. 
+\end{itemize}
+
+V~obou případech nemá zlomek definovanou hodnotu. Proto nulou dělit nelze.
+
+Vyjádřeme násobení racionálních čísel v~soustavě~\eqref{eq:rational_multiplication}. Mějme dvě racionální čísla \(c\) a~\(f\) zapsaná jako zlomky. Potom můžeme podle věty~\eqref{eq:division_definition} zapsat jejich definici součinem. Z~nich můžeme vyjádřit součin \(a \cdot d\), ze kterého podle věty~\eqref{eq:division_definition} vyjádříme součin racionálních čísel.
+
+\begin{prolog}
+?-	Numbers = [1, 2, 3, 4, 6],
+	print_validated_formula(
+		'rational_multiplication',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				declare_variable(C, 'c', Numbers,
+					declare_variable(D, 'd', Numbers,
+						declare_variable(E, 'e', Numbers,
+							declare_variable(F, 'f', Numbers,
+								proof([
+									num_equal([C, A / B], 1e-12),
+									num_equal([F, D / E], 1e-12)
+								],
+								[
+									num_equal([A, B * C], 1e-12),
+									num_equal([D, E * F], 1e-12),
+									num_equal([A * D, par(B * C) * par(E * F), par(B * E) * par(C * F)], 1e-12),
+									num_equal([(C * F), (A / B) * (D / E), (A * D) / (B * E)], 1e-12)
+								])
+							)
+						)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{rational_multiplication}
+
+Z~definice~\eqref{eq:division_definition} dále plyne vztah~\eqref{eq:rational_one} definující podíl stejných čísel.
+
+\begin{prolog}
+?-	make_test_nonzero_numbers(Numbers),
+	print_validated_formula(
+		'rational_one',
+		declare_variable(A, 'a', Numbers,
+			num_equal([A / A, 1], 1e-12)
+		)
+	).
+\end{prolog}
+\eeq{rational_one}
+
+Ze vztahů~\eqref{eq:rational_multiplication} a~\eqref{eq:rational_one} můžeme odvodit vztah~\eqref{eq:rational_reduction} umožňující rozšíření nebo naopak krácení zlomků. Tento vztah nám umožňuje zapsat racionální čísla ve tvaru, kdy jmenovatel je přirozené číslo (tedy kladný) a~čitatel a~jmenovatel jsou nesoudělní.
+
+\begin{prolog}
+?-	make_test_nonzero_numbers(Numbers),
+	print_validated_formula(
+		'rational_reduction',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				declare_variable(C, 'c', Numbers,
+					num_equal([
+						A / B,
+						(A / B) * 1,
+						(A / B) * (C / C),
+						(A * C) / (B * C)
+					], 1e-12)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{rational_reduction}
+
+Dále můžeme odvodit vztah~\eqref{eq:division_distributivity} pro distributivitu podílu. Tento vztah nám umožňuje vypočítat součet a~rozdíl zlomků se stejným jmenovatelem.
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonzero_numbers(NonzeroNumbers),
+	print_validated_formula(
+		'division_distributivity',
+		declare_plus_minus(PM,
+			declare_variable(A, 'a', Numbers,
+				declare_variable(B, 'b', Numbers,
+					declare_variable(C, 'c', NonzeroNumbers,
+						num_equal([
+							plus_minus(A, B, PM) / C,
+							plus_minus(A, B, PM) * (1 / C),
+							plus_minus(A * (1 / C), B * (1 / C), PM),
+							plus_minus(A / C, B / C, PM)
+						], 1e-12)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{division_distributivity}
+
+Pokud chceme vypočítat součet nebo rozdíl zlomků s~rozdílnými jmenovateli, pak je musíme převést na společného jmenovatele, jak je vidět ve vztahu~\eqref{eq:sum_of_rationals}.
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonzero_numbers(NonzeroNumbers),
+	print_validated_formula(
+		'sum_of_rationals',
+		declare_plus_minus(PM,
+			declare_variable(A, 'a', Numbers,
+				declare_variable(B, 'b', NonzeroNumbers,
+					declare_variable(C, 'c', Numbers,
+						declare_variable(D, 'd', NonzeroNumbers,
+							num_equal([
+								plus_minus(A / B, C / D, PM),
+								plus_minus((A * D) / (B * D), (C * B) / (D * B), PM),
+								plus_minus(A * D, B * C, PM) / (B * D)
+							], 1e-12)
+						)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{sum_of_rationals}
+
+Nakonec můžeme rovnicí~\eqref{eq:division_of_rationals} vyjádřit podíl racionálních čísel.
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonzero_numbers(NonzeroNumbers),
+	print_validated_formula(
+		'division_of_rationals',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', NonzeroNumbers,
+				declare_variable(C, 'c', NonzeroNumbers,
+					declare_variable(D, 'd', NonzeroNumbers,
+						num_equal([
+							(A / B) / (C / D),
+							((A / B) / (C / D)) * ((D / C) / (D / C)),
+							((A * D) / (B * C)) / ((C * D) / (D * C)),
+							((A * D) / (B * C)) / 1,
+							(A * D) / (B * C)
+						], 1e-12)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{division_of_rationals}
+
+Nakonec rozšiřme definici mocniny na racionální čísla. Podle definice~\eqref{eq:power_definition} můžeme rozšířit mocněnce na racionální čísla tak, že mezi sebou budeme násobit racionální čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:power_distributivity} proto zůstanou zachovány i~pro racionální mocněnce. 
+Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými exponenty. Z~rovnice~\eqref{eq:power_by_negative_exponent_1} plyne rovnice~\eqref{eq:power_by_negative_exponent_2}. Speciálním případem je rovnice~\eqref{eq:power_by_negative_exponent_3} udávající, že umocnění čísla na \(-1\) je rovno jeho převrácené hodnotě.
+
+\begin{prolog}
+?-	make_test_nonzero_integers(TestBases),
+	make_test_integers(TestExponents),
+	print_validated_formula(
+		'power_by_negative_exponent_1',
+		declare_variable(A, 'a', TestBases,
+			declare_variable(B, 'b', TestExponents,
+				impl(
+					num_not_equal(A, 0, 1e-12),
+					num_equal([
+						1,
+						A^0,
+						A^(-B + B),
+						A^(-B) * A^B
+					], 1e-12)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_by_negative_exponent_1}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_nonzero_integers(TestBases),
+	make_test_integers(TestExponents),
+	print_validated_formula(
+		'power_by_negative_exponent_2',
+		declare_variable(A, 'a', TestBases,
+			declare_variable(B, 'b', TestExponents,
+				impl(
+					num_not_equal(A, 0, 1e-12),
+					num_equal([A^(-B), 1 / (A^B)], 1e-12)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_by_negative_exponent_2}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_nonzero_integers(TestBases),
+	print_validated_formula(
+		'power_by_negative_exponent_3',
+		declare_variable(A, 'a', TestBases,
+			impl(
+				num_not_equal(A, 0, 1e-12),
+				num_equal([A^(-1), 1 / A], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_by_negative_exponent_3}
+
+
