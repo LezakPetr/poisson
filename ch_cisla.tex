@@ -570,7 +570,7 @@ Z této rovnice například vyplývá, že \(5 - 2 = 3\) protože \(2 + 3 = 5\).
 \label{img:integer_number_line}
 \end{figure}
 
-Operace součtu zůstává definovaná pomocí tohoto pořadí a~rovnic~\eqref{eq:natural_numbers_comutativity} a~\eqref{eq:natural_numbers_asociativity}.
+Operace součtu zůstává definovaná pomocí tohoto pořadí a~rovnic~\eqref{eq:natural_numbers_comutativity} a~\eqref{eq:natural_numbers_asociativity}. Součet můžeme znázornit na číselné ose, jak je zobrazeno na obrázku~\ref{img:integer_add}. Abychom mohli zobrazit i~záporné sčítance, tak namísto čtverců použijeme šipky. U~kladných sčítanců míří šipka doprava, u~záporných sčítanců doleva.
 
 \begin{figure}[!h]
 \centering
@@ -584,6 +584,60 @@ Operace součtu zůstává definovaná pomocí tohoto pořadí a~rovnic~\eqref{e
 \caption{Grafické znázornění součtu \(\textcolor{cyan}{2} + (-\textcolor{orange}{3})\)}
 \label{img:integer_add}
 \end{figure}
+
+Komutativita součtu je znázorněna na obrázku~\ref{img:integer_add_comutativity} a~asociativita na obrázku~\ref{img:integer_add_asociativity}.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+
+\drawhintegerline{0}{2}{-4}{4};
+\draw[dotted] (0, 2) -- (0, 2.5);
+\draw[->, color=cyan] (0, 2.5) -- (2, 2.5);
+\draw[dotted] (2, 2.5) -- (2, 3);
+\draw[->, color=orange] (2, 3) -- (-1, 3);
+
+\drawhintegerline{0}{0}{-4}{4};
+\draw[dotted] (0, 0) -- (0, 0.5);
+\draw[->, color=orange] (0, 0.5) -- (-3, 0.5);
+\draw[dotted] (-3, 0.5) -- (-3, 1);
+\draw[->, color=cyan] (-3, 1) -- (-1, 1);
+
+\end{tikzpicture}
+\caption{Grafické znázornění komutativity součtu \(\textcolor{cyan}{2} + (-\textcolor{orange}{3}) = -\textcolor{orange}{3} + \textcolor{cyan}{2}\)}
+\label{img:integer_add_comutativity}
+\end{figure}
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+
+\drawhintegerline{0}{3}{-4}{4};
+\draw[dotted] (0, 3) -- (0, 3.5);
+\draw[->, color=cyan] (0, 3.5) -- (2, 3.5);
+\draw[dotted] (2, 3.5) -- (2, 4);
+\draw[->, color=orange] (2, 4) -- (-1, 4);
+\draw[dotted] (-1, 4) -- (-1, 4.5);
+\draw[->, color=green] (-1, 4.5) -- (3, 4.5);
+
+\drawhintegerline{0}{0}{-4}{4};
+\draw[dotted] (0, 0) -- (0, 1);
+\draw[->, color=cyan] (0, 0.5) -- (2, 0.5);
+
+\draw[->, color=orange] (0, 1) -- (-3, 1);
+\draw[dotted] (-3, 1) -- (-3, 1.5);
+\draw[->, color=green] (-3, 1.5) -- (1, 1.5);
+
+\draw[->] (2, 0.5) -- (3, 0.5);
+\draw[->] (0, 1) -- (1, 1);
+\draw[dotted] (1, 1) -- (1, 1.5);
+\draw[dotted] (2, 0.5) -- (0, 1);
+\draw[dotted] (3, 0.5) -- (1, 1);
+\end{tikzpicture}
+\caption{Grafické znázornění asociativity součtu \((\textcolor{cyan}{2} + (-\textcolor{orange}{3})) + \textcolor{green}{4} = \textcolor{cyan}{2} + (-\textcolor{orange}{3} + \textcolor{green}{4})\)}
+\label{img:integer_add_asociativity}
+\end{figure}
+
 
 Operace rozdílu je definovaná rovnicí~\eqref{eq:difference_definition} a~každé dvojici celých čísel přiřazuje celé číslo. Říkáme, že množina celých čísel je uzavřená pro operaci odčítání (to množina přirozených čísel nebyla).
 
