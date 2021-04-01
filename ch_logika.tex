@@ -198,6 +198,181 @@ x < 3 \lor (x \cdot y = 50 \land (x = 5 \lor x < 5)) \equivalent \\
 
 Predikát je tedy pro uvedené hodnoty proměnných pravdivý.
 
+
+\section{Operátor rovnosti}
+
+Jsou-li \(a\) a~\(b\) výrazy, pak
+
+\begin{equation}
+a = b
+\end{equation}
+
+je predikát, který je pravdivý tehdy a~jen tehdy, pokud \(a\) i~\(b\) jsou si rovny. Pro rovnost platí následující axiomy:
+
+\begin{fact}
+\begin{prolog}
+?- 	make_test_values(Values),
+	print_validated_formula(
+		'equal_itself',
+		declare_variable(X, 'x', Values,
+			num_equal([X, X], 0)
+		)
+	).
+\end{prolog}
+\eeq{equal_itself}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_predicates(Y, Predicates),
+	print_validated_formula(
+		'equal_subst',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				declare_predicate(P, 'P', Predicates,
+					impl(
+						num_equal([A, B], 0),
+						equiv(
+							apply(P, [Y], [A]),
+							apply(P, [Y], [B])
+						)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{equal_subst}
+\end{fact}
+
+Axiom~\eqref{eq:equal_itself} tvrdí, že jakýkoli výraz je roven sám sobě. Této vlastnosti operátoru rovnosti říkáme reflexivita. Axiom~\eqref{eq:equal_subst} říká, že když jakýkoli predikát \(\predicate{P}\) aplikumeme na dva sobě rovné výrazy, pak získáme ekvivalentní predikáty. Prozkoumejme, co z~těchto axiomů plyne.
+
+Předpokládejme, že platí \(a = b\). Využijeme axiom~\eqref{eq:equal_itself} a~napíšeme \(a = a\). Na něj použijeme~\eqref{eq:equal_subst}, přičemž:
+
+\begin{equation}
+\begin{split}
+P(t) = (t = a) \\
+P(a) = (a = a) \\
+P(b) = (b = a)
+\end{split}
+\end{equation}
+
+Operátor rovnosti má proto vlastnost~\eqref{eq:equal_symmetry} které říkáme symetričnost.
+
+\begin{fact}
+\begin{prolog}
+?- 	make_test_values(Values),
+	print_validated_formula(
+		'equal_symmetry',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				impl(
+					num_equal([A, B], 0),
+					num_equal([B, A], 0)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{equal_symmetry}
+\end{fact}
+
+Obvykle nebudeme použití substituce takto rozepisovat, protože obvykle je zřejmé, co za co dosazujeme. Napsali bychom pouze, že v~axiomu \(a = a\) využijeme rovnosti \(a = b\) a~získáme \(b = a\). Povšimněme si, že nebylo nutné dosadit za oba výskyty proměnné \(a\).
+
+Předpokládejme dále, že platí \(a = b\) a~\(b = c\). Do první rovnosti dosadíme druhou rovnost a~získáme \(a = c\). Této vlastnosti říkáme tranzitivita a~je popsána větou~\eqref{eq:equal_transitivity}.
+
+\begin{fact}
+\begin{prolog}
+?- 	make_test_values(Values),
+	print_validated_formula(
+		'equal_transitivity',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				declare_variable(C, 'c', Values,
+					impl(
+						and(
+							num_equal([A, B], 0),
+							num_equal([B, C], 0)
+						),
+						num_equal([A, C], 0)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{equal_transitivity}
+\end{fact}
+
+Rovnost výrazů můžeme používat pro úpravy výrazů podobně jako ekvivalenci pro úpravy predikátů. Předpokládejme, chceme zjednodušit výraz \(2 \cdot (5 \cdot x + 4 \cdot y) \cdot (5 \cdot x + 4 \cdot y)\) a~že máme dokázanou platnost vztahu~\eqref{eq:expression_rewrite_example_1}.
+
+\begin{prolog}
+?- 	make_test_values(Values),
+	print_validated_formula(
+		'expression_rewrite_example_1',
+		declare_variable(X, 'x', Values,
+			declare_variable(Y, 'y', Values,
+				num_equal([(X + Y) * (X - Y), X^2 - Y^2], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{expression_rewrite_example_1}
+
+Nejdříve vztah~\ref{eq:expression_rewrite_example_1} upravíme dosazením za proměnné \(x \leftarrow 5 \cdot x\), \(y \leftarrow 4 \cdot y\). Získáme tak vztah~\eqref{eq:expression_rewrite_example_2}.
+
+\begin{prolog}
+?- 	make_test_values(Values),
+	print_validated_formula(
+		'expression_rewrite_example_2',
+		declare_variable(X, 'x', Values,
+			declare_variable(Y, 'y', Values,
+				num_equal([(5*X + 4*Y) * (5*X - 4*Y), (5*X)^2 - (4*Y)^2], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{expression_rewrite_example_2}
+
+Nyní na původní výraz použijeme axiom reflexivity:
+
+\begin{prolog}
+?- 	make_test_values(Values),
+	print_validated_formula(
+		'expression_rewrite_example_3',
+		declare_variable(X, 'x', Values,
+			declare_variable(Y, 'y', Values,
+				num_equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * (5*X + 4*Y) * (5*X - 4*Y)], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{expression_rewrite_example_3}
+
+Na tento výraz použijeme axiom substituce, přičemž volíme:
+
+\begin{equation}
+\begin{split}
+P(t) = (2 \cdot (5 x + 4 y) \cdot (5 x + 4 y) = 2 t) \\
+P(a) = (2 \cdot (5 x + 4 y) \cdot (5 x + 4 y) = 2 \cdot (5 x + 4 y) \cdot (5 x + 4 y)) \\
+P(b) = (2 \cdot (5 x + 4 y) \cdot (5 x + 4 y) = 2 \cdot ((5 x)^2 - (4 y)^2))
+\end{split}
+\end{equation}
+
+Odvodili jsme tak rovnost~\eqref{eq:expression_rewrite_example_4} a~výraz zjednodušili. Prakticky bychom ale takto složitě nepostupovali a~rovnou bychom napsali výsledek. Je ale dobré vědět, že toto je možné díky dosazení za proměnné v~identitě, pomocí které výraz upravujeme, a~následném využití axiomu substituce.
+
+\begin{prolog}
+?- 	make_test_values(Values),
+	print_validated_formula(
+		'expression_rewrite_example_4',
+		declare_variable(X, 'x', Values,
+			declare_variable(Y, 'y', Values,
+				num_equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * ((5*X)^2 - (4*Y)^2)], 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{expression_rewrite_example_4}
+
 \section{Množiny}
 
 Množina je neuspořádaný soubor prvků, říkáme, že množina své prvky obsahuje. Zápisem

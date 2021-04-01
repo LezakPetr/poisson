@@ -359,12 +359,12 @@ Z~grafické reprezentace součinu je také vidět, že součin je komutativní o
 \centering
 \begin{tikzpicture}
 \drawnaturalnumberplane{0}{0}{3}{4};
-\drawboxrect{0}{0}{3}{4}{fill=lightgray};
+\drawboxrect{0}{0}{3}{4}{fill=orange};
 
 \drawnaturalnumberplane{5}{0}{4}{3};
-\drawboxrect{5}{0}{4}{3}{fill=lightgray};
+\drawboxrect{5}{0}{4}{3}{fill=cyan};
 \end{tikzpicture}
-\caption{Grafické znázornění komutativity součinu \(3 \cdot 4 = 4 \cdot 3\)}
+\caption{Grafické znázornění komutativity součinu \(\textcolor{orange}{3 \cdot 4} = \textcolor{cyan}{4 \cdot 3}\)}
 \label{img:multiplication_comutativity}
 \end{figure}
 
@@ -920,6 +920,18 @@ Racionální čísla jsou tedy zlomky. Číslu, které dělíme, říkáme čita
 
 V~obou případech nemá zlomek definovanou hodnotu. Proto nulou dělit nelze.
 
+Graficky lze kladná racionální čísla zobrazit jako boxy. Čitatel určuje počet boxů, jmenovatel kolik boxů se vejde do jednotky. Racionální čísla tedy mohou být mezi celými čísly jak vidíme na obrázku~\ref{img:rational_definition}.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawhintegerline{0}{0}{-1}{2}
+\drawboxrowrational{0}{0}{3}{2}{1}{fill=lightgray}
+\end{tikzpicture}
+\caption{Grafické znázornění racionálního čísla \(\frac{3}{2}\)}
+\label{img:rational_definition}
+\end{figure}
+
 Vyjádřeme násobení racionálních čísel v~soustavě~\eqref{eq:rational_multiplication}. Mějme dvě racionální čísla \(c\) a~\(f\) zapsaná jako zlomky. Potom můžeme podle věty~\eqref{eq:division_definition} zapsat jejich definici součinem. Z~nich můžeme vyjádřit součin \(a \cdot d\), ze kterého podle věty~\eqref{eq:division_definition} vyjádříme součin racionálních čísel.
 
 \begin{prolog}
@@ -951,6 +963,36 @@ Vyjádřeme násobení racionálních čísel v~soustavě~\eqref{eq:rational_mul
 	).
 \end{prolog}
 \eeq{rational_multiplication}
+
+Graficky můžeme znázornit násobení racionálních čísel jako na obrázku~\ref{img:rational_multiplication_definition}.
+Je zde obdélník, jehož strany mají délku danou násobenými čísly. Tyto strany mají počet boxů daný čitateli násobených čísel a~velikost boxů je taková, aby se do jednotky vešel počet boxů odpovídající jmenovateli násobených čísel. Součin je zlomek. Čitatel součinu odpovídá celkovému počtu boxů, tedy součinu čitatelů násobených čísel. Jmenovatel součinu odpovídá počtu boxů, které se vejdou do jednotkového čtverce, tedy součinu jmenovatelů násobených čísel. V~uvedeném příkladě tedy máme 15 boxů, přičemž 6 boxů tvoří jednotkový čtverec (na obrázku šedě podbarveno). Je zřejmé, že i~součin racionálních čísel je komutativní a~asociativní, protože jsou komutativní a~asociativní součiny čísel v~čitatelích a jmenovatelích. Graficky je komutativita znázorněna na obrázku~\ref{img:rational_multiplication_comutativity}.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawrect{0}{0}{1}{1}{fill=lightgray};
+\drawnaturalnumberplane{0}{0}{2}{2};
+\drawboxrectrational{0}{0}{3}{2}{5}{3}{fill=orange};
+\end{tikzpicture}
+\caption{Grafické znázornění součinu \(\frac{3}{2} \cdot \frac{5}{3} = \frac{15}{6}\)}
+\label{img:rational_multiplication_definition}
+\end{figure}
+
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawrect{0}{0}{1}{1}{fill=lightgray};
+\drawnaturalnumberplane{0}{0}{2}{2};
+\drawboxrectrational{0}{0}{3}{2}{5}{3}{fill=orange};
+
+\drawrect{3}{0}{4}{1}{fill=lightgray};
+\drawnaturalnumberplane{3}{0}{2}{2};
+\drawboxrectrational{3}{0}{5}{3}{3}{2}{fill=cyan};
+\end{tikzpicture}
+\caption{Grafické znázornění komutativity součinu \(\textcolor{orange}{\frac{3}{2} \cdot \frac{5}{3}} = \textcolor{cyan}{\frac{5}{3} \cdot \frac{3}{2}}\)}
+\label{img:rational_multiplication_comutativity}
+\end{figure}
 
 Z~definice~\eqref{eq:division_definition} dále plyne vztah~\eqref{eq:rational_one} definující podíl stejných čísel.
 
@@ -1037,6 +1079,22 @@ Pokud chceme vypočítat součet nebo rozdíl zlomků s~rozdílnými jmenovateli
 	).
 \end{prolog}
 \eeq{sum_of_rationals}
+
+Graficky je součet racionálních čísel zobrazen na obrázku~\ref{img:add_rational_numbers}. Sčítáme třetiny a~poloviny, ty mají ale jinak veliké boxy. Proto každý třetinový box rozdělíme na dva stejné a~každý polovinový box rozdělíme na tři stejné. Získáme tak boxy o~velikosti jedné šestiny jednotky, ty pak už můžeme sčítat.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawboxrowrational{0}{1}{4}{3}{1}{fill=cyan}
+\drawboxrowrational{4 / 3}{1}{3}{2}{1}{fill=orange}
+
+\drawhintegerline{0}{0}{0}{3}
+\drawboxrowrational{0}{0}{8}{6}{1}{fill=cyan}
+\drawboxrowrational{4 / 3}{0}{9}{6}{1}{fill=orange}
+\end{tikzpicture}
+\caption{Grafické znázornění součtu \(\textcolor{cyan}{\frac{4}{3}} + \textcolor{orange}{\frac{3}{2}} = \textcolor{cyan}{\frac{8}{6}} + \textcolor{orange}{\frac{9}{6}} = \frac{17}{6}\)}
+\label{img:add_rational_numbers}
+\end{figure}
 
 Nakonec můžeme rovnicí~\eqref{eq:division_of_rationals} vyjádřit podíl racionálních čísel.
 

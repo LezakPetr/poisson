@@ -798,7 +798,7 @@ print_expression_term(Stream, A + B, PR) :-
 	print_binary_operator(Stream, A, B, PR, plus, ' + ').
 
 print_expression_term(Stream, A - B, PR) :-
-	print_binary_operator_with_position(Stream, A, B, PR, minus(left), minus(right), ' - ').
+	print_binary_operator_with_position(Stream, A, B, PR, minus(xxx), minus(left), minus(right), ' - ').
 
 print_expression_term(Stream, plus_minus(A, B, _), PR) :-
 	print_binary_operator(Stream, A, B, PR, plus, ' \\pm ').
@@ -844,7 +844,7 @@ print_prefix_operator(Stream, A, SuperOperator, SubOperator, Label) :-
 	print_expression_term(Stream, A, SubOperator),
 	print_bracket_if_needed(Stream, ')', SuperOperator, SubOperator).
 
-print_binary_operator_with_position(Stream, A, B, SuperOperator, LeftSubOperator, RightSubOperator, Label) :-
+print_binary_operator_with_position(Stream, A, B, SuperOperator, SubOperator, LeftSubOperator, RightSubOperator, Label) :-
 	print_bracket_if_needed(Stream, '(', SuperOperator, SubOperator),
 	print_expression_term(Stream, A, LeftSubOperator),
 	write(Stream, Label),
@@ -852,7 +852,7 @@ print_binary_operator_with_position(Stream, A, B, SuperOperator, LeftSubOperator
 	print_bracket_if_needed(Stream, ')', SuperOperator, SubOperator).
 
 print_binary_operator(Stream, A, B, SuperOperator, SubOperator, Label) :-
-	print_binary_operator_with_position(Stream, A, B, SuperOperator, SubOperator, SubOperator, Label).
+	print_binary_operator_with_position(Stream, A, B, SuperOperator, SubOperator, SubOperator, SubOperator, Label).
 
 print_predicate_args(Stream, [Arg, Next | Tail]) :-
 	write(Stream, Arg),

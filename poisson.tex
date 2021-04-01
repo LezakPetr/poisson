@@ -183,16 +183,23 @@
 	\drawvnaturalnumberline{#1}{#2}{#4};
 }
 
-\newcommand{\drawboxrow}[4]{   -- x, y, count, param
+\newcommand{\drawboxrowrational}[6]{   -- x, y, numerator, denominatorx, denominatory, param
 	\foreach \i in {1, ..., #3}
-		\drawrect{#1 + \i - 0.9}{#2 + 0.1}{#1 + \i - 0.1}{#2 + 0.9}{#4};
+		\drawrect{#1 + \i / #4 - 0.9 / #4}{#2 + 0.1 / #5}{#1 + \i / #4 - 0.1 / #4}{#2 + 0.9 / #5}{#6};
+}
+
+\newcommand{\drawboxrow}[4]{   -- x, y, count, param
+	\drawboxrowrational{#1}{#2}{#3}{1}{1}{#4};
+}
+
+\newcommand{\drawboxrectrational}[7]{   -- x, y, numeratorx, denominatorx, numeratory, denominatory, param
+	\foreach \j in {1, ..., #5}
+		\drawboxrowrational{#1}{#2 + \j / #6 - 1 / #6}{#3}{#4}{#6}{#7};
 }
 
 \newcommand{\drawboxrect}[5]{   -- x, y, countx, county, param
-	\foreach \j in {1, ..., #4}
-		\drawboxrow{#1}{#2 + \j - 1}{#3}{#5};
+	\drawboxrectrational{#1}{#2}{#3}{1}{#4}{1}{#5};
 }
-
 
 \newcommand{\drawhintegerline}[4]{   -- x, y, begin, end
 	\draw[<->] (#1 + #3 - 0.5, #2) -> (#1 + #4 + 0.5, #2);
