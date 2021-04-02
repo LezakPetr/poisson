@@ -1296,4 +1296,55 @@ Stačí tedy definovat, která čísla jsou kladná a~která záporná. Začněm
 \eeq{order_positive_negative}
 \end{fact}
 
-Přejděme k~racionálním číslům.
+Přejděme k~racionálním číslům. Podle rovnice~\eqref{eq:order_rationals_1} můžeme každé racionální číslo rozšířit tak, že jeho jmenovatel bude kladný. Potom je znaménko určeno čitatelem takto rozšířeného zlomku. Platí proto vztahy~\eqref{eq:order_rationals_2} a~\eqref{eq:order_rationals_3}.
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonzero_numbers(NonzeroNumbers),
+	print_validated_formula(
+		'order_rationals_1',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', NonzeroNumbers,
+				equal(A / B, (A * B) / (B * B), 1e-12)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_rationals_1}
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonzero_numbers(NonzeroNumbers),
+	print_validated_formula(
+		'order_rationals_2',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', NonzeroNumbers,
+				equiv(
+					greater_than(A / B, 0, 1e-12),
+					greater_than(A * B, 0, 1e-12)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_rationals_2}
+%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonzero_numbers(NonzeroNumbers),
+	print_validated_formula(
+		'order_rationals_3',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', NonzeroNumbers,
+				equiv(
+					less_than(A / B, 0, 1e-12),
+					less_than(A * B, 0, 1e-12)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_rationals_3}
+\end{fact}
+
