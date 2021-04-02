@@ -65,3 +65,16 @@ less_or_equal(_, _, log_false).
 ?-	less_or_equal(5 + 3, 8, log_true).
 ?-	less_or_equal(5 + 3, 7, log_false).
 
+
+% Evaluates A < B.
+% less_than(A, B, IsLessOrEqual)
+less_than(A, B, log_true) :-
+	A < B,
+	!.
+
+less_than(_, _, log_false).
+
+?-	less_than(5 + 3, 9, log_true).
+?-	less_than(5 + 3, 8, log_false).
+?-	less_than(5 + 3, 7, log_false).
+

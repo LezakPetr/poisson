@@ -369,14 +369,29 @@ evaluate_function(A^B, Y) :-
 	number(B),
 	Y is A^B.
 
-evaluate_function(num_equal(List, Tolerance), Value) :-
+evaluate_function(equal(List, Tolerance), Value) :-
 	min_list(List, Min),
 	max_list(List, Max),
 	less_or_equal(Max - Min, Tolerance, Value).
 
-evaluate_function(num_not_equal(A, B, Tolerance), Value) :-
-	evaluate_function(num_equal([A, B], Tolerance), IsEqual),
+evaluate_function(equal(A, B, Tolerance), Value) :-
+	evaluate_function(equal([A, B], Tolerance), Value).
+
+evaluate_function(not_equal(A, B, Tolerance), Value) :-
+	evaluate_function(equal([A, B], Tolerance), IsEqual),
 	log_not(IsEqual, Value).
+
+evaluate_function(less_than(A, B, Tolerance), Value) :-
+	less_than(A, B - Tolerance, Value).
+
+evaluate_function(greater_than(A, B, Tolerance), Value) :-
+	less_than(B - Tolerance, A, Value).
+
+evaluate_function(less_or_equal(A, B, Tolerance), Value) :-
+	less_or_equal(A, B + Tolerance, Value).
+
+evaluate_function(greater_or_equal(A, B, Tolerance), Value) :-
+	less_or_equal(B, A + Tolerance, Value).
 
 ?-	make_set([a, b, c], A),
 	make_set([b, c, d], B),
@@ -406,12 +421,23 @@ evaluate_function(num_not_equal(A, B, Tolerance), Value) :-
 ?-	evaluate_function(6.0 / 2.0, 3.0).
 ?-	evaluate_function(1 / 2, 0.5).
 
-?-	evaluate_function(num_equal([0.35, 0.35, 0.36], 0.011), log_true).
-?-	evaluate_function(num_equal([0.35, 0.35, 0.36], 0.009), log_false).
+?-	evaluate_function(equal([0.35, 0.35, 0.36], 0.011), log_true).
+?-	evaluate_function(equal([0.35, 0.35, 0.36], 0.009), log_false).
 
-?-	evaluate_function(num_not_equal(0.35, 0.36, 0.011), log_false).
-?-	evaluate_function(num_not_equal(0.35, 0.36, 0.009), log_true).
+?-	evaluate_function(not_equal(0.35, 0.36, 0.011), log_false).
+?-	evaluate_function(not_equal(0.35, 0.36, 0.009), log_true).
 
+?-	evaluate_function(less_than(0.35, 0.36, 0.011), log_false).
+?-	evaluate_function(less_than(0.35, 0.36, 0.009), log_true).
+
+?-	evaluate_function(greater_than(0.36, 0.35, 0.011), log_false).
+?-	evaluate_function(greater_than(0.36, 0.35, 0.009), log_true).
+
+?-	evaluate_function(less_or_equal(0.36, 0.35, 0.011), log_true).
+?-	evaluate_function(less_or_equal(0.36, 0.35, 0.009), log_false).
+
+?-	evaluate_function(greater_or_equal(0.35, 0.36, 0.011), log_true).
+?-	evaluate_function(greater_or_equal(0.35, 0.36, 0.009), log_false).
 
 evaluate_list([], []).
 
@@ -501,8 +527,8 @@ evaluate_expression(Expression, Value) :-
 ?-	evaluate_expression(3*4 - 2*5, 2).
 ?-	evaluate_expression(3 * (4 - 2) * 5, 30).
 
-?-	evaluate_expression(num_equal([1/(2+1), 2 / 6, 1 - (2/3)], 1e-14), log_true).
-?-	evaluate_expression(num_equal([1, 2], 1e-14), log_false).
+?-	evaluate_expression(equal([1/(2+1), 2 / 6, 1 - (2/3)], 1e-14), log_true).
+?-	evaluate_expression(equal([1, 2], 1e-14), log_false).
 
 ?-	make_set([1, 2], S1),
 	make_set([1, 2], S2),
@@ -567,28 +593,28 @@ evaluate_expression(Expression, Value) :-
 	).
 
 ?-	evaluate_expression(
-		forall(X, 'X', [1, 2], num_equal([X, 1], 0)),
+		forall(X, 'X', [1, 2], equal([X, 1], 0)),
 		log_false
 	).
 
 ?-	evaluate_expression(
-		forall(X, 'X', [1, 2], or(num_equal([X, 1], 0), num_equal([X, 2], 0))),
+		forall(X, 'X', [1, 2], or(equal([X, 1], 0), equal([X, 2], 0))),
 		log_true
 	).
 
 ?-	evaluate_expression(
-		exists(X, 'X', [1, 2], num_equal([X, 3], 0)),
+		exists(X, 'X', [1, 2], equal([X, 3], 0)),
 		log_false
 	).
 
 ?-	evaluate_expression(
-		exists(X, 'X', [1, 2], num_equal([X, 2], 0)),
+		exists(X, 'X', [1, 2], equal([X, 2], 0)),
 		log_true
 	).
 
 ?-	make_set([1, 2], Value),
 	evaluate_expression(
-		set_by(X, 'x', [1, 2, 3, 4], or(num_equal([X, 1], 0), num_equal([X, 2], 0))),
+		set_by(X, 'x', [1, 2, 3, 4], or(equal([X, 1], 0), equal([X, 2], 0))),
 		set(Value)
 	).
 
@@ -825,13 +851,28 @@ print_expression_term(Stream, A^B, PR) :-
 	write(Stream, '}'),
 	print_bracket_if_needed(Stream, ')', PR, pow).
 
-print_expression_term(Stream, num_equal(List, _), PR) :-
+print_expression_term(Stream, equal(List, _), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, equal),
 	print_chain(Stream, List, ' = ', equal),
 	print_bracket_if_needed(Stream, ')', PR, equal).
 
-print_expression_term(Stream, num_not_equal(A, B, _), PR) :-
+print_expression_term(Stream, equal(A, B, _), PR) :-
+	print_binary_operator(Stream, A, B, PR, equal, ' = ').
+
+print_expression_term(Stream, not_equal(A, B, _), PR) :-
 	print_binary_operator(Stream, A, B, PR, equal, ' \\neq ').
+
+print_expression_term(Stream, less_than(A, B, _), PR) :-
+	print_binary_operator(Stream, A, B, PR, equal, ' < ').
+
+print_expression_term(Stream, greater_than(A, B, _), PR) :-
+	print_binary_operator(Stream, A, B, PR, equal, ' > ').
+
+print_expression_term(Stream, less_or_equal(A, B, _), PR) :-
+	print_binary_operator(Stream, A, B, PR, equal, ' \\leq ').
+
+print_expression_term(Stream, greater_or_equal(A, B, _), PR) :-
+	print_binary_operator(Stream, A, B, PR, equal, ' \\geq ').
 
 print_expression_term(Stream, proof(Axioms, Conclusions), _) :-
 	print_chain(Stream, Axioms, ' \\\\ ', root),
