@@ -12,7 +12,7 @@ make_test_sets([set(S1), set(S2), set(S3), set(S4)]) :-
 	make_set([2], S3),
 	make_set([1, 2], S4).
 
-make_test_predicates(Y, [equal([Y, 1], 0), equal([Y, 2], 0), log_true, log_false]).
+make_test_predicates(Y, [equal([Y, 1]), equal([Y, 2]), log_true, log_false]).
 \end{prolog}
 
 
@@ -216,7 +216,7 @@ je predikát, který je pravdivý tehdy a~jen tehdy, pokud \(a\) i~\(b\) jsou si
 	print_validated_formula(
 		'equal_itself',
 		declare_variable(X, 'x', Values,
-			equal([X, X], 0)
+			equal([X, X])
 		)
 	).
 \end{prolog}
@@ -231,7 +231,7 @@ je predikát, který je pravdivý tehdy a~jen tehdy, pokud \(a\) i~\(b\) jsou si
 			declare_variable(B, 'b', Values,
 				declare_predicate(P, 'P', Predicates,
 					impl(
-						equal([A, B], 0),
+						equal([A, B]),
 						equiv(
 							apply(P, [Y], [A]),
 							apply(P, [Y], [B])
@@ -267,8 +267,8 @@ Operátor rovnosti má proto vlastnost~\eqref{eq:equal_symmetry} které říkám
 		declare_variable(A, 'a', Values,
 			declare_variable(B, 'b', Values,
 				impl(
-					equal([A, B], 0),
-					equal([B, A], 0)
+					equal([A, B]),
+					equal([B, A])
 				)
 			)
 		)
@@ -291,10 +291,10 @@ Předpokládejme dále, že platí \(a = b\) a~\(b = c\). Do první rovnosti dos
 				declare_variable(C, 'c', Values,
 					impl(
 						and(
-							equal([A, B], 0),
-							equal([B, C], 0)
+							equal([A, B]),
+							equal([B, C])
 						),
-						equal([A, C], 0)
+						equal([A, C])
 					)
 				)
 			)
@@ -312,7 +312,7 @@ Rovnost výrazů můžeme používat pro úpravy výrazů podobně jako ekvivale
 		'expression_rewrite_example_1',
 		declare_variable(X, 'x', Values,
 			declare_variable(Y, 'y', Values,
-				equal([(X + Y) * (X - Y), X^2 - Y^2], 1e-12)
+				equal([(X + Y) * (X - Y), X^2 - Y^2])
 			)
 		)
 	).
@@ -327,7 +327,7 @@ Nejdříve vztah~\ref{eq:expression_rewrite_example_1} upravíme dosazením za p
 		'expression_rewrite_example_2',
 		declare_variable(X, 'x', Values,
 			declare_variable(Y, 'y', Values,
-				equal([(5*X + 4*Y) * (5*X - 4*Y), (5*X)^2 - (4*Y)^2], 1e-12)
+				equal([(5*X + 4*Y) * (5*X - 4*Y), (5*X)^2 - (4*Y)^2])
 			)
 		)
 	).
@@ -342,7 +342,7 @@ Nyní na původní výraz použijeme axiom reflexivity:
 		'expression_rewrite_example_3',
 		declare_variable(X, 'x', Values,
 			declare_variable(Y, 'y', Values,
-				equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * (5*X + 4*Y) * (5*X - 4*Y)], 1e-12)
+				equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * (5*X + 4*Y) * (5*X - 4*Y)])
 			)
 		)
 	).
@@ -367,7 +367,7 @@ Odvodili jsme tak rovnost~\eqref{eq:expression_rewrite_example_4} a~výraz zjedn
 		'expression_rewrite_example_4',
 		declare_variable(X, 'x', Values,
 			declare_variable(Y, 'y', Values,
-				equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * ((5*X)^2 - (4*Y)^2)], 1e-12)
+				equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * ((5*X)^2 - (4*Y)^2)])
 			)
 		)
 	).

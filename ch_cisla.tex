@@ -9,7 +9,7 @@ make_test_nonzero_numbers([-1, 1, 2, 3, 1.5]).
 make_test_integers([-3, -2, -1, 0, 1, 2, 3]).
 make_test_nonzero_integers([-3, -2, -1, 1, 2, 3]).
 make_test_natural_numbers([1, 2, 3, 4, 5]).
-make_test_predicates(Y, [equal([Y, 1], 0), equal([Y, 2], 0), log_true, log_false]).
+make_test_predicates(Y, [equal([Y, 1]), equal([Y, 2]), log_true, log_false]).
 \end{prolog}
 
 
@@ -51,8 +51,8 @@ následníka, označme ho \(n + 1\). Každé přirozené číslo, vyjma čísla 
 		forall_in(M, 'm', natural_numbers, Values,
 			forall_in(N, 'n', natural_numbers, Values,
 				equiv(
-					equal([M, N], 1e-12),				
-					equal([M + 1, N + 1], 1e-12)
+					equal([M, N]),				
+					equal([M + 1, N + 1])
 				)
 			)
 		)
@@ -66,7 +66,7 @@ následníka, označme ho \(n + 1\). Každé přirozené číslo, vyjma čísla 
 		'natural_numbers_definition_4',
 		not(
 			exists_in(N, 'n', natural_numbers, Values,
-				equal([N + 1, 1], 1e-12)
+				equal([N + 1, 1])
 			)
 		)
 	).
@@ -156,8 +156,7 @@ Povšimněme si, že výraz pod složenou závorkou odpovídá reprezentaci čí
 				linebreak,
 				par(par(par(1 + 1) + 1) + 1) + 1,
 				5
-			],
-			0
+			]
 		)
 	).
 \end{prolog}
@@ -172,7 +171,7 @@ To je logické, součet má představovat počet objektů, které ze dvou skupin
 		'natural_numbers_comutativity',
 		forall_in(A, 'a', natural_numbers, Values,
 			forall_in(B, 'b', natural_numbers, Values,
-				equal([A + B, B + A], 0)
+				equal([A + B, B + A])
 			)
 		)
 	).
@@ -186,7 +185,7 @@ To je logické, součet má představovat počet objektů, které ze dvou skupin
 		forall_in(A, 'a', natural_numbers, Values,
 			forall_in(B, 'b', natural_numbers, Values,
 				forall_in(C, 'c', natural_numbers, Values,
-					equal([par(A + B) + C, A + par(B + C)], 0)
+					equal([par(A + B) + C, A + par(B + C)])
 				)
 			)
 		)
@@ -212,7 +211,7 @@ Nyní můžeme zapomenout na původní definici součtu pomocí přičítání j
 			linebreak,
 			7 + 1,
 			8
-		], 0)
+		])
 	).
 \end{prolog}
 \eeq{natural_numbers_add_example}
@@ -289,7 +288,7 @@ Z~definice~\eqref{eq:multiplication_definition} přímo plynou dva vztahy. Vztah
 	print_validated_formula(
 		'natural_multiply_by_one',
 		forall_in(A, 'a', natural_numbers, Values,
-			equal([A * 1, A], 0)
+			equal([A * 1, A])
 		)
 	).				
 \end{prolog}
@@ -302,7 +301,7 @@ Z~definice~\eqref{eq:multiplication_definition} přímo plynou dva vztahy. Vztah
 		forall_in(A, 'a', natural_numbers, Values,
 			forall_in(B, 'b', natural_numbers, Values,
 				forall_in(C, 'c', natural_numbers, Values,
-					equal([A * (B + C), A * B + A * C], 1e-12)
+					equal([A * (B + C), A * B + A * C])
 				)
 			)
 		)
@@ -346,7 +345,7 @@ Zamyslíme-li se nad vztahy~\ref{eq:natural_multiply_by_one} a~\ref{eq:multiplic
 			3 * 1 + 3 * 1 + 3 * 1 + 3 * 1,
 			3 + 3 + 3 + 3,
 			12
-		], 1e-12)
+		])
 	).				
 \end{prolog}
 \eeq{multiplication_example}
@@ -377,7 +376,7 @@ Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{
 		'multiplication_comutativity',
 		forall_in(A, 'a', natural_numbers, Values,
 			forall_in(B, 'b', natural_numbers, Values,
-				equal([A * B, B * A], 1e-12)
+				equal([A * B, B * A])
 			)
 		)
 	).				
@@ -391,7 +390,7 @@ Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{
 		forall_in(A, 'a', natural_numbers, Values,
 			forall_in(B, 'b', natural_numbers, Values,
 				forall_in(C, 'c', natural_numbers, Values,
-					equal([par(A * B) * C, A * par(B * C)], 1e-12)
+					equal([par(A * B) * C, A * par(B * C)])
 				)
 			)
 		)
@@ -415,7 +414,7 @@ Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} 
 	print_validated_formula(
 		'natural_power_by_one',
 		forall_in(A, 'a', natural_numbers, Values,
-			equal([A^1, A], 0)
+			equal([A^1, A])
 		)
 	).				
 \end{prolog}
@@ -428,7 +427,7 @@ Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} 
 		forall_in(A, 'a', natural_numbers, Values,
 			forall_in(B, 'b', natural_numbers, Values,
 				forall_in(C, 'c', natural_numbers, Values,
-					equal([A^(B + C), A^B * A^C], 1e-12)
+					equal([A^(B + C), A^B * A^C])
 				)
 			)
 		)
@@ -447,7 +446,7 @@ Na rozdíl od sčítání a~násobení není umocňování komutativní operace 
 		forall_in(A, 'a', natural_numbers, Values,
 			forall_in(B, 'b', natural_numbers, Values,
 				forall_in(C, 'c', natural_numbers, Values,
-					equal([(A^B)^C, A^(B * C)], 1e-12)
+					equal([(A^B)^C, A^(B * C)])
 				)
 			)
 		)
@@ -464,7 +463,7 @@ Mocniny bohužel není možné jednoduše graficky znázornit jako násobení ne
 		'power_by_multiplication_proof_1',
 		forall_in(A, 'a', natural_numbers, Values,
 			forall_in(B, 'b', natural_numbers, Values,
-				equal([(A^B)^1, A^B, A^(B * 1)], 1e-12)
+				equal([(A^B)^1, A^B, A^(B * 1)])
 			)
 		)
 	).
@@ -481,8 +480,8 @@ Dále ověříme platnost výroku~\eqref{eq:power_by_multiplication_proof_2} a~t
 			forall_in(B, 'b', natural_numbers, Values,
 				forall_in(C, 'c', natural_numbers, Values,
 					impl(
-						equal([(A^B)^C, 	A^(B*C)], 1e-12),
-						equal([(A^B)^(C+1), 	A^(B*(C+1))], 1e-12)
+						equal([(A^B)^C, 	A^(B*C)]),
+						equal([(A^B)^(C+1), 	A^(B*(C+1))])
 					)
 				)
 			)
@@ -506,7 +505,7 @@ V~prvním kroku jsme využili distributivitu násobení. Ve druhém kroku jsme v
 						A^(B*C) * A^B,
 						A^(B*C + B),
 						A^(B*(C+1))
-					], 1e-12)
+					])
 				)
 			)
 		)
@@ -526,8 +525,8 @@ Zkusme dále definovat rozdíl jako opačnou operaci k~součtu pomocí rovnice~\
 			declare_variable(B, 'b', Values,
 				declare_variable(C, 'c', Values,
 					equiv(
-						equal([C, A - B], 1e-12),
-						equal([B + C, A], 1e-12)
+						equal([C, A - B]),
+						equal([B + C, A])
 					)
 				)
 			)
@@ -653,7 +652,7 @@ Mezi celými čísly najdeme zvláštní číslo 0. Z~definice čísla 1 v~tabul
 				par(B + 1) + 0,
 				B + par(0 + 1),
 				B + 1
-			], 1e-12)
+			])
 		)
 	).
 \end{prolog}
@@ -669,7 +668,7 @@ V~prvním kroku jsme s~využitím komutativity a~asociativity sčítání výraz
 			equal([
 				A + 0,
 				A
-			], 1e-12)
+			])
 		)
 	).
 \end{prolog}
@@ -685,7 +684,7 @@ Srovnáme-li tento vztah se vztahem \eqref{eq:difference_definition}, dostaneme:
 			equal([
 				A - A,
 				0
-			], 1e-12)
+			])
 		)
 	).
 \end{prolog}
@@ -701,7 +700,7 @@ Vidíme, že rovnicí~\eqref{eq:opposite_number_definition} můžeme ke každém
 			equal([
 				A + par(-A),
 				0
-			], 1e-12)
+			])
 		)
 	).
 \end{prolog}
@@ -715,7 +714,7 @@ Vidíme, že rovnicí~\eqref{eq:opposite_number_definition} můžeme ke každém
 			equal([
 				-A,
 				0 - A
-			], 1e-12)
+			])
 		)
 	).
 \end{prolog}
@@ -733,7 +732,7 @@ Opačná čísla nám umožňují vypočítat rozdíl pomocí součtu jak je vid
 					A - B,
 					A + 0 - B,
 					A + par(-B)
-				], 1e-12)
+				])
 			)
 		)
 	).
@@ -760,7 +759,7 @@ Pokračujme rozšířením součinu na celá čísla. Začněme nulou. Srovnán�
 				A * 1,
 				A * (1 + 0),
 				A * 1 + A * 0
-			], 1e-12)
+			])
 		)
 	).
 \end{prolog}
@@ -771,7 +770,7 @@ Pokračujme rozšířením součinu na celá čísla. Začněme nulou. Srovnán�
 	print_validated_formula(
 		'multiplication_by_zero_2',
 		declare_variable(A, 'a', Values,
-			equal([A * 0, 0], 1e-12)
+			equal([A * 0, 0])
 		)
 	).
 \end{prolog}
@@ -789,7 +788,7 @@ Pokračujme součinem, kde je jeden operand záporný. Z~rovnice~\eqref{eq:multi
 					0,
 					A * (-B + B),
 					A * (-B) + A * B
-				], 1e-12)
+				])
 			)
 		)
 	).
@@ -804,7 +803,7 @@ Pokračujme součinem, kde je jeden operand záporný. Z~rovnice~\eqref{eq:multi
 			declare_variable(B, 'b', Values,
 				equal([
 					A * (-B), -par(A * B)
-				], 1e-12)
+				])
 			)
 		)
 	).
@@ -822,7 +821,7 @@ Pokračujme součinem, kde je jeden operand záporný. Z~rovnice~\eqref{eq:multi
 					B * (-A),
 					-par(B * A),
 					-par(A * B)
-				], 1e-12)
+				])
 			)
 		)
 	).
@@ -842,7 +841,7 @@ Nakonec v~rovnici~\eqref{eq:multiplication_by_negative_4} vyšetříme případ,
 					-par(A * (-B)),
 					-par(-par(A * B)),
 					A * B
-				], 1e-12)
+				])
 			)
 		)
 	).
@@ -860,7 +859,7 @@ Nakonec rozšiřme definici mocniny na celá čísla. Začněme rozšířením m
 				A^1,
 				A^(0 + 1),
 				A^0 * A^1
-			], 1e-12)
+			])
 		)
 	).
 \end{prolog}
@@ -872,8 +871,8 @@ Nakonec rozšiřme definici mocniny na celá čísla. Začněme rozšířením m
 		'power_by_zero_2',
 		declare_variable(A, 'a', Values,
 			impl(
-				not_equal(A, 0, 1e-12),
-				equal([A^0, 1], 1e-12)
+				not_equal(A, 0),
+				equal([A^0, 1])
 			)
 		)
 	).
@@ -895,8 +894,8 @@ Definujme podíl jako opačnou operaci k~násobení pomocí rovnice~\eqref{eq:di
 			declare_variable(B, 'b', NonzeroNumbers,
 				declare_variable(C, 'c', Numbers,
 					equiv(
-						equal([C, A / B], 1e-12),
-						equal([B * C, A], 1e-12)
+						equal([C, A / B]),
+						equal([B * C, A])
 					)
 				)
 			)
@@ -945,14 +944,14 @@ Vyjádřeme násobení racionálních čísel v~soustavě~\eqref{eq:rational_mul
 						declare_variable(E, 'e', Numbers,
 							declare_variable(F, 'f', Numbers,
 								proof([
-									equal([C, A / B], 1e-12),
-									equal([F, D / E], 1e-12)
+									equal([C, A / B]),
+									equal([F, D / E])
 								],
 								[
-									equal([A, B * C], 1e-12),
-									equal([D, E * F], 1e-12),
-									equal([A * D, par(B * C) * par(E * F), par(B * E) * par(C * F)], 1e-12),
-									equal([(C * F), (A / B) * (D / E), (A * D) / (B * E)], 1e-12)
+									equal([A, B * C]),
+									equal([D, E * F]),
+									equal([A * D, par(B * C) * par(E * F), par(B * E) * par(C * F)]),
+									equal([(C * F), (A / B) * (D / E), (A * D) / (B * E)])
 								])
 							)
 						)
@@ -1001,7 +1000,7 @@ Z~definice~\eqref{eq:division_definition} dále plyne vztah~\eqref{eq:rational_o
 	print_validated_formula(
 		'rational_one',
 		declare_variable(A, 'a', Numbers,
-			equal([A / A, 1], 1e-12)
+			equal([A / A, 1])
 		)
 	).
 \end{prolog}
@@ -1021,7 +1020,7 @@ Ze vztahů~\eqref{eq:rational_multiplication} a~\eqref{eq:rational_one} můžeme
 						(A / B) * 1,
 						(A / B) * (C / C),
 						(A * C) / (B * C)
-					], 1e-12)
+					])
 				)
 			)
 		)
@@ -1045,7 +1044,7 @@ Dále můžeme odvodit vztah~\eqref{eq:division_distributivity} pro distributivi
 							plus_minus(A, B, PM) * (1 / C),
 							plus_minus(A * (1 / C), B * (1 / C), PM),
 							plus_minus(A / C, B / C, PM)
-						], 1e-12)
+						])
 					)
 				)
 			)
@@ -1070,7 +1069,7 @@ Pokud chceme vypočítat součet nebo rozdíl zlomků s~rozdílnými jmenovateli
 								plus_minus(A / B, C / D, PM),
 								plus_minus((A * D) / (B * D), (C * B) / (D * B), PM),
 								plus_minus(A * D, B * C, PM) / (B * D)
-							], 1e-12)
+							])
 						)
 					)
 				)
@@ -1113,7 +1112,7 @@ Nakonec můžeme rovnicí~\eqref{eq:division_of_rationals} vyjádřit podíl rac
 							((A * D) / (B * C)) / ((C * D) / (D * C)),
 							((A * D) / (B * C)) / 1,
 							(A * D) / (B * C)
-						], 1e-12)
+						])
 					)
 				)
 			)
@@ -1133,13 +1132,13 @@ Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými expone
 		declare_variable(A, 'a', TestBases,
 			declare_variable(B, 'b', TestExponents,
 				impl(
-					not_equal(A, 0, 1e-12),
+					not_equal(A, 0),
 					equal([
 						1,
 						A^0,
 						A^(-B + B),
 						A^(-B) * A^B
-					], 1e-12)
+					])
 				)
 			)
 		)
@@ -1155,8 +1154,8 @@ Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými expone
 		declare_variable(A, 'a', TestBases,
 			declare_variable(B, 'b', TestExponents,
 				impl(
-					not_equal(A, 0, 1e-12),
-					equal([A^(-B), 1 / (A^B)], 1e-12)
+					not_equal(A, 0),
+					equal([A^(-B), 1 / (A^B)])
 				)
 			)
 		)
@@ -1170,8 +1169,8 @@ Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými expone
 		'power_by_negative_exponent_3',
 		declare_variable(A, 'a', TestBases,
 			impl(
-				not_equal(A, 0, 1e-12),
-				equal([A^(-1), 1 / A], 1e-12)
+				not_equal(A, 0),
+				equal([A^(-1), 1 / A])
 			)
 		)
 	).
@@ -1190,8 +1189,8 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 		declare_variable(A, 'a', Numbers,
 			declare_variable(B, 'b', Numbers,
 				equiv(
-					equal([A, B], 1e-12),
-					equal([A - B, 0], 1e-12)
+					equal(A, B),
+					equal(A - B, 0)
 				)
 			)
 		)
@@ -1206,8 +1205,8 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 		declare_variable(A, 'a', Numbers,
 			declare_variable(B, 'b', Numbers,
 				equiv(
-					less_than(A, B, 1e-12),
-					less_than(A - B, 0, 1e-12)
+					less_than(A, B),
+					less_than(A - B, 0)
 				)
 			)
 		)
@@ -1222,8 +1221,8 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 		declare_variable(A, 'a', Numbers,
 			declare_variable(B, 'b', Numbers,
 				equiv(
-					greater_than(A, B, 1e-12),
-					greater_than(A - B, 0, 1e-12)
+					greater_than(A, B),
+					greater_than(A - B, 0)
 				)
 			)
 		)
@@ -1238,10 +1237,10 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 		declare_variable(A, 'a', Numbers,
 			declare_variable(B, 'b', Numbers,
 				equiv(
-					less_or_equal(A, B, 1e-12),
+					less_or_equal(A, B),
 					or(
-						less_than(A, B, 1e-12),
-						equal(A, B, 1e-12)
+						less_than(A, B),
+						equal(A, B)
 					)
 				)
 			)
@@ -1257,10 +1256,10 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 		declare_variable(A, 'a', Numbers,
 			declare_variable(B, 'b', Numbers,
 				equiv(
-					greater_or_equal(A, B, 1e-12),
+					greater_or_equal(A, B),
 					or(
-						greater_than(A, B, 1e-12),
-						equal(A, B, 1e-12)
+						greater_than(A, B),
+						equal(A, B)
 					)
 				)
 			)
@@ -1278,7 +1277,7 @@ Stačí tedy definovat, která čísla jsou kladná a~která záporná. Začněm
 	print_validated_formula(
 		'order_positive_integers',
 		forall_in(N, 'n', natural_numbers, Numbers,
-			greater_than(N, 0, 1e-12)
+			greater_than(N, 0)
 		)
 	).
 \end{prolog}
@@ -1289,14 +1288,14 @@ Stačí tedy definovat, která čísla jsou kladná a~která záporná. Začněm
 	print_validated_formula(
 		'order_positive_negative',
 		forall_in(N, 'n', natural_numbers, Numbers,
-			less_than(-N, 0, 1e-12)
+			less_than(-N, 0)
 		)
 	).
 \end{prolog}
 \eeq{order_positive_negative}
 \end{fact}
 
-Přejděme k~racionálním číslům. Podle rovnice~\eqref{eq:order_rationals_1} můžeme každé racionální číslo rozšířit tak, že jeho jmenovatel bude kladný. Potom je znaménko určeno čitatelem takto rozšířeného zlomku. Platí proto vztahy~\eqref{eq:order_rationals_2} a~\eqref{eq:order_rationals_3}.
+Přejděme k~racionálním číslům. Podle rovnice~\eqref{eq:order_rationals_1} můžeme každé racionální číslo rozšířit tak, že jeho jmenovatel bude kladný. Potom je znaménko určeno čitatelem takto rozšířeného zlomku. Platí proto vztahy~\eqref{eq:order_rationals_positive} a~\eqref{eq:order_rationals_negative}.
 
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -1305,7 +1304,7 @@ Přejděme k~racionálním číslům. Podle rovnice~\eqref{eq:order_rationals_1}
 		'order_rationals_1',
 		declare_variable(A, 'a', Numbers,
 			declare_variable(B, 'b', NonzeroNumbers,
-				equal(A / B, (A * B) / (B * B), 1e-12)
+				equal(A / B, (A * B) / (B * B))
 			)
 		)
 	).
@@ -1317,34 +1316,124 @@ Přejděme k~racionálním číslům. Podle rovnice~\eqref{eq:order_rationals_1}
 ?-	make_test_numbers(Numbers),
 	make_test_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
-		'order_rationals_2',
+		'order_rationals_positive',
 		declare_variable(A, 'a', Numbers,
 			declare_variable(B, 'b', NonzeroNumbers,
 				equiv(
-					greater_than(A / B, 0, 1e-12),
-					greater_than(A * B, 0, 1e-12)
+					greater_than(A / B, 0),
+					greater_than(A * B, 0)
 				)
 			)
 		)
 	).
 \end{prolog}
-\eeq{order_rationals_2}
+\eeq{order_rationals_positive}
 %%%%%%%%%%%%%%%%%%
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
 	make_test_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
-		'order_rationals_3',
+		'order_rationals_negative',
 		declare_variable(A, 'a', Numbers,
 			declare_variable(B, 'b', NonzeroNumbers,
 				equiv(
-					less_than(A / B, 0, 1e-12),
-					less_than(A * B, 0, 1e-12)
+					less_than(A / B, 0),
+					less_than(A * B, 0)
 				)
 			)
 		)
 	).
 \end{prolog}
-\eeq{order_rationals_3}
+\eeq{order_rationals_negative}
 \end{fact}
 
+Graficky můžeme zobrazit uspořádání čísel na číselné ose jako na obrázku~\ref{img:ordering}. Tučnou čarou je zobrazeno číslo 1. Vlevo od něj azurovou barvou je zobrazena množina čísel menších než 1. Vpravo oranžovou barvou množina čísel větších než 1.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawhintegerline{0}{0}{-4}{4};
+
+\drawrect{-4.2}{0}{1}{1}{fill=cyan};
+\draw (-1.5, 0.5) node{\(\{x: x < 1\}\)};
+
+\drawrect{1}{0}{4.2}{1}{fill=orange};
+\draw (2.5, 0.5) node{\(\{x: x > 1\}\)};
+
+\draw[thick] (1, -0.2) -- (1, 1.2);
+
+\end{tikzpicture}
+\caption{Grafické znázornění uspořádání čísel}
+\label{img:ordering}
+\end{figure}
+
+Předpokládejme, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve rozepíšeme podle definice~\eqref{eq:order_less_than}. Následně využijeme faktu, že součet klasných čísel je kladné číslo (viz~\eqref{eq:order_positive_integers} a~\eqref{eq:order_rationals_positive}). Úpravou pak získáme \(a > c\). Výsledek je zapsán ve větě~\eqref{eq:order_transitivity_greater_than} a~říká se mu tranzitivita. Obdobně platí věta~\eqref{eq:order_transitivity_less_than}.
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'order_transitivity_proof',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				declare_variable(C, 'c', Numbers,
+					proof([
+						greater_than(A, B),
+						greater_than(B, C)
+					],
+					[
+						greater_than(A - B, 0),
+						greater_than(B - C, 0),
+						greater_than(par(A - B) + par(B - C), 0),
+						greater_than(A - C, 0),
+						greater_than(A, C)
+					])
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_transitivity_proof}
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'order_transitivity_greater_than',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				declare_variable(C, 'c', Numbers,
+					impl(
+						and(
+							greater_than(A, B),
+							greater_than(B, C)
+						),
+						greater_than(A, C)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_transitivity_greater_than}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'order_transitivity_less_than',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				declare_variable(C, 'c', Numbers,
+					impl(
+						and(
+							less_than(A, B),
+							less_than(B, C)
+						),
+						less_than(A, C)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_transitivity_less_than}
+\end{fact}
