@@ -55,9 +55,10 @@ max_list([V | Tail], Max) :-
 
 % Evaluates A <= B.
 % less_or_equal(A, B, IsLessOrEqual)
-less_or_equal(A, B, log_true) :-
+less_or_equal(A, B, Value) :-
 	A =< B,
-	!.
+	!,
+	Value = log_true.
 
 less_or_equal(_, _, log_false).
 
@@ -68,9 +69,10 @@ less_or_equal(_, _, log_false).
 
 % Evaluates A < B.
 % less_than(A, B, IsLessOrEqual)
-less_than(A, B, log_true) :-
+less_than(A, B, Value) :-
 	A < B,
-	!.
+	!,
+	Value = log_true.
 
 less_than(_, _, log_false).
 

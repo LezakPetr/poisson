@@ -395,7 +395,7 @@ evaluate_function(less_than(A, B), Value) :-
 
 evaluate_function(greater_than(A, B), Value) :-
 	num_tolerance(Tolerance),
-	less_than(B - Tolerance, A, Value).
+	less_than(B, A - Tolerance, Value).
 
 evaluate_function(less_or_equal(A, B), Value) :-
 	num_tolerance(Tolerance),
@@ -445,7 +445,7 @@ evaluate_function(greater_or_equal(A, B), Value) :-
 
 ?-	evaluate_function(greater_than(0.35, 0.36), log_false).
 ?-	evaluate_function(greater_than(0.36, 0.36), log_false).
-?-	evaluate_function(greater_than(0.37, 0.36), log_true).
+?-	evaluate_function(greater_than(0.36, 0.36), log_false).
 
 ?-	evaluate_function(less_or_equal(0.35, 0.36), log_true).
 ?-	evaluate_function(less_or_equal(0.36, 0.36), log_true).

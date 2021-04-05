@@ -1367,6 +1367,93 @@ Graficky můžeme zobrazit uspořádání čísel na číselné ose jako na obr�
 \label{img:ordering}
 \end{figure}
 
+Z~definic~\eqref{eq:order_less_than} a~\eqref{eq:order_at_least_one} také plynou věty~\eqref{eq:order_not_less_than} až~\eqref{eq:order_less_or_equal_opposite}. Tyto věty vyjadřují fakt, že vždy platí právě jedna z~relací \(a < b\), \(a = b\), \(a > b\).
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'order_at_least_one',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				or(
+					or(
+						less_than(A, B),
+						equal(A, B)
+					),
+					greater_than(A, B)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_at_least_one}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'order_not_less_than',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				equiv(
+					not(less_than(A, B)),
+					greater_or_equal(A, B)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_not_less_than}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'order_not_greater_than',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				equiv(
+					not(greater_than(A, B)),
+					less_or_equal(A, B)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_not_greater_than}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'order_less_than_opposite',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				equiv(
+					less_than(A, B),
+					greater_than(B, A)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_less_than_opposite}
+%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'order_less_or_equal_opposite',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				equiv(
+					less_or_equal(A, B),
+					greater_or_equal(B, A)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{order_less_or_equal_opposite}
+\end{fact}
+
 Předpokládejme, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve rozepíšeme podle definice~\eqref{eq:order_less_than}. Následně využijeme faktu, že součet klasných čísel je kladné číslo (viz~\eqref{eq:order_positive_integers} a~\eqref{eq:order_rationals_positive}). Úpravou pak získáme \(a > c\). Výsledek je zapsán ve větě~\eqref{eq:order_transitivity_greater_than} a~říká se mu tranzitivita. Obdobně platí věta~\eqref{eq:order_transitivity_less_than}.
 
 \begin{prolog}
@@ -1437,3 +1524,24 @@ Předpokládejme, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve rozep
 \end{prolog}
 \eeq{order_transitivity_less_than}
 \end{fact}
+
+Graficky je tranzitivita zobrazena na obrázku~\ref{img:ordering_transitivity}. Díky tranzitivitě platí, že jakékoli číslo z~množiny \(A\) je menší než jakékoli číslo z~množiny \(C\).
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+\drawrect{-4.2}{0}{0}{1}{fill=cyan};
+\draw (-2, 0.5) node{\(A = \{a: a < b\}\)};
+
+\drawrect{0}{0}{4.2}{1}{fill=orange};
+\draw (2, 0.5) node{\(C = \{c: c > b\}\)};
+
+\draw[thick] (0, -0.2) -- (0, 1.2);
+\draw (0, -0.2) node[anchor=north]{\(b\)};
+
+\draw[<->] (-4.5, 0) -- (4.5, 0);
+\end{tikzpicture}
+\caption{Grafické znázornění tranzitivity uspořádání čísel}
+\label{img:ordering_transitivity}
+\end{figure}
+
