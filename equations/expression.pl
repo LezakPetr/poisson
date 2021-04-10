@@ -405,6 +405,18 @@ evaluate_function(greater_or_equal(A, B), Value) :-
 	num_tolerance(Tolerance),
 	less_or_equal(B, A + Tolerance, Value).
 
+evaluate_function(min(set(S)), Value) :-
+	min_list(S, Value).
+
+evaluate_function(max(set(S)), Value) :-
+	max_list(S, Value).
+
+evaluate_function(inf(set(S)), Value) :-
+	min_list(S, Value).
+
+evaluate_function(sup(set(S)), Value) :-
+	max_list(S, Value).
+
 ?-	make_set([a, b, c], A),
 	make_set([b, c, d], B),
 	make_set([b, c], Y),
@@ -454,6 +466,13 @@ evaluate_function(greater_or_equal(A, B), Value) :-
 ?-	evaluate_function(greater_or_equal(0.35, 0.36), log_false).
 ?-	evaluate_function(greater_or_equal(0.36, 0.36), log_true).
 ?-	evaluate_function(greater_or_equal(0.37, 0.36), log_true).
+
+?-	evaluate_function(min(set([1, 5, 7, -3, 4])), -3).
+?-	evaluate_function(max(set([1, 5, 7, -3, 4])), 7).
+
+?-	evaluate_function(inf(set([1, 5, 7, -3, 4])), -3).
+?-	evaluate_function(sup(set([1, 5, 7, -3, 4])), 7).
+
 
 evaluate_list([], []).
 
@@ -896,6 +915,18 @@ print_expression_term(Stream, proof(Axioms, Conclusions), _) :-
 	write(Stream, ' \\\\ \\\\ '),
 	print_chain(Stream, Conclusions, ' \\\\ ', root).
 
+print_expression_term(Stream, min(S), _) :-
+	print_function(Stream, '\\min', [S]).
+
+print_expression_term(Stream, max(S), _) :-
+	print_function(Stream, '\\max', [S]).
+
+print_expression_term(Stream, inf(S), _) :-
+	print_function(Stream, '\\inf', [S]).
+
+print_expression_term(Stream, sup(S), _) :-
+	print_function(Stream, '\\sup', [S]).
+
 print_prefix_operator(Stream, A, SuperOperator, SubOperator, Label) :-
 	print_bracket_if_needed(Stream, '(', SuperOperator, SubOperator),
 	write(Stream, Label),
@@ -911,6 +942,12 @@ print_binary_operator_with_position(Stream, A, B, SuperOperator, SubOperator, Le
 
 print_binary_operator(Stream, A, B, SuperOperator, SubOperator, Label) :-
 	print_binary_operator_with_position(Stream, A, B, SuperOperator, SubOperator, SubOperator, SubOperator, Label).
+
+print_function(Stream, Functor, Args) :-
+	write(Stream, Functor),
+	write(Stream, '('),
+	print_expression_list(Stream, Args),
+	write(Stream, ')').
 
 print_predicate_args(Stream, [Arg, Next | Tail]) :-
 	write(Stream, Arg),

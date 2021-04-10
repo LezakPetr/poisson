@@ -7,6 +7,7 @@
 \usepackage{siunitx}
 \usepackage{environ}
 \usetikzlibrary{math}
+\usetikzlibrary{arrows.meta}
 
 \newcommand{\eeql}[2]{
 	\begin{equation}
@@ -209,6 +210,19 @@
 		\draw (#1 + \i, #2 - 0.2) -- (#1 + \i, #2 + 0.2);
 		\draw (#1 + \i, #2 - 0.2) node[anchor=north]{\i};
 	}
+}
+
+\newcommand{\drawpointset}[2]{   -- x, y
+	\filldraw (#1, #2) circle[radius=0.08];
+}
+
+\newcommand{\drawopeninfset}[4]{   -- x1, y1, x2, y2
+	\draw[->] (#1, #2) -- (#3, #4);
+	\filldraw[fill=white] (#1, #2) circle[radius=0.08];
+}
+
+\newcommand{\drawinfopenset}[4]{   -- x1, y1, x2, y2
+	\drawopeninfset{#3}{#4}{#1}{#2};
 }
 
 

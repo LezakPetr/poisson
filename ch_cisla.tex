@@ -10,6 +10,13 @@ make_test_integers([-3, -2, -1, 0, 1, 2, 3]).
 make_test_nonzero_integers([-3, -2, -1, 1, 2, 3]).
 make_test_natural_numbers([1, 2, 3, 4, 5]).
 make_test_predicates(Y, [equal([Y, 1]), equal([Y, 2]), log_true, log_false]).
+
+make_test_nonempty_sets([set(S1), set(S2), set(S3), set(S4)]) :-
+	make_set([1], S1),
+	make_set([2], S2),
+	make_set([1, 2], S3),
+	make_set([-1, 0, 1, 2, 3, 1.5], S4).
+	
 \end{prolog}
 
 
@@ -1347,20 +1354,21 @@ Přejděme k~racionálním číslům. Podle rovnice~\eqref{eq:order_rationals_1}
 \eeq{order_rationals_negative}
 \end{fact}
 
-Graficky můžeme zobrazit uspořádání čísel na číselné ose jako na obrázku~\ref{img:ordering}. Tučnou čarou je zobrazeno číslo 1. Vlevo od něj azurovou barvou je zobrazena množina čísel menších než 1. Vpravo oranžovou barvou množina čísel větších než 1.
+Graficky můžeme zobrazit uspořádání čísel na číselné ose jako na obrázku~\ref{img:ordering}. Plným kroužkem je zobrazeno číslo 1. Vlevo od něj je zobrazena množina čísel menších než 1. Vpravo pak množina čísel větších než 1. Prázdné kroužky znamenají, že číslo 1 není v~těchto množinách obsaženo. Šipky na konci znamenají, že množina pokračuje do plus nebo minus nekonečna. 
 
 \begin{figure}[!h]
 \centering
 \begin{tikzpicture}
 \drawhintegerline{0}{0}{-4}{4};
 
-\drawrect{-4.2}{0}{1}{1}{fill=cyan};
-\draw (-1.5, 0.5) node{\(\{x: x < 1\}\)};
+\drawpointset{1}{1.5};
+\draw (1, 1.6) node[anchor=south]{\(x = 1\)};
 
-\drawrect{1}{0}{4.2}{1}{fill=orange};
-\draw (2.5, 0.5) node{\(\{x: x > 1\}\)};
+\drawinfopenset{-4.2}{0.5}{1}{0.5};
+\draw (-1.5, 0.5) node[anchor=south]{\(\{x: x < 1\}\)};
 
-\draw[thick] (1, -0.2) -- (1, 1.2);
+\drawopeninfset{1}{1}{4.2}{1};
+\draw (2.5, 1) node[anchor=south]{\(\{x: x > 1\}\)};
 
 \end{tikzpicture}
 \caption{Grafické znázornění uspořádání čísel}
@@ -1530,13 +1538,14 @@ Graficky je tranzitivita zobrazena na obrázku~\ref{img:ordering_transitivity}. 
 \begin{figure}[!h]
 \centering
 \begin{tikzpicture}
-\drawrect{-4.2}{0}{0}{1}{fill=cyan};
-\draw (-2, 0.5) node{\(A = \{a: a < b\}\)};
 
-\drawrect{0}{0}{4.2}{1}{fill=orange};
-\draw (2, 0.5) node{\(C = \{c: c > b\}\)};
+\drawinfopenset{-4.2}{0.5}{0}{0.5};
+\draw (-2, 0.5) node[anchor=south]{\(A = \{a: a < b\}\)};
 
-\draw[thick] (0, -0.2) -- (0, 1.2);
+\drawopeninfset{0}{1}{4.2}{1};
+\draw (2, 1) node[anchor=south]{\(C = \{c: c > b\}\)};
+
+\draw (0, -0.2) -- (0, 0.2);
 \draw (0, -0.2) node[anchor=north]{\(b\)};
 
 \draw[<->] (-4.5, 0) -- (4.5, 0);
@@ -1544,4 +1553,250 @@ Graficky je tranzitivita zobrazena na obrázku~\ref{img:ordering_transitivity}. 
 \caption{Grafické znázornění tranzitivity uspořádání čísel}
 \label{img:ordering_transitivity}
 \end{figure}
+
+Minimem množiny rozumíme její nejmenší prvek, maximem její nejvyšší prvek.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_nonempty_sets(Sets),
+	print_validated_formula(
+		'min_definition_1',
+		declare_variable(M, 'M', Sets,
+			in(min(M), M)
+		)
+	).
+\end{prolog}
+\eeq{min_definition_1}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonempty_sets(Sets),
+	print_validated_formula(
+		'min_definition_2',
+		declare_variable(M, 'M', Sets,
+			forall_in(X, 'x', M, Numbers, greater_or_equal(X, min(M)))
+		)
+	).
+\end{prolog}
+\eeq{min_definition_2}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_nonempty_sets(Sets),
+	print_validated_formula(
+		'max_definition_1',
+		declare_variable(M, 'M', Sets,
+			in(max(M), M)
+		)
+	).
+\end{prolog}
+\eeq{max_definition_1}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonempty_sets(Sets),
+	print_validated_formula(
+		'max_definition_2',
+		declare_variable(M, 'M', Sets,
+			forall_in(X, 'x', M, Numbers, less_or_equal(X, max(M)))
+		)
+	).
+\end{prolog}
+\eeq{max_definition_2}
+\end{fact}
+
+Například \(\min(\{x: x \geq 5\}) = 5\), maximum tato množina nemá, protože není shora ohraničená. Množina \(\{x: x > 0\}\) nemá v~\(\rationals\) ani minimum. Nula není prvkem této množiny a~ke každému číslu \(x > 0\) existuje číslo \(\frac{x}{2}\), které je také prvkem této množiny a~je menší.
+
+Infimum množiny \(M\) je nejvyšší číslo menší nebo rovno všem prvkům množiny \(M\), viz rovnice~\eqref{eq:inf_definition}. Supremum množiny \(M\) je nejmenší číslo větší nebo rovno všem prvkům množiny \(M\), viz rovnice~\eqref{eq:sup_definition}. 
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonempty_sets(Sets),
+	print_validated_formula(
+		'inf_definition',
+		declare_variable(M, 'M', Sets,
+			equal(
+				inf(M),
+				max(
+					set_by(X, 'x', Numbers, 
+						forall_in(ME, 'm', M, Numbers,
+							less_or_equal(X, ME)
+						)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{inf_definition}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonempty_sets(Sets),
+	print_validated_formula(
+		'sup_definition',
+		declare_variable(M, 'M', Sets,
+			equal(
+				sup(M),
+				min(
+					set_by(X, 'x', Numbers, 
+						forall_in(ME, 'm', M, Numbers,
+							greater_or_equal(X, ME)
+						)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{sup_definition}
+\end{fact}
+
+Prozkoumejme vztah mezi infimem a~minimem. Nejdříve srovnejme větu~\eqref{eq:min_definition_2} a~množinu v~definici~\eqref{eq:inf_definition}. Proto, pokud existuje minimum množiny \(M\), musí platit:
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonempty_sets(Sets),
+	print_validated_formula(
+		'inf_max_proof_1',
+		declare_variable(M, 'M', Sets,
+			in(
+				min(M),
+				set_by(X, 'x', Numbers, 
+					forall_in(ME, 'm', M, Numbers,
+						less_or_equal(X, ME)
+					)				
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{inf_max_proof_1}
+
+Zároveň toto minimum je nejvyšší prvek uvedené množiny, protože všechny její prvky jsou menší nebo rovny jakémukoli prvku množiny \(M\), tedy také jejímu minimu. Proto, po pokud existuje minimum množiny \(M\), platí:
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	make_test_nonempty_sets(Sets),
+	print_validated_formula(
+		'inf_max_proof_2',
+		declare_variable(M, 'M', Sets,
+			equal([
+				inf(M),
+				max(
+					set_by(X, 'x', Numbers, 
+						forall_in(ME, 'm', M, Numbers,
+							less_or_equal(X, ME)
+						)
+					)
+				),
+				min(M)
+			])
+		)
+	).
+\end{prolog}
+\eeq{inf_max_proof_2}
+
+Infimum je tedy zobecnění pojmu minumum, obdobně supremum je zobecnění pojmu maximum.
+
+Množinu nazveme shora ohraničenou, pokud existuje číslo větší nebo rovno všem prvkům množiny. Obdobně množinu nazveme sdola ohraničenou pokud existuje číslo menší nebo rovno všem prvkům množiny.
+
+\section{Reálná čísla}
+
+Uvažujme dvě různá racionální čísla \(a\) a~\(b\). Mezi nimi existuje nekonečně mnoho jiných racionálních čísel, například čísel ve tvaru \(a + \frac{b - a}{k}\). Také vidíme, že k~libovolnému racionálnímu číslu \(a\) můžeme nalézt libovolně blízké číslo \(a \pm \frac{1}{k}\), stačí zvolit dostatečně velké \(k\). Racionální čísla jsou tedy nekonečně hustá, přesto ale mají mezery. Uvažujme množinu \(\{x: x^3 < 2\}\). Tato množina nemá v~oboru racionálních čísel supremum, protože neexistuje racionální číslo \(\left( \frac{a}{b} \right)^3 = \frac{a^3}{b^3} = 2\). Později uvidíme, že tuto podmínku splňuje číslo \(\sqrt[3]{2}\). Množina racionálních čísel je rozdělena na dvě podmnožiny \(M\) a~\(V\), jak vidíme na obrázku~\ref{img:real_numbers_example}.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+
+\drawinfopenset{-4.2}{0.5}{0}{0.5};
+\draw (-2, 0.5) node[anchor=south]{\(M = \{x: x^3 < 2\}\)};
+
+\drawopeninfset{0}{1}{4.2}{1};
+\draw (2, 1) node[anchor=south]{\(V = \{x: x^3 \geq 2\}\)};
+
+\draw (0, -0.2) -- (0, 0.2);
+\draw (0, -0.2) node[anchor=north]{\(\sqrt[3]{2}\)};
+
+\draw[<->] (-4.5, 0) -- (4.5, 0);
+\draw (4.5, 0) node[anchor=north]{\(x\)};
+\end{tikzpicture}
+\caption{Příklad reálného čísla}
+\label{img:real_numbers_example}
+\end{figure}
+
+Množina racionálních čísel je rozdělena na dvě množiny tak, že všechna čísla z~množiny \(M\) jsou menší než všechna čísla z~množiny \(V\), jak udávají podmínky~\eqref{eq:real_1} a~\eqref{eq:real_2}. Supremum množiny \(M\) potažmo infimum množiny \(V\) nazveme reálným číslem.
+
+\begin{equation}
+\label{eq:real_1}
+M \cup V = \rationals
+\end{equation}
+%%%%%%%%%%%%%%%%
+\begin{equation}
+\label{eq:real_2}
+\forall m \in M \ \forall v \in V \ m < v
+\end{equation}
+%%%%%%%%%%%%%%%%
+\begin{equation}
+\label{eq:real_3}
+M \neq \emptyset
+\end{equation}
+%%%%%%%%%%%%%%%%
+\begin{equation}
+\label{eq:real_4}
+V \neq \emptyset
+\end{equation}
+
+Dále si všimněme, že z~podmínky~\eqref{eq:real_1} plyne
+
+\begin{equation}
+V = \rationals \setminus M
+\end{equation}
+
+a~proto můžeme podmínku~\eqref{eq:real_2} upravit
+
+\begin{equation}
+\forall m \in M \ \forall v \in (\rationals \setminus M) \ m < v
+\end{equation}
+%%%%%%%%%%%%%%%%
+\begin{equation}
+\forall m \in M \ \forall v \in \rationals \ v \notin M \impl m < v
+\end{equation}
+%%%%%%%%%%%%%%%%
+\begin{equation}
+\forall m \in M \ \forall v \in \rationals \ v \leq m \impl v \in M
+\end{equation}
+%%%%%%%%%%%%%%%%
+\begin{equation}
+\forall m \in M \ \forall v \in (-\infty; m \rangle \ v \in M
+\end{equation}
+%%%%%%%%%%%%%%%%
+\begin{equation}
+\label{eq:real_single_set}
+\forall m \in M \ (-\infty; m \rangle \subset M
+\end{equation}
+
+Neboli pokud je nějaké číslo prvkem množiny \(M\), pak jsou i~všechna menší čísla prvkem této množiny. Podmínka~\eqref{eq:real_single_set} je ekvivalentní podmínkám~\eqref{eq:real_1} a~\eqref{eq:real_2}.
+
+Povšimněme si, že každou shora ohraničenou množinu \(M'\) můžeme rozšířit tak, aby splňovala podmínku~\eqref{eq:real_single_set} aniž bychom změnili její supremum:
+
+\begin{equation}
+M = \{x \in \rationals: \exists y \in M' \ x \leq y\} 
+\end{equation}
+
+Proto platí, že každá shora ohraničená množina racionálních čísel má v~oboru reálných čísel supremum. Obdobně, každá zdola ohraničená množina racionálních čísel má v~oboru reálných čísel infimum. Reálná čísla můžeme proto definovat takto:
+
+\begin{fact}
+\begin{equation}
+r \in \real \equivalent \exists M \ r = \sup(M)
+\end{equation}
+\end{fact}
+
+Každé racionální číslo tedy zapsat ve tvaru
+
+\begin{equation}
+\forall x \in Q \ x = \sup(\{y: y \leq x\})
+\end{equation}
+
+a~proto \(\rationals \subset \real\).
 
