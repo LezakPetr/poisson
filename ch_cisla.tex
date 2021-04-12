@@ -1800,3 +1800,28 @@ Každé racionální číslo tedy zapsat ve tvaru
 
 a~proto \(\rationals \subset \real\).
 
+Mohli bychom definovat, jak provádět operace s~reálnými čísly pomocí manipulace s~množinami. Byla by to ale čistě teoretická definice, nikdo takto s~reálnými čísly nepočítá. Reálná čísla ale můžeme aproximovat pomocí racionálních čísel nebo pomocí desetinného rozvoje.
+
+Uvažujme tedy reálné číslo definované jako supremum množiny splňující podmínku~\eqref{eq:real_single_set}. V~ní uvažujme racionální čísla ve tvaru \(\frac{a}{b}\), kde \(b\) je pevně zvolený kladný jmenovatel. Potom existuje nejvyšší čitatel \(a\), respektive nejvyšší racionální číslo \(\frac{a}{b}\) se zvoleným jmenovatelem. Podle podmínky~\eqref{eq:real_single_set} musí být všechna menší racionální čísla se zvoleným jmenovatelem také obsažena v~množině. Takto jsme schopni aproximovat reálné číslo pomocí racionálního. Uvažujme dále pouze tzv. desetinné zlomky, tedy racionální čísla ve tvaru \(\frac{a}{10^n}\).
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|r|l|l|l|}
+\hline
+n & a & \(\frac{a}{10^n}\) & desetinné číslo\\
+\hline
+0 & 1 & \(\frac{1}{1}\) & 1 \\
+1 & 12 & \(\frac{12}{10}\) & 1.2 \\
+2 & 125 & \(\frac{125}{100}\) & 1.25 \\
+3 & 1259 & \(\frac{1259}{1000}\) & 1.259 \\
+4 & 12599 & \(\frac{12599}{10000}\) & 1.2599 \\
+\ldots & \ldots & \ldots & \ldots \\
+\hline
+\end{tabular}
+\caption{Desetinný rozvoj reálného čísla \(\sqrt[3]{2}\)}
+\label{tab:real_decimal}
+\end{table}
+
+Takovýto tzv. nekonečný desetinný rozvoj je podle výše uvedeného postupu plně určen reálným čísle. Prozkoumejme, zda to platí i~naopak a~zda je reálné číslo plně určeno jeho desetinným rozvojem. Označme množinu všech čísel v~desetinném rozvoji \(S\), v~našem příkladu proto bude platit \(S = \{1, 1.2, 1.25, 1,259, 1.2599, ...\}\). Je zřejmé, že \(S \subset M\) a~proto \(\sup(S) \leq \sup(M)\).
+
+Předpokládejme, že \(\sup(S) < \sup(M)\). Potom \(\exists x \in M \ x > \sup(S)\). Označme rozdíl \(dx = x - \sup(S)\). Potom ale \(\exists n \in \naturalnumbers \ dx > \frac{1}{10^n}\). To znamená, že se desetinný rozvoj musí lišit na \(n\)-tém místě za desetinnou čárkou, protože tuto číslici můžeme zvýšit alespoň o~jedničku. Tím jsme ale dospěli ke sporu. Znamená to tedy, že nemůže platit \(\sup(S) < \sup(M)\) a~platí \(\sup(S) = \sup(M)\). Reálné číslo je tedy plně určeno svým (nekonečným) desetinným rozvojem. Pokud čtěnář zná pojem limity posloupnosti, pak jsme právě dokázali, že každé reálné číslo je rovno limitě posloupnosti svého desetinného rozvoje.
