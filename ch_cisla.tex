@@ -6,6 +6,7 @@
 
 make_test_numbers([-1, 0, 1, 2, 3, 1.5]).
 make_test_nonzero_numbers([-1, 1, 2, 3, 1.5]).
+make_test_positive_numbers([1, 2, 3, 1.5]).
 make_test_integers([-3, -2, -1, 0, 1, 2, 3]).
 make_test_nonzero_integers([-3, -2, -1, 1, 2, 3]).
 make_test_natural_numbers([1, 2, 3, 4, 5]).
@@ -413,7 +414,7 @@ Nakonec rovnicí~\eqref{eq:power_definition} definujeme mocninu jako opakované 
 a^b = \overbrace{a \cdot a \cdot a \cdot ...}^{b \times}
 \end{equation}
 
-Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} a~\eqref{eq:power_distributivity}, které nám plně definují mocniny přirozených čísel.
+Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} a~\eqref{eq:natural_power_distributivity}, které nám plně definují mocniny přirozených čísel.
 
 \begin{fact}
 \begin{prolog}
@@ -430,7 +431,7 @@ Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} 
 \begin{prolog}
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
-		'power_distributivity',
+		'natural_power_distributivity',
 		forall_in(A, 'a', natural_numbers, Values,
 			forall_in(B, 'b', natural_numbers, Values,
 				forall_in(C, 'c', natural_numbers, Values,
@@ -440,7 +441,7 @@ Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} 
 		)
 	).				
 \end{prolog}
-\eeq{power_distributivity}
+\eeq{natural_power_distributivity}
 \end{fact}
 
 Na rozdíl od sčítání a~násobení není umocňování komutativní operace (\(2^3 = 8 \neq 3^2 = 9\)) ani asociativní operace (\((4^3)^2 = 4096 \neq 4^{(3^2)} = 262144\)). Nicméně některé zákonitosti zde platí. Dokážeme rovnici~\eqref{eq:power_by_multiplication_proof}.
@@ -855,7 +856,7 @@ Nakonec v~rovnici~\eqref{eq:multiplication_by_negative_4} vyšetříme případ,
 \end{prolog}
 \eeq{multiplication_by_negative_4}
 
-Nakonec rozšiřme definici mocniny na celá čísla. Začněme rozšířením mocněnce. Podle definice~\eqref{eq:power_definition} je zřejmé, že mezi sebou budeme násobit záporná čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:power_distributivity} proto zůstanou zachovány i~pro záporné mocněnce. Přejděme dále k~rozšíření mocnitele (exponentu) na celá čísla. Rovnici~\eqref{eq:power_by_zero_1} můžeme vydělit \(a^1\) a~získáme vztah~\eqref{eq:power_by_zero_2}.
+Nakonec rozšiřme definici mocniny na celá čísla. Začněme rozšířením mocněnce. Podle definice~\eqref{eq:power_definition} je zřejmé, že mezi sebou budeme násobit záporná čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:natural_power_distributivity} proto zůstanou zachovány i~pro záporné mocněnce. Přejděme dále k~rozšíření mocnitele (exponentu) na celá čísla. Rovnici~\eqref{eq:power_by_zero_1} můžeme vydělit \(a^1\) a~získáme vztah~\eqref{eq:power_by_zero_2}.
 
 \begin{prolog}
 ?-	make_test_nonzero_integers(Values),
@@ -1128,7 +1129,8 @@ Nakonec můžeme rovnicí~\eqref{eq:division_of_rationals} vyjádřit podíl rac
 \end{prolog}
 \eeq{division_of_rationals}
 
-Nakonec rozšiřme definici mocniny na racionální čísla. Podle definice~\eqref{eq:power_definition} můžeme rozšířit mocněnce na racionální čísla tak, že mezi sebou budeme násobit racionální čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:power_distributivity} proto zůstanou zachovány i~pro racionální mocněnce. 
+Nakonec rozšiřme definici mocniny na racionální čísla. Podle definice~\eqref{eq:power_definition} můžeme rozšířit mocněnce na racionální čísla tak, že mezi sebou budeme násobit racionální čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:natural_power_distributivity} proto zůstanou zachovány i~pro racionální mocněnce.
+
 Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými exponenty. Z~rovnice~\eqref{eq:power_by_negative_exponent_1} plyne rovnice~\eqref{eq:power_by_negative_exponent_2}. Speciálním případem je rovnice~\eqref{eq:power_by_negative_exponent_3} udávající, že umocnění čísla na \(-1\) je rovno jeho převrácené hodnotě.
 
 \begin{prolog}
@@ -1183,6 +1185,35 @@ Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými expone
 	).
 \end{prolog}
 \eeq{power_by_negative_exponent_3}
+
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'rational_power_by_one',
+		forall_in(A, 'a', rational_numbers, Values,
+			equal([A^1, A])
+		)
+	).				
+\end{prolog}
+\eeq{rational_power_by_one}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'rational_power_distributivity',
+		forall_in(A, 'a', rational_numbers, Values,
+			forall_in(B, 'b', integers, Values,
+				forall_in(C, 'c', integers, Values,
+					equal([A^(B + C), A^B * A^C])
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{rational_power_distributivity}
+\end{fact}
 
 \section{Uspořádání čísel}
 
@@ -1824,4 +1855,195 @@ n & a & \(\frac{a}{10^n}\) & desetinné číslo\\
 
 Takovýto tzv. nekonečný desetinný rozvoj je podle výše uvedeného postupu plně určen reálným čísle. Prozkoumejme, zda to platí i~naopak a~zda je reálné číslo plně určeno jeho desetinným rozvojem. Označme množinu všech čísel v~desetinném rozvoji \(S\), v~našem příkladu proto bude platit \(S = \{1, 1.2, 1.25, 1,259, 1.2599, ...\}\). Je zřejmé, že \(S \subset M\) a~proto \(\sup(S) \leq \sup(M)\).
 
-Předpokládejme, že \(\sup(S) < \sup(M)\). Potom \(\exists x \in M \ x > \sup(S)\). Označme rozdíl \(dx = x - \sup(S)\). Potom ale \(\exists n \in \naturalnumbers \ dx > \frac{1}{10^n}\). To znamená, že se desetinný rozvoj musí lišit na \(n\)-tém místě za desetinnou čárkou, protože tuto číslici můžeme zvýšit alespoň o~jedničku. Tím jsme ale dospěli ke sporu. Znamená to tedy, že nemůže platit \(\sup(S) < \sup(M)\) a~platí \(\sup(S) = \sup(M)\). Reálné číslo je tedy plně určeno svým (nekonečným) desetinným rozvojem. Pokud čtěnář zná pojem limity posloupnosti, pak jsme právě dokázali, že každé reálné číslo je rovno limitě posloupnosti svého desetinného rozvoje.
+Předpokládejme, že \(\sup(S) < \sup(M)\). Potom \(\exists x \in M \ x > \sup(S)\). Označme rozdíl \(dx = x - \sup(S)\). Potom ale \(\exists n \in \naturalnumbers \ dx > \frac{1}{10^n}\). To znamená, že se desetinný rozvoj musí lišit na \(n\)-tém místě za desetinnou čárkou, protože tuto číslici můžeme zvýšit alespoň o~jedničku. Tím jsme ale dospěli ke sporu. Znamená to tedy, že nemůže platit \(\sup(S) < \sup(M)\) a~platí \(\sup(S) = \sup(M)\). Reálné číslo je tedy plně určeno svým (nekonečným) desetinným rozvojem. Pokud čtěnář zná pojem limity posloupnosti, pak jsme právě dokázali, že každé reálné číslo je rovno limitě posloupnosti svého desetinného rozvoje. 
+
+Desetinný rozvoj nám umožňuje s~reálnými čísly počítat. Samozřejmě počítáme s~konečným počtem desetinných míst a~musíme pak mít na paměti, že počítáme pouze přibližně.
+
+Rozšiřme definici množiny na reálná čísla. Nejprve rozšiřme definice~\eqref{eq:rational_power_by_one} a~\eqref{eq:rational_power_distributivity} na reálné základy. Získáme tak definice~\eqref{eq:real_power_by_one} a~\eqref{eq:real_power_distributivity}.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'real_power_by_one',
+		forall_in(A, 'a', real_numbers, Values,
+			equal([A^1, A])
+		)
+	).				
+\end{prolog}
+\eeq{real_power_by_one}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'real_power_distributivity',
+		forall_in(A, 'a', real_numbers, Values,
+			forall_in(B, 'b', integers, Values,
+				forall_in(C, 'c', integers, Values,
+					equal([A^(B + C), A^B * A^C])
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{real_power_distributivity}
+\end{fact}
+
+Definujme odmocňování jako inverzní funkci k~umocňování. Musíme se ale omezit na kladné hodnoty základu:
+
+\begin{prolog}
+?-	print_validated_formula(
+		'sqrt_def',
+		forall_in(A, 'a', positive_real_numbers, [1, 2, 3],
+			forall_in(B, 'b', natural_numbers, [1, 2, 3],
+				forall_in(C, 'c', positive_real_numbers, [1, 2, 3, 4, 9, 8, 27],
+					equiv(
+						equal(C, A^B),
+						equal(A, sqrt(B, C))
+					)
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{sqrt_def}
+
+Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:sqrt_inv_1} a~\eqref{eq:sqrt_inv_2}.
+
+\begin{prolog}
+?-	make_test_positive_numbers(Bases),
+	make_test_natural_numbers(Exponents),
+	print_validated_formula(
+		'sqrt_inv_1',
+		forall_in(A, 'a', positive_real_numbers, Bases,
+			forall_in(B, 'b', natural_numbers, Exponents,
+				equal(sqrt(B, A)^B, A)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{sqrt_inv_1}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_positive_numbers(Bases),
+	make_test_natural_numbers(Exponents),
+	print_validated_formula(
+		'sqrt_inv_2',
+		forall_in(A, 'a', positive_real_numbers, Bases,
+			forall_in(B, 'b', natural_numbers, Exponents,
+				equal(sqrt(B, A^B), A)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{sqrt_inv_2}
+
+Zkusme dále rozšířit exponent na racionální čísla. Začněme identitou~\eqref{eq:sqrt_rational_proof}.
+
+\begin{prolog}
+?-	make_test_positive_numbers(Bases),
+	make_test_natural_numbers(Exponents),
+	print_validated_formula(
+		'sqrt_rational_proof',
+		declare_variable(A, 'a', Bases,
+			declare_variable(B, 'b', Exponents,
+				equal([
+					A,
+					A^1,
+					A^(B / B),
+					(A^(1 / B))^B
+				])
+			)
+		)
+	).				
+\end{prolog}
+\eeq{sqrt_rational_proof}
+
+Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1} vidíme, že platí vztahy~\eqref{eq:pow_rational_1} a~\eqref{eq:pow_rational_2}. Tím jsme definovali umocňování pro racionální exponent.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_positive_numbers(Bases),
+	make_test_natural_numbers(Exponents),
+	print_validated_formula(
+		'pow_rational_1',
+		forall_in(A, 'a', positive_real_numbers, Bases,
+			forall_in(B, 'b', natural_numbers, Exponents,
+				equal(A^(1 / B), sqrt(B, A))
+			)
+		)
+	).				
+\end{prolog}
+\eeq{pow_rational_1}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_positive_numbers(Bases),
+	make_test_integers(Numerators),
+	make_test_natural_numbers(Denominators),
+	print_validated_formula(
+		'pow_rational_2',
+		forall_in(A, 'a', positive_real_numbers, Bases,
+			forall_in(B, 'b', integers, Numerators,
+				forall_in(C, 'c', natural_numbers, Denominators,
+					equal([
+						A^(B / C),
+						(sqrt(C, A)^B),
+						sqrt(C, A^B)
+					])
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{pow_rational_2}
+\end{fact}
+
+Protože umocňování není komutativní operace, tak můžeme definovat ještě jinou inverzní operaci, a~to logaritmus.
+
+\begin{prolog}
+?-	print_validated_formula(
+		'log_def',
+		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), [2, 3],
+			forall_in(B, 'b', natural_numbers, [1, 2, 3],
+				forall_in(C, 'c', positive_real_numbers, [1, 2, 3, 4, 9, 8, 27],
+					equiv(
+						equal(C, A^B),
+						equal(B, log(A, C))
+					)
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_def}
+
+Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:log_inv_1} a~\eqref{eq:log_inv_2}.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'log_inv_1',
+		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
+			forall_in(B, 'b', real_numbers, Numbers,
+				equal(log(A, A^B), B)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_inv_1}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'log_inv_2',
+		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
+			forall_in(B, 'b', positive_real_numbers, Numbers,
+				equal(A^log(A, B), B)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_inv_2}
+\end{fact}
+

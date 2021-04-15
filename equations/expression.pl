@@ -139,6 +139,15 @@ log_in_integers(X, log_true) :-
 
 log_in_integers(_, log_false).
 
+
+% Checks if value is in set of real numbers
+log_in_reals(X, log_true) :-
+	number(X),
+	!.
+
+log_in_reals(_, log_false).
+
+
 ?- log_in_integers(42, log_true).
 ?- log_in_integers(0, log_true).
 ?- log_in_integers(-25, log_true).
@@ -296,6 +305,9 @@ evaluate_function(empty_set, set(Value)) :-
 
 evaluate_function(natural_numbers, natural_numbers).
 evaluate_function(integers, integers).
+evaluate_function(rational_numbers, rational_numbers).
+evaluate_function(real_numbers, real_numbers).
+evaluate_function(positive_real_numbers, positive_real_numbers).
 
 evaluate_function(in(X, set(S)), Value) :-
 	log_in_set(X, S, Value).
@@ -305,6 +317,17 @@ evaluate_function(in(X, natural_numbers), Value) :-
 
 evaluate_function(in(X, integers), Value) :-
 	log_in_integers(X, Value).
+
+evaluate_function(in(X, rational_numbers), Value) :-
+	log_in_reals(X, Value).
+
+evaluate_function(in(X, real_numbers), Value) :-
+	log_in_reals(X, Value).
+
+evaluate_function(in(X, positive_real_numbers), Value) :-
+	log_in_reals(X, IsReal),
+	less_than(0, X, IsPositive),
+	log_and(IsReal, IsPositive, Value).
 
 evaluate_function(not_in(X, S), Value) :-
 	evaluate_function(in(X, S), InSet),
@@ -372,6 +395,16 @@ evaluate_function(A^B, Y) :-
 	number(A),
 	number(B),
 	Y is A^B.
+
+evaluate_function(sqrt(A, B), Y) :-
+	number(A),
+	number(B),
+	Y is B^(1 / A).
+
+evaluate_function(log(A, B), Y) :-
+	number(A),
+	number(B),
+	Y is log(B) / log(A).
 
 evaluate_function(equal(List), Value) :-
 	is_list(List),
@@ -528,7 +561,17 @@ evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
 	log_and_all(Results, Value).
 
 evaluate_expression(forall_in(Variable, _, Set, TestedValues, SubFormula), Value) :-
-	evaluate_expression(forall(Variable, _, TestedValues, impl(in(Variable, Set), SubFormula)), Value).
+	!,
+	findall(
+		SubFormulaValue,
+		(
+			member(Variable, TestedValues),
+			evaluate_expression(in(Variable, Set), log_true),
+			evaluate_expression_or_fail(SubFormula, SubFormulaValue)
+		),
+		Results
+	),
+	log_and_all(Results, Value).
 
 evaluate_expression(exists(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
@@ -548,6 +591,10 @@ evaluate_expression(List, EvaluatedList) :-
 	is_list(List),
 	!,
 	evaluate_list(List, EvaluatedList).
+
+evaluate_expression(in(X, difference(A, B)), Value) :-
+	evaluate_expression(and(in(X, A), not_in(X, B)), Value),
+	!.
 
 evaluate_expression(Expression, Value) :-
 	Expression =.. [Functor | Args],
@@ -647,6 +694,16 @@ evaluate_expression(Expression, Value) :-
 		log_true
 	).
 
+?-	evaluate_expression(
+		forall_in(X, 'X', natural_numbers, [-1, 1], equal(X * X, X)),
+		log_true
+	).
+
+?-	evaluate_expression(
+		forall_in(X, 'X', integers, [-1, 1], equal(X * X, X)),
+		log_false
+	).
+
 ?-	make_set([1, 2], Value),
 	evaluate_expression(
 		set_by(X, 'x', [1, 2, 3, 4], or(equal([X, 1]), equal([X, 2]))),
@@ -707,6 +764,18 @@ print_expression_term(Stream, natural_numbers, _) :-
 print_expression_term(Stream, integers, _) :-
 	!,
 	write(Stream, ' \\integers ').
+
+print_expression_term(Stream, rational_numbers, _) :-
+	!,
+	write(Stream, ' \\rationals ').
+
+print_expression_term(Stream, real_numbers, _) :-
+	!,
+	write(Stream, ' \\real ').
+
+print_expression_term(Stream, positive_real_numbers, _) :-
+	!,
+	write(Stream, ' \\real^+ ').
 
 print_expression_term(Stream, set_of(Values), _) :-
 	!,
@@ -886,6 +955,24 @@ print_expression_term(Stream, A^B, PR) :-
 	write(Stream, '}'),
 	print_bracket_if_needed(Stream, ')', PR, pow).
 
+print_expression_term(Stream, sqrt(A, B), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, sqrt),
+	write(Stream, '\\sqrt['),
+	print_expression_term(Stream, A, root),
+	write(Stream, ']{'),
+	print_expression_term(Stream, B, root),
+	write(Stream, '}'),
+	print_bracket_if_needed(Stream, ')', PR, sqrt).
+
+print_expression_term(Stream, log(A, B), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, log),
+	write(Stream, '\\log_{'),
+	print_expression_term(Stream, A, log),
+	write(Stream, '}{'),
+	print_expression_term(Stream, B, log),
+	write(Stream, '}'),
+	print_bracket_if_needed(Stream, ')', PR, log).
+
 print_expression_term(Stream, equal(List), PR) :-
 	is_list(List),
 	print_bracket_if_needed(Stream, '(', PR, equal),
@@ -998,6 +1085,8 @@ print_bracket_if_needed(Stream, Bracket, _, _) :-
 
 
 operator_priority(pow, 203).
+operator_priority(sqrt, 203).
+operator_priority(log, 203).
 operator_priority(multiply, 202).
 operator_priority(opposite, 201).
 operator_priority(plus, 200).
