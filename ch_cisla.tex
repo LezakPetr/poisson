@@ -7,6 +7,7 @@
 make_test_numbers([-1, 0, 1, 2, 3, 1.5]).
 make_test_nonzero_numbers([-1, 1, 2, 3, 1.5]).
 make_test_positive_numbers([1, 2, 3, 1.5]).
+make_test_log_bases([0.5, 2, 3, 1.5]).
 make_test_integers([-3, -2, -1, 0, 1, 2, 3]).
 make_test_nonzero_integers([-3, -2, -1, 1, 2, 3]).
 make_test_natural_numbers([1, 2, 3, 4, 5]).
@@ -1863,7 +1864,7 @@ Rozšiřme definici množiny na reálná čísla. Nejprve rozšiřme definice~\e
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'real_power_by_one',
 		forall_in(A, 'a', real_numbers, Values,
@@ -1874,10 +1875,10 @@ Rozšiřme definici množiny na reálná čísla. Nejprve rozšiřme definice~\e
 \eeq{real_power_by_one}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'real_power_distributivity',
-		forall_in(A, 'a', real_numbers, Values,
+		forall_in(A, 'a', positive_real_numbers, Values,
 			forall_in(B, 'b', integers, Values,
 				forall_in(C, 'c', integers, Values,
 					equal([A^(B + C), A^B * A^C])
@@ -1888,6 +1889,21 @@ Rozšiřme definici množiny na reálná čísla. Nejprve rozšiřme definice~\e
 \end{prolog}
 \eeq{real_power_distributivity}
 \end{fact}
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_power_fraction',
+		forall_in(A, 'a', positive_real_numbers, Values,
+			forall_in(B, 'b', integers, Values,
+				forall_in(C, 'c', integers, Values,
+					equal([A^(B - C), A^B / A^C])
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{real_power_fraction}
 
 Definujme odmocňování jako inverzní funkci k~umocňování. Musíme se ale omezit na kladné hodnoty základu:
 
@@ -2004,7 +2020,7 @@ Protože umocňování není komutativní operace, tak můžeme definovat ješt�
 ?-	print_validated_formula(
 		'log_def',
 		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), [2, 3],
-			forall_in(B, 'b', natural_numbers, [1, 2, 3],
+			forall_in(B, 'b', real_numbers, [1, 2, 3],
 				forall_in(C, 'c', positive_real_numbers, [1, 2, 3, 4, 9, 8, 27],
 					equiv(
 						equal(C, A^B),
@@ -2016,6 +2032,8 @@ Protože umocňování není komutativní operace, tak můžeme definovat ješt�
 	).				
 \end{prolog}
 \eeq{log_def}
+
+Říkáme, že \(b\) je logaritmem o~základu \(a\) z~argumentu \(c\). Základ logaritmu musí být kladný a~nesmí být roven 1. Argument logaritmu musí být kladný. V~dalších úvahách budeme vždy předpokládat, že jsou tyto předpoklady splněny.
 
 Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:log_inv_1} a~\eqref{eq:log_inv_2}.
 
@@ -2034,7 +2052,7 @@ Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:log_inv_1} a~
 \eeq{log_inv_1}
 %%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_numbers(Numbers),
+?-	make_test_positive_numbers(Numbers),
 	print_validated_formula(
 		'log_inv_2',
 		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
@@ -2047,3 +2065,105 @@ Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:log_inv_1} a~
 \eeq{log_inv_2}
 \end{fact}
 
+Odvoďme vztah pro logaritmus součinu. Při odvození využijeme identitu~\eqref{eq:log_inv_2}. Dále využijeme fakt, že pro \(a \neq 1\) je funkce \(a^x\) prostá, tedy různým argumentům \(x\) přiřazuje různé hodnoty \(a^x\). Proto z~\(a^x = a^y\) plyne \(x = y\).
+
+\begin{prolog}
+?-	make_test_positive_numbers(Numbers),
+	make_test_log_bases(Bases),
+	print_validated_formula(
+		'log_product_proof',
+		declare_variable(A, 'a', Bases,
+			declare_variable(B, 'b', Numbers,
+				declare_variable(C, 'c', Numbers,
+					proof(
+					[],
+					[
+						equal(B * C, B * C),
+						equal(A^log(A, B * C), A^log(A, B) * A^log(A, C)),
+						equal(A^log(A, B * C), A^(log(A, B) + log(A, C))),
+						equal(log(A, B * C), log(A, B) + log(A, C))
+					])
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_product_proof}
+
+Obdobně můžeme odvodit vztah pro logaritmus podílu.
+
+\begin{prolog}
+?-	make_test_positive_numbers(Numbers),
+	make_test_log_bases(Bases),
+	print_validated_formula(
+		'log_fraction_proof',
+		declare_variable(A, 'a', Bases,
+			declare_variable(B, 'b', Numbers,
+				declare_variable(C, 'c', Numbers,
+					proof(
+					[],
+					[
+						equal(B / C, B / C),
+						equal(A^log(A, B / C), A^log(A, B) / A^log(A, C)),
+						equal(A^log(A, B / C), A^(log(A, B) - log(A, C))),
+						equal(log(A, B / C), log(A, B) - log(A, C))
+					])
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_fraction_proof}
+
+Dále odvoďme vztah pro logaritmus mocniny.
+
+\begin{prolog}
+?-	make_test_log_bases(Bases),
+	make_test_numbers(Exponents),
+	make_test_positive_numbers(Numbers),
+	print_validated_formula(
+		'log_power_proof',
+		declare_variable(A, 'a', Bases,
+			declare_variable(B, 'b', Numbers,
+				declare_variable(C, 'c', Exponents,
+					proof(
+					[],
+					[
+						equal(B^C, B^C),
+						equal(B^C, (A^log(A, B))^C),
+						equal(A^log(A, B^C), A^(C * log(A, B))),
+						equal(log(A, B^C), C * log(A, B))
+					])
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_power_proof}
+
+Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá násobení a~z~násobení a~dělení dělá sčítání a~odčítání. Nakonec odvoďme vztah mezi logaritmy různých základů.
+
+\begin{prolog}
+?-	make_test_log_bases(Bases),
+	make_test_numbers(Exponents),
+	make_test_positive_numbers(Numbers),
+	print_validated_formula(
+		'log_base_proof',
+		declare_variable(A, 'a', Bases,
+			declare_variable(B, 'b', Numbers,
+				declare_variable(C, 'c', Bases,
+					proof(
+					[],
+					[
+						equal(B, B),
+						equal(A^log(A, B), B),
+						equal(log(C, A^log(A, B)), log(C, B)),
+						equal(log(A, B) * log(C, A), log(C, B)),
+						equal(log(A, B), log(C, B) / log(C, A))
+					])
+				)
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_base_proof}

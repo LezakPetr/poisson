@@ -999,7 +999,7 @@ print_expression_term(Stream, greater_or_equal(A, B), PR) :-
 
 print_expression_term(Stream, proof(Axioms, Conclusions), _) :-
 	print_chain(Stream, Axioms, ' \\\\ ', root),
-	write(Stream, ' \\\\ \\\\ '),
+	print_if_not_empty(Stream, ' \\\\ \\\\ ', Axioms),
 	print_chain(Stream, Conclusions, ' \\\\ ', root).
 
 print_expression_term(Stream, min(S), _) :-
@@ -1071,6 +1071,8 @@ print_chain(Stream, [A, B | Tail], Delim, Operator) :-
 
 print_chain(Stream, [A], _, Operator) :-
 	print_expression_term(Stream, A, Operator).
+
+print_chain(_, [], _, _).
 
 
 % Prints bracket if it is needed.
