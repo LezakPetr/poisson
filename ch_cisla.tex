@@ -522,6 +522,70 @@ V~prvním kroku jsme využili distributivitu násobení. Ve druhém kroku jsme v
 \end{prolog}
 \eeq{power_by_multiplication_proof_3}
 
+Dále dokažme rovnici~\eqref{eq:power_of_multiplication_proof}.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'power_of_multiplication_proof',
+		forall_in(A, 'a', natural_numbers, Values,
+			forall_in(B, 'b', natural_numbers, Values,
+				forall_in(N, 'n', natural_numbers, Values,
+					equal((A*B)^N, A^N * B^N)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_of_multiplication_proof}
+\end{fact}
+
+Její důkaz opět provedeme matematickou indukcí. Ověření rovnice pro \(n = 1\) je triviální:
+
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'power_of_multiplication_proof_1',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				equal([
+					(A*B)^1,
+					A*B,
+					A^1 * B^1
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_of_multiplication_proof_1}
+
+Dále dokážeme, že z~\((a \cdot b)^n = a^n \cdot b^n\) plyne \((a \cdot b)^{n+1} = a^{n+1} \cdot b^{n+1}\).
+
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'power_of_multiplication_proof_2',
+		declare_variable(A, 'a', Values,
+			declare_variable(B, 'b', Values,
+				declare_variable(N, 'n', Values,
+					equal([
+						(A*B)^(N+1),
+						(A*B)^N * A*B,
+						A^N * B^N * A*B,
+						linebreak,
+						par(A^N * A) * par(B^N * B),
+						A^(N+1) * B^(N+1)
+					])
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_of_multiplication_proof_2}
+
+Tím je rovnice~\eqref{eq:power_of_multiplication_proof} dokázána pro všechna přirozená čísla.
+
 \section{Celá čísla}
 
 Zkusme dále definovat rozdíl jako opačnou operaci k~součtu pomocí rovnice~\eqref{eq:difference_definition}.
@@ -2145,7 +2209,6 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 
 \begin{prolog}
 ?-	make_test_log_bases(Bases),
-	make_test_numbers(Exponents),
 	make_test_positive_numbers(Numbers),
 	print_validated_formula(
 		'log_base_proof',
