@@ -1814,3 +1814,51 @@ Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. V
 \end{prolog}
 \eeq{exists_or}
 \end{fact}
+
+\section{Fuknce}
+
+Funkce přebírají několik argumentů a~představují \uv{předpis} přiřazující každé kombinaci parametrů hodnotu. Například funkce
+
+\begin{equation}
+\label{eq:example_function}
+\func{f}(x, y) = \frac{2 \cdot x}{y}
+\end{equation} 
+
+přiřazuje argumentům \(x = 1\), \(y = 2\) hodnotu \(\mathrm{f}(1, 2) = \frac{2 \cdot 1}{2} = 1\), zatímco argumentům \(x = 3\), \(y = 1\) hodnotu \(\mathrm{f}(3, 1) = \frac{2 \cdot 3}{1} = 6\).
+
+Každá funkce má definiční obor a~obor hodnot. Definiční obor je množina hodnot argumentů nebo kombinací argumentů, na kterou lze funkce aplikovat. Obor hodnot je množina hodnot, kterých může funkce nabývat pro všechny možné argumenty z~definičního oboru.
+
+Pro naši funkci \(\func{f}\) proto máme definiční obor \(\domain{f} = \real \times (\real \minus \{0\}) \) a~obor hodnot \(\codomain{f} = \real\).
+
+Zkusme odvodit, co pro funkce plyne z~axiomů operátoru rovnosti. Mějme libovolnou funkci \(\func{f}(x, y, ...)\) a~dvě sady shodných argumenty \(x_1 = x_2\), \(y_1 = y_2\) atd. Potom podle axiomu~\eqref{eq:equal_itself} platí
+
+\begin{equation}
+\func{f}(x_1, y_1, ...) = \func{f}(x_1, y_1, ...)
+\end{equation}
+
+Na pravé straně rovnice dosadíme \(x_1 = x_2\). Využíváme při tom axiom~\eqref{eq:equal_subst}. Získáme tak rovnici
+
+\begin{equation}
+\func{f}(x_1, y_1, ...) = \func{f}(x_2, y_1, ...)
+\end{equation}
+
+Obdobně budeme postupovat pro další argumenty funkce až získáme rovnici
+
+\begin{equation}
+\func{f}(x_1, y_1, ...) = \func{f}(x_2, y_2, ...)
+\end{equation}
+
+Toto odvození můžeme shrnout ve větě \eqref{eq:function_parameter_equality} která tvrdím že jsou-li všechny argumenty funkce shodné, pak i~funkční hodnoty jsou shodné. 
+
+\begin{fact}
+\begin{equation}
+\label{eq:function_parameter_equality}
+x_1 = x_2 \land y_1 = y_2 \land ... \impl \func{f}(x_1, y_1, ...) = \func{f}(x_2, y_2, ...)
+\end{equation}
+\end{fact}
+
+Je důležité upozotnit, že opačné tvrzení nemusí platit. Ze shodnosti funkčních hodnot obecně nelze vyvodit shodnost jejích parametrů. Například z~rovnice \(x^2 = y^2\) neplyne \(x = y\), protože může také platit \(x = -y\). Je tomu tak proto, prože funkce \(x^2\) může přiřadit dvěma různým parametrům stejnou hodnotu. Konkrétně \(x^2 = (-x)^2\). Funkci, která různým argumentům vždy přiřazuje různé funkční hodnoty, nazýváme funkcí prostou. K~funkci existuje inverzní funkce tehdy a~jen tehdy, pokud je tato funkce prostá.
+
+Rovnice \eqref{eq:example_function} představuje jednu možnost jak defiovat funkci - jejím vyjádřením jinými funkcemi. Říkáme, že funkce je zadána analyticky. To ale není jediná možnost. Má-li funkce konečný definiční obor, pak ji můžeme vyjádřit tabulkou. Funkci také můžeme definovat jejími vlastnostmi.
+
+Funkci můžeme například definovat implicitně rovnicí. Kupříkladu rovnice \(x^2 + y^2 = 1, x \geq 0\) definuje funkci \(y = \sqrt{1 - x^2}\). Bez omezující podmínky \(x \geq 0\) bychom ale získali vztah \(y = \pm \sqrt{1 - x^2}\), který ale není funkcí, protože nepřiřazuje jednoznačně hodnotu \(y\) danému argumentu \(x\).
