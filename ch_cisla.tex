@@ -92,15 +92,15 @@ Pro každý predikát \(\predicate{A}(n)\) platí:
 			impl(			
 				and(
 					apply(A, [Z], [1]),
-					forall_in(N, 'n', natural_numbers, Values,
+					forall_in(N1, 'n', natural_numbers, Values,
 						impl(
-							apply(A, [Z], [N]),
-							apply(A, [Z], [N + 1])
+							apply(A, [Z], [N1]),
+							apply(A, [Z], [N1 + 1])
 						)
 					)
 				),
-				forall_in(N, 'n', natural_numbers, Values,
-					apply(A, [Z], [N])
+				forall_in(N2, 'n', natural_numbers, Values,
+					apply(A, [Z], [N2])
 				)
 			)
 		)
@@ -2230,3 +2230,276 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 	).				
 \end{prolog}
 \eeq{log_base_proof}
+
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_numbers_add_comutativity',
+		forall_in([A, B], ['a', 'b'], real_numbers, Values,
+			equal([A + B, B + A])
+		)
+	).
+\end{prolog}
+\eeq{real_numbers_add_comutativity}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_numbers_add_asociativity',
+		forall_in([A, B, C], ['a', 'b', 'c'], real_numbers, Values,
+			equal([par(A + B) + C, A + par(B + C)])
+		)
+	).
+\end{prolog}
+\eeq{real_numbers_add_asociativity}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_multiply_by_one',
+		forall_in(A, 'a', real_numbers, Values,
+			equal([A * 1, A])
+		)
+	).				
+\end{prolog}
+\eeq{real_multiply_by_one}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_multiplication_distributivity',
+		forall_in([A, B, C], ['a', 'b', 'c'], real_numbers, Values,
+			equal([A * (B + C), A * B + A * C])
+		)
+	).				
+\end{prolog}
+\eeq{real_multiplication_distributivity}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_multiplication_comutativity',
+		forall_in([A, B], ['a', 'b'], real_numbers, Values,
+			equal([A * B, B * A])
+		)
+	).				
+\end{prolog}
+\eeq{real_multiplication_comutativity}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_multiplication_asociativity',
+		forall_in([A, B, C], ['a', 'b', 'c'], real_numbers, Values,
+			equal([par(A * B) * C, A * par(B * C)])
+		)
+	).				
+\end{prolog}
+\eeq{real_multiplication_asociativity}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_power_by_one',
+		forall_in(A, 'a', real_numbers, Values,
+			equal([A^1, A])
+		)
+	).				
+\end{prolog}
+\eeq{real_power_by_one}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_power_distributivity',
+		forall_in(A, 'a', positive_real_numbers, Values,
+			forall_in([B, C], ['b', 'c'], real_numbers, Values,
+				equal([A^(B + C), A^B * A^C])
+			)
+		)
+	).				
+\end{prolog}
+\eeq{real_power_distributivity}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_power_by_multiplication',
+		forall_in(A, 'a', positive_real_numbers, Values,
+			forall_in([B, C], ['b', 'c'], real_numbers, Values,
+				equal([(A^B)^C, A^(B * C)])
+			)
+		)
+	).
+\end{prolog}
+\eeq{real_power_by_multiplication}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'real_power_of_multiplication',
+		forall_in([A, B], ['a', 'b'], positive_real_numbers, Values,
+			forall_in(C, 'c', real_numbers, Values,
+				equal((A*B)^C, A^C * B^C)
+			)
+		)
+	).
+\end{prolog}
+\eeq{real_power_of_multiplication}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'real_fraction_one',
+		forall_in(A, 'a', difference(real_numbers, set_of([0])), Numbers,
+			equal([A / A, 1])
+		)
+	).
+\end{prolog}
+\eeq{real_fraction_one}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'rational_reduction',
+		forall_in(A, 'a', real_numbers, Numbers,
+			forall_in([B, C], ['b', 'c'], difference(real_numbers, set_of([0])), Numbers,
+				equal(A / B, (A * C) / (B * C))
+			)
+		)
+	).
+\end{prolog}
+\eeq{rational_reduction}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'real_division_distributivity',
+		declare_plus_minus(PM,
+			forall_in([A, B], ['a', 'b'], real_numbers, Numbers,
+				forall_in(C, 'c', difference(real_numbers, set_of([0])), Numbers,
+					equal(plus_minus(A, B, PM) / C, plus_minus(A / C, B / C, PM))
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{real_division_distributivity}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'sum_of_rationals',
+		declare_plus_minus(PM,
+			forall_in([A, C], ['a', 'c'], real_numbers, Numbers,
+				forall_in([B, D], ['b', 'd'], difference(real_numbers, set_of([0])), Numbers,
+					equal(
+						plus_minus(A / B, C / D, PM),
+						plus_minus(A * D, B * C, PM) / (B * D)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{sum_of_rationals}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'real_division_of_rationals',
+		forall_in(A, 'a', real_numbers, Numbers,
+			forall_in([B, C, D], ['b', 'c', 'd'], difference(real_numbers, set_of([0])), Numbers,
+				equal((A / B) / (C / D), (A * D) / (B * C))
+			)
+		)
+	).
+\end{prolog}
+\eeq{real_division_of_rationals}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'real_power_by_negative_exponent_2',
+		forall_in(A, 'a', difference(positive_real_numbers, set_of([0])), Numbers,
+			forall_in(B, 'b', real_numbers, Numbers,
+				equal([A^(-B), 1 / (A^B)])
+			)
+		)
+	).
+\end{prolog}
+\eeq{real_power_by_negative_exponent_2}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'real_power_by_negative_exponent',
+		forall_in(A, 'a', difference(real_numbers, set_of([0])), Numbers,
+			equal([A^(-1), 1 / A])
+		)
+	).
+\end{prolog}
+\eeq{real_power_by_negative_exponent}
+\eeq{sqrt_inv_1}
+\eeq{sqrt_inv_2}
+\eeq{pow_rational_1}
+\eeq{pow_rational_2}
+\eeq{log_inv_1}
+\eeq{log_inv_2}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'log_product',
+		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
+			forall_in([B, C], ['b', 'c'], positive_real_numbers, Numbers,
+				equal(log(A, B * C), log(A, B) + log(A, C))
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_product}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'log_fraction',
+		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
+			forall_in([B, C], ['b', 'c'], positive_real_numbers, Numbers,
+				equal(log(A, B / C), log(A, B) - log(A, C))
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_fraction}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'log_power',
+		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
+			forall_in(B, 'b', positive_real_numbers, Numbers, 
+				forall_in(C, 'c', real_numbers, Numbers,
+					equal(log(A, B^C), C * log(A, B))
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{log_power}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'log_base',
+		forall_in([A, C], ['a', 'c'], difference(positive_real_numbers, set_of([1])), Numbers,
+			forall_in(B, 'b', positive_real_numbers, Numbers,
+				equal(log(A, B), log(C, B) / log(C, A))
+			)
+		)
+	).				
+\end{prolog}
+\eeq{log_base}
+\end{fact}

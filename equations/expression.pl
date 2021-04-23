@@ -561,6 +561,7 @@ evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
 	log_and_all(Results, Value).
 
 evaluate_expression(forall_in(Variable, _, Set, TestedValues, SubFormula), Value) :-
+	var(Variable),
 	!,
 	findall(
 		SubFormulaValue,
@@ -572,6 +573,22 @@ evaluate_expression(forall_in(Variable, _, Set, TestedValues, SubFormula), Value
 		Results
 	),
 	log_and_all(Results, Value).
+
+evaluate_expression(forall_in([Variable], [Label], Set, TestedValues, SubFormula), Value) :-
+	!,
+	evaluate_expression(
+		forall_in(Variable, Label, Set, TestedValues, SubFormula),
+		Value
+	).
+
+evaluate_expression(forall_in([Variable | VariableTail], [Label | LabelTail], Set, TestedValues, SubFormula), Value) :-
+	!,
+	evaluate_expression(
+		forall_in(Variable, Label, Set, TestedValues,
+			forall_in(VariableTail, LabelTail, Set, TestedValues, SubFormula)
+		),
+		Value
+	).
 
 evaluate_expression(exists(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
@@ -701,6 +718,16 @@ evaluate_expression(Expression, Value) :-
 
 ?-	evaluate_expression(
 		forall_in(X, 'X', integers, [-1, 1], equal(X * X, X)),
+		log_false
+	).
+
+?-	evaluate_expression(
+		forall_in([X, Y], ['X', 'Y'], natural_numbers, [1, 2], equal(X + Y, Y + X)),
+		log_true
+	).
+
+?-	evaluate_expression(
+		forall_in([X, Y], ['X', 'Y'], natural_numbers, [1, 2], equal(X + Y, Y * X)),
 		log_false
 	).
 
@@ -842,11 +869,16 @@ print_expression_term(Stream, forall(Variable, Label, _, SubFormula), PR) :-
 	print_expression_term(Stream, SubFormula, forall),
 	print_bracket_if_needed(Stream, ')', PR, forall).
 
-print_expression_term(Stream, forall_in(Variable, Label, Set, _, SubFormula), PR) :-
-	Variable = Label,
+print_expression_term(Stream, forall_in(Variable, Label, Set, Values, SubFormula), PR) :-
+	var(Variable),
+	print_expression_term(Stream, forall_in([Variable], [Label], Set, Values, SubFormula), PR).
+
+print_expression_term(Stream, forall_in(VariableList, LabelList, Set, _, SubFormula), PR) :-
+	is_list(VariableList),
+	VariableList = LabelList,
 	print_bracket_if_needed(Stream, '(', PR, forall), 
 	write(Stream, ' \\forall '),
-	write(Stream, Variable),
+	print_expression_list(Stream, VariableList),
 	write(Stream, ' \\in '),
 	print_expression_term(Stream, Set, in),
 	write(Stream, ' \\ '),
