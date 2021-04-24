@@ -870,7 +870,7 @@ print_expression_term(Stream, forall(Variable, Label, _, SubFormula), PR) :-
 	print_bracket_if_needed(Stream, ')', PR, forall).
 
 print_expression_term(Stream, forall_in(Variable, Label, Set, Values, SubFormula), PR) :-
-	var(Variable),
+	\+ is_list(Variable),
 	print_expression_term(Stream, forall_in([Variable], [Label], Set, Values, SubFormula), PR).
 
 print_expression_term(Stream, forall_in(VariableList, LabelList, Set, _, SubFormula), PR) :-
@@ -1131,6 +1131,7 @@ operator_priority(difference, 101).
 operator_priority(union, 101).
 operator_priority(intersection, 101).
 operator_priority(equal, 100).
+operator_priority(subset, 100).
 
 operator_priority(not, 6).
 operator_priority(forall, 5).

@@ -23,7 +23,7 @@ make_test_nonempty_sets([set(S1), set(S2), set(S3), set(S4)]) :-
 
 
 \begin{abstract}
-V~této kapitole definujeme obory čísel a~prozkoumáme jejich vlastnosti.
+V~této kapitole definujeme obory čísel od přirozených po reálná a~prozkoumáme jejich vlastnosti.
 \end{abstract}
 
 \section{Přirozená čísla}
@@ -57,12 +57,10 @@ následníka, označme ho \(n + 1\). Každé přirozené číslo, vyjma čísla 
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'natural_numbers_definition_3',
-		forall_in(M, 'm', natural_numbers, Values,
-			forall_in(N, 'n', natural_numbers, Values,
-				equiv(
-					equal([M, N]),				
+		forall_in([M, N], ['m', 'n'], natural_numbers, Values,
+			equiv(
+					equal([M, N]),
 					equal([M + 1, N + 1])
-				)
 			)
 		)
 	).
@@ -92,15 +90,15 @@ Pro každý predikát \(\predicate{A}(n)\) platí:
 			impl(			
 				and(
 					apply(A, [Z], [1]),
-					forall_in(N1, 'n', natural_numbers, Values,
+					forall_in(N, 'n', natural_numbers, Values,
 						impl(
-							apply(A, [Z], [N1]),
-							apply(A, [Z], [N1 + 1])
+							apply(A, [Z], [N]),
+							apply(A, [Z], [N + 1])
 						)
 					)
 				),
-				forall_in(N2, 'n', natural_numbers, Values,
-					apply(A, [Z], [N2])
+				forall_in(N, 'n', natural_numbers, Values,
+					apply(A, [Z], [N])
 				)
 			)
 		)
@@ -129,11 +127,11 @@ Pro každý predikát \(\predicate{A}(n)\) platí:
 \end{table}
 
 Fakt, že každé přirozené číslo kromě jedničky je následník jiného přirozeného čísla, nám umožňuje zavést důkaz matematickou indukcí. Máme-li predikát \(\predicate{A}(n)\), který je pravdivý pro \(n=1\) a~z~jeho pravdivosti pro \(n\) plyne  pravdivost pro \(n + 1\), pak je tento predikát pravdivý pro všechna přirozená čísla. Důkaz matematickou
-indukcí popisuje vztah~\eqref{eq:natural_numbers_definition_induction}.
+indukcí popisuje axiom~\eqref{eq:natural_numbers_definition_induction}.
 
 Intuitivně je princip důkazu matematickou indukcí zřejmý. Víme, že predikát \(\predicate{A}(n)\) je pravdivý pro \(n=1\). Z~jeho pravdivosti pro \(n=1\) plyne pravdivost pro \(n=2\), z~ní pak pro \(n=3\) atd. Jedná se vlastně o~tranzitivitu implikace prodlouženou do nekonečna.
 
-Aximom~\eqref{eq:natural_numbers_definition_induction} má ještě jeden význam. Axiomy~\eqref{eq:natural_numbers_definition_1} až~\eqref{eq:natural_numbers_definition_4} nám definují, že existují přirozená čísla mající strukturu podle tabulky~\ref{tab:natural_numbers}. Nezaručují nám ale, že existují pouze takováto přirozená čísla. To nám zaručuje právě axiom~\eqref{eq:natural_numbers_definition_induction}, stačí zvolit \(\predicate{A}(n) = \) \uv{\(n\) lze vyjádřit postupným přičítáním 1 k~číslu 1}. Tento predikát je pravdivý pro každé přirozené číslo, které odpovídá tabulce ~\ref{tab:natural_numbers}, ale pouze pro ně. Zkuste ho dokázat matematickou indukcí. Z~toho ale vyplývá, že množina přirozených čísel nemůže obsahovat čísla nesplňující tento predikát, protože jinak by axiom~\eqref{eq:natural_numbers_definition_induction} udával, že predikát je pravdivý i~pro tato čísla. Tím bychom získali spor.
+Aximom~\eqref{eq:natural_numbers_definition_induction} má ještě jeden význam. Axiomy~\eqref{eq:natural_numbers_definition_1} až~\eqref{eq:natural_numbers_definition_4} nám definují, že existují přirozená čísla mající strukturu podle tabulky~\ref{tab:natural_numbers}. Nezaručují nám ale, že existují pouze takováto přirozená čísla. To nám zaručuje právě axiom~\eqref{eq:natural_numbers_definition_induction}, stačí zvolit \(\predicate{A}(n) = \) \uv{\(n\) lze vyjádřit postupným přičítáním 1 k~číslu 1}. Tento predikát je pravdivý pro každé přirozené číslo, které odpovídá tabulce ~\ref{tab:natural_numbers}, ale pouze pro ně. Zkuste ho dokázat matematickou indukcí. Z~toho ale vyplývá, že množina přirozených čísel nemůže obsahovat čísla nesplňující tento predikát, protože jinak by axiom~\eqref{eq:natural_numbers_definition_induction} udával, že predikát je pravdivý i~pro tato čísla. Tím bychom získali spor. Souhrně nazýváme axiomy~\eqref{eq:natural_numbers_definition_1} až~\eqref{eq:natural_numbers_definition_induction} Peanovy axiomy.
 
 Přirozená čísla lze také znázornit na číselné ose, jak je zobrazeno na obrázku~\ref{img:ciselna_osa}. Osa začíná číslem 1 a~pokračuje do nekonečna.
 
@@ -153,7 +151,7 @@ Nyní, když už víme, co jsou přirozená čísla, tak si zkusme definovat jej
 c = a + b = a + \overbrace{1 + 1 + 1 + ...}^{b \times}
 \end{equation}
 
-Povšimněme si, že výraz pod složenou závorkou odpovídá reprezentaci čísla \(b\) až na pořadí přičítání jedniček. Proto pokud bychom tento vztah rozepsali pomocí zavedené reprezentace přirozených čísel, tak by \uv{počet jedniček} v~jednotlivých částech rovnice~\eqref{eq:soucet_n_definice} byl stejný, pouze by byli jinak uzávorkované. Například pro \(a=2\), \(b=3\) bychom dostali:
+Povšimněme si, že výraz pod složenou závorkou odpovídá reprezentaci čísla \(b\) až na pořadí přičítání jedniček. Proto pokud bychom tento vztah rozepsali pomocí zavedené reprezentace přirozených čísel, tak by \uv{počet jedniček} v~jednotlivých částech rovnice~\eqref{eq:soucet_n_definice} byl stejný, pouze by byly jinak uzávorkované. Například pro \(a=2\), \(b=3\) bychom dostali:
 
 \begin{prolog}
 ?-	print_validated_formula(
@@ -171,17 +169,15 @@ Povšimněme si, že výraz pod složenou závorkou odpovídá reprezentaci čí
 \end{prolog}
 \eeq{add_example}
 
-To je logické, součet má představovat počet objektů, které ze dvou skupin dáme dohromady. Přesunutím objektů do jedné skupiny se tyto objekty nemohou vytvořit nebo ztratit. Každý objekt je reprezentován jednou jedničkou, proto se tyto jedničky mohou pouze přeskupovat, ale jejich počet se nemůže změnit. Se součtem, popřípadě součty, můžeme proto provádět takové operace, které nezmění počet jedniček ve výrazu s~reprezentacemi přirozených čísel. Máme dvě takovéto operace. Můžeme prohodit operandy součtu beze změny jeho hodnoty. Tato vlastnost se nazývá komutativita sčítání a~popisuje ji rovnice~\eqref{eq:natural_numbers_comutativity}. Dále můžeme změnit uzávorkování součtů beze změny celkového součtu. Tato vlastnost se nazývá asociativita sčítání a~popisuje ji rovnice~\eqref{eq:natural_numbers_asociativity}.
+To je logické, součet má představovat počet objektů, které ze dvou skupin dáme dohromady. Přesunutím objektů do jedné skupiny se tyto objekty nemohou vytvořit nebo ztratit. Každý objekt je reprezentován jednou jedničkou, proto se tyto jedničky mohou pouze přeskupovat, ale jejich počet se nemůže změnit. Se součtem, popřípadě součty, můžeme proto provádět takové operace, které nezmění počet jedniček ve výrazu s~reprezentacemi přirozených čísel. Máme dvě takovéto operace. Můžeme prohodit operandy součtu beze změny jeho hodnoty. Tato vlastnost se nazývá komutativita sčítání a~popisuje ji rovnice~\eqref{eq:natural_numbers_comutativity}. Dále můžeme změnit uzávorkování součtů beze změny celkového součtu. Tato vlastnost se nazývá asociativita sčítání a~popisuje ji rovnice~\eqref{eq:natural_numbers_asociativity}. Tyto dvě vlastnosti nám umožňují nedbát na pořadí sčítání, protože sčítance můžeme libovolně přeskládat. Proto také vůbec nemusíme při sčítání psát závorky.
 
 \begin{fact}
 \begin{prolog}
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'natural_numbers_comutativity',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				equal([A + B, B + A])
-			)
+		forall_in([A, B], ['a', 'b'], natural_numbers, Values,
+			equal([A + B, B + A])
 		)
 	).
 \end{prolog}
@@ -191,12 +187,8 @@ To je logické, součet má představovat počet objektů, které ze dvou skupin
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'natural_numbers_asociativity',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				forall_in(C, 'c', natural_numbers, Values,
-					equal([par(A + B) + C, A + par(B + C)])
-				)
-			)
+		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
+			equal([par(A + B) + C, A + par(B + C)])
 		)
 	).
 \end{prolog}
@@ -307,19 +299,15 @@ Z~definice~\eqref{eq:multiplication_definition} přímo plynou dva vztahy. Vztah
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'multiplication_distributivity',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				forall_in(C, 'c', natural_numbers, Values,
-					equal([A * (B + C), A * B + A * C])
-				)
-			)
+		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
+			equal([A * (B + C), A * B + A * C])
 		)
 	).				
 \end{prolog}
 \eeq{multiplication_distributivity}
 \end{fact}
 
-Distributivitu součinu můžeme odvodit rozepsáním součinu pomocí definice, jak je vidět v rovnici~\ref{eq:multiplication_distributivity_proof}. Graficky je distributivita znázorněna na obrázku~\ref{img:multiplication_distributivity}.
+Distributivitu součinu můžeme odvodit rozepsáním součinu pomocí definice, jak je vidět v rovnici~\eqref{eq:multiplication_distributivity_proof}. Graficky je distributivita znázorněna na obrázku~\ref{img:multiplication_distributivity}.
 
 \begin{equation}
 \label{eq:multiplication_distributivity_proof}
@@ -337,7 +325,7 @@ a \cdot (b + c) = \overbrace{a + a + a + ...}^{(b + c) \times} = \overbrace{a + 
 \label{img:multiplication_distributivity}
 \end{figure}
 
-Zamyslíme-li se nad vztahy~\ref{eq:natural_multiply_by_one} a~\ref{eq:multiplication_distributivity}, tak zjistíme, že nám plně definují součin přirozených čísel. Pravý operand totiž můžeme postupně snižovat o~jedničku a~rozepsat součin na součet. Například pro součin \(3 \cdot 4\) získáme:
+Zamyslíme-li se nad vztahy~\eqref{eq:natural_multiply_by_one} a~\eqref{eq:multiplication_distributivity}, tak zjistíme, že nám plně definují součin přirozených čísel. Pravý operand totiž můžeme postupně snižovat o~jedničku a~rozepsat součin na součet. Například pro součin \(3 \cdot 4\) získáme:
 
 \begin{prolog}
 ?-	print_validated_formula(
@@ -359,7 +347,7 @@ Zamyslíme-li se nad vztahy~\ref{eq:natural_multiply_by_one} a~\ref{eq:multiplic
 \end{prolog}
 \eeq{multiplication_example}
 
-Původní definici tedy můžeme snížit nahradit formálními rovnicemi~\ref{eq:natural_multiply_by_one} a~\ref{eq:multiplication_distributivity}.
+Původní definici tedy můžeme nahradit formálními rovnicemi~\eqref{eq:natural_multiply_by_one} a~\eqref{eq:multiplication_distributivity}.
 
 Z~grafické reprezentace součinu je také vidět, že součin je komutativní operace. Obdélníku totiž můžeme prohodit strany, aniž by se tím změnil jeho obsah. Počet objektů, na obrázku~\ref{img:multiplication_comutativity} znázorněných počtem čtverců, se tím nezmění. Jinak řečeno, máme-li \(b\) skupin (na levém obrázku řádků) po \(a\) objektech, pak je můžeme přeskupit tak, že budeme mít \(a\) skupin po \(b\) objektech. Přeskupením se počet objektů nezmění. Komutativitu součinu popisuje rovnice~\eqref{eq:multiplication_comutativity}.
 
@@ -383,10 +371,8 @@ Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'multiplication_comutativity',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				equal([A * B, B * A])
-			)
+		forall_in([A, B], ['a', 'b'], natural_numbers, Values,
+			equal([A * B, B * A])
 		)
 	).				
 \end{prolog}
@@ -396,12 +382,8 @@ Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'multiplication_asociativity',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				forall_in(C, 'c', natural_numbers, Values,
-					equal([par(A * B) * C, A * par(B * C)])
-				)
-			)
+		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
+			equal([par(A * B) * C, A * par(B * C)])
 		)
 	).				
 \end{prolog}
@@ -433,12 +415,8 @@ Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} 
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'natural_power_distributivity',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				forall_in(C, 'c', natural_numbers, Values,
-					equal([A^(B + C), A^B * A^C])
-				)
-			)
+		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
+			equal([A^(B + C), A^B * A^C])
 		)
 	).				
 \end{prolog}
@@ -452,12 +430,8 @@ Na rozdíl od sčítání a~násobení není umocňování komutativní operace 
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'power_by_multiplication_proof',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				forall_in(C, 'c', natural_numbers, Values,
-					equal([(A^B)^C, A^(B * C)])
-				)
-			)
+		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
+			equal([(A^B)^C, A^(B * C)])
 		)
 	).
 \end{prolog}
@@ -470,10 +444,8 @@ Mocniny bohužel není možné jednoduše graficky znázornit jako násobení ne
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'power_by_multiplication_proof_1',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				equal([(A^B)^1, A^B, A^(B * 1)])
-			)
+		forall_in([A, B], ['a', 'b'], natural_numbers, Values,
+			equal([(A^B)^1, A^B, A^(B * 1)])
 		)
 	).
 \end{prolog}
@@ -485,14 +457,10 @@ Dále ověříme platnost výroku~\eqref{eq:power_by_multiplication_proof_2} a~t
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'power_by_multiplication_proof_2',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				forall_in(C, 'c', natural_numbers, Values,
-					impl(
-						equal([(A^B)^C, 	A^(B*C)]),
-						equal([(A^B)^(C+1), 	A^(B*(C+1))])
-					)
-				)
+		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
+			impl(
+				equal([(A^B)^C, 	A^(B*C)]),
+				equal([(A^B)^(C+1), 	A^(B*(C+1))])
 			)
 		)
 	).
@@ -529,12 +497,8 @@ Dále dokažme rovnici~\eqref{eq:power_of_multiplication_proof}.
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'power_of_multiplication_proof',
-		forall_in(A, 'a', natural_numbers, Values,
-			forall_in(B, 'b', natural_numbers, Values,
-				forall_in(N, 'n', natural_numbers, Values,
-					equal((A*B)^N, A^N * B^N)
-				)
-			)
+		forall_in([A, B, N], ['a', 'b', 'n'], natural_numbers, Values,
+			equal((A*B)^N, A^N * B^N)
 		)
 	).
 \end{prolog}

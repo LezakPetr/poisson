@@ -13,6 +13,7 @@ make_test_sets([set(S1), set(S2), set(S3), set(S4)]) :-
 	make_set([1, 2], S4).
 
 make_test_predicates(Y, [equal([Y, 1]), equal([Y, 2]), log_true, log_false]).
+make_test_binary_predicates(X, Y, [equal(X, 1), equal(Y, 1), equal(X - Y, 1), equal(X + Y, 2), equal(X - Y, 1), log_true, log_false]).
 \end{prolog}
 
 
@@ -502,6 +503,32 @@ Tedy \uv{pro každé \(x\) z~množiny \(\mathrm{S}\) platí \(\predicate{A}(x)\)
 Příklad: Každé přirozené číslo je větší než 0. 
 
 \(\forall x \in \mathbb{N} \ x > 0\) neboli \(\forall x \ (x \in \mathbb{N} \impl x > 0)\).
+
+Dále se často vyskytuje více obecných kventifikátorů, jejichž proměnné nabývají hodnot ze stejné množiny. Zavedeme proto zkrácení zápisu:
+
+\begin{prolog}
+?- 	make_test_values(Values),
+	make_test_binary_predicates(U, V, Predicates),
+	make_test_sets(Sets),
+	print_expression(
+		'forall_in_list',
+		declare_predicate(A, 'A', Predicates,
+			declare_set(M, 'M', Sets,
+				equiv(
+					forall_in([X, Y], ['x', 'y'], M, Values, 
+						apply(A, [U, V], [X, Y])
+					),
+					forall_in(X, 'x', M, Values, 
+						forall_in(Y, 'y', M, Values, 
+							apply(A, [U, V], [X, Y])
+						)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{forall_in_list}
 
 Kvantifikátory úzce souvisí s~množinami. Pravdivost predikátu \(\predicate{A}(x)\) závisí na proměnné \(x\). Možné hodnoty
 proměnné \(x\) můžeme tedy rozdělit do dvou disjunktních množin - množiny hodnot, ve kterých je predikát pravdivý a~množiny hodnot, ve kterých je predikát nepravdivý. Proto platí:
