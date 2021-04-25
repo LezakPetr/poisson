@@ -552,7 +552,7 @@ Tím je rovnice~\eqref{eq:power_of_multiplication_proof} dokázána pro všechna
 
 \section{Celá čísla}
 
-Zkusme dále definovat rozdíl jako opačnou operaci k~součtu pomocí rovnice~\eqref{eq:difference_definition}.
+Zkusme dále definovat rozdíl jako opačnou operaci k~součtu pomocí věty~\eqref{eq:difference_definition}.
 
 \begin{prolog}
 ?-	make_test_numbers(Values),
@@ -572,7 +572,7 @@ Zkusme dále definovat rozdíl jako opačnou operaci k~součtu pomocí rovnice~\
 \end{prolog}
 \eeq{difference_definition}
 
-Z této rovnice například vyplývá, že \(5 - 2 = 3\) protože \(2 + 3 = 5\). Vidíme ale, že pro některé dvojice přirozených čísel rozdíl neexistuje. Například nelze vypočítat \(2 - 3\), protože neexistuje přirozené číslo, které kdybychom přičetli k číslu 3, tak dostaneme číslo 2. Potřebovali bychom číslo, které je menší než nejmenší přirozené číslo 1. Abychom mohli taková čísla zavést, tak musíme opustit náš dosavadní model reprezentace čísel pomocí počtu jedniček nebo objektů a~definovat čísla jejich pořadím podle tabulky~\ref{tab:integers}. Celá čísla můžeme zobrazit na číselné ose jako na obrázku~\ref{img:integer_number_line}.
+Z této věty například vyplývá, že \(5 - 2 = 3\) protože \(2 + 3 = 5\). Vidíme ale, že pro některé dvojice přirozených čísel rozdíl neexistuje. Například nelze vypočítat \(2 - 3\), protože neexistuje přirozené číslo, které kdybychom přičetli k číslu 3, tak dostaneme číslo 2. Potřebovali bychom číslo, které je menší než nejmenší přirozené číslo 1. Abychom mohli taková čísla zavést, tak musíme opustit náš dosavadní model reprezentace čísel pomocí počtu jedniček nebo objektů a~definovat čísla jejich pořadím podle tabulky~\ref{tab:integers}. Celá čísla můžeme zobrazit na číselné ose jako na obrázku~\ref{img:integer_number_line}.
 
 \begin{table}[ht]
 \centering
@@ -675,7 +675,7 @@ Komutativita součtu je znázorněna na obrázku~\ref{img:integer_add_comutativi
 \end{figure}
 
 
-Operace rozdílu je definovaná rovnicí~\eqref{eq:difference_definition} a~každé dvojici celých čísel přiřazuje celé číslo. Říkáme, že množina celých čísel je uzavřená pro operaci odčítání (to množina přirozených čísel nebyla).
+Operace rozdílu je definovaná větou~\eqref{eq:difference_definition} a~každé dvojici celých čísel přiřazuje celé číslo. Říkáme, že množina celých čísel je uzavřená pro operaci odčítání (to množina přirozených čísel nebyla).
 
 
 Mezi celými čísly najdeme zvláštní číslo 0. Z~definice čísla 1 v~tabulce~\ref{tab:integers} vidíme, že \(0 + 1 = 1\), tedy když k~jedničce přičteme nulu, tak získáme zase jedničku. To platí obecně:
@@ -711,7 +711,8 @@ V~prvním kroku jsme s~využitím komutativity a~asociativity sčítání výraz
 \end{prolog}
 \eeq{add_zero_proof_2}
 
-Srovnáme-li tento vztah se vztahem \eqref{eq:difference_definition}, dostaneme:
+Vidíme, že přičtením nuly k~jakémukoli číslu se toto číslo nezmění.
+Srovnáme-li vztah~\eqref{eq:add_zero_proof_2} se vztahem \eqref{eq:difference_definition}, dostaneme:
 
 \begin{prolog}
 ?-	make_test_numbers(Values),
@@ -784,6 +785,24 @@ Opačná čísla nám umožňují vypočítat rozdíl pomocí součtu jak je vid
 \caption{Číselná osa}
 \label{img:integer_number_line}
 \end{figure}
+
+Nakonec odvodíme vztah pro opačné číslo opačného čísla. Vyjdeme z~definice opačného čísla~\eqref{eq:opposite_number_definition}. V~prvním kroku použijeme definici rozdílu~\eqref{eq:difference_definition}. Nakonec použijeme vztah~\eqref{eq:opposite_number_calculation}. Vidíme, že opačné číslo opačného čísla je původní číslo. Neboli, jak se říká, dvakrát minus dává plus:
+
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'double_opposite_proof',
+		declare_variable(A, 'a', Values,
+			proof([],
+			[
+				equal(0, A + par(-A)),
+				equal(0 - par(-A), A),
+				equal(-(-A), A)
+			])
+		)
+	).
+\end{prolog}
+\eeq{double_opposite_proof}
 
 Pokračujme rozšířením součinu na celá čísla. Začněme nulou. Srovnáním členů v~rovnici~\eqref{eq:multiplication_by_zero_1} lze odvodit vztah~\eqref{eq:multiplication_by_zero_2}.
 
@@ -885,42 +904,9 @@ Nakonec v~rovnici~\eqref{eq:multiplication_by_negative_4} vyšetříme případ,
 \end{prolog}
 \eeq{multiplication_by_negative_4}
 
-Nakonec rozšiřme definici mocniny na celá čísla. Začněme rozšířením mocněnce. Podle definice~\eqref{eq:power_definition} je zřejmé, že mezi sebou budeme násobit záporná čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:natural_power_distributivity} proto zůstanou zachovány i~pro záporné mocněnce. Přejděme dále k~rozšíření mocnitele (exponentu) na celá čísla. Rovnici~\eqref{eq:power_by_zero_1} můžeme vydělit \(a^1\) a~získáme vztah~\eqref{eq:power_by_zero_2}.
-
-\begin{prolog}
-?-	make_test_nonzero_integers(Values),
-	print_validated_formula(
-		'power_by_zero_1',
-		declare_variable(A, 'a', Values,
-			equal([
-				A^1,
-				A^(0 + 1),
-				A^0 * A^1
-			])
-		)
-	).
-\end{prolog}
-\eeq{power_by_zero_1}
-%%%%%%%%%%%%%%%%%%%%
-\begin{prolog}
-?-	make_test_numbers(Values),
-	print_validated_formula(
-		'power_by_zero_2',
-		declare_variable(A, 'a', Values,
-			impl(
-				not_equal(A, 0),
-				equal([A^0, 1])
-			)
-		)
-	).
-\end{prolog}
-\eeq{power_by_zero_2}
-
-Zbývá vyšetřit hodnotu \(0^0\). Vztah~\eqref{eq:power_by_zero_2} naznačuje, že by mohlo platit \(0^0 = 1\), protože pro ostatní mocněnce umocnené na nulu dostáváme hodnotu 1. Naopak definice~\eqref{eq:power_definition} naznačuje, že by mohlo platit \(0^0 = 0\), protože nula na cokoli je rovna nula - násobíme mezi sebou samé nuly. Proto výraz \(0^0\) nemá definovanou hodnotu.
-
 \section{Racionální čísla}
 
-Definujme podíl jako opačnou operaci k~násobení pomocí rovnice~\eqref{eq:division_definition}.
+Definujme podíl jako opačnou operaci k~násobení pomocí věty~\eqref{eq:division_definition}.
 
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -941,7 +927,7 @@ Definujme podíl jako opačnou operaci k~násobení pomocí rovnice~\eqref{eq:di
 \end{prolog}
 \eeq{division_definition}
 
-Z~této věty například vyplývá, že \(\frac{6}{3} = 2\) protože \(3 \cdot 2 = 6\). Vidíme ale, že pro některé dvojice celých čísel podíl neexistuje. Například nelze vypočítat \(\frac{3}{2}\), protože neexistuje celé číslo, které kdybychom vynásobili číslem 2, tak dostaneme číslo 3. Potřebovali bychom číslo, které je větší než 1 a~menší než 2. Toto omezení celách čísel můžeme obejít tak, že jako číslo definujeme podíl dvou celých čísel a~nazveme ho racionální číslo. Množinu všech racionálních čísel označíme \(\rationals\):
+Z~této věty například vyplývá, že \(\frac{6}{3} = 2\) protože \(3 \cdot 2 = 6\). Vidíme ale, že pro některé dvojice celých čísel podíl neexistuje. Například nelze vypočítat \(\frac{3}{2}\), protože neexistuje celé číslo, které kdybychom vynásobili číslem 2, tak dostaneme číslo 3. Potřebovali bychom číslo, které je větší než 1 a~menší než 2. Toto omezení celých čísel můžeme obejít tak, že jako číslo definujeme podíl dvou celých čísel a~nazveme ho racionální číslo. Množinu všech racionálních čísel označíme \(\rationals\):
 
 \begin{equation}
 \forall a \in \integers \ \forall b \in (\integers \setminus \{0\}) \ \frac{a}{b} \in \rationals
@@ -1158,7 +1144,66 @@ Nakonec můžeme rovnicí~\eqref{eq:division_of_rationals} vyjádřit podíl rac
 \end{prolog}
 \eeq{division_of_rationals}
 
-Nakonec rozšiřme definici mocniny na racionální čísla. Podle definice~\eqref{eq:power_definition} můžeme rozšířit mocněnce na racionální čísla tak, že mezi sebou budeme násobit racionální čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:natural_power_distributivity} proto zůstanou zachovány i~pro racionální mocněnce.
+Nakonec rozšiřme definici mocniny na celočíselné mocněnce a~mocnitele. Začněme rozšířením mocněnce. Podle definice~\eqref{eq:power_definition} je zřejmé, že mezi sebou budeme násobit záporná čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:natural_power_distributivity} proto zůstanou zachovány i~pro záporné mocněnce, jak udávají rovnice~\eqref{eq:rational_power_by_one} a~\eqref{eq:rational_power_distributivity}.
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'rational_power_by_one',
+		forall_in(A, 'a', rational_numbers, Values,
+			equal([A^1, A])
+		)
+	).				
+\end{prolog}
+\eeq{rational_power_by_one}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_natural_numbers(Values),
+	print_validated_formula(
+		'rational_power_distributivity',
+		forall_in(A, 'a', rational_numbers, Values,
+			forall_in([B, C], ['b', 'c'], integers, Values,
+				equal([A^(B + C), A^B * A^C])
+			)
+		)
+	).				
+\end{prolog}
+\eeq{rational_power_distributivity}
+\end{fact}
+
+Přejděme dále k~rozšíření mocnitele (exponentu) na celá čísla. Rovnici~\eqref{eq:power_by_zero_1} můžeme vydělit \(a^1\) a~získáme vztah~\eqref{eq:power_by_zero_2}.
+
+\begin{prolog}
+?-	make_test_nonzero_integers(Values),
+	print_validated_formula(
+		'power_by_zero_1',
+		declare_variable(A, 'a', Values,
+			equal([
+				A^1,
+				A^(0 + 1),
+				A^0 * A^1
+			])
+		)
+	).
+\end{prolog}
+\eeq{power_by_zero_1}
+%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Values),
+	print_validated_formula(
+		'power_by_zero_2',
+		declare_variable(A, 'a', Values,
+			impl(
+				not_equal(A, 0),
+				equal([A^0, 1])
+			)
+		)
+	).
+\end{prolog}
+\eeq{power_by_zero_2}
+
+Zbývá vyšetřit hodnotu \(0^0\). Vztah~\eqref{eq:power_by_zero_2} naznačuje, že by mohlo platit \(0^0 = 1\), protože pro ostatní mocněnce umocnené na nulu dostáváme hodnotu 1. Naopak definice~\eqref{eq:power_definition} naznačuje, že by mohlo platit \(0^0 = 0\), protože nula na cokoli je rovna nule - násobíme mezi sebou samé nuly. Díky tomuto rozporu nemá výraz \(0^0\) definovanou hodnotu.
 
 Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými exponenty. Z~rovnice~\eqref{eq:power_by_negative_exponent_1} plyne rovnice~\eqref{eq:power_by_negative_exponent_2}. Speciálním případem je rovnice~\eqref{eq:power_by_negative_exponent_3} udávající, že umocnění čísla na \(-1\) je rovno jeho převrácené hodnotě.
 
@@ -1214,35 +1259,6 @@ Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými expone
 	).
 \end{prolog}
 \eeq{power_by_negative_exponent_3}
-
-
-\begin{fact}
-\begin{prolog}
-?-	make_test_natural_numbers(Values),
-	print_validated_formula(
-		'rational_power_by_one',
-		forall_in(A, 'a', rational_numbers, Values,
-			equal([A^1, A])
-		)
-	).				
-\end{prolog}
-\eeq{rational_power_by_one}
-%%%%%%%%%%%%%%%%%%%%%%%
-\begin{prolog}
-?-	make_test_natural_numbers(Values),
-	print_validated_formula(
-		'rational_power_distributivity',
-		forall_in(A, 'a', rational_numbers, Values,
-			forall_in(B, 'b', integers, Values,
-				forall_in(C, 'c', integers, Values,
-					equal([A^(B + C), A^B * A^C])
-				)
-			)
-		)
-	).				
-\end{prolog}
-\eeq{rational_power_distributivity}
-\end{fact}
 
 \section{Uspořádání čísel}
 
@@ -1522,7 +1538,7 @@ Z~definic~\eqref{eq:order_less_than} a~\eqref{eq:order_at_least_one} také plyno
 \eeq{order_less_or_equal_opposite}
 \end{fact}
 
-Předpokládejme, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve rozepíšeme podle definice~\eqref{eq:order_less_than}. Následně využijeme faktu, že součet klasných čísel je kladné číslo (viz~\eqref{eq:order_positive_integers} a~\eqref{eq:order_rationals_positive}). Úpravou pak získáme \(a > c\). Výsledek je zapsán ve větě~\eqref{eq:order_transitivity_greater_than} a~říká se mu tranzitivita. Obdobně platí věta~\eqref{eq:order_transitivity_less_than}.
+Předpokládejme, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve rozepíšeme podle definice~\eqref{eq:order_less_than}. Následně využijeme faktu, že součet kladných čísel je kladné číslo (viz věty~\eqref{eq:order_positive_integers} a~\eqref{eq:order_rationals_positive}). Úpravou pak získáme \(a > c\). Výsledek je zapsán ve větě~\eqref{eq:order_transitivity_greater_than} a~říká se mu tranzitivita. Obdobně platí věta~\eqref{eq:order_transitivity_less_than}.
 
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -1614,7 +1630,7 @@ Graficky je tranzitivita zobrazena na obrázku~\ref{img:ordering_transitivity}. 
 \label{img:ordering_transitivity}
 \end{figure}
 
-Minimem množiny rozumíme její nejmenší prvek, maximem její nejvyšší prvek.
+Minimem množiny rozumíme její nejmenší prvek, maximem její nejvyšší prvek. Popisují je věty~\eqref{eq:min_definition_1} až~\eqref{eq:max_definition_2}.
 
 \begin{fact}
 \begin{prolog}
@@ -2327,7 +2343,7 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
-		'rational_reduction',
+		'real_reduction',
 		forall_in(A, 'a', real_numbers, Numbers,
 			forall_in([B, C], ['b', 'c'], difference(real_numbers, set_of([0])), Numbers,
 				equal(A / B, (A * C) / (B * C))
@@ -2335,7 +2351,7 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 		)
 	).
 \end{prolog}
-\eeq{rational_reduction}
+\eeq{real_reduction}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -2355,7 +2371,7 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
-		'sum_of_rationals',
+		'sum_of_fractions',
 		declare_plus_minus(PM,
 			forall_in([A, C], ['a', 'c'], real_numbers, Numbers,
 				forall_in([B, D], ['b', 'd'], difference(real_numbers, set_of([0])), Numbers,
@@ -2368,7 +2384,7 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 		)
 	).
 \end{prolog}
-\eeq{sum_of_rationals}
+\eeq{sum_of_fractions}
 %%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
