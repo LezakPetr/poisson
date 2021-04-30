@@ -1878,6 +1878,26 @@ Každé racionální číslo tedy zapsat ve tvaru
 
 a~proto \(\rationals \subset \real\).
 
+Zabývejme se otázkou, zda má množina reálných čísel mezery. Mějme množinu \(M \subset \real\). Každé reálné číslo v~této množině je supremem nějaké množiny racionálních čísel. Označme množinu těchto množin \(S\), tedy
+
+\begin{equation}
+M = \{m: \exists s \in S \ m = \sup(s)\}
+\end{equation}
+ 
+Označme \(T\) sjednocení všech množin z~množiny \(S\), tedy
+
+\begin{equation}
+T = \bigcup S = \{t: \exists s \in S \ t \ \in  s\}
+\end{equation}
+
+Dále je zřejmé, že \(\sup(M) = \sup(T)\). Ale \(T\) je množina racionálnách čísel, proto pokud je \(T\) shora ohraničená množina, pak \(\sup(T)\) je reálné číslo. Obdobné úvahy lze udělat i~pro infimum. Závěrem tedy můžeme říci:
+
+\begin{fact}
+Každá shora ohraničená množina reálných čísel má v~\(\real\) supremum.
+
+Každá zdola ohraničená množina reálných čísel má v~\(\real\) infimum.
+\end{fact}
+
 Mohli bychom definovat, jak provádět operace s~reálnými čísly pomocí manipulace s~množinami. Byla by to ale čistě teoretická definice, nikdo takto s~reálnými čísly nepočítá. Reálná čísla ale můžeme aproximovat pomocí racionálních čísel nebo pomocí desetinného rozvoje.
 
 Uvažujme tedy reálné číslo definované jako supremum množiny \(M\) splňující podmínku~\eqref{eq:real_single_set}. V~ní uvažujme racionální čísla ve tvaru \(\frac{a}{b}\), kde \(b\) je pevně zvolený kladný jmenovatel. Potom existuje nejvyšší čitatel \(a\), respektive nejvyšší racionální číslo \(\frac{a}{b}\) se zvoleným jmenovatelem. Podle podmínky~\eqref{eq:real_single_set} musí být všechna menší racionální čísla se zvoleným jmenovatelem také obsažena v~množině \(M\). Takto jsme schopni aproximovat reálné číslo pomocí racionálního. Uvažujme dále pouze tzv. desetinné zlomky, tedy racionální čísla ve tvaru \(\frac{a}{10^n}\).
