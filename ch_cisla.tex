@@ -1118,7 +1118,7 @@ Graficky je součet racionálních čísel zobrazen na obrázku~\ref{img:add_rat
 \label{img:add_rational_numbers}
 \end{figure}
 
-Nakonec můžeme rovnicí~\eqref{eq:division_of_rationals} vyjádřit podíl racionálních čísel.
+Dále můžeme rovnicí~\eqref{eq:division_of_rationals} vyjádřit podíl racionálních čísel.
 
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -1144,7 +1144,7 @@ Nakonec můžeme rovnicí~\eqref{eq:division_of_rationals} vyjádřit podíl rac
 \end{prolog}
 \eeq{division_of_rationals}
 
-Nakonec rozšiřme definici mocniny na celočíselné mocněnce a~mocnitele. Začněme rozšířením mocněnce. Podle definice~\eqref{eq:power_definition} je zřejmé, že mezi sebou budeme násobit záporná čísla. Vztahy~\eqref{eq:natural_power_by_one} a~\eqref{eq:natural_power_distributivity} proto zůstanou zachovány i~pro záporné mocněnce, jak udávají rovnice~\eqref{eq:rational_power_by_one} a~\eqref{eq:rational_power_distributivity}.
+Nakonec rozšiřme definici mocniny na racionální mocněnce a~celočíselné mocnitele. Začněme rozšířením mocněnce. Podle definice~\eqref{eq:power_definition} je zřejmé, že mezi sebou budeme násobit racionální čísla. Rovnice~\eqref{eq:natural_power_by_one} a~\eqref{eq:natural_power_distributivity} proto zůstanou zachovány i~pro racionální mocněnce, jak udávají rovnice~\eqref{eq:rational_power_by_one} a~\eqref{eq:rational_power_distributivity}.
 
 \begin{fact}
 \begin{prolog}
@@ -1538,7 +1538,7 @@ Z~definic~\eqref{eq:order_less_than} a~\eqref{eq:order_at_least_one} také plyno
 \eeq{order_less_or_equal_opposite}
 \end{fact}
 
-Předpokládejme, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve rozepíšeme podle definice~\eqref{eq:order_less_than}. Následně využijeme faktu, že součet kladných čísel je kladné číslo (viz věty~\eqref{eq:order_positive_integers} a~\eqref{eq:order_rationals_positive}). Úpravou pak získáme \(a > c\). Výsledek je zapsán ve větě~\eqref{eq:order_transitivity_greater_than} a~říká se mu tranzitivita. Obdobně platí věta~\eqref{eq:order_transitivity_less_than}.
+Předpokládejme dále, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve rozepíšeme podle definice~\eqref{eq:order_less_than}. Následně využijeme faktu, že součet kladných čísel je kladné číslo (viz věty~\eqref{eq:order_positive_integers} a~\eqref{eq:order_rationals_positive}). Úpravou pak získáme \(a > c\). Výsledek je zapsán ve větě~\eqref{eq:order_transitivity_greater_than} a~říká, že relace menší než (a~větší než) je tranzitivní. Obdobně platí věta~\eqref{eq:order_transitivity_less_than}.
 
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -1728,7 +1728,7 @@ Infimum množiny \(M\) je nejvyšší číslo menší nebo rovno všem prvkům m
 \eeq{sup_definition}
 \end{fact}
 
-Prozkoumejme vztah mezi infimem a~minimem. Nejdříve srovnejme větu~\eqref{eq:min_definition_2} a~množinu v~definici~\eqref{eq:inf_definition}. Proto, pokud existuje minimum množiny \(M\), musí platit:
+Prozkoumejme vztah mezi infimem a~minimem. Nejdříve srovnejme větu~\eqref{eq:min_definition_2} a~množinu v~definici~\eqref{eq:inf_definition}. Množina obsahuje všechna čísla, která jsou menší nebo rovna všem prvkům množiny \(M\). Minimum je menší nebo rovno všem prvkům množiny \(M\). Proto, pokud existuje minimum množiny \(M\), musí platit:
 
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -1749,7 +1749,7 @@ Prozkoumejme vztah mezi infimem a~minimem. Nejdříve srovnejme větu~\eqref{eq:
 \end{prolog}
 \eeq{inf_max_proof_1}
 
-Zároveň toto minimum je nejvyšší prvek uvedené množiny, protože všechny její prvky jsou menší nebo rovny jakémukoli prvku množiny \(M\), tedy také jejímu minimu. Proto, po pokud existuje minimum množiny \(M\), platí:
+Zároveň toto minimum je nejvyšší prvek uvedené množiny, protože všechny její prvky jsou menší nebo rovny jakémukoli prvku množiny \(M\), tedy také jejímu minimu. Proto, pokud existuje minimum množiny \(M\), platí:
 
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -1775,11 +1775,13 @@ Zároveň toto minimum je nejvyšší prvek uvedené množiny, protože všechny
 
 Infimum je tedy zobecnění pojmu minumum, obdobně supremum je zobecnění pojmu maximum.
 
-Množinu nazveme shora ohraničenou, pokud existuje číslo větší nebo rovno všem prvkům množiny. Obdobně množinu nazveme sdola ohraničenou pokud existuje číslo menší nebo rovno všem prvkům množiny.
+Množinu nazveme shora ohraničenou, pokud existuje číslo větší nebo rovno všem prvkům množiny. Obdobně množinu nazveme zdola ohraničenou pokud existuje číslo menší nebo rovno všem prvkům množiny.
 
 \section{Reálná čísla}
 
-Uvažujme dvě různá racionální čísla \(a\) a~\(b\). Mezi nimi existuje nekonečně mnoho jiných racionálních čísel, například čísel ve tvaru \(a + \frac{b - a}{k}\). Také vidíme, že k~libovolnému racionálnímu číslu \(a\) můžeme nalézt libovolně blízké číslo \(a \pm \frac{1}{k}\), stačí zvolit dostatečně velké \(k\). Racionální čísla jsou tedy nekonečně hustá, přesto ale mají mezery. Uvažujme množinu \(\{x: x^3 < 2\}\). Tato množina nemá v~oboru racionálních čísel supremum, protože neexistuje racionální číslo \(\left( \frac{a}{b} \right)^3 = \frac{a^3}{b^3} = 2\). Později uvidíme, že tuto podmínku splňuje číslo \(\sqrt[3]{2}\). Množina racionálních čísel je rozdělena na dvě podmnožiny \(M\) a~\(V\), jak vidíme na obrázku~\ref{img:real_numbers_example}.
+Uvažujme dvě různá racionální čísla \(a\) a~\(b\). Mezi nimi existuje nekonečně mnoho jiných racionálních čísel, například čísel ve tvaru \(a + \frac{b - a}{k}\). Také vidíme, že k~libovolnému racionálnímu číslu \(a\) můžeme nalézt libovolně blízké číslo \(a \pm \frac{1}{k}\), stačí zvolit dostatečně velké \(k\). Racionální čísla jsou tedy nekonečně hustá, přesto ale mají mezery. Například uhlopříčka čtverce o~straně délky 1 má délku \(\sqrt{2}\). Číslo \(\sqrt{2}\) ale není racionální. Vidíme tedy, že ani racionální čísla nám nedostačují pro popis objektů reálného světa.
+
+Uvažujme množinu \(\{x: x^3 < 2\}\). Tato množina nemá v~oboru racionálních čísel supremum, protože neexistuje racionální číslo splňující rovnici \(\left( \frac{a}{b} \right)^3 = \frac{a^3}{b^3} = 2\). Později uvidíme, že tuto podmínku splňuje číslo \(\sqrt[3]{2}\). Množina racionálních čísel je rozdělena na dvě podmnožiny \(M\) a~\(V\), jak vidíme na obrázku~\ref{img:real_numbers_example}.
 
 \begin{figure}[!h]
 \centering
@@ -1794,14 +1796,14 @@ Uvažujme dvě různá racionální čísla \(a\) a~\(b\). Mezi nimi existuje ne
 \draw (0, -0.2) -- (0, 0.2);
 \draw (0, -0.2) node[anchor=north]{\(\sqrt[3]{2}\)};
 
-\draw[<->] (-4.5, 0) -- (4.5, 0);
+\draw[->] (-4.5, 0) -- (4.5, 0);
 \draw (4.5, 0) node[anchor=north]{\(x\)};
 \end{tikzpicture}
 \caption{Příklad reálného čísla}
 \label{img:real_numbers_example}
 \end{figure}
 
-Množina racionálních čísel je rozdělena na dvě množiny tak, že všechna čísla z~množiny \(M\) jsou menší než všechna čísla z~množiny \(V\), jak udávají podmínky~\eqref{eq:real_1} a~\eqref{eq:real_2}. Supremum množiny \(M\) potažmo infimum množiny \(V\) nazveme reálným číslem.
+Množina racionálních čísel je rozdělena na dvě množiny tak, že všechna čísla z~množiny \(M\) jsou menší než všechna čísla z~množiny \(V\), jak udávají podmínky~\eqref{eq:real_1} až~\eqref{eq:real_4}. Supremum množiny \(M\) potažmo infimum množiny \(V\) nazveme reálným číslem.
 
 \begin{equation}
 \label{eq:real_1}
@@ -1857,14 +1859,14 @@ Neboli pokud je nějaké číslo prvkem množiny \(M\), pak jsou i~všechna men�
 Povšimněme si, že každou shora ohraničenou množinu \(M'\) můžeme rozšířit tak, aby splňovala podmínku~\eqref{eq:real_single_set} aniž bychom změnili její supremum:
 
 \begin{equation}
-M = \{x \in \rationals: \exists y \in M' \ x \leq y\} 
+M = \{x: x \in \rationals \land \exists y \in M' \ x \leq y\} 
 \end{equation}
 
-Proto platí, že každá shora ohraničená množina racionálních čísel má v~oboru reálných čísel supremum. Obdobně, každá zdola ohraničená množina racionálních čísel má v~oboru reálných čísel infimum. Reálná čísla můžeme proto definovat takto:
+Proto platí, že každá shora ohraničená množina racionálních čísel má v~oboru reálných čísel supremum. Obdobně, každá zdola ohraničená množina racionálních čísel má v~oboru reálných čísel infimum. Reálná čísla můžeme proto definovat jako supremum podmnožiny racionálních čísel:
 
 \begin{fact}
 \begin{equation}
-r \in \real \equivalent \exists M \ r = \sup(M)
+r \in \real \equivalent \exists M \ M \subset \rationals \land r = \sup(M)
 \end{equation}
 \end{fact}
 
@@ -1878,7 +1880,7 @@ a~proto \(\rationals \subset \real\).
 
 Mohli bychom definovat, jak provádět operace s~reálnými čísly pomocí manipulace s~množinami. Byla by to ale čistě teoretická definice, nikdo takto s~reálnými čísly nepočítá. Reálná čísla ale můžeme aproximovat pomocí racionálních čísel nebo pomocí desetinného rozvoje.
 
-Uvažujme tedy reálné číslo definované jako supremum množiny splňující podmínku~\eqref{eq:real_single_set}. V~ní uvažujme racionální čísla ve tvaru \(\frac{a}{b}\), kde \(b\) je pevně zvolený kladný jmenovatel. Potom existuje nejvyšší čitatel \(a\), respektive nejvyšší racionální číslo \(\frac{a}{b}\) se zvoleným jmenovatelem. Podle podmínky~\eqref{eq:real_single_set} musí být všechna menší racionální čísla se zvoleným jmenovatelem také obsažena v~množině. Takto jsme schopni aproximovat reálné číslo pomocí racionálního. Uvažujme dále pouze tzv. desetinné zlomky, tedy racionální čísla ve tvaru \(\frac{a}{10^n}\).
+Uvažujme tedy reálné číslo definované jako supremum množiny \(M\) splňující podmínku~\eqref{eq:real_single_set}. V~ní uvažujme racionální čísla ve tvaru \(\frac{a}{b}\), kde \(b\) je pevně zvolený kladný jmenovatel. Potom existuje nejvyšší čitatel \(a\), respektive nejvyšší racionální číslo \(\frac{a}{b}\) se zvoleným jmenovatelem. Podle podmínky~\eqref{eq:real_single_set} musí být všechna menší racionální čísla se zvoleným jmenovatelem také obsažena v~množině \(M\). Takto jsme schopni aproximovat reálné číslo pomocí racionálního. Uvažujme dále pouze tzv. desetinné zlomky, tedy racionální čísla ve tvaru \(\frac{a}{10^n}\).
 
 \begin{table}[ht]
 \centering
@@ -1898,40 +1900,38 @@ n & a & \(\frac{a}{10^n}\) & desetinné číslo\\
 \label{tab:real_decimal}
 \end{table}
 
-Takovýto tzv. nekonečný desetinný rozvoj je podle výše uvedeného postupu plně určen reálným čísle. Prozkoumejme, zda to platí i~naopak a~zda je reálné číslo plně určeno jeho desetinným rozvojem. Označme množinu všech čísel v~desetinném rozvoji \(S\), v~našem příkladu proto bude platit \(S = \{1, 1.2, 1.25, 1,259, 1.2599, ...\}\). Je zřejmé, že \(S \subset M\) a~proto \(\sup(S) \leq \sup(M)\).
+Takovýto tzv. nekonečný desetinný rozvoj je podle výše uvedeného postupu plně určen reálným číslem. Prozkoumejme, zda to platí i~naopak a~zda je reálné číslo plně určeno jeho desetinným rozvojem. Označme množinu všech čísel v~desetinném rozvoji \(S\), v~našem příkladu proto bude platit \(S = \{1, 1.2, 1.25, 1.259, 1.2599, ...\}\). Je zřejmé, že \(S \subset M\) a~proto \(\sup(S) \leq \sup(M)\).
 
-Předpokládejme, že \(\sup(S) < \sup(M)\). Potom \(\exists x \in M \ x > \sup(S)\). Označme rozdíl \(dx = x - \sup(S)\). Potom ale \(\exists n \in \naturalnumbers \ dx > \frac{1}{10^n}\). To znamená, že se desetinný rozvoj musí lišit na \(n\)-tém místě za desetinnou čárkou, protože tuto číslici můžeme zvýšit alespoň o~jedničku. Tím jsme ale dospěli ke sporu. Znamená to tedy, že nemůže platit \(\sup(S) < \sup(M)\) a~platí \(\sup(S) = \sup(M)\). Reálné číslo je tedy plně určeno svým (nekonečným) desetinným rozvojem. Pokud čtěnář zná pojem limity posloupnosti, pak jsme právě dokázali, že každé reálné číslo je rovno limitě posloupnosti svého desetinného rozvoje. 
+Předpokládejme, že \(\sup(S) < \sup(M)\). Potom \(\exists x \in M \ x > \sup(S)\). Označme rozdíl \(\mathrm{d}x = x - \sup(S)\). Potom ale \(\exists n \in \naturalnumbers \ \mathrm{d}x > \frac{1}{10^n}\). To znamená, že se desetinný rozvoj musí lišit na \(n\)-tém místě za desetinnou čárkou, protože tuto číslici můžeme zvýšit alespoň o~jedničku. Tím jsme ale dospěli ke sporu. Znamená to tedy, že nemůže platit \(\sup(S) < \sup(M)\) a~platí \(\sup(S) = \sup(M)\). Reálné číslo je tedy plně určeno svým (nekonečným) desetinným rozvojem. Pokud čtěnář zná pojem limity posloupnosti, pak jsme právě dokázali, že každé reálné číslo je rovno limitě posloupnosti svého desetinného rozvoje. 
 
 Desetinný rozvoj nám umožňuje s~reálnými čísly počítat. Samozřejmě počítáme s~konečným počtem desetinných míst a~musíme pak mít na paměti, že počítáme pouze přibližně.
 
-Rozšiřme definici množiny na reálná čísla. Nejprve rozšiřme definice~\eqref{eq:rational_power_by_one} a~\eqref{eq:rational_power_distributivity} na reálné základy. Získáme tak definice~\eqref{eq:real_power_by_one} a~\eqref{eq:real_power_distributivity}.
+Rozšiřme definici mocniny na reálná čísla. Nejprve rozšiřme definice~\eqref{eq:rational_power_by_one} a~\eqref{eq:rational_power_distributivity} na reálné základy. Získáme tak definice~\eqref{eq:real_power_by_one_def} a~\eqref{eq:real_power_distributivity_def}.
 
 \begin{fact}
 \begin{prolog}
 ?-	make_test_numbers(Values),
 	print_validated_formula(
-		'real_power_by_one',
+		'real_power_by_one_def',
 		forall_in(A, 'a', real_numbers, Values,
 			equal([A^1, A])
 		)
 	).				
 \end{prolog}
-\eeq{real_power_by_one}
+\eeq{real_power_by_one_def}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
 ?-	make_test_numbers(Values),
 	print_validated_formula(
-		'real_power_distributivity',
+		'real_power_distributivity_def',
 		forall_in(A, 'a', positive_real_numbers, Values,
-			forall_in(B, 'b', integers, Values,
-				forall_in(C, 'c', integers, Values,
-					equal([A^(B + C), A^B * A^C])
-				)
+			forall_in([B, C], ['b', 'c'], integers, Values,
+				equal([A^(B + C), A^B * A^C])
 			)
 		)
 	).				
 \end{prolog}
-\eeq{real_power_distributivity}
+\eeq{real_power_distributivity_def}
 \end{fact}
 
 \begin{prolog}
@@ -1939,10 +1939,8 @@ Rozšiřme definici množiny na reálná čísla. Nejprve rozšiřme definice~\e
 	print_validated_formula(
 		'real_power_fraction',
 		forall_in(A, 'a', positive_real_numbers, Values,
-			forall_in(B, 'b', integers, Values,
-				forall_in(C, 'c', integers, Values,
-					equal([A^(B - C), A^B / A^C])
-				)
+			forall_in([B, C], ['b', 'c'], integers, Values,
+				equal([A^(B - C), A^B / A^C])
 			)
 		)
 	).				
