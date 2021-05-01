@@ -4,7 +4,7 @@
 :- ensure_loaded("../equations/formula").
 :- ensure_loaded("../equations/truth_table").
 
-make_test_numbers([-1, 0, 1, 2, 3, 1.5]).
+make_test_numbers([-1, 0, 0.5, 1, 2, 3, 1.5]).
 make_test_nonzero_numbers([-1, 1, 2, 3, 1.5]).
 make_test_positive_numbers([1, 2, 3, 1.5]).
 make_test_log_bases([0.5, 2, 3, 1.5]).
@@ -173,7 +173,7 @@ To je logické, součet má představovat počet objektů, které ze dvou skupin
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'natural_numbers_comutativity',
 		forall_in([A, B], ['a', 'b'], natural_numbers, Values,
@@ -184,7 +184,7 @@ To je logické, součet má představovat počet objektů, které ze dvou skupin
 \eeq{natural_numbers_comutativity}
 %%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'natural_numbers_asociativity',
 		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
@@ -285,7 +285,7 @@ Z~definice~\eqref{eq:multiplication_definition} přímo plynou dva vztahy. Vztah
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'natural_multiply_by_one',
 		forall_in(A, 'a', natural_numbers, Values,
@@ -296,7 +296,7 @@ Z~definice~\eqref{eq:multiplication_definition} přímo plynou dva vztahy. Vztah
 \eeq{natural_multiply_by_one}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'multiplication_distributivity',
 		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
@@ -368,7 +368,7 @@ Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'multiplication_comutativity',
 		forall_in([A, B], ['a', 'b'], natural_numbers, Values,
@@ -379,7 +379,7 @@ Obdobně můžeme uvažovat o~asociativitě součinu popsaného rovnicí~\eqref{
 \eeq{multiplication_comutativity}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'multiplication_asociativity',
 		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
@@ -401,7 +401,7 @@ Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} 
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'natural_power_by_one',
 		forall_in(A, 'a', natural_numbers, Values,
@@ -412,7 +412,7 @@ Opět můžeme z~této definice odvodit rovnice~\eqref{eq:natural_power_by_one} 
 \eeq{natural_power_by_one}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'natural_power_distributivity',
 		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
@@ -427,7 +427,7 @@ Na rozdíl od sčítání a~násobení není umocňování komutativní operace 
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'power_by_multiplication_proof',
 		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
@@ -441,7 +441,7 @@ Na rozdíl od sčítání a~násobení není umocňování komutativní operace 
 Mocniny bohužel není možné jednoduše graficky znázornit jako násobení nebo sčítání. Rovnici proto dokážeme matematickou indukcí. Nejdříve ověříme platnost rovnice pro \(c = 1\):
 
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'power_by_multiplication_proof_1',
 		forall_in([A, B], ['a', 'b'], natural_numbers, Values,
@@ -454,7 +454,7 @@ Mocniny bohužel není možné jednoduše graficky znázornit jako násobení ne
 Dále ověříme platnost výroku~\eqref{eq:power_by_multiplication_proof_2} a~to pomocí rovnice~\eqref{eq:power_by_multiplication_proof_3}.
 
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'power_by_multiplication_proof_2',
 		forall_in([A, B, C], ['a', 'b', 'c'], natural_numbers, Values,
@@ -494,7 +494,7 @@ Dále dokažme rovnici~\eqref{eq:power_of_multiplication_proof}.
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'power_of_multiplication_proof',
 		forall_in([A, B, N], ['a', 'b', 'n'], natural_numbers, Values,
@@ -1148,7 +1148,7 @@ Nakonec rozšiřme definici mocniny na racionální mocněnce a~celočíselné m
 
 \begin{fact}
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'rational_power_by_one',
 		forall_in(A, 'a', rational_numbers, Values,
@@ -1159,10 +1159,10 @@ Nakonec rozšiřme definici mocniny na racionální mocněnce a~celočíselné m
 \eeq{rational_power_by_one}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_natural_numbers(Values),
+?-	make_test_numbers(Values),
 	print_validated_formula(
 		'rational_power_distributivity',
-		forall_in(A, 'a', rational_numbers, Values,
+		forall_in(A, 'a', difference(rational_numbers, set_of([0])), Values,
 			forall_in([B, C], ['b', 'c'], integers, Values,
 				equal([A^(B + C), A^B * A^C])
 			)
@@ -1944,7 +1944,7 @@ Rozšiřme definici mocniny na reálná čísla. Nejprve rozšiřme definice~\eq
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'real_power_distributivity_def',
-		forall_in(A, 'a', positive_real_numbers, Values,
+		forall_in(A, 'a', difference(real_numbers, set_of([0])), Values,
 			forall_in([B, C], ['b', 'c'], integers, Values,
 				equal([A^(B + C), A^B * A^C])
 			)
@@ -1954,31 +1954,16 @@ Rozšiřme definici mocniny na reálná čísla. Nejprve rozšiřme definice~\eq
 \eeq{real_power_distributivity_def}
 \end{fact}
 
-\begin{prolog}
-?-	make_test_numbers(Values),
-	print_validated_formula(
-		'real_power_fraction',
-		forall_in(A, 'a', positive_real_numbers, Values,
-			forall_in([B, C], ['b', 'c'], integers, Values,
-				equal([A^(B - C), A^B / A^C])
-			)
-		)
-	).				
-\end{prolog}
-\eeq{real_power_fraction}
-
 Definujme odmocňování jako inverzní funkci k~umocňování. Musíme se ale omezit na kladné hodnoty základu:
 
 \begin{prolog}
 ?-	print_validated_formula(
 		'sqrt_def',
-		forall_in(A, 'a', positive_real_numbers, [1, 2, 3],
+		forall_in([A, C], ['a', 'c'], positive_real_numbers, [1, 2, 3, 4, 9, 8, 27],
 			forall_in(B, 'b', natural_numbers, [1, 2, 3],
-				forall_in(C, 'c', positive_real_numbers, [1, 2, 3, 4, 9, 8, 27],
-					equiv(
-						equal(C, A^B),
-						equal(A, sqrt(B, C))
-					)
+				equiv(
+					equal(C, A^B),
+					equal(A, sqrt(B, C))
 				)
 			)
 		)
@@ -1986,35 +1971,33 @@ Definujme odmocňování jako inverzní funkci k~umocňování. Musíme se ale o
 \end{prolog}
 \eeq{sqrt_def}
 
-Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:sqrt_inv_1} a~\eqref{eq:sqrt_inv_2}.
+Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:sqrt_inv_1_proof} a~\eqref{eq:sqrt_inv_2_proof}.
 
 \begin{prolog}
-?-	make_test_positive_numbers(Bases),
-	make_test_natural_numbers(Exponents),
+?-	make_test_numbers(Numbers),
 	print_validated_formula(
-		'sqrt_inv_1',
-		forall_in(A, 'a', positive_real_numbers, Bases,
-			forall_in(B, 'b', natural_numbers, Exponents,
+		'sqrt_inv_1_proof',
+		forall_in(A, 'a', positive_real_numbers, Numbers,
+			forall_in(B, 'b', natural_numbers, Numbers,
 				equal(sqrt(B, A)^B, A)
 			)
 		)
 	).				
 \end{prolog}
-\eeq{sqrt_inv_1}
+\eeq{sqrt_inv_1_proof}
 %%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_positive_numbers(Bases),
-	make_test_natural_numbers(Exponents),
+?-	make_test_numbers(Numbers),
 	print_validated_formula(
-		'sqrt_inv_2',
-		forall_in(A, 'a', positive_real_numbers, Bases,
-			forall_in(B, 'b', natural_numbers, Exponents,
+		'sqrt_inv_2_proof',
+		forall_in(A, 'a', positive_real_numbers, Numbers,
+			forall_in(B, 'b', natural_numbers, Numbers,
 				equal(sqrt(B, A^B), A)
 			)
 		)
 	).				
 \end{prolog}
-\eeq{sqrt_inv_2}
+\eeq{sqrt_inv_2_proof}
 
 Zkusme dále rozšířit exponent na racionální čísla. Začněme identitou~\eqref{eq:sqrt_rational_proof}.
 
@@ -2037,32 +2020,28 @@ Zkusme dále rozšířit exponent na racionální čísla. Začněme identitou~\
 \end{prolog}
 \eeq{sqrt_rational_proof}
 
-Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1} vidíme, že platí vztahy~\eqref{eq:pow_rational_1} a~\eqref{eq:pow_rational_2}. Tím jsme definovali umocňování pro racionální exponent.
+Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1_proof} vidíme, že platí vztahy~\eqref{eq:pow_rational_1_proof} a~\eqref{eq:pow_rational_2_proof}. Tím jsme definovali umocňování pro racionální exponent.
 
-\begin{fact}
 \begin{prolog}
-?-	make_test_positive_numbers(Bases),
-	make_test_natural_numbers(Exponents),
+?-	make_test_numbers(Numbers),
 	print_validated_formula(
-		'pow_rational_1',
-		forall_in(A, 'a', positive_real_numbers, Bases,
-			forall_in(B, 'b', natural_numbers, Exponents,
+		'pow_rational_1_proof',
+		forall_in(A, 'a', positive_real_numbers, Numbers,
+			forall_in(B, 'b', natural_numbers, Numbers,
 				equal(A^(1 / B), sqrt(B, A))
 			)
 		)
 	).				
 \end{prolog}
-\eeq{pow_rational_1}
+\eeq{pow_rational_1_proof}
 %%%%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_positive_numbers(Bases),
-	make_test_integers(Numerators),
-	make_test_natural_numbers(Denominators),
+?-	make_test_numbers(Numbers),
 	print_validated_formula(
-		'pow_rational_2',
-		forall_in(A, 'a', positive_real_numbers, Bases,
-			forall_in(B, 'b', integers, Numerators,
-				forall_in(C, 'c', natural_numbers, Denominators,
+		'pow_rational_2_proof',
+		forall_in(A, 'a', positive_real_numbers, Numbers,
+			forall_in(B, 'b', integers, Numbers,
+				forall_in(C, 'c', natural_numbers, Numbers,
 					equal([
 						A^(B / C),
 						(sqrt(C, A)^B),
@@ -2073,8 +2052,7 @@ Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1} vidí
 		)
 	).				
 \end{prolog}
-\eeq{pow_rational_2}
-\end{fact}
+\eeq{pow_rational_2_proof}
 
 Protože umocňování není komutativní operace, tak můžeme definovat ještě jinou inverzní operaci, a~to logaritmus.
 
@@ -2114,7 +2092,7 @@ Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:log_inv_1} a~
 \eeq{log_inv_1}
 %%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
-?-	make_test_positive_numbers(Numbers),
+?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'log_inv_2',
 		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
@@ -2440,10 +2418,65 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 	).
 \end{prolog}
 \eeq{real_power_by_negative_exponent}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'sqrt_inv_1',
+		forall_in(A, 'a', positive_real_numbers, Numbers,
+			forall_in(B, 'b', natural_numbers, Numbers,
+				equal(sqrt(B, A)^B, A)
+			)
+		)
+	).				
+\end{prolog}
 \eeq{sqrt_inv_1}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'sqrt_inv_2',
+		forall_in(A, 'a', positive_real_numbers, Numbers,
+			forall_in(B, 'b', natural_numbers, Numbers,
+				equal(sqrt(B, A^B), A)
+			)
+		)
+	).				
+\end{prolog}
 \eeq{sqrt_inv_2}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'pow_rational_1',
+		forall_in(A, 'a', positive_real_numbers, Numbers,
+			forall_in(B, 'b', natural_numbers, Numbers,
+				equal(A^(1 / B), sqrt(B, A))
+			)
+		)
+	).				
+\end{prolog}
 \eeq{pow_rational_1}
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'pow_rational_2',
+		forall_in(A, 'a', positive_real_numbers, Numbers,
+			forall_in(B, 'b', integers, Numbers,
+				forall_in(C, 'c', natural_numbers, Numbers,
+					equal([
+						A^(B / C),
+						(sqrt(C, A)^B),
+						sqrt(C, A^B)
+					])
+				)
+			)
+		)
+	).				
+\end{prolog}
 \eeq{pow_rational_2}
+%%%%%%%%%%%%%%%%%%%%%%%
 \eeq{log_inv_1}
 \eeq{log_inv_2}
 %%%%%%%%%%%%%%%%%%%%%
