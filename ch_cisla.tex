@@ -3,6 +3,7 @@
 \begin{prolog}
 :- ensure_loaded("../equations/formula").
 :- ensure_loaded("../equations/truth_table").
+:- ensure_loaded("../equations/draw_1d_function").
 
 make_test_numbers([-1, 0, 0.5, 1, 2, 3, 1.5]).
 make_test_nonzero_numbers([-1, 1, 2, 3, 1.5]).
@@ -2053,6 +2054,17 @@ Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1_proof}
 	).				
 \end{prolog}
 \eeq{pow_rational_2_proof}
+
+\begin{prolog}
+?-	draw_1d_function(
+		'pow_function',
+		X,
+		2^X,
+		-2, +2
+	).				
+\end{prolog}
+\eonefunc{pow_function}{Mocnina}
+
 
 Protože umocňování není komutativní operace, tak můžeme definovat ještě jinou inverzní operaci, a~to logaritmus.
 
