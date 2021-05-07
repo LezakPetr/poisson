@@ -80,3 +80,14 @@ less_than(_, _, log_false).
 ?-	less_than(5 + 3, 8, log_false).
 ?-	less_than(5 + 3, 7, log_false).
 
+
+% For each element of the list n-th element of sublist is obtained. These elements are collected int Result list.
+% all_nth(Index, ListOfLists, Result)
+all_nth0(_, [], []).
+
+all_nth0(Index, [List | TailList], [Element | TailResult]) :-
+	nth0(Index, List, Element),
+	all_nth0(Index, TailList, TailResult).
+
+?-	all_nth0(1, [[x, y, z], [a, b, c]], [y, b]).
+
