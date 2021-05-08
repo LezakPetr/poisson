@@ -91,3 +91,14 @@ all_nth0(Index, [List | TailList], [Element | TailResult]) :-
 
 ?-	all_nth0(1, [[x, y, z], [a, b, c]], [y, b]).
 
+
+write_list(Stream, [A, B | Tail]) :-
+	write(Stream, A),
+	write(Stream, ", "),
+	write_list(Stream, B | Tail).
+
+write_list(Stream, [A]) :-
+	write(Stream, A).
+
+write_list(_, []).
+

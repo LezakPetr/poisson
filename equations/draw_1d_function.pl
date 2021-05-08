@@ -28,7 +28,7 @@ draw_function_points([_], []).
 
 draw_function_points([A, B | Tail], Elements) :-
 	identity_transform(Transform),
-	draw_line(Transform, A, B, "", LineElements),
+	draw_line(Transform, A, B, [], LineElements),
 	draw_function_points([B | Tail], SubElements),
 	append([LineElements, SubElements], Elements).
 
@@ -39,7 +39,7 @@ marks_length(0.15).
 draw_axis(Transform, Min, Max, ElementList) :-
 	Begin is Min - 0.5,
 	End is Max + 0.5,
-	draw_line(Transform, [Begin, 0], [End, 0], "[->]", AxisElements),
+	draw_line(Transform, [Begin, 0], [End, 0], [arrows(none, arrow)], AxisElements),
 	draw_marks(Transform, Min, Max, MarksElements),
 	append([AxisElements, MarksElements], ElementList).
 
@@ -52,8 +52,8 @@ draw_marks_int(Transform, X, End, ElementList) :-
 	End >= X,
 	!,
 	marks_length(MarksLength),
-	draw_line(Transform, [X, -MarksLength], [X, MarksLength], "", MarkElements),
-	draw_text(Transform, [X, 0], X, "[anchor=north east]", LabelElements),
+	draw_line(Transform, [X, -MarksLength], [X, MarksLength], [], MarkElements),
+	draw_text(Transform, [X, 0], X, [anchor(+1, +1)], LabelElements),
 	Next is X + 1,
 	draw_marks_int(Transform, Next, End, SubElementList),
 	append([MarkElements, LabelElements, SubElementList], ElementList).

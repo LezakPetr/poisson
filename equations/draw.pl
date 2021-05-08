@@ -36,21 +36,61 @@ print_coords(Stream, [X, Y]) :-
 	write(Stream, Y),
 	write(Stream, ")").
 
-print_element(Stream, line(A, B, Style)) :-
-	write(Stream, "\\draw"),
-	write(Stream, Style),
-	write(Stream, " "),
+
+line_arrow(_, none, "").
+line_arrow(begin, arrow, "<").
+line_arrow(end, arrow, ">").
+
+line_arg(arrows(Begin, End), Arg) :-
+	line_arrow(begin, Begin, BeginArrow),
+	line_arrow(end, End, EndArrow),
+	atomic_list_concat([BeginArrow, "-", EndArrow], Arg).
+
+
+line_arg_list([], []).
+
+line_arg_list([Style | StyleTail], [Arg | ArgTail]) :-
+	line_arg(Style, Arg),
+	line_arg_list(StyleTail, ArgTail).
+
+anchor_x(-1, "west").
+anchor_x(0, "").
+anchor_x(+1, "east").
+
+anchor_y(-1, "south").
+anchor_y(0, "").
+anchor_y(+1, "north").
+
+text_arg(anchor(X, Y), Arg) :-
+	anchor_x(X, ArgX),
+	anchor_y(Y, ArgY),
+	atomic_list_concat(["anchor=", ArgY, " ", ArgX], Arg).
+
+text_arg_list([], []).
+
+text_arg_list([Style | StyleTail], [Arg | ArgTail]) :-
+	text_arg(Style, Arg),
+	text_arg_list(StyleTail, ArgTail).
+
+
+
+print_element(Stream, line(A, B, StyleList)) :-
+	write(Stream, "\\draw["),
+	line_arg_list(StyleList, ArgList),
+	write_list(Stream, ArgList),
+	write(Stream, "] "),
 	print_coords(Stream, A),
 	write(Stream, " -- "),
 	print_coords(Stream, B),
 	writeln(Stream, ";").
 
-print_element(Stream, text(Pos, Text, Style)) :-
+print_element(Stream, text(Pos, Text, StyleList)) :-
 	write(Stream, "\\draw "),
 	print_coords(Stream, Pos),
-	write(Stream, " node"),
-	write(Stream, Style),
-	write(Stream, "{"),
+	write(Stream, " node["),
+	text_arg_list(StyleList, ArgList),
+	write_list(Stream, ArgList),
+	write(Stream, "]{"),
 	write(Stream, Text),
 	writeln(Stream, "};").
 
