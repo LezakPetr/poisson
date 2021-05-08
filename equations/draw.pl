@@ -46,6 +46,9 @@ line_arg(arrows(Begin, End), Arg) :-
 	line_arrow(end, End, EndArrow),
 	atomic_list_concat([BeginArrow, "-", EndArrow], Arg).
 
+line_arg(color(C), Arg) :-
+	atomic_list_concat(["color=", C], Arg).
+
 
 line_arg_list([], []).
 
