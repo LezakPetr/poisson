@@ -2,7 +2,7 @@
 :- ensure_loaded(draw).
 
 
-draw_1d_function(Label, X, Formula, MinX, MaxX) :-
+draw_1d_function(Label, X, LabelX, Formula, MinX, MaxX) :-
 	calculate_function_points(X, Formula, MinX, MaxX, PointList),
 	all_nth0(1, PointList, CoordsY),
 	min_list(CoordsY, MinY),
@@ -15,11 +15,22 @@ draw_1d_function(Label, X, Formula, MinX, MaxX) :-
 	flip_xy_transform(TransformAxisY),
 	draw_marks(TransformAxisX, UpdatedMinX, UpdatedMaxX, UpdatedMinY, UpdatedMaxY, MarksElementsX),
 	draw_marks(TransformAxisY, UpdatedMinY, UpdatedMaxY, UpdatedMinX, UpdatedMaxX, MarksElementsY),
-	draw_axis(TransformAxisX, UpdatedMinX, UpdatedMaxX, "x", AxisXElements),
-	draw_axis(TransformAxisY, UpdatedMinY, UpdatedMaxY, "y", AxisYElements),
+	draw_axis(TransformAxisX, UpdatedMinX, UpdatedMaxX, LabelX, AxisXElements),
+	calculate_label_y(declare_variable(X, LabelX, [], Formula), LabelY),
+	draw_axis(TransformAxisY, UpdatedMinY, UpdatedMaxY, LabelY, AxisYElements),
 	draw_function_points(PointList, PointElements),
 	append([MarksElementsX, MarksElementsY, AxisXElements, AxisYElements, PointElements], ElementList),
 	print_image_to_file(Label, ElementList).
+
+calculate_label_y(Formula, LabelY) :-
+	tmp_file_stream('text', File, OutStream),
+	print_expression_term(OutStream, Formula),
+	close(OutStream),
+	open(File, 'read', InStream),
+	read_line_to_string(InStream, LabelY),
+	close(InStream),
+	delete_file(File).
+
 
 
 sample_1d(MinX, MaxX, X) :-
@@ -43,7 +54,8 @@ draw_axis(Transform, MinX, MaxX, Label, ElementList) :-
 	Begin is MinX - 0.5,
 	End is MaxX + 0.5,
 	draw_line(Transform, [Begin, 0], [End, 0], [arrows(none, arrow)], AxisElements),
-	draw_text(Transform, [End, 0], Label, [anchor(+1, +1)], LabelElements),
+	atomic_list_concat(["\\(", Label, "\\)"], Text),
+	draw_text(Transform, [End, 0], Text, [anchor(+1, +1)], LabelElements),
 	append([AxisElements, LabelElements], ElementList).
 
 draw_marks(Transform, MinX, MaxX, MinY, MaxY, ElementList) :-

@@ -2057,14 +2057,25 @@ Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1_proof}
 
 \begin{prolog}
 ?-	draw_1d_function(
-		'pow_function',
+		'pow_function_1',
 		X,
+		'x',
 		2^X,
 		-2, +2
 	).				
 \end{prolog}
-\eimg{pow_function}{Mocnina}
+\eimg{pow_function_1}{Mocnina o~základu \(2\)}
 
+\begin{prolog}
+?-	draw_1d_function(
+		'pow_function_2',
+		X,
+		'x',
+		(1/2)^X,
+		-2, +2
+	).				
+\end{prolog}
+\eimg{pow_function_2}{Mocnina o~základu \(\frac{1}{2}\)}
 
 Protože umocňování není komutativní operace, tak můžeme definovat ještě jinou inverzní operaci, a~to logaritmus.
 

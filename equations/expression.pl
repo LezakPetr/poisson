@@ -971,12 +971,14 @@ print_expression_term(Stream, -A, PR) :-
 print_expression_term(Stream, A * B, PR) :-
 	print_binary_operator(Stream, A, B, PR, multiply, ' \\cdot ').
 
-print_expression_term(Stream, A / B, _) :-
+print_expression_term(Stream, A / B, PR) :-
+	print_bracket_if_needed(Stream, '(', PR, div),
 	write(Stream, '\\frac{'),
 	print_expression_term(Stream, A, root),   % root = no need of brackets
 	write(Stream, '}{'),
 	print_expression_term(Stream, B, root),   % root = no need of brackets
-	write(Stream, '}').
+	write(Stream, '}'),
+	print_bracket_if_needed(Stream, ')', PR, div).
 
 print_expression_term(Stream, A^B, PR) :-
 	print_bracket_if_needed(Stream, '(', PR, pow),
@@ -1118,9 +1120,10 @@ print_bracket_if_needed(Stream, Bracket, _, _) :-
 
 
 
-operator_priority(pow, 203).
-operator_priority(sqrt, 203).
-operator_priority(log, 203).
+operator_priority(pow, 204).
+operator_priority(sqrt, 204).
+operator_priority(log, 204).
+operator_priority(div, 203).
 operator_priority(multiply, 202).
 operator_priority(opposite, 201).
 operator_priority(plus, 200).
