@@ -34,7 +34,7 @@ calculate_label_y(Formula, LabelY) :-
 
 
 sample_1d(MinX, MaxX, X) :-
-	Count = 100,
+	Count = 50,
 	between(0, Count, N),
 	X is MinX + (MaxX - MinX) * N / Count.
 

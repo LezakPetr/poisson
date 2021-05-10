@@ -2021,7 +2021,7 @@ Zkusme dále rozšířit exponent na racionální čísla. Začněme identitou~\
 \end{prolog}
 \eeq{sqrt_rational_proof}
 
-Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1_proof} vidíme, že platí vztahy~\eqref{eq:pow_rational_1_proof} a~\eqref{eq:pow_rational_2_proof}. Tím jsme definovali umocňování pro racionální exponent.
+Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1_proof} vidíme, že platí vztah~\eqref{eq:pow_rational_1_proof}, z~něj pak plyne vztah~\eqref{eq:pow_rational_2_proof}. Tím jsme definovali umocňování pro racionální exponent.
 
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -2064,7 +2064,7 @@ Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1_proof}
 		-2, +2
 	).				
 \end{prolog}
-\eimg{pow_function_1}{Mocnina o~základu \(2\)}
+\eimg{pow_function_1}{Graf mocniny o~základu \(2\)}
 
 \begin{prolog}
 ?-	draw_1d_function(
@@ -2075,7 +2075,7 @@ Srovnáním vztahů~\eqref{eq:sqrt_rational_proof} a~\eqref{eq:sqrt_inv_1_proof}
 		-2, +2
 	).				
 \end{prolog}
-\eimg{pow_function_2}{Mocnina o~základu \(\frac{1}{2}\)}
+\eimg{pow_function_2}{Graf mocniny o~základu \(\frac{1}{2}\)}
 
 Protože umocňování není komutativní operace, tak můžeme definovat ještě jinou inverzní operaci, a~to logaritmus.
 
@@ -2098,13 +2098,13 @@ Protože umocňování není komutativní operace, tak můžeme definovat ješt�
 
 Říkáme, že \(b\) je logaritmem o~základu \(a\) z~argumentu \(c\). Základ logaritmu musí být kladný a~nesmí být roven 1. Argument logaritmu musí být kladný. V~dalších úvahách budeme vždy předpokládat, že jsou tyto předpoklady splněny.
 
-Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:log_inv_1} a~\eqref{eq:log_inv_2}.
+Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:log_inv_def_1} a~\eqref{eq:log_inv_def_2}.
 
 \begin{fact}
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
-		'log_inv_1',
+		'log_inv_def_1',
 		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
 			forall_in(B, 'b', real_numbers, Numbers,
 				equal(log(A, A^B), B)
@@ -2112,12 +2112,12 @@ Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:log_inv_1} a~
 		)
 	).				
 \end{prolog}
-\eeq{log_inv_1}
+\eeq{log_inv_def_1}
 %%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
-		'log_inv_2',
+		'log_inv_def_2',
 		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
 			forall_in(B, 'b', positive_real_numbers, Numbers,
 				equal(A^log(A, B), B)
@@ -2125,10 +2125,10 @@ Dosazením jednoho vztahu do druhého získáme identity~\eqref{eq:log_inv_1} a~
 		)
 	).				
 \end{prolog}
-\eeq{log_inv_2}
+\eeq{log_inv_def_2}
 \end{fact}
 
-Odvoďme vztah pro logaritmus součinu. Při odvození využijeme identitu~\eqref{eq:log_inv_2}. Dále využijeme fakt, že pro \(a \neq 1\) je funkce \(a^x\) prostá, tedy různým argumentům \(x\) přiřazuje různé hodnoty \(a^x\). Proto z~\(a^x = a^y\) plyne \(x = y\).
+Odvoďme vztah pro logaritmus součinu. Při odvození využijeme identitu~\eqref{eq:log_inv_def_2}. Dále využijeme fakt, že pro \(a \neq 1\) je funkce \(a^x\) prostá, tedy různým argumentům \(x\) přiřazuje různé hodnoty \(a^x\). Proto z~\(a^x = a^y\) plyne \(x = y\).
 
 \begin{prolog}
 ?-	make_test_positive_numbers(Numbers),
@@ -2230,6 +2230,19 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 \end{prolog}
 \eeq{log_base_proof}
 
+
+\begin{prolog}
+?-	draw_1d_function(
+		'log_function',
+		X,
+		'x',
+		log(2, X),
+		0.2, +4
+	).				
+\end{prolog}
+\eimg{log_function}{Graf logaritmu o~základu \(2\)}
+
+Nakonec uvedeme shrnutí užitečných vztahů pro počítání s~reálnými čísly. Některé vztahy jsme pro reálná čísla už nedokazovali, například vztahy \eqref{eq:real_numbers_add_comutativity} až \eqref{eq:real_multiplication_asociativity}. Je zřejmé, že pokud nějaká rovnice platí pro všechna racionální čísla, pak bude pravděpodobně platit i~pro reálná čísla, která leží \uv{mezi nimi}. Tato úvaha samozřejmě není důkaz, pro pochopení platnosti uvedených vztahů je však užitečná.
 
 \begin{fact}
 \begin{prolog}
@@ -2422,7 +2435,7 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'real_power_by_negative_exponent_2',
-		forall_in(A, 'a', difference(positive_real_numbers, set_of([0])), Numbers,
+		forall_in(A, 'a', positive_real_numbers, Numbers,
 			forall_in(B, 'b', real_numbers, Numbers,
 				equal([A^(-B), 1 / (A^B)])
 			)
@@ -2500,7 +2513,30 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 \end{prolog}
 \eeq{pow_rational_2}
 %%%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'log_inv_1',
+		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
+			forall_in(B, 'b', real_numbers, Numbers,
+				equal(log(A, A^B), B)
+			)
+		)
+	).				
+\end{prolog}
 \eeq{log_inv_1}
+%%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'log_inv_2',
+		forall_in(A, 'a', difference(positive_real_numbers, set_of([1])), Numbers,
+			forall_in(B, 'b', positive_real_numbers, Numbers,
+				equal(A^log(A, B), B)
+			)
+		)
+	).				
+\end{prolog}
 \eeq{log_inv_2}
 %%%%%%%%%%%%%%%%%%%%%
 \begin{prolog}

@@ -1115,9 +1115,11 @@ print_bracket_if_needed(_, _, SuperOperator, SubOperator) :-
 	bracket_not_needed(SuperOperator, SubOperator),
 	!.
 
-print_bracket_if_needed(Stream, Bracket, _, _) :-
-	write(Stream, Bracket).
+print_bracket_if_needed(Stream, '(', _, _) :-
+	write(Stream, '\\left(').
 
+print_bracket_if_needed(Stream, ')', _, _) :-
+	write(Stream, '\\right)').
 
 
 operator_priority(pow, 204).
