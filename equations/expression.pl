@@ -1,4 +1,5 @@
 :- ensure_loaded(common).
+:- ensure_loaded(math).
 
 
 % Predicate succeeds for boolean values.
@@ -256,8 +257,13 @@ log_subset(_, _, log_false).
 	log_subset(A, B, log_false).
 
 
-num_tolerance(1e-12).
 
+log_complex_equal(A, B, Equal) :-
+	complex_equal(A, B),
+	!,
+	Equal = log_true.
+
+log_complex_equal(_, _, log_false).
 
 
 % Evaluates function. Arguments must be evaluated.
@@ -296,6 +302,8 @@ evaluate_function(proof(Axioms, Conclusions), Value) :-
 
 evaluate_function(X, X) :-
 	number(X).
+
+evaluate_function(imag, complex(0, 1)).
 
 evaluate_function(set_of(Values), set(Set)) :-
 	make_set(Values, Set).
@@ -363,28 +371,20 @@ evaluate_function(superset(set(A), set(B)), Value) :-
 	log_subset(B, A, Value).
 
 evaluate_function(A + B, Y) :-
-	number(A),
-	number(B),
-	Y is A + B.
+	complex_plus(A, B, Y).
 
 evaluate_function(A - B, Y) :-
-	number(A),
-	number(B),
-	Y is A - B.
+	complex_minus(A, B, Y).
 
 evaluate_function(plus_minus(A, B, PM), Y) :-
-	number(A),
-	number(B),
-	Y is A + B * PM.
+	complex_times(B, PM, C),
+	complex_plus(A, C, Y).
 
 evaluate_function(-A, Y) :-
-	number(A),
-	Y is -A.
+	complex_negate(A, Y).
 
 evaluate_function(A * B, Y) :-
-	number(A),
-	number(B),
-	Y is A * B.
+	complex_times(A, B, Y).
 
 evaluate_function(A / B, Y) :-
 	number(A),
@@ -392,9 +392,7 @@ evaluate_function(A / B, Y) :-
 	Y is A / B.
 
 evaluate_function(A^B, Y) :-
-	number(A),
-	number(B),
-	Y is A^B.
+	complex_pow(A, B, Y).
 
 evaluate_function(sqrt(A, B), Y) :-
 	number(A),
@@ -406,17 +404,15 @@ evaluate_function(log(A, B), Y) :-
 	number(B),
 	Y is log(B) / log(A).
 
-evaluate_function(equal(List), Value) :-
-	is_list(List),
-	num_tolerance(Tolerance),
-	min_list(List, Min),
-	max_list(List, Max),
-	less_or_equal(Max - Min, Tolerance, Value).
+evaluate_function(equal([_]), log_true).
+
+evaluate_function(equal([A, B | Tail]), Value) :-
+	log_complex_equal(A, B, Equal),
+	evaluate_function(equal([B | Tail]), TailEqual),
+	log_and(Equal, TailEqual, Value).
 
 evaluate_function(equal(A, B), Value) :-
-	number(A),
-	number(B),
-	evaluate_function(equal([A, B]), Value).
+	log_complex_equal(A, B, Value).
 
 evaluate_function(not_equal(A, B), Value) :-
 	evaluate_function(equal([A, B]), IsEqual),
@@ -424,19 +420,23 @@ evaluate_function(not_equal(A, B), Value) :-
 
 evaluate_function(less_than(A, B), Value) :-
 	num_tolerance(Tolerance),
-	less_than(A, B - Tolerance, Value).
+	Treshold is B - Tolerance,
+	less_than(A, Treshold, Value).
 
 evaluate_function(greater_than(A, B), Value) :-
 	num_tolerance(Tolerance),
-	less_than(B, A - Tolerance, Value).
+	Treshold is A - Tolerance,
+	less_than(B, Treshold, Value).
 
 evaluate_function(less_or_equal(A, B), Value) :-
 	num_tolerance(Tolerance),
-	less_or_equal(A, B + Tolerance, Value).
+	Treshold is B + Tolerance,
+	less_or_equal(A, Treshold, Value).
 
 evaluate_function(greater_or_equal(A, B), Value) :-
 	num_tolerance(Tolerance),
-	less_or_equal(B, A + Tolerance, Value).
+	Treshold is A + Tolerance,
+	less_or_equal(B, Treshold, Value).
 
 evaluate_function(min(set(S)), Value) :-
 	min_list(S, Value).
@@ -779,6 +779,10 @@ print_expression_term(Stream, N, _) :-
 	number(N),
 	!,
 	write(Stream, N).
+
+print_expression_term(Stream, imag, _) :-
+	!,
+	write(Stream, ' \\imag ').
 
 print_expression_term(Stream, empty_set, _) :-
 	!,
