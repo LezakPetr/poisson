@@ -93,22 +93,34 @@ complex_minus(A, B, complex(ReY, ImY)) :-
 ?-	complex_minus(complex(1, 2), complex(3, 4), complex(-2, -2)).
 
 
-complex_times(A, B, Y) :-
+complex_multiply(A, B, Y) :-
 	number(A),
 	number(B),
 	!,
 	Y is A * B.
 
-complex_times(A, B, complex(ReY, ImY)) :-
+complex_multiply(A, B, complex(ReY, ImY)) :-
 	as_complex(A, complex(ReA, ImA)),
 	as_complex(B, complex(ReB, ImB)),
 	ReY is ReA * ReB - ImA * ImB,
 	ImY is ReA * ImB + ImA * ReB.
 
-?-	complex_times(2, 3, 6).
-?-	complex_times(5, complex(3, 4), complex(15, 20)).
-?-	complex_times(complex(3, 4), 5, complex(15, 20)).
-?-	complex_times(complex(1, 2), complex(3, 4), complex(-5, 10)).
+?-	complex_multiply(2, 3, 6).
+?-	complex_multiply(5, complex(3, 4), complex(15, 20)).
+?-	complex_multiply(complex(3, 4), 5, complex(15, 20)).
+?-	complex_multiply(complex(1, 2), complex(3, 4), complex(-5, 10)).
+
+complex_divide(A, B, Y) :-
+	number(A),
+	number(B),
+	!,
+	Y is A / B.
+
+complex_divide(A, B, complex(ReY, ImY)) :-
+	as_complex(A, complex(ReA, ImA)),
+	as_complex(B, complex(ReB, ImB)),
+	ReY is (ReA * ReB + ImA * ImB) / (ReB^2 + ImB^2),
+	ImY is (ImA * ReB - ReA * ImB) / (ReB^2 + ImB^2).
 
 
 complex_exp(A, complex(ReY, ImY)) :-
@@ -141,7 +153,7 @@ complex_pow(A, B, Y) :-
 
 complex_pow(A, B, Y) :-
 	complex_ln(A, LnA),
-	complex_times(B, LnA, Exponent),
+	complex_multiply(B, LnA, Exponent),
 	complex_exp(Exponent, Y).
 
 ?-	complex_pow(2, 3, Y),

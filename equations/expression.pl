@@ -390,19 +390,17 @@ evaluate_function(A - B, Y) :-
 	complex_minus(A, B, Y).
 
 evaluate_function(plus_minus(A, B, PM), Y) :-
-	complex_times(B, PM, C),
+	complex_multiply(B, PM, C),
 	complex_plus(A, C, Y).
 
 evaluate_function(-A, Y) :-
 	complex_negate(A, Y).
 
 evaluate_function(A * B, Y) :-
-	complex_times(A, B, Y).
+	complex_multiply(A, B, Y).
 
 evaluate_function(A / B, Y) :-
-	number(A),
-	number(B),
-	Y is A / B.
+	complex_divide(A, B, Y).
 
 evaluate_function(A^B, Y) :-
 	complex_pow(A, B, Y).
