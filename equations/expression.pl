@@ -148,6 +148,13 @@ log_in_reals(X, log_true) :-
 
 log_in_reals(_, log_false).
 
+% Checks if value is in set of complex numbers
+log_in_complex(X, log_true) :-
+	as_complex(X, _),
+	!.
+
+log_in_complex(_, log_false).
+
 
 ?- log_in_integers(42, log_true).
 ?- log_in_integers(0, log_true).
@@ -305,6 +312,8 @@ evaluate_function(X, X) :-
 
 evaluate_function(imag, complex(0, 1)).
 
+evaluate_function(complex(Re, Im), complex(Re, Im)).
+
 evaluate_function(set_of(Values), set(Set)) :-
 	make_set(Values, Set).
 
@@ -316,6 +325,7 @@ evaluate_function(integers, integers).
 evaluate_function(rational_numbers, rational_numbers).
 evaluate_function(real_numbers, real_numbers).
 evaluate_function(positive_real_numbers, positive_real_numbers).
+evaluate_function(complex_numbers, complex_numbers).
 
 evaluate_function(in(X, set(S)), Value) :-
 	log_in_set(X, S, Value).
@@ -336,6 +346,9 @@ evaluate_function(in(X, positive_real_numbers), Value) :-
 	log_in_reals(X, IsReal),
 	less_than(0, X, IsPositive),
 	log_and(IsReal, IsPositive, Value).
+
+evaluate_function(in(X, complex_numbers), Value) :-
+	log_in_complex(X, Value).
 
 evaluate_function(not_in(X, S), Value) :-
 	evaluate_function(in(X, S), InSet),
@@ -807,6 +820,10 @@ print_expression_term(Stream, real_numbers, _) :-
 print_expression_term(Stream, positive_real_numbers, _) :-
 	!,
 	write(Stream, ' \\real^+ ').
+
+print_expression_term(Stream, complex_numbers, _) :-
+	!,
+	write(Stream, ' \\complex ').
 
 print_expression_term(Stream, set_of(Values), _) :-
 	!,

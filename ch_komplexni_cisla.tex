@@ -6,25 +6,12 @@
 :- ensure_loaded("../equations/truth_table").
 :- ensure_loaded("../equations/draw_1d_function").
 
-make_test_numbers([-1, 0, 0.5, 1, 2, 3, 1.5]).
-make_test_nonzero_numbers([-1, 1, 2, 3, 1.5]).
-make_test_positive_numbers([1, 2, 3, 1.5]).
-make_test_log_bases([0.5, 2, 3, 1.5]).
-make_test_integers([-3, -2, -1, 0, 1, 2, 3]).
-make_test_nonzero_integers([-3, -2, -1, 1, 2, 3]).
-make_test_natural_numbers([1, 2, 3, 4, 5]).
-make_test_predicates(Y, [equal([Y, 1]), equal([Y, 2]), log_true, log_false]).
-
-make_test_nonempty_sets([set(S1), set(S2), set(S3), set(S4)]) :-
-	make_set([1], S1),
-	make_set([2], S2),
-	make_set([1, 2], S3),
-	make_set([-1, 0, 1, 2, 3, 1.5], S4).
-	
+make_test_numbers([-1, 0, 0.5, 1, 2, 3, 1.5, complex(0, 1), complex(0, -1), complex(1, 1)]).	
 \end{prolog}
 
 V~sekci \ref{sec:realna_cisla} věnované reálným číslům jsme větou~\eqref{eq:sqrt_def} definovali odmocninu kladných čísel. Důvodem tohoto omezení je fakt, že v oboru reálných čísel neexistují sudé odmocniny ze záporných čísel. Například rovnice \(x^2 = -1\) nemá v~oboru reálných čísel řešení, neexistuje proto \(\sqrt{-1}\). Abychom mohli takovéto rovnice řešit, tak rovnicí~\eqref{eq:imag_def} zavedeme imaginární jednotku \(\imag\).
 
+\begin{fact}
 \begin{prolog}
 ?-	print_validated_formula(
 		'imag_def',
@@ -32,3 +19,43 @@ V~sekci \ref{sec:realna_cisla} věnované reálným číslům jsme větou~\eqref
 	).
 \end{prolog}
 \eeq{imag_def}
+\end{fact}
+
+Uvažujme dvě reálná čísla \(a\) a~\(b\), z~nichž alespoň jedno je nenulové. Chtějme nalézt takovou kombinaci těchto čísel, aby platilo:
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'complex_units_ortogonality',
+		declare_variable(A, 'a', Numbers,
+			declare_variable(B, 'b', Numbers,
+				proof([
+					equal(A * 1 + B * imag, 0)
+				],
+				[
+					equal(A * 1, -B * imag),
+					equal(A^2 * 1^2, B^2 * imag^2),
+					equal(A^2, -B^2),
+					equal(A^2 + B^2, 0)
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{complex_units_ortogonality}
+
+Vidíme, že pro nenulová čísla tato rovnice nemůže být splněna. Reálná jednotka \(1\) a~imaginární jednotka \(\imag\) jsou proto navzájem ortogonální - jednu není možné vyjádřit pomocí druhé. Tyto jednotky si tedy můžeme představit jako vzájemně kolmé jednotkové osy ve dvojrozměrném prostoru. Každý bod v~tomto prostoru můžeme popsat jako lineární kombinaci těchto jednotek. Proto tuto lineární kombinaci \(a + b \cdot \imag\) nazveme komplexním číslem. Množinu všech komplexních čísel označíme \(\complex\).
+
+\begin{fact}
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		'complex_def',
+		forall_in([A, B], ['a', 'b'], real_numbers, Numbers,
+			in(A + B * imag, complex_numbers)
+		)
+	).
+\end{prolog}
+\eeq{complex_def}
+\end{fact}
+
