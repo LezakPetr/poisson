@@ -312,6 +312,12 @@ evaluate_function(X, X) :-
 
 evaluate_function(imag, complex(0, 1)).
 
+evaluate_function(e, Value) :-
+	Value is e.
+
+evaluate_function(pi, Value) :-
+	Value is pi.
+
 evaluate_function(complex(Re, Im), complex(Re, Im)).
 
 evaluate_function(set_of(Values), set(Set)) :-
@@ -384,14 +390,14 @@ evaluate_function(superset(set(A), set(B)), Value) :-
 	log_subset(B, A, Value).
 
 evaluate_function(A + B, Y) :-
-	complex_plus(A, B, Y).
+	complex_add(A, B, Y).
 
 evaluate_function(A - B, Y) :-
-	complex_minus(A, B, Y).
+	complex_subtract(A, B, Y).
 
 evaluate_function(plus_minus(A, B, PM), Y) :-
 	complex_multiply(B, PM, C),
-	complex_plus(A, C, Y).
+	complex_add(A, C, Y).
 
 evaluate_function(-A, Y) :-
 	complex_negate(A, Y).
@@ -517,6 +523,33 @@ evaluate_function(sup(set(S)), Value) :-
 ?-	evaluate_function(inf(set([1, 5, 7, -3, 4])), -3).
 ?-	evaluate_function(sup(set([1, 5, 7, -3, 4])), 7).
 
+function_derivative(F, []) :-
+	number(F).
+
+function_derivative(A + B, [[A, 1], [B, 1]]).
+function_derivative(A - B, [[A, 1], [B, -1]]).
+function_derivative(A * B, [[A, B], [B, A]]).
+function_derivative(A^B, [[A, B * A^(B - 1)], [B, log(e, A) * e^(B * log(e, A))]]).
+
+expression_derivative(X, X, 1) :-
+	var(X),
+	!.
+
+expression_derivative(X, Expression, Derivative) :-
+	function_derivative(Expression, FunctionDerivative),
+	compound_derivative(X, FunctionDerivative, Derivative).
+
+
+compound_derivative(_, [], 0).
+
+compound_derivative(X, [[SubExpression, Der] | Tail], Result) :-
+	expression_derivative(X, SubExpression, SubDerivative),
+	compound_derivative(X, Tail, TailDerivative),
+	symbolic_multiply(Der, SubDerivative, CompoundDerivative),
+	symbolic_add(CompoundDerivative, TailDerivative, Result).
+
+?- 	expression_derivative(X, (2*X + 1)^3, 3 * (2*X + 1)^(3 - 1) * 2).
+
 
 evaluate_list([], []).
 
@@ -623,6 +656,10 @@ evaluate_expression(List, EvaluatedList) :-
 evaluate_expression(in(X, difference(A, B)), Value) :-
 	evaluate_expression(and(in(X, A), not_in(X, B)), Value),
 	!.
+
+evaluate_expression(lim(VariableOrList, _, Domain, Point, Function), Value) :-
+	!,
+	calculate_lim(VariableOrList, Domain, Point, Function, Value).
 
 evaluate_expression(Expression, Value) :-
 	Expression =.. [Functor | Args],
@@ -747,6 +784,69 @@ evaluate_expression(Expression, Value) :-
 		set_by(X, 'x', [1, 2, 3, 4], or(equal([X, 1]), equal([X, 2]))),
 		set(Value)
 	).
+
+
+calculate_lim(Variable, Domain, Point, Function, Value) :-
+	var(Variable),
+	calculate_lim([Variable], [Domain], [Point], Function, Value).
+
+calculate_lim(VariableList, Domain, Point, Function, Value) :-
+	findall(Value, (generate_lim_value_list(VariableList, Domain, Point), evaluate_expression_or_fail(Function, Value)), ValueList),
+	complex_sum(ValueList, ValueSum),
+	length(ValueList, Length),
+	Coeff is 1.0 / Length, 
+	complex_multiply(Coeff, ValueSum, Value).
+
+
+generate_lim_value_list([], [], []).
+
+generate_lim_value_list([Variable | VariableTail], [Domain | DomainTail], [Coordinate | CoordinateTail]) :-
+	generate_lim_value(Variable, Domain, Coordinate),
+	generate_lim_value_list(VariableTail, DomainTail, CoordinateTail).
+
+
+lim_dx(1e-10).
+
+
+generate_lim_value(Variable, real, Coordinate) :-
+	lim_dx(Dx),
+	as_real(Coordinate, X),
+	Variable is X - Dx.
+
+generate_lim_value(Variable, real, Coordinate) :-
+	lim_dx(Dx),
+	as_real(Coordinate, X),
+	Variable is X + Dx.
+
+generate_lim_value(Variable, complex, Coordinate) :-
+	lim_dx(Dx),
+	Difference is -Dx,
+	complex_add(Coordinate, complex(Difference, 0), Variable).
+
+generate_lim_value(Variable, complex, Coordinate) :-
+	lim_dx(Dx),
+	Difference is +Dx,
+	complex_add(Coordinate, complex(Difference, 0), Variable).
+
+generate_lim_value(Variable, complex, Coordinate) :-
+	lim_dx(Dx),
+	Difference is -Dx,
+	complex_add(Coordinate, complex(0, Difference), Variable).
+
+generate_lim_value(Variable, complex, Coordinate) :-
+	lim_dx(Dx),
+	Difference is +Dx,
+	complex_add(Coordinate, complex(0, Difference), Variable).
+
+
+?-	evaluate_expression(
+		equal(
+			lim(X, 'x', real, 1, (2*X - 2) / (X - 1)),
+			2
+		),
+		log_true
+	).
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1067,6 +1167,15 @@ print_expression_term(Stream, inf(S), _) :-
 print_expression_term(Stream, sup(S), _) :-
 	print_function(Stream, '\\sup', [S]).
 
+print_expression_term(Stream, lim(VariableOrList, LabelOrList, _, Point, Func), _) :-
+	VariableOrList = LabelOrList,
+	write(Stream, '\\lim_{'),
+	print_expression_or_list(VariableOrList),
+	write(Stream, ' \\to '),
+	print_expression_or_list(Point),
+	write(Stream, '} '),
+	print_expression_term(Stream, Func).
+
 print_prefix_operator(Stream, A, SuperOperator, SubOperator, Label) :-
 	print_bracket_if_needed(Stream, '(', SuperOperator, SubOperator),
 	write(Stream, Label),
@@ -1109,6 +1218,17 @@ print_expression_list(Stream, [Arg]) :-
 	print_expression_term(Stream, Arg, root).
 
 print_expression_list(_, []).
+
+
+print_expression_or_list(Stream, ExpressionOrList) :-
+	\+ is_list(ExpressionOrList),
+	print_expression(Stream, ExpressionOrList).
+
+print_expression_or_list(Stream, ExpressionOrList) :-
+	is_list(ExpressionOrList),
+	write(Stream, "["),
+	print_expression_list(Stream, ExpressionOrList),
+	write(Stream, "]").
 
 
 print_chain(Stream, [A | Tail], Delim, Operator) :-

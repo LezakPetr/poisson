@@ -57,40 +57,40 @@ complex_negate(A, complex(ReY, ImY)) :-
 ?-	complex_negate(complex(1, 2), complex(-1, -2)).
 
 
-complex_plus(A, B, Y) :-
+complex_add(A, B, Y) :-
 	number(A),
 	number(B),
 	!,
 	Y is A + B.
 
-complex_plus(A, B, complex(ReY, ImY)) :-
+complex_add(A, B, complex(ReY, ImY)) :-
 	as_complex(A, complex(ReA, ImA)),
 	as_complex(B, complex(ReB, ImB)),
 	ReY is ReA + ReB,
 	ImY is ImA + ImB.
 
-?-	complex_plus(2, 3, 5).
-?-	complex_plus(5, complex(3, 4), complex(8, 4)).
-?-	complex_plus(complex(3, 4), 5, complex(8, 4)).
-?-	complex_plus(complex(1, 2), complex(3, 4), complex(4, 6)).
+?-	complex_add(2, 3, 5).
+?-	complex_add(5, complex(3, 4), complex(8, 4)).
+?-	complex_add(complex(3, 4), 5, complex(8, 4)).
+?-	complex_add(complex(1, 2), complex(3, 4), complex(4, 6)).
 
 
-complex_minus(A, B, Y) :-
+complex_subtract(A, B, Y) :-
 	number(A),
 	number(B),
 	!,
 	Y is A - B.
 
-complex_minus(A, B, complex(ReY, ImY)) :-
+complex_subtract(A, B, complex(ReY, ImY)) :-
 	as_complex(A, complex(ReA, ImA)),
 	as_complex(B, complex(ReB, ImB)),
 	ReY is ReA - ReB,
 	ImY is ImA - ImB.
 
-?-	complex_minus(2, 3, -1).
-?-	complex_minus(5, complex(3, 4), complex(2, -4)).
-?-	complex_minus(complex(3, 4), 5, complex(-2, 4)).
-?-	complex_minus(complex(1, 2), complex(3, 4), complex(-2, -2)).
+?-	complex_subtract(2, 3, -1).
+?-	complex_subtract(5, complex(3, 4), complex(2, -4)).
+?-	complex_subtract(complex(3, 4), 5, complex(-2, 4)).
+?-	complex_subtract(complex(1, 2), complex(3, 4), complex(-2, -2)).
 
 
 complex_multiply(A, B, Y) :-
@@ -148,6 +148,7 @@ complex_ln(A, complex(ReY, ImY)) :-
 complex_pow(A, B, Y) :-
 	number(A),
 	number(B),
+	A >= 0,
 	!,
 	Y is A^B.
 
@@ -173,4 +174,74 @@ complex_pow(A, B, Y) :-
 
 ?-	complex_pow(complex(0, -1), 2, Y),
 	complex_equal(Y, -1).
+
+?-	complex_pow(-1, 0.5, Y),
+	complex_equal(Y, complex(0, 1)).
+
+complex_sum([], 0).
+
+complex_sum([Value | Tail], Sum) :-
+	complex_sum(Tail, SubSum),
+	complex_add(Value, SubSum, Sum).
+
+?-	complex_sum([1, 2, 3], 6).
+
+% Calculates symbolic sum of two numbers, but optimizes situation where one or both arguments are known.
+% symbolic_add(A, B, Y) :-
+% Y = A + B.
+symbolic_add(A, B, Y) :-
+	number(A),
+	A =:= 0,
+	!,
+	Y = B.
+
+symbolic_add(A, B, Y) :-
+	number(B),
+	B =:= 0,
+	!,
+	Y = A.
+
+symbolic_add(A, B, Y) :-
+	number(A),
+	number(B),
+	!,
+	Y is A + B. 
+
+symbolic_add(A, B, A + B).
+
+
+% Calculates symbolic multiply of two numbers, but optimizes situation where one or both arguments are known.
+% symbolic_multiply(A, B, Y) :-
+% Y = A * B.
+symbolic_multiply(A, _, Y) :-
+	number(A),
+	A =:= 0,
+	!,
+	Y = 0.
+
+symbolic_multiply(_, B, Y) :-
+	number(B),
+	B =:= 0,
+	!,
+	Y = 0.
+
+symbolic_multiply(A, B, Y) :-
+	number(A),
+	A =:= 1,
+	!,
+	Y = B.
+
+symbolic_multiply(A, B, Y) :-
+	number(B),
+	B =:= 1,
+	!,
+	Y = A.
+
+symbolic_multiply(A, B, Y) :-
+	number(A),
+	number(B),
+	!,
+	Y is A * B. 
+
+symbolic_multiply(A, B, A * B).
 
