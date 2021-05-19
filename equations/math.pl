@@ -1,5 +1,5 @@
 
-num_tolerance(1e-12).
+num_tolerance(1e-7).
 
 
 
@@ -148,7 +148,7 @@ complex_ln(A, complex(ReY, ImY)) :-
 complex_pow(A, B, Y) :-
 	number(A),
 	number(B),
-	A >= 0,
+	(A >= 0; integer(B)),
 	!,
 	Y is A^B.
 
@@ -185,6 +185,14 @@ complex_sum([Value | Tail], Sum) :-
 	complex_add(Value, SubSum, Sum).
 
 ?-	complex_sum([1, 2, 3], 6).
+
+
+complex_abs(Z, Abs) :-
+	as_complex(Z, complex(X, Y)),
+	Abs is sqrt(X^2 + Y^2).
+
+?-	complex_abs(-2, 2.0).
+?-	complex_abs(complex(3, -4), 5.0).
 
 % Calculates symbolic sum of two numbers, but optimizes situation where one or both arguments are known.
 % symbolic_add(A, B, Y) :-

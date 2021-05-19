@@ -6,7 +6,8 @@
 
 % Validates formula (checks that it is true) and prints it.
 print_validated_formula(Label, Formula) :-
-	evaluate_expression(Formula, log_true),
+	rewrite_expression(Formula, RewrittenFormula),
+	evaluate_expression(RewrittenFormula, log_true),
 	print_expression(Label, Formula).
 
 

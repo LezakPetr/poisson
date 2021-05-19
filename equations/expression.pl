@@ -411,6 +411,10 @@ evaluate_function(A / B, Y) :-
 evaluate_function(A^B, Y) :-
 	complex_pow(A, B, Y).
 
+evaluate_function(sqrt(X), Y) :-
+	number(X),
+	evaluate_function(sqrt(2, X), Y).
+
 evaluate_function(sqrt(A, B), Y) :-
 	number(A),
 	number(B),
@@ -420,6 +424,9 @@ evaluate_function(log(A, B), Y) :-
 	number(A),
 	number(B),
 	Y is log(B) / log(A).
+
+evaluate_function(abs(Z), Y) :-
+	complex_abs(Z, Y).
 
 evaluate_function(equal([_]), log_true).
 
@@ -526,6 +533,7 @@ evaluate_function(sup(set(S)), Value) :-
 function_derivative(F, []) :-
 	number(F).
 
+function_derivative(imag, []).
 function_derivative(A + B, [[A, 1], [B, 1]]).
 function_derivative(A - B, [[A, 1], [B, -1]]).
 function_derivative(A * B, [[A, B], [B, A]]).
@@ -534,6 +542,12 @@ function_derivative(A^B, [[A, B * A^(B - 1)], [B, log(e, A) * e^(B * log(e, A))]
 expression_derivative(X, X, 1) :-
 	var(X),
 	!.
+
+expression_derivative(X, apply(Function, Args, Values), Derivative) :-
+	!,
+	copy_term([Function, Args], [CopiedFunction, CopiedArgs]),
+	CopiedArgs = Values,
+	expression_derivative(X, CopiedFunction, Derivative).
 
 expression_derivative(X, Expression, Derivative) :-
 	function_derivative(Expression, FunctionDerivative),
@@ -549,6 +563,7 @@ compound_derivative(X, [[SubExpression, Der] | Tail], Result) :-
 	symbolic_add(CompoundDerivative, TailDerivative, Result).
 
 ?- 	expression_derivative(X, (2*X + 1)^3, 3 * (2*X + 1)^(3 - 1) * 2).
+?-	F = Z^2, expression_derivative(X, apply(F, [Z], [3*X+4]), 2 * (3*X + 4)^(2-1) * 3).
 
 
 evaluate_list([], []).
@@ -592,6 +607,15 @@ evaluate_expression(apply(Predicate, Args, ArgValues), Value) :-
 evaluate_expression(declare_variable(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
 	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
+	log_and_all(Results, Value).
+
+evaluate_expression(declare_function(Variable, _, TestedFunctions, SubFormula), Value) :-
+	!,
+	findall(
+		SubFormulaValue,
+		(member(Variable, TestedFunctions), rewrite_expression(SubFormula, RewrittenSubFormula), evaluate_expression_or_fail(RewrittenSubFormula, SubFormulaValue)),
+		Results
+	),
 	log_and_all(Results, Value).
 
 evaluate_expression(declare_plus_minus(Variable, SubFormula), Value) :-
@@ -659,7 +683,8 @@ evaluate_expression(in(X, difference(A, B)), Value) :-
 
 evaluate_expression(lim(VariableOrList, _, Domain, Point, Function), Value) :-
 	!,
-	calculate_lim(VariableOrList, Domain, Point, Function, Value).
+	evaluate_expression(Point, EvaluatedPoint),
+	calculate_lim(VariableOrList, Domain, EvaluatedPoint, Function, Value).
 
 evaluate_expression(Expression, Value) :-
 	Expression =.. [Functor | Args],
@@ -805,7 +830,7 @@ generate_lim_value_list([Variable | VariableTail], [Domain | DomainTail], [Coord
 	generate_lim_value_list(VariableTail, DomainTail, CoordinateTail).
 
 
-lim_dx(1e-10).
+lim_dx(1e-8).
 
 
 generate_lim_value(Variable, real, Coordinate) :-
@@ -847,6 +872,29 @@ generate_lim_value(Variable, complex, Coordinate) :-
 		log_true
 	).
 
+
+rewrite_expression(X, X) :-
+	var(X),
+	!.
+
+rewrite_expression(declare_function(Variable, Label, Functions, Expression), declare_function(Variable, Label, Functions, Expression)) :-
+	!.
+
+rewrite_expression(derivative(X, F), Derivative) :-
+	!,
+	expression_derivative(X, F, Derivative).
+
+rewrite_expression(Expression, RewrittenExpression) :-
+	Expression =.. [Functor | Args],
+	rewrite_expression_list(Args, RewrittenArgs),
+	RewrittenExpression =.. [Functor | RewrittenArgs].
+
+
+rewrite_expression_list([], []).
+
+rewrite_expression_list([Expression | ExpressionTail], [RewrittenExpression | RewrittenTail]) :-
+	rewrite_expression(Expression, RewrittenExpression),
+	rewrite_expression_list(ExpressionTail, RewrittenTail).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
@@ -890,6 +938,11 @@ print_expression_term(Stream, N, _) :-
 	number(N),
 	!,
 	write(Stream, N).
+
+print_expression_term(Stream, S, _) :-
+	string(S),
+	!,
+	write(Stream, S).
 
 print_expression_term(Stream, imag, _) :-
 	!,
@@ -973,6 +1026,10 @@ print_expression_term(Stream, not(F), _) :-
 	write(Stream, '}').
 
 print_expression_term(Stream, declare_variable(Variable, Label, _, SubFormula), PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
+
+print_expression_term(Stream, declare_function(Variable, Label, _, SubFormula), PR) :-
 	Variable = Label,
 	print_expression_term(Stream, SubFormula, PR).
 
@@ -1108,6 +1165,13 @@ print_expression_term(Stream, A^B, PR) :-
 	write(Stream, '}'),
 	print_bracket_if_needed(Stream, ')', PR, pow).
 
+print_expression_term(Stream, sqrt(X), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, sqrt),
+	write(Stream, '\\sqrt{'),
+	print_expression_term(Stream, X, root),
+	write(Stream, '}'),
+	print_bracket_if_needed(Stream, ')', PR, sqrt).
+
 print_expression_term(Stream, sqrt(A, B), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, sqrt),
 	write(Stream, '\\sqrt['),
@@ -1125,6 +1189,11 @@ print_expression_term(Stream, log(A, B), PR) :-
 	print_expression_term(Stream, B, log),
 	write(Stream, '}'),
 	print_bracket_if_needed(Stream, ')', PR, log).
+
+print_expression_term(Stream, abs(Z), _) :-
+	write(Stream, '\\left|'),
+	print_expression_term(Stream, Z, root),
+	write(Stream, '\\right|').
 
 print_expression_term(Stream, equal(List), PR) :-
 	is_list(List),
@@ -1170,11 +1239,19 @@ print_expression_term(Stream, sup(S), _) :-
 print_expression_term(Stream, lim(VariableOrList, LabelOrList, _, Point, Func), _) :-
 	VariableOrList = LabelOrList,
 	write(Stream, '\\lim_{'),
-	print_expression_or_list(VariableOrList),
+	print_expression_or_list(Stream, VariableOrList),
 	write(Stream, ' \\to '),
-	print_expression_or_list(Point),
+	print_expression_or_list(Stream, Point),
 	write(Stream, '} '),
 	print_expression_term(Stream, Func).
+
+print_expression_term(Stream, derivative(Variable, Function), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, derivative),
+	write(Stream, "\\frac{\\partial}{\\partial "),
+	write(Stream, Variable),
+	write(Stream, "}"),
+	print_expression_term(Stream, Function, derivative),
+	print_bracket_if_needed(Stream, ')', PR, derivative).
 
 print_prefix_operator(Stream, A, SuperOperator, SubOperator, Label) :-
 	print_bracket_if_needed(Stream, '(', SuperOperator, SubOperator),
@@ -1199,12 +1276,12 @@ print_function(Stream, Functor, Args) :-
 	write(Stream, ')').
 
 print_predicate_args(Stream, [Arg, Next | Tail]) :-
-	write(Stream, Arg),
+	print_expression_term(Stream, Arg),
 	write(Stream, ', '),
 	print_predicate_args(Stream, [Next | Tail]).
 
 print_predicate_args(Stream, [Arg]) :-
-	write(Stream, Arg).
+	print_expression_term(Stream, Arg).
 
 print_predicate_args(_, []).
 
@@ -1222,7 +1299,7 @@ print_expression_list(_, []).
 
 print_expression_or_list(Stream, ExpressionOrList) :-
 	\+ is_list(ExpressionOrList),
-	print_expression(Stream, ExpressionOrList).
+	print_expression_term(Stream, ExpressionOrList).
 
 print_expression_or_list(Stream, ExpressionOrList) :-
 	is_list(ExpressionOrList),
@@ -1261,11 +1338,12 @@ print_bracket_if_needed(Stream, ')', _, _) :-
 	write(Stream, '\\right)').
 
 
-operator_priority(pow, 204).
-operator_priority(sqrt, 204).
-operator_priority(log, 204).
-operator_priority(div, 203).
-operator_priority(multiply, 202).
+operator_priority(pow, 205).
+operator_priority(sqrt, 205).
+operator_priority(log, 205).
+operator_priority(div, 204).
+operator_priority(multiply, 203).
+operator_priority(derivative, 202).
 operator_priority(opposite, 201).
 operator_priority(plus, 200).
 operator_priority(minus(_), 200).
