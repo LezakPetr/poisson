@@ -623,6 +623,11 @@ evaluate_expression(declare_plus_minus(Variable, SubFormula), Value) :-
 	findall(SubFormulaValue, (member(Variable, [+1, -1]), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [EF1, EF2]),
 	log_and(EF1, EF2, Value).
 
+evaluate_expression(declare_substitution(Variable, _, Substitution, SubFormula), Value) :-
+	!,
+	Variable = Substitution,
+	evaluate_expression(SubFormula, Value).
+
 evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
 	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
@@ -1026,6 +1031,10 @@ print_expression_term(Stream, not(F), _) :-
 	write(Stream, '}').
 
 print_expression_term(Stream, declare_variable(Variable, Label, _, SubFormula), PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
+
+print_expression_term(Stream, declare_substitution(Variable, Label, _, SubFormula), PR) :-
 	Variable = Label,
 	print_expression_term(Stream, SubFormula, PR).
 

@@ -7,9 +7,10 @@
 :- ensure_loaded("../equations/draw_1d_function").
 
 make_test_numbers([-1, 0, 0.5, 1, 2, 3, 1.5, complex(0, 1), complex(0, -1), complex(1, 1)]).
-make_test_real_pairs([[0, 1], [0, -1], [1, 1], [0, 0], [3, 5], [-7, 4]]).
+make_test_real_pairs([[0, 1]]).%, [0, -1], [1, 1], [0, 0], [3, 5], [-7, 4]]).
 make_test_nonzero_real_pairs([[0, 1], [0, -1], [1, 1], [3, 5], [-7, 4]]).
 make_test_complex_functions(Z, [Z + 2, Z - imag, (1 - imag) * Z, Z^2]).
+make_test_real_binary_functions(X, Y, [X + Y]).%[X, Y, X + Y, X * Y, X^2 * Y, Y^2 * X]).
 \end{prolog}
 
 \section{Zavedení komplexních čísel}
@@ -196,7 +197,7 @@ Limitu komplexní funkce definujeme jako limitu funkce dvou parametrů. Znamená
 \end{prolog}
 \eeq{complex_lim}
 
-Derivaci funkce definujeme 
+Derivaci komplexní funkce definujeme obdobně jako derivaci reálné funkce pomocí vztahu~\eqref{eq:complex_derivative}.
 
 \begin{prolog}
 ?-	make_test_numbers(Numbers),
@@ -214,5 +215,42 @@ Derivaci funkce definujeme
 	).
 \end{prolog}
 \eeq{complex_derivative}
+
+Zabývejme se otázkou, kdy tato derivace existuje. Nejdříve rozepišme definici derivace~\eqref{eq:complex_derivative} na podíl diferenciálů. Zavedeme tedy označení \(\func{f}(z + \mathrm{d}z) - \func{f}(z) = \mathrm{d}u + \mathrm{d}v \cdot \imag\) a~\(\mathrm{d}z = \mathrm{d}x + \mathrm{d}y \cdot \imag\):
+
+\begin{prolog}
+?-	make_test_real_binary_functions(FX, FY, Functions),
+	make_test_real_pairs(Pairs),
+	print_validated_formula(
+		"complex_derivative_conditions_1",
+		declare_variable([X, Y], ["x", "y"], Pairs,
+			declare_function(U, "u", Functions,
+				declare_function(V, "v", Functions,
+					declare_substitution(DU, "\\mathrm{d}u", apply(U, [FX, FY], [X + DX, Y + DY]) - apply(U, [FX, FY], [X, Y]),
+						declare_substitution(DV, "\\mathrm{d}v", apply(V, [FX, FY], [X + DX, Y + DY]) - apply(V, [FX, FY], [X, Y]),
+							equal([
+								lim(
+									[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+									(DU + DV * imag) / (DX + DY * imag)
+								),
+								lim([DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+									((DU + DV * imag) / (DX + DY * imag)) * ((DX - DY * imag) / (DX - DY * imag))	
+								),
+								linebreak,
+								lim(
+									[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+									(DU * DX + DV * DY + (DV * DX - DU * DY) * imag) / (DX^2 + DY^2)
+								)
+							])
+						)
+					)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{complex_derivative_conditions_1}
+
+Uvědomme si, že limita je definována pro 
 
 \section{Funkce sinus a~kosinus}
