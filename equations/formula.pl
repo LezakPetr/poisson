@@ -7,8 +7,8 @@ verify_formula(Formula) :-
 	evaluate_expression(Formula, log_true),
 	!.
 
-verify_formula(_) :-
-	throw(formula_evaluation_failed).
+%verify_formula(_) :-
+	%throw(formula_evaluation_failed).
 
 % Validates formula (checks that it is true) and prints it.
 print_validated_formula(Label, Formula) :-

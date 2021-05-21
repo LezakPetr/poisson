@@ -585,31 +585,28 @@ evaluate_expression_or_fail(Expression, Value) :-
 evaluate_expression_or_fail(_, failed).
 
 
-evaluate_expression(declare_statement(StatementVariable, _, SubFormula), Value) :-
+
+evaluate_declaration(statement(StatementVariable, _), SubFormula, Value) :-
 	!,
 	findall(SubFormulaValue, (boolean(StatementVariable), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [EF1, EF2]),
 	log_and(EF1, EF2, Value).
 
-evaluate_expression(declare_set(SetVariable, _, TestedSets, SubFormula), Value) :-
+evaluate_declaration(set(SetVariable, _, TestedSets), SubFormula, Value) :-
 	!,
 	findall(SubFormulaValue, (member(SetVariable, TestedSets), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
 
-evaluate_expression(declare_predicate(PredicateVariable, _, TestedPredicates, SubFormula), Value) :-
+evaluate_declaration(predicate(PredicateVariable, _, TestedPredicates), SubFormula, Value) :-
 	!,
 	findall(SubFormulaValue, (member(PredicateVariable, TestedPredicates), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
 
-evaluate_expression(apply(Predicate, Args, ArgValues), Value) :-
-	!,
-	findall(SubFormulaValue, (Args = ArgValues, evaluate_expression_or_fail(Predicate, SubFormulaValue)), [Value]).
-
-evaluate_expression(declare_variable(Variable, _, TestedValues, SubFormula), Value) :-
+evaluate_declaration(variable(Variable, _, TestedValues), SubFormula, Value) :-
 	!,
 	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
 
-evaluate_expression(declare_function(Variable, _, TestedFunctions, SubFormula), Value) :-
+evaluate_declaration(function(Variable, _, TestedFunctions), SubFormula, Value) :-
 	!,
 	findall(
 		SubFormulaValue,
@@ -618,15 +615,29 @@ evaluate_expression(declare_function(Variable, _, TestedFunctions, SubFormula), 
 	),
 	log_and_all(Results, Value).
 
-evaluate_expression(declare_plus_minus(Variable, SubFormula), Value) :-
+evaluate_declaration(plus_minus(Variable), SubFormula, Value) :-
 	!,
 	findall(SubFormulaValue, (member(Variable, [+1, -1]), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [EF1, EF2]),
 	log_and(EF1, EF2, Value).
 
-evaluate_expression(declare_substitution(Variable, _, Substitution, SubFormula), Value) :-
+evaluate_declaration(substitution(Variable, _, Substitution), SubFormula, Value) :-
 	!,
 	Variable = Substitution,
 	evaluate_expression(SubFormula, Value).
+
+
+
+evaluate_expression(declare([], SubFormula), Value) :-
+	!,
+	evaluate_expression(SubFormula, Value).
+
+evaluate_expression(declare([Declaration | Tail], SubFormula), Value) :-
+	!,
+	evaluate_declaration(Declaration, declare(Tail, SubFormula), Value).
+
+evaluate_expression(apply(Predicate, Args, ArgValues), Value) :-
+	!,
+	findall(SubFormulaValue, (Args = ArgValues, evaluate_expression_or_fail(Predicate, SubFormulaValue)), [Value]).
 
 evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
@@ -741,12 +752,12 @@ evaluate_expression(Expression, Value) :-
 	make_set([2, 3, 4], S2),
 	make_set([4, 5], S3),
 	evaluate_expression(
-		declare_set(A, 'A', [set(S1), set(S2), set(S3)], declare_set(B, 'B', [set(S1), set(S2), set(S3)],
+		declare([set(A, 'A', [set(S1), set(S2), set(S3)]), set(B, 'B', [set(S1), set(S2), set(S3)])],
 			set_equal([
 				intersection(A, B),
 				intersection(B, A)
 			])
-		)),
+		),
 		log_true
 	).
 
@@ -754,12 +765,12 @@ evaluate_expression(Expression, Value) :-
 	make_set([2, 3, 4], S2),
 	make_set([4, 5], S3),
 	evaluate_expression(
-		declare_set(A, 'A', [set(S1), set(S2), set(S3)], declare_set(B, 'B', [set(S1), set(S2), set(S3)],
+		declare([set(A, 'A', [set(S1), set(S2), set(S3)]), set(B, 'B', [set(S1), set(S2), set(S3)])],
 			set_equal([
 				intersection(A, B),
 				union(A, B)
 			])
-		)),
+		),
 		log_false
 	).
 
@@ -882,7 +893,7 @@ rewrite_expression(X, X) :-
 	var(X),
 	!.
 
-rewrite_expression(declare_function(Variable, Label, Functions, Expression), declare_function(Variable, Label, Functions, Expression)) :-
+rewrite_expression(declare([function(Variable, Label, Functions) | Tail], Expression), declare([function(Variable, Label, Functions) | Tail], Expression)) :-
 	!.
 
 rewrite_expression(derivative(X, F), Derivative) :-
@@ -928,6 +939,34 @@ print_boolean_in_math_mode(Stream, B) :-
 	write(Stream, '\\('),
 	print_boolean(Stream, B),
 	write(Stream, '\\)').
+
+
+print_declaration(Stream, statement(Value, Label), SubFormula, PR) :-
+	atomic_list_concat(['\\predicate{', Label, '}'], Value),
+	print_expression_term(Stream, SubFormula, PR).
+
+print_declaration(Stream, predicate(Variable, Label, _), SubFormula, PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
+
+print_declaration(Stream, set(Variable, Label, _), SubFormula, PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
+
+print_declaration(Stream, variable(Variable, Label, _), SubFormula, PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
+
+print_declaration(Stream, substitution(Variable, Label, _), SubFormula, PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
+
+print_declaration(Stream, function(Variable, Label, _), SubFormula, PR) :-
+	Variable = Label,
+	print_expression_term(Stream, SubFormula, PR).
+
+print_declaration(Stream, plus_minus(_), SubFormula, PR) :-
+	print_expression_term(Stream, SubFormula, PR).
 
 
 % Prints term of formula into stream
@@ -991,18 +1030,6 @@ print_expression_term(Stream, F, _) :-
 	atom(F),
 	write(Stream, F).
 
-print_expression_term(Stream, declare_statement(Value, Label, SubFormula), PR) :-
-	atomic_list_concat(['\\predicate{', Label, '}'], Value),
-	print_expression_term(Stream, SubFormula, PR).
-
-print_expression_term(Stream, declare_predicate(Variable, Label, _, SubFormula), PR) :-
-	Variable = Label,
-	print_expression_term(Stream, SubFormula, PR).
-
-print_expression_term(Stream, declare_set(Variable, Label, _, SubFormula), PR) :-
-	Variable = Label,
-	print_expression_term(Stream, SubFormula, PR).
-
 print_expression_term(Stream, impl(A, B), PR) :-
 	print_binary_operator(Stream, A, B, PR, impl, ' \\impl ').
 
@@ -1030,20 +1057,11 @@ print_expression_term(Stream, not(F), _) :-
 	print_expression_term(Stream, F, root),
 	write(Stream, '}').
 
-print_expression_term(Stream, declare_variable(Variable, Label, _, SubFormula), PR) :-
-	Variable = Label,
+print_expression_term(Stream, declare([], SubFormula), PR) :-
 	print_expression_term(Stream, SubFormula, PR).
 
-print_expression_term(Stream, declare_substitution(Variable, Label, _, SubFormula), PR) :-
-	Variable = Label,
-	print_expression_term(Stream, SubFormula, PR).
-
-print_expression_term(Stream, declare_function(Variable, Label, _, SubFormula), PR) :-
-	Variable = Label,
-	print_expression_term(Stream, SubFormula, PR).
-
-print_expression_term(Stream, declare_plus_minus(_, SubFormula), PR) :-
-	print_expression_term(Stream, SubFormula, PR).
+print_expression_term(Stream, declare([Declaration | Tail], SubFormula), PR) :-
+	print_declaration(Stream, Declaration, declare(Tail, SubFormula), PR).
 
 print_expression_term(Stream, forall(Variable, Label, _, SubFormula), PR) :-
 	Variable = Label,

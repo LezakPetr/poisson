@@ -216,7 +216,7 @@ je predikát, který je pravdivý tehdy a~jen tehdy, pokud \(a\) i~\(b\) jsou si
 ?- 	make_test_values(Values),
 	print_validated_formula(
 		'equal_itself',
-		declare_variable(X, 'x', Values,
+		declare([variable(X, 'x', Values)],
 			equal([X, X])
 		)
 	).
@@ -228,16 +228,12 @@ je predikát, který je pravdivý tehdy a~jen tehdy, pokud \(a\) i~\(b\) jsou si
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'equal_subst',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				declare_predicate(P, 'P', Predicates,
-					impl(
-						equal([A, B]),
-						equiv(
-							apply(P, [Y], [A]),
-							apply(P, [Y], [B])
-						)
-					)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values), predicate(P, 'P', Predicates)],
+			impl(
+				equal([A, B]),
+				equiv(
+					apply(P, [Y], [A]),
+					apply(P, [Y], [B])
 				)
 			)
 		)
@@ -265,12 +261,10 @@ Operátor rovnosti má proto vlastnost~\eqref{eq:equal_symmetry} které říkám
 ?- 	make_test_values(Values),
 	print_validated_formula(
 		'equal_symmetry',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				impl(
-					equal([A, B]),
-					equal([B, A])
-				)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values)],
+			impl(
+				equal([A, B]),
+				equal([B, A])
 			)
 		)
 	).
@@ -287,17 +281,13 @@ Předpokládejme dále, že platí \(a = b\) a~\(b = c\). Do první rovnosti dos
 ?- 	make_test_values(Values),
 	print_validated_formula(
 		'equal_transitivity',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				declare_variable(C, 'c', Values,
-					impl(
-						and(
-							equal([A, B]),
-							equal([B, C])
-						),
-						equal([A, C])
-					)
-				)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values), variable(C, 'c', Values)],
+			impl(
+				and(
+					equal([A, B]),
+					equal([B, C])
+				),
+				equal([A, C])
 			)
 		)
 	).
@@ -311,10 +301,8 @@ Rovnost výrazů můžeme používat pro úpravy výrazů podobně jako ekvivale
 ?- 	make_test_values(Values),
 	print_validated_formula(
 		'expression_rewrite_example_1',
-		declare_variable(X, 'x', Values,
-			declare_variable(Y, 'y', Values,
-				equal([(X + Y) * (X - Y), X^2 - Y^2])
-			)
+		declare([variable(X, 'x', Values), variable(Y, 'y', Values)],
+			equal([(X + Y) * (X - Y), X^2 - Y^2])
 		)
 	).
 \end{prolog}
@@ -326,10 +314,8 @@ Nejdříve vztah~\ref{eq:expression_rewrite_example_1} upravíme dosazením za p
 ?- 	make_test_values(Values),
 	print_validated_formula(
 		'expression_rewrite_example_2',
-		declare_variable(X, 'x', Values,
-			declare_variable(Y, 'y', Values,
-				equal([(5*X + 4*Y) * (5*X - 4*Y), (5*X)^2 - (4*Y)^2])
-			)
+		declare([variable(X, 'x', Values), variable(Y, 'y', Values)],
+			equal([(5*X + 4*Y) * (5*X - 4*Y), (5*X)^2 - (4*Y)^2])
 		)
 	).
 \end{prolog}
@@ -341,10 +327,8 @@ Nyní na původní výraz použijeme axiom reflexivity:
 ?- 	make_test_values(Values),
 	print_validated_formula(
 		'expression_rewrite_example_3',
-		declare_variable(X, 'x', Values,
-			declare_variable(Y, 'y', Values,
-				equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * (5*X + 4*Y) * (5*X - 4*Y)])
-			)
+		declare([variable(X, 'x', Values), variable(Y, 'y', Values)],
+			equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * (5*X + 4*Y) * (5*X - 4*Y)])
 		)
 	).
 \end{prolog}
@@ -366,10 +350,8 @@ Odvodili jsme tak rovnost~\eqref{eq:expression_rewrite_example_4} a~výraz zjedn
 ?- 	make_test_values(Values),
 	print_validated_formula(
 		'expression_rewrite_example_4',
-		declare_variable(X, 'x', Values,
-			declare_variable(Y, 'y', Values,
-				equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * ((5*X)^2 - (4*Y)^2)])
-			)
+		declare([variable(X, 'x', Values), variable(Y, 'y', Values)],
+			equal([2 * (5*X + 4*Y) * (5*X - 4*Y), 2 * ((5*X)^2 - (4*Y)^2)])
 		)
 	).
 \end{prolog}
@@ -423,12 +405,10 @@ který je pravdivý tehdy a~jen tehdy, pokud je prvek \(x\) obsažen v~množině
 	make_test_predicates(Z, Predicates),
 	print_validated_formula(
 		'in_set_definition',
-		declare_predicate(A, 'A', Predicates,
-			declare_variable(X, 'x', Values,
-				equiv(
-					in(X, set_by(Y, 'y', Values, apply(A, [Z], [Y]))),
-					apply(A, [Z], [X])
-				)
+		declare([predicate(A, 'A', Predicates), variable(X, 'x', Values)],
+			equiv(
+				in(X, set_by(Y, 'y', Values, apply(A, [Z], [Y]))),
+				apply(A, [Z], [X])
 			)
 		)
 	).
@@ -442,12 +422,10 @@ Jeho negaci označme
 	make_test_sets(Sets),
 	print_validated_formula(
 		'not_in_set_definition',
-		declare_set(M, 'M', Sets,
-			declare_variable(X, 'x', Values,
-				equiv(
-					not_in(X, M),
-					not(in(X, M))
-				)
+		declare([set(M, 'M', Sets), variable(X, 'x', Values)],
+			equiv(
+				not_in(X, M),
+				not(in(X, M))
 			)
 		)
 	).
@@ -486,12 +464,10 @@ který chápeme jako zkrácení zápisu:
 	make_test_sets(Sets),
 	print_validated_formula(
 		'forall_in',
-		declare_predicate(A, 'A', Predicates,
-			declare_set(M, 'M', Sets,
-				equiv(
-					forall_in(X, 'x', M, Values, apply(A, [Y], [X])),
-					forall(X, 'x', Values, impl(in(X, M), apply(A, [Y], [X])))
-				)
+		declare([predicate(A, 'A', Predicates), set(M, 'M', Sets)],
+			equiv(
+				forall_in(X, 'x', M, Values, apply(A, [Y], [X])),
+				forall(X, 'x', Values, impl(in(X, M), apply(A, [Y], [X])))
 			)
 		)
 	).
@@ -512,16 +488,14 @@ Dále se často vyskytuje více obecných kventifikátorů, jejichž proměnné 
 	make_test_sets(Sets),
 	print_expression(
 		'forall_in_list',
-		declare_predicate(A, 'A', Predicates,
-			declare_set(M, 'M', Sets,
-				equiv(
-					forall_in([X, Y], ['x', 'y'], M, Values, 
+		declare([predicate(A, 'A', Predicates), set(M, 'M', Sets)],
+			equiv(
+				forall_in([X, Y], ['x', 'y'], M, Values, 
+					apply(A, [U, V], [X, Y])
+				),
+				forall_in(X, 'x', M, Values, 
+					forall_in(Y, 'y', M, Values, 
 						apply(A, [U, V], [X, Y])
-					),
-					forall_in(X, 'x', M, Values, 
-						forall_in(Y, 'y', M, Values, 
-							apply(A, [U, V], [X, Y])
-						)
 					)
 				)
 			)
@@ -538,7 +512,7 @@ proměnné \(x\) můžeme tedy rozdělit do dvou disjunktních množin - množin
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_set',
-		declare_predicate(A, 'A', Predicates,
+		declare([predicate(A, 'A', Predicates)],
 			equiv(
 				forall(X, 'x', Values, apply(A, [Y], [X])),
 				set_equal([set_by(X, 'x', Values, not(apply(A, [Y], [X]))), empty_set])
@@ -597,12 +571,10 @@ který chápeme jako zkrácení zápisu:
 	make_test_sets(Sets),
 	print_validated_formula(
 		'exists_in',
-		declare_predicate(A, 'A', Predicates,
-			declare_set(M, 'M', Sets,
-				equiv(
-					exists_in(X, 'x', M, Values, apply(A, [Y], [X])),
-					exists(X, 'x', Values, and(in(X, M), apply(A, [Y], [X])))
-				)
+		declare([predicate(A, 'A', Predicates), set(M, 'M', Sets)],
+			equiv(
+				exists_in(X, 'x', M, Values, apply(A, [Y], [X])),
+				exists(X, 'x', Values, and(in(X, M), apply(A, [Y], [X])))
 			)
 		)
 	).
@@ -622,7 +594,7 @@ Obdobně jako u~obecného kvantifikátoru můžeme existenční kvantifikátor z
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_set',
-		declare_predicate(A, 'A', Predicates,
+		declare([predicate(A, 'A', Predicates)],
 			equiv(
 				exists(X, 'x', Values, apply(A, [Y], [X])),
 				set_not_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set)
@@ -649,12 +621,12 @@ Příklad: Nechť \(\predicate{A}\) a~\(\predicate{B}\) jsou výroky. Pak bez oh
 \begin{prolog}
 ?- print_validated_formula(
 	'de_morgan_example',
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv(
 			not(or(A, B)),
 			and(not(A), not(B))
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{de_morgan_example}
@@ -705,12 +677,12 @@ a~proto můžeme napsat
 \begin{prolog}
 ?- print_validated_formula(
 	'tautology_example',
-	declare_statement(C, 'C', declare_statement(D, 'D', declare_statement(E, 'E',
+	declare([statement(C, 'C'), statement(D, 'D'), statement(E, 'E')],
 		equiv(
 			or(not(C), not(or(C, and(D, E)))),
 			not(C)
 		)
-	)))
+	)
 ).
 \end{prolog}
 \eeq{tautology_example}
@@ -874,14 +846,14 @@ Snadno dokážeme, že při negaci výroků v~implikaci je nutné implikaci obr�
 \begin{prolog}
 ?- print_validated_formula(
 	impl_swap_proof,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv([
 			impl(A, B),
 			or(not(A), B),
 			or(not(not(B)), not(A)),
 			impl(not(B), not(A))
 		])
-	))
+	)
 ).
 \end{prolog}
 \eeq{impl_swap_proof}
@@ -891,7 +863,7 @@ Pro další dokazování je nutný následující vztah umožňující zjednodu�
 \begin{prolog}
 ?- print_validated_formula(
 	or_generalization_proof,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv([
 			or(and(not(A), B), A),
 			or(and(not(A), B), and(A, or(B, not(B)))),
@@ -904,7 +876,7 @@ Pro další dokazování je nutný následující vztah umožňující zjednodu�
 			or(B, A),
 			or(A, B)
 		])
-	))
+	)
 ).
 \end{prolog}
 \eeq{or_generalization_proof}
@@ -916,7 +888,7 @@ Dále dokážeme, že v~implikaci z~předpokladu plyne závěr:
 \begin{prolog}
 ?- print_validated_formula(
 	impl_usage_proof,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv([
 			impl(and(A, impl(A, B)), B),
 			or(not(and(A, impl(A, B))), B),
@@ -929,7 +901,7 @@ Dále dokážeme, že v~implikaci z~předpokladu plyne závěr:
 			or(not(A), par(or(B, A))),
 			log_true
 		])
-	))
+	)
 ).
 \end{prolog}
 \eeq{impl_usage_proof}
@@ -942,7 +914,7 @@ Pokračujme důkazem tranzitivity implikace:
 \begin{prolog}
 ?- print_validated_formula(
 	impl_transitivity_proof,
-	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+	declare([statement(A, 'A'), statement(B, 'B'), statement(C, 'C')],
 		equiv([
 			impl(and(impl(A, B), impl(B, C)), impl(A, C)),
 			or(not(and(impl(A, B), impl(B, C))), impl(A, C)),
@@ -956,7 +928,7 @@ Pokračujme důkazem tranzitivity implikace:
 			or(par(or(not(A), not(B))), par(or(C, B))),
 			log_true
 		])
-	)))
+	)
 ).
 \end{prolog}
 \eeq{impl_transitivity_proof}
@@ -985,12 +957,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	or_symmetry,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv(
 			or(A, B),
 			or(B, A)
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{or_symmetry}
@@ -998,12 +970,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	and_symmetry,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv(
 			and(A, B),
 			and(B, A)
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{and_symmetry}
@@ -1011,12 +983,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	or_associativity,
-	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+	declare([statement(A, 'A'), statement(B, 'B'), statement(C, 'C')],
 		equiv(
 			or(par(or(A, B)), C),
 			or(A, par(or(B, C)))
 		)
-	)))
+	)
 ).
 \end{prolog}
 \eeq{or_associativity}
@@ -1024,12 +996,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	and_associativity,
-	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+	declare([statement(A, 'A'), statement(B, 'B'), statement(C, 'C')],
 		equiv(
 			and(par(and(A, B)), C),
 			and(A, par(and(B, C)))
 		)
-	)))
+	)
 ).
 \end{prolog}
 \eeq{and_associativity}
@@ -1037,12 +1009,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	or_distributivity,
-	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+	declare([statement(A, 'A'), statement(B, 'B'), statement(C, 'C')],
 		equiv(
 			or(and(A, B), C),
 			and(or(A, C), or(B, C))
 		)
-	)))
+	)
 ).
 \end{prolog}
 \eeq{or_distributivity}
@@ -1050,12 +1022,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	and_distributivity,
-	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+	declare([statement(A, 'A'), statement(B, 'B'), statement(C, 'C')],
 		equiv(
 			and(or(A, B), C),
 			or(and(A, C), and(B, C))
 		)
-	)))
+	)
 ).
 \end{prolog}
 \eeq{and_distributivity}
@@ -1063,7 +1035,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	double_or,
-	declare_statement(A, 'A',
+	declare([statement(A, 'A')],
 		equiv(
 			or(A, A),
 			A
@@ -1076,7 +1048,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	double_and,
-	declare_statement(A, 'A',
+	declare([statement(A, 'A')],
 		equiv(
 			and(A, A),
 			A
@@ -1089,7 +1061,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	double_negation,
-	declare_statement(A, 'A',
+	declare([statement(A, 'A')],
 		equiv(
 			not(not(A)),
 			A
@@ -1102,7 +1074,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	excluded_middle,
-	declare_statement(A, 'A',
+	declare([statement(A, 'A')],
 		or(A, not(A))
 	)
 ).
@@ -1112,7 +1084,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	and_both,
-	declare_statement(A, 'A',
+	declare([statement(A, 'A')],
 		not(and(A, not(A)))
 	)
 ).
@@ -1122,12 +1094,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	de_morgan_or,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv(
 			not(or(A, B)),
 			and(not(A), not(B))
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{de_morgan_or}
@@ -1135,12 +1107,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	de_morgan_and,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv(
 			not(and(A, B)),
 			or(not(A), not(B))
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{de_morgan_and}
@@ -1148,12 +1120,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	impl_definition,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv(
 			impl(A, B),
 			or(not(A), B)
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{impl_definition}
@@ -1161,7 +1133,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	impl_usage,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		impl(
 			and(
 				A,
@@ -1169,7 +1141,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 			),
 			B
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{impl_usage}
@@ -1177,7 +1149,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	impl_transitivity,
-	declare_statement(A, 'A', declare_statement(B, 'B', declare_statement(C, 'C',
+	declare([statement(A, 'A'), statement(B, 'B'), statement(C, 'C')],
 		impl(
 			and(
 				impl(A, B),
@@ -1185,7 +1157,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 			),
 			impl(A, C)
 		)
-	)))
+	)
 ).
 \end{prolog}
 \eeq{impl_transitivity}
@@ -1193,12 +1165,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	impl_swap,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv(
 			impl(A, B),
 			impl(not(B), not(A))
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{impl_swap}
@@ -1206,12 +1178,12 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	equiv_to_impl,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv(
 			and(impl(A, B), impl(B, A)),
 			equiv(A, B)
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{equiv_to_impl}
@@ -1219,7 +1191,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 \begin{prolog}
 ?- print_validated_formula(
 	or_specific,
-	declare_statement(A, 'A', declare_statement(B, 'B',
+	declare([statement(A, 'A'), statement(B, 'B')],
 		equiv(
 			or(
 				A,
@@ -1227,7 +1199,7 @@ Shrňme si vztahy, které jsme doposud odvodili:
 			),
 			A
 		)
-	))
+	)
 ).
 \end{prolog}
 \eeq{or_specific}
@@ -1243,12 +1215,10 @@ Dvě množiny jsou shodné, pokud mají stejné prvky:
 	make_test_sets(Sets),
 	print_validated_formula(
 		'set_equal_definition',
-		declare_set(MA, 'M_A', Sets,
-			declare_set(MB, 'M_B', Sets,
-				equiv(
-					set_equal(MA, MB),
-					forall(X, 'x', Values, equiv(in(X, MA), in(X, MB)))
-				)
+		declare([set(MA, 'M_A', Sets), set(MB, 'M_B', Sets)],
+			equiv(
+				set_equal(MA, MB),
+				forall(X, 'x', Values, equiv(in(X, MA), in(X, MB)))
 			)
 		)
 	).
@@ -1262,12 +1232,10 @@ Jsou-li \(M_A\) a~\(M_B\) množiny, pak \(M_A\) je podmnožinou \(M_B\) pokud ka
 	make_test_sets(Sets),
 	print_validated_formula(
 		'subset_definition',
-		declare_set(MA, 'M_A', Sets,
-			declare_set(MB, 'M_B', Sets,
-				equiv(
-					subset(MA, MB),
-					forall(X, 'x', Values, impl(in(X, MA), in(X, MB)))
-				)
+		declare([set(MA, 'M_A', Sets), set(MB, 'M_B', Sets)],
+			equiv(
+				subset(MA, MB),
+				forall(X, 'x', Values, impl(in(X, MA), in(X, MB)))
 			)
 		)
 	).
@@ -1278,12 +1246,10 @@ Jsou-li \(M_A\) a~\(M_B\) množiny, pak \(M_A\) je podmnožinou \(M_B\) pokud ka
 ?-	make_test_sets(Sets),
 	print_validated_formula(
 		'superset_definition',
-		declare_set(MA, 'M_A', Sets,
-			declare_set(MB, 'M_B', Sets,
-				equiv(
-					superset(MB, MA),
-					subset(MA, MB)
-				)
+		declare([set(MA, 'M_A', Sets), set(MB, 'M_B', Sets)],
+			equiv(
+				superset(MB, MA),
+				subset(MA, MB)
 			)
 		)
 	).
@@ -1296,7 +1262,7 @@ Z~výše uvedeného plyne, že každá množina je sama sobě podmnožonou:
 ?-	make_test_sets(Sets),
 	print_validated_formula(
 		'subset_reflexivity',
-		declare_set(M, 'M', Sets,
+		declare([set(M, 'M', Sets)],
 			subset(M, M)
 		)
 	).
@@ -1309,12 +1275,10 @@ Dále pak, že dvě množiny jsou si rovny právě tehdy, pokud jsou zároveň p
 ?-	make_test_sets(Sets),
 	print_validated_formula(
 		'subset_to_equal',
-		declare_set(MA, 'M_A', Sets,
-			declare_set(MB, 'M_B', Sets,
-				equiv(
-					set_equal(MA, MB),
-					and(subset(MA, MB), superset(MA, MB))
-				)
+		declare([set(MA, 'M_A', Sets), set(MB, 'M_B', Sets)],
+			equiv(
+				set_equal(MA, MB),
+				and(subset(MA, MB), superset(MA, MB))
 			)
 		)
 	).
@@ -1366,16 +1330,14 @@ Jsou-li \(M_A\) a~\(M_B\) množiny, pak \(M_A \cap M_B\) je jejich průnik a~obs
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'intersection_definition',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				set_equal([
-					intersection(
-						set_by(X, 'x', Values, apply(A, [Y], [X])),
-						set_by(X, 'x', Values, apply(B, [Y], [X]))
-					),
-					set_by(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X])))
-				])
-			)
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates)],
+			set_equal([
+				intersection(
+					set_by(X, 'x', Values, apply(A, [Y], [X])),
+					set_by(X, 'x', Values, apply(B, [Y], [X]))
+				),
+				set_by(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X])))
+			])
 		)
 	).
 \end{prolog}
@@ -1387,10 +1349,8 @@ Toto sjednocení můžeme zapsat i~pomocí operátoru \(\in\). Zkusme to odvodit
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'intersection_in_1',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				declare_variable(Y, 'y', Values, equiv(and(apply(A, [Z], [Y]), apply(B, [Z], [Y])), and(apply(A, [Z], [Y]), apply(B, [Z], [Y]))))
-			)
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates), variable(Y, 'y', Values)],
+			equiv(and(apply(A, [Z], [Y]), apply(B, [Z], [Y])), and(apply(A, [Z], [Y]), apply(B, [Z], [Y])))
 		)
 	).
 \end{prolog}
@@ -1402,12 +1362,10 @@ Dále třikrát použijeme vztah~\eqref{eq:in_set_definition}:
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'intersection_in_2',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				declare_variable(Y, 'y', Values, equiv(
-					in(Y, set_by(X, 'x', Values, and(apply(A, [Z], [X]), apply(B, [Z], [X])))),
-					and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
-				))
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates), variable(Y, 'y', Values)],
+			equiv(
+				in(Y, set_by(X, 'x', Values, and(apply(A, [Z], [X]), apply(B, [Z], [X])))),
+				and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
 			)
 		)
 	).
@@ -1420,12 +1378,10 @@ Použijeme vztah~\eqref{eq:intersection_definition}:
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'intersection_in_3',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				declare_variable(Y, 'y', Values, equiv(
-					in(Y, intersection(set_by(X, 'x', Values, apply(A, [Z], [X])), set_by(X, 'x', Values, apply(B, [Z], [X])))),
-					and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
-				))
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates), variable(Y, 'y', Values)],
+			equiv(
+				in(Y, intersection(set_by(X, 'x', Values, apply(A, [Z], [X])), set_by(X, 'x', Values, apply(B, [Z], [X])))),
+				and(in(Y, set_by(X, 'x', Values, apply(A, [Z], [X]))), in(Y, set_by(X, 'x', Values, apply(B, [Z], [X]))))
 			)
 		)
 	).
@@ -1438,12 +1394,10 @@ A~nakonec zavedeme substituci \(M_A = \{x: \predicate{A}(x)\}\) a~\(M_B = \{x: \
 	make_test_sets(Sets),
 	print_validated_formula(
 		'intersection_in_4',
-		declare_set(MA, 'M_A', Sets,
-			declare_set(MB, 'M_B', Sets,
-				declare_variable(Y, 'y', Values, equiv(
-					in(Y, intersection(MA, MB)),
-					and(in(Y, MA), in(Y, MB))
-				))
+		declare([set(MA, 'M_A', Sets), set(MB, 'M_B', Sets), variable(Y, 'y', Values)],
+			equiv(
+				in(Y, intersection(MA, MB)),
+				and(in(Y, MA), in(Y, MB))
 			)
 		)
 	).
@@ -1485,16 +1439,14 @@ Obdobně \(M_A \cup M_B\) je sjednocení množin a~obsahuje prvky, které jsou o
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'union_definition',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				set_equal([
-					union(
-						set_by(X, 'x', Values, apply(A, [Y], [X])),
-						set_by(X, 'x', Values, apply(B, [Y], [X]))
-					),
-					set_by(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X])))
-				])
-			)
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates)],
+			set_equal([
+				union(
+					set_by(X, 'x', Values, apply(A, [Y], [X])),
+					set_by(X, 'x', Values, apply(B, [Y], [X]))
+				),
+				set_by(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X])))
+			])
 		)
 	).
 \end{prolog}
@@ -1505,12 +1457,10 @@ Obdobně \(M_A \cup M_B\) je sjednocení množin a~obsahuje prvky, které jsou o
 	make_test_sets(Sets),
 	print_validated_formula(
 		'union_in',
-		declare_set(MA, 'M_A', Sets,
-			declare_set(MB, 'M_B', Sets,
-				declare_variable(Y, 'y', Values, equiv(
-					in(Y, union(MA, MB)),
-					or(in(Y, MA), in(Y, MB))
-				))
+		declare([set(MA, 'M_A', Sets), set(MB, 'M_B', Sets), variable(Y, 'y', Values)],
+			equiv(
+				in(Y, union(MA, MB)),
+				or(in(Y, MA), in(Y, MB))
 			)
 		)
 	).
@@ -1528,12 +1478,10 @@ Dále dokážeme, že sjednocení dvou množin je prázdnou množinou tehdy a~je
 ?-	make_test_sets(Sets),
 	print_validated_formula(
 		'union_empty_sets',
-		declare_set(MA, 'M_A', Sets,
-			declare_set(MB, 'M_B', Sets,
-				equiv(
-					set_equal(union(MA, MB), empty_set),
-					and(set_equal(MA, empty_set), set_equal(MB, empty_set))
-				)
+		declare([set(MA, 'M_A', Sets), set(MB, 'M_B', Sets)], 
+			equiv(
+				set_equal(union(MA, MB), empty_set),
+				and(set_equal(MA, empty_set), set_equal(MB, empty_set))
 			)
 		)
 	).
@@ -1589,17 +1537,15 @@ Rozdíl množin \(M_A \setminus M_B\) obsahuje prvky, které jsou obsaženy v~mn
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'difference_definition',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				set_equal([
-					difference(
-						set_by(X, 'x', Values, apply(A, [Y], [X])),
-						set_by(X, 'x', Values, apply(B, [Y], [X]))
-					),
-					set_by(X, 'x', Values, and(apply(A, [Y], [X]), not(apply(B, [Y], [X])))),
-					set_by(X, 'x', Values, not(impl(apply(A, [Y], [X]), apply(B, [Y], [X]))))
-				])
-			)
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates)],
+			set_equal([
+				difference(
+					set_by(X, 'x', Values, apply(A, [Y], [X])),
+					set_by(X, 'x', Values, apply(B, [Y], [X]))
+				),
+				set_by(X, 'x', Values, and(apply(A, [Y], [X]), not(apply(B, [Y], [X])))),
+				set_by(X, 'x', Values, not(impl(apply(A, [Y], [X]), apply(B, [Y], [X]))))
+			])
 		)
 	).
 \end{prolog}
@@ -1610,12 +1556,10 @@ Rozdíl množin \(M_A \setminus M_B\) obsahuje prvky, které jsou obsaženy v~mn
 	make_test_sets(Sets),
 	print_validated_formula(
 		'difference_in',
-		declare_set(MA, 'M_A', Sets,
-			declare_set(MB, 'M_B', Sets,
-				declare_variable(Y, 'y', Values, equiv(
-					in(Y, difference(MA, MB)),
-					and(in(Y, MA), not_in(Y, MB))
-				))
+		declare([set(MA, 'M_A', Sets), set(MB, 'M_B', Sets), variable(Y, 'y', Values)],
+			equiv(
+				in(Y, difference(MA, MB)),
+				and(in(Y, MA), not_in(Y, MB))
 			)
 		)
 	).
@@ -1658,7 +1602,7 @@ vztahy~\eqref{eq:forall_set} a~\eqref{eq:exists_set}. Vztah~\eqref{eq:forall_not
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_not_eq_not_exists_proof',
-		declare_predicate(P, 'P', Predicates,
+		declare([predicate(P, 'P', Predicates)],
 			equiv([
 				forall(X, 'x', Values, not(apply(P, [Y], [X]))),
 				set_equal(set_by(X, 'x', Values, not(not(apply(P, [Y], [X])))), empty_set),
@@ -1675,7 +1619,7 @@ vztahy~\eqref{eq:forall_set} a~\eqref{eq:exists_set}. Vztah~\eqref{eq:forall_not
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_not_eq_not_forall_proof',
-		declare_predicate(P, 'P', Predicates,
+		declare([predicate(P, 'P', Predicates)],
 			equiv([
 				exists(X, 'x', Values, not(apply(P, [Y], [X]))),
 				set_not_equal(set_by(X, 'x', Values, not(apply(P, [Y], [X]))), empty_set),
@@ -1693,31 +1637,29 @@ Dále můžeme odvodit vztah pro konjunkci v~obecném kvantifikátoru. Vztah~\eq
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_and_proof',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				equiv([
-					forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
-					set_equal(set_by(X, 'x', Values, not(and(apply(A, [Y], [X]), apply(B, [Y], [X])))), empty_set),
-					linebreak,
-					set_equal(set_by(X, 'x', Values, or(not(apply(A, [Y], [X])), not(apply(B, [Y], [X])))), empty_set),
-					set_equal(
-						union(
-							set_by(X, 'x', Values, not(apply(A, [Y], [X]))),
-							set_by(X, 'x', Values, not(apply(B, [Y], [X])))
-						),
-						empty_set
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates)],
+			equiv([
+				forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+				set_equal(set_by(X, 'x', Values, not(and(apply(A, [Y], [X]), apply(B, [Y], [X])))), empty_set),
+				linebreak,
+				set_equal(set_by(X, 'x', Values, or(not(apply(A, [Y], [X])), not(apply(B, [Y], [X])))), empty_set),
+				set_equal(
+					union(
+						set_by(X, 'x', Values, not(apply(A, [Y], [X]))),
+						set_by(X, 'x', Values, not(apply(B, [Y], [X])))
 					),
-					linebreak,
-					and(
-						set_equal(set_by(X, 'x', Values, not(apply(A, [Y], [X]))), empty_set),
-						set_equal(set_by(X, 'x', Values, not(apply(B, [Y], [X]))), empty_set)
-					),
-					and(
-						forall(X, 'x', Values, apply(A, [Y], [X])),
-						forall(X, 'x', Values, apply(B, [Y], [X]))
-					)
-				])
-			)
+					empty_set
+				),
+				linebreak,
+				and(
+					set_equal(set_by(X, 'x', Values, not(apply(A, [Y], [X]))), empty_set),
+					set_equal(set_by(X, 'x', Values, not(apply(B, [Y], [X]))), empty_set)
+				),
+				and(
+					forall(X, 'x', Values, apply(A, [Y], [X])),
+					forall(X, 'x', Values, apply(B, [Y], [X]))
+				)
+			])
 		)
 	).
 \end{prolog}
@@ -1730,42 +1672,40 @@ Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. V
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_or_proof',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				equiv([
-					exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
-					set_not_equal(set_by(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))), empty_set),
-					linebreak,
-					set_not_equal(
-						union(
-							set_by(X, 'x', Values, apply(A, [Y], [X])),
-							set_by(X, 'x', Values, apply(B, [Y], [X]))
-						),
-						empty_set
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates)],
+			equiv([
+				exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+				set_not_equal(set_by(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))), empty_set),
+				linebreak,
+				set_not_equal(
+					union(
+						set_by(X, 'x', Values, apply(A, [Y], [X])),
+						set_by(X, 'x', Values, apply(B, [Y], [X]))
 					),
-					not(set_equal(
-						union(
-							set_by(X, 'x', Values, apply(A, [Y], [X])),
-							set_by(X, 'x', Values, apply(B, [Y], [X]))
-						),
-						empty_set
-					)),
-					linebreak,
-					not(and(
-						set_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set),
-						set_equal(set_by(X, 'x', Values, apply(B, [Y], [X])), empty_set)
-					)),
-					or(
-						set_not_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set),
-						set_not_equal(set_by(X, 'x', Values, apply(B, [Y], [X])), empty_set)
+					empty_set
+				),
+				not(set_equal(
+					union(
+						set_by(X, 'x', Values, apply(A, [Y], [X])),
+						set_by(X, 'x', Values, apply(B, [Y], [X]))
 					),
-					linebreak,
-					or(
-						exists(X, 'x', Values, apply(A, [Y], [X])),
-						exists(X, 'x', Values, apply(B, [Y], [X]))
-					)
-				])
-			)
+					empty_set
+				)),
+				linebreak,
+				not(and(
+					set_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set),
+					set_equal(set_by(X, 'x', Values, apply(B, [Y], [X])), empty_set)
+				)),
+				or(
+					set_not_equal(set_by(X, 'x', Values, apply(A, [Y], [X])), empty_set),
+					set_not_equal(set_by(X, 'x', Values, apply(B, [Y], [X])), empty_set)
+				),
+				linebreak,
+				or(
+					exists(X, 'x', Values, apply(A, [Y], [X])),
+					exists(X, 'x', Values, apply(B, [Y], [X]))
+				)
+			])
 		)
 	).
 \end{prolog}
@@ -1777,7 +1717,7 @@ Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. V
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_not_eq_not_exists',
-		declare_predicate(P, 'P', Predicates,
+		declare([predicate(P, 'P', Predicates)],
 			equiv(
 				forall(X, 'x', Values, not(apply(P, [Y], [X]))),
 				not(exists(X, 'x', Values, apply(P, [Y], [X])))
@@ -1791,7 +1731,7 @@ Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. V
 ?- 	make_test_values(Values), make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_not_eq_not_forall',
-		declare_predicate(P, 'P', Predicates,
+		declare([predicate(P, 'P', Predicates)],
 			equiv(
 				exists(X, 'x', Values, not(apply(P, [Y], [X]))),
 				not(forall(X, 'x', Values, apply(P, [Y], [X])))
@@ -1806,14 +1746,12 @@ Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. V
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'forall_and',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				equiv(
-					forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
-					and(
-						forall(X, 'x', Values, apply(A, [Y], [X])),
-						forall(X, 'x', Values, apply(B, [Y], [X]))
-					)
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates)],
+			equiv(
+				forall(X, 'x', Values, and(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+				and(
+					forall(X, 'x', Values, apply(A, [Y], [X])),
+					forall(X, 'x', Values, apply(B, [Y], [X]))
 				)
 			)
 		)
@@ -1826,14 +1764,12 @@ Obdobně můžeme odvodit vztah pro disjunkci v~existenčním kvantifikátoru. V
 	make_test_predicates(Y, Predicates),
 	print_validated_formula(
 		'exists_or',
-		declare_predicate(A, 'A', Predicates,
-			declare_predicate(B, 'B', Predicates,
-				equiv(
-					exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
-					or(
-						exists(X, 'x', Values, apply(A, [Y], [X])),
-						exists(X, 'x', Values, apply(B, [Y], [X]))
-					)
+		declare([predicate(A, 'A', Predicates), predicate(B, 'B', Predicates)],
+			equiv(
+				exists(X, 'x', Values, or(apply(A, [Y], [X]), apply(B, [Y], [X]))),
+				or(
+					exists(X, 'x', Values, apply(A, [Y], [X])),
+					exists(X, 'x', Values, apply(B, [Y], [X]))
 				)
 			)
 		)

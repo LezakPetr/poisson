@@ -16,7 +16,7 @@ draw_1d_function(Label, X, LabelX, Formula, MinX, MaxX) :-
 	draw_marks(TransformAxisX, UpdatedMinX, UpdatedMaxX, UpdatedMinY, UpdatedMaxY, MarksElementsX),
 	draw_marks(TransformAxisY, UpdatedMinY, UpdatedMaxY, UpdatedMinX, UpdatedMaxX, MarksElementsY),
 	draw_axis(TransformAxisX, UpdatedMinX, UpdatedMaxX, LabelX, AxisXElements),
-	calculate_label_y(declare_variable(X, LabelX, [], Formula), LabelY),
+	calculate_label_y(declare([variable(X, LabelX, [])], Formula), LabelY),
 	draw_axis(TransformAxisY, UpdatedMinY, UpdatedMaxY, LabelY, AxisYElements),
 	draw_function_points(PointList, PointElements),
 	append([MarksElementsX, MarksElementsY, AxisXElements, AxisYElements, PointElements], ElementList),

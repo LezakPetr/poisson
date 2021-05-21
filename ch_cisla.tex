@@ -87,7 +87,7 @@ Pro každý predikát \(\predicate{A}(n)\) platí:
 	make_test_predicates(Z, Predicates),
 	print_validated_formula(
 		'natural_numbers_definition_induction',
-		declare_predicate(A, 'A', Predicates,
+		declare([predicate(A, 'A', Predicates)],
 			impl(			
 				and(
 					apply(A, [Z], [1]),
@@ -474,18 +474,14 @@ V~prvním kroku jsme využili distributivitu násobení. Ve druhém kroku jsme v
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'power_by_multiplication_proof_3',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				declare_variable(C, 'c', Values,
-					equal([
-						(A^B)^(C + 1),
-						(A^B)^C * (A^B)^1,
-						A^(B*C) * A^B,
-						A^(B*C + B),
-						A^(B*(C+1))
-					])
-				)
-			)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values), variable(C, 'c', Values)],
+			equal([
+				(A^B)^(C + 1),
+				(A^B)^C * (A^B)^1,
+				A^(B*C) * A^B,
+				A^(B*C + B),
+				A^(B*(C+1))
+			])
 		)
 	).
 \end{prolog}
@@ -512,14 +508,12 @@ Její důkaz opět provedeme matematickou indukcí. Ověření rovnice pro \(n =
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'power_of_multiplication_proof_1',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				equal([
-					(A*B)^1,
-					A*B,
-					A^1 * B^1
-				])
-			)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values)],
+			equal([
+				(A*B)^1,
+				A*B,
+				A^1 * B^1
+			])
 		)
 	).
 \end{prolog}
@@ -531,19 +525,15 @@ Dále dokážeme, že z~\((a \cdot b)^n = a^n \cdot b^n\) plyne \((a \cdot b)^{n
 ?-	make_test_natural_numbers(Values),
 	print_validated_formula(
 		'power_of_multiplication_proof_2',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				declare_variable(N, 'n', Values,
-					equal([
-						(A*B)^(N+1),
-						(A*B)^N * A*B,
-						A^N * B^N * A*B,
-						linebreak,
-						par(A^N * A) * par(B^N * B),
-						A^(N+1) * B^(N+1)
-					])
-				)
-			)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values), variable(N, 'n', Values)],
+			equal([
+				(A*B)^(N+1),
+				(A*B)^N * A*B,
+				A^N * B^N * A*B,
+				linebreak,
+				par(A^N * A) * par(B^N * B),
+				A^(N+1) * B^(N+1)
+			])
 		)
 	).
 \end{prolog}
@@ -559,14 +549,10 @@ Zkusme dále definovat rozdíl jako opačnou operaci k~součtu pomocí věty~\eq
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'difference_definition',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				declare_variable(C, 'c', Values,
-					equiv(
-						equal([C, A - B]),
-						equal([B + C, A])
-					)
-				)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values), variable(C, 'c', Values)],
+			equiv(
+				equal([C, A - B]),
+				equal([B + C, A])
 			)
 		)
 	).
@@ -685,7 +671,7 @@ Mezi celými čísly najdeme zvláštní číslo 0. Z~definice čísla 1 v~tabul
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'add_zero_proof_1',
-		declare_variable(B, 'b', Values,
+		declare([variable(B, 'b', Values)],
 			equal([
 				par(B + 1) + 0,
 				B + par(0 + 1),
@@ -702,7 +688,7 @@ V~prvním kroku jsme s~využitím komutativity a~asociativity sčítání výraz
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'add_zero_proof_2',
-		declare_variable(A, 'a', Values,
+		declare([variable(A, 'a', Values)],
 			equal([
 				A + 0,
 				A
@@ -719,7 +705,7 @@ Srovnáme-li vztah~\eqref{eq:add_zero_proof_2} se vztahem \eqref{eq:difference_d
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'difference_itself',
-		declare_variable(A, 'a', Values,
+		declare([variable(A, 'a', Values)],
 			equal([
 				A - A,
 				0
@@ -735,7 +721,7 @@ Vidíme, že rovnicí~\eqref{eq:opposite_number_definition} můžeme ke každém
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'opposite_number_definition',
-		declare_variable(A, 'a', Values,
+		declare([variable(A, 'a', Values)],
 			equal([
 				A + par(-A),
 				0
@@ -749,7 +735,7 @@ Vidíme, že rovnicí~\eqref{eq:opposite_number_definition} můžeme ke každém
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'opposite_number_calculation',
-		declare_variable(A, 'a', Values,
+		declare([variable(A, 'a', Values)],
 			equal([
 				-A,
 				0 - A
@@ -765,14 +751,12 @@ Opačná čísla nám umožňují vypočítat rozdíl pomocí součtu jak je vid
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'difference_by_add',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				equal([
-					A - B,
-					A + 0 - B,
-					A + par(-B)
-				])
-			)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values)],
+			equal([
+				A - B,
+				A + 0 - B,
+				A + par(-B)
+			])
 		)
 	).
 \end{prolog}
@@ -793,7 +777,7 @@ Nakonec odvodíme vztah pro opačné číslo opačného čísla. Vyjdeme z~defin
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'double_opposite_proof',
-		declare_variable(A, 'a', Values,
+		declare([variable(A, 'a', Values)],
 			proof([],
 			[
 				equal(0, A + par(-A)),
@@ -811,7 +795,7 @@ Pokračujme rozšířením součinu na celá čísla. Začněme nulou. Srovnán�
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'multiplication_by_zero_1',
-		declare_variable(A, 'a', Values,
+		declare([variable(A, 'a', Values)],
 			equal([
 				A * 1,
 				A * (1 + 0),
@@ -826,7 +810,7 @@ Pokračujme rozšířením součinu na celá čísla. Začněme nulou. Srovnán�
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'multiplication_by_zero_2',
-		declare_variable(A, 'a', Values,
+		declare([variable(A, 'a', Values)],
 			equal([A * 0, 0])
 		)
 	).
@@ -839,14 +823,12 @@ Pokračujme součinem, kde je jeden operand záporný. Z~rovnice~\eqref{eq:multi
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'multiplication_by_negative_1',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				equal([
-					0,
-					A * (-B + B),
-					A * (-B) + A * B
-				])
-			)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values)],
+			equal([
+				0,
+				A * (-B + B),
+				A * (-B) + A * B
+			])
 		)
 	).
 \end{prolog}
@@ -856,12 +838,10 @@ Pokračujme součinem, kde je jeden operand záporný. Z~rovnice~\eqref{eq:multi
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'multiplication_by_negative_2',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				equal([
-					A * (-B), -par(A * B)
-				])
-			)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values)],
+			equal([
+				A * (-B), -par(A * B)
+			])
 		)
 	).
 \end{prolog}
@@ -871,15 +851,13 @@ Pokračujme součinem, kde je jeden operand záporný. Z~rovnice~\eqref{eq:multi
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'multiplication_by_negative_3',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				equal([
-					(-A) * B,
-					B * (-A),
-					-par(B * A),
-					-par(A * B)
-				])
-			)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values)],
+			equal([
+				(-A) * B,
+				B * (-A),
+				-par(B * A),
+				-par(A * B)
+			])
 		)
 	).
 \end{prolog}
@@ -891,15 +869,13 @@ Nakonec v~rovnici~\eqref{eq:multiplication_by_negative_4} vyšetříme případ,
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'multiplication_by_negative_4',
-		declare_variable(A, 'a', Values,
-			declare_variable(B, 'b', Values,
-				equal([
-					(-A) * (-B),
-					-par(A * (-B)),
-					-par(-par(A * B)),
-					A * B
-				])
-			)
+		declare([variable(A, 'a', Values), variable(B, 'b', Values)],
+			equal([
+				(-A) * (-B),
+				-par(A * (-B)),
+				-par(-par(A * B)),
+				A * B
+			])
 		)
 	).
 \end{prolog}
@@ -914,14 +890,10 @@ Definujme podíl jako opačnou operaci k~násobení pomocí věty~\eqref{eq:divi
 	make_test_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
 		'division_definition',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', NonzeroNumbers,
-				declare_variable(C, 'c', Numbers,
-					equiv(
-						equal([C, A / B]),
-						equal([B * C, A])
-					)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', NonzeroNumbers), variable(C, 'c', Numbers)],
+			equiv(
+				equal([C, A / B]),
+				equal([B * C, A])
 			)
 		)
 	).
@@ -961,27 +933,20 @@ Vyjádřeme násobení racionálních čísel v~soustavě~\eqref{eq:rational_mul
 ?-	Numbers = [1, 2, 3, 4, 6],
 	print_validated_formula(
 		'rational_multiplication',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Numbers,
-					declare_variable(D, 'd', Numbers,
-						declare_variable(E, 'e', Numbers,
-							declare_variable(F, 'f', Numbers,
-								proof([
-									equal([C, A / B]),
-									equal([F, D / E])
-								],
-								[
-									equal([A, B * C]),
-									equal([D, E * F]),
-									equal([A * D, par(B * C) * par(E * F), par(B * E) * par(C * F)]),
-									equal([(C * F), (A / B) * (D / E), (A * D) / (B * E)])
-								])
-							)
-						)
-					)
-				)
-			)
+		declare([
+			variable(A, 'a', Numbers), variable(B, 'b', Numbers), variable(C, 'c', Numbers),
+			variable(D, 'd', Numbers), variable(E, 'e', Numbers), variable(F, 'f', Numbers)
+		],
+			proof([
+				equal([C, A / B]),
+				equal([F, D / E])
+			],
+			[
+				equal([A, B * C]),
+				equal([D, E * F]),
+				equal([A * D, par(B * C) * par(E * F), par(B * E) * par(C * F)]),
+				equal([(C * F), (A / B) * (D / E), (A * D) / (B * E)])
+			])
 		)
 	).
 \end{prolog}
@@ -1023,7 +988,7 @@ Z~definice~\eqref{eq:division_definition} dále plyne vztah~\eqref{eq:rational_o
 ?-	make_test_nonzero_numbers(Numbers),
 	print_validated_formula(
 		'rational_one',
-		declare_variable(A, 'a', Numbers,
+		declare([variable(A, 'a', Numbers)],
 			equal([A / A, 1])
 		)
 	).
@@ -1036,17 +1001,13 @@ Ze vztahů~\eqref{eq:rational_multiplication} a~\eqref{eq:rational_one} můžeme
 ?-	make_test_nonzero_numbers(Numbers),
 	print_validated_formula(
 		'rational_reduction',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Numbers,
-					equal([
-						A / B,
-						(A / B) * 1,
-						(A / B) * (C / C),
-						(A * C) / (B * C)
-					])
-				)
-			)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers), variable(C, 'c', Numbers)],
+			equal([
+				A / B,
+				(A / B) * 1,
+				(A / B) * (C / C),
+				(A * C) / (B * C)
+			])
 		)
 	).
 \end{prolog}
@@ -1059,19 +1020,13 @@ Dále můžeme odvodit vztah~\eqref{eq:division_distributivity} pro distributivi
 	make_test_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
 		'division_distributivity',
-		declare_plus_minus(PM,
-			declare_variable(A, 'a', Numbers,
-				declare_variable(B, 'b', Numbers,
-					declare_variable(C, 'c', NonzeroNumbers,
-						equal([
-							plus_minus(A, B, PM) / C,
-							plus_minus(A, B, PM) * (1 / C),
-							plus_minus(A * (1 / C), B * (1 / C), PM),
-							plus_minus(A / C, B / C, PM)
-						])
-					)
-				)
-			)
+		declare([plus_minus(PM), variable(A, 'a', Numbers), variable(B, 'b', Numbers), variable(C, 'c', NonzeroNumbers)],
+			equal([
+				plus_minus(A, B, PM) / C,
+				plus_minus(A, B, PM) * (1 / C),
+				plus_minus(A * (1 / C), B * (1 / C), PM),
+				plus_minus(A / C, B / C, PM)
+			])
 		)
 	).
 \end{prolog}
@@ -1084,20 +1039,15 @@ Pokud chceme vypočítat součet nebo rozdíl zlomků s~rozdílnými jmenovateli
 	make_test_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
 		'sum_of_rationals',
-		declare_plus_minus(PM,
-			declare_variable(A, 'a', Numbers,
-				declare_variable(B, 'b', NonzeroNumbers,
-					declare_variable(C, 'c', Numbers,
-						declare_variable(D, 'd', NonzeroNumbers,
-							equal([
-								plus_minus(A / B, C / D, PM),
-								plus_minus((A * D) / (B * D), (C * B) / (D * B), PM),
-								plus_minus(A * D, B * C, PM) / (B * D)
-							])
-						)
-					)
-				)
-			)
+		declare([
+			plus_minus(PM), variable(A, 'a', Numbers), variable(B, 'b', NonzeroNumbers),
+			variable(C, 'c', Numbers), variable(D, 'd', NonzeroNumbers)
+		],
+			equal([
+				plus_minus(A / B, C / D, PM),
+				plus_minus((A * D) / (B * D), (C * B) / (D * B), PM),
+				plus_minus(A * D, B * C, PM) / (B * D)
+			])
 		)
 	).
 \end{prolog}
@@ -1126,20 +1076,17 @@ Dále můžeme rovnicí~\eqref{eq:division_of_rationals} vyjádřit podíl racio
 	make_test_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
 		'division_of_rationals',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', NonzeroNumbers,
-				declare_variable(C, 'c', NonzeroNumbers,
-					declare_variable(D, 'd', NonzeroNumbers,
-						equal([
-							(A / B) / (C / D),
-							((A / B) / (C / D)) * ((D / C) / (D / C)),
-							((A * D) / (B * C)) / ((C * D) / (D * C)),
-							((A * D) / (B * C)) / 1,
-							(A * D) / (B * C)
-						])
-					)
-				)
-			)
+		declare([
+			variable(A, 'a', Numbers), variable(B, 'b', NonzeroNumbers),
+			variable(C, 'c', NonzeroNumbers), variable(D, 'd', NonzeroNumbers)
+		],
+			equal([
+				(A / B) / (C / D),
+				((A / B) / (C / D)) * ((D / C) / (D / C)),
+				((A * D) / (B * C)) / ((C * D) / (D * C)),
+				((A * D) / (B * C)) / 1,
+				(A * D) / (B * C)
+			])
 		)
 	).
 \end{prolog}
@@ -1179,7 +1126,7 @@ Přejděme dále k~rozšíření mocnitele (exponentu) na celá čísla. Rovnici
 ?-	make_test_nonzero_integers(Values),
 	print_validated_formula(
 		'power_by_zero_1',
-		declare_variable(A, 'a', Values,
+		declare([variable(A, 'a', Values)],
 			equal([
 				A^1,
 				A^(0 + 1),
@@ -1194,7 +1141,7 @@ Přejděme dále k~rozšíření mocnitele (exponentu) na celá čísla. Rovnici
 ?-	make_test_numbers(Values),
 	print_validated_formula(
 		'power_by_zero_2',
-		declare_variable(A, 'a', Values,
+		declare([variable(A, 'a', Values)],
 			impl(
 				not_equal(A, 0),
 				equal([A^0, 1])
@@ -1213,17 +1160,15 @@ Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými expone
 	make_test_integers(TestExponents),
 	print_validated_formula(
 		'power_by_negative_exponent_1',
-		declare_variable(A, 'a', TestBases,
-			declare_variable(B, 'b', TestExponents,
-				impl(
-					not_equal(A, 0),
-					equal([
-						1,
-						A^0,
-						A^(-B + B),
-						A^(-B) * A^B
-					])
-				)
+		declare([variable(A, 'a', TestBases), variable(B, 'b', TestExponents)],
+			impl(
+				not_equal(A, 0),
+				equal([
+					1,
+					A^0,
+					A^(-B + B),
+					A^(-B) * A^B
+				])
 			)
 		)
 	).
@@ -1235,12 +1180,10 @@ Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými expone
 	make_test_integers(TestExponents),
 	print_validated_formula(
 		'power_by_negative_exponent_2',
-		declare_variable(A, 'a', TestBases,
-			declare_variable(B, 'b', TestExponents,
-				impl(
-					not_equal(A, 0),
-					equal([A^(-B), 1 / (A^B)])
-				)
+		declare([variable(A, 'a', TestBases), variable(B, 'b', TestExponents)],
+			impl(
+				not_equal(A, 0),
+				equal([A^(-B), 1 / (A^B)])
 			)
 		)
 	).
@@ -1251,7 +1194,7 @@ Dále můžeme s~racionálními čísly vyjádřit mocniny se zápornými expone
 ?-	make_test_nonzero_integers(TestBases),
 	print_validated_formula(
 		'power_by_negative_exponent_3',
-		declare_variable(A, 'a', TestBases,
+		declare([variable(A, 'a', TestBases)],
 			impl(
 				not_equal(A, 0),
 				equal([A^(-1), 1 / A])
@@ -1270,12 +1213,10 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_equal',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				equiv(
-					equal(A, B),
-					equal(A - B, 0)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			equiv(
+				equal(A, B),
+				equal(A - B, 0)
 			)
 		)
 	).
@@ -1286,12 +1227,10 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_less_than',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				equiv(
-					less_than(A, B),
-					less_than(A - B, 0)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			equiv(
+				less_than(A, B),
+				less_than(A - B, 0)
 			)
 		)
 	).
@@ -1302,12 +1241,10 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_greater_than',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				equiv(
-					greater_than(A, B),
-					greater_than(A - B, 0)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			equiv(
+				greater_than(A, B),
+				greater_than(A - B, 0)
 			)
 		)
 	).
@@ -1318,14 +1255,12 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_less_or_equal',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				equiv(
-					less_or_equal(A, B),
-					or(
-						less_than(A, B),
-						equal(A, B)
-					)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			equiv(
+				less_or_equal(A, B),
+				or(
+					less_than(A, B),
+					equal(A, B)
 				)
 			)
 		)
@@ -1337,14 +1272,12 @@ Operátor rovnosti už známe ze sekce~\ref{sec:equality_operator}. Nyní definu
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_greater_or_equal',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				equiv(
-					greater_or_equal(A, B),
-					or(
-						greater_than(A, B),
-						equal(A, B)
-					)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			equiv(
+				greater_or_equal(A, B),
+				or(
+					greater_than(A, B),
+					equal(A, B)
 				)
 			)
 		)
@@ -1386,10 +1319,8 @@ Přejděme k~racionálním číslům. Podle rovnice~\eqref{eq:order_rationals_1}
 	make_test_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
 		'order_rationals_1',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', NonzeroNumbers,
-				equal(A / B, (A * B) / (B * B))
-			)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', NonzeroNumbers)],
+			equal(A / B, (A * B) / (B * B))
 		)
 	).
 \end{prolog}
@@ -1401,12 +1332,10 @@ Přejděme k~racionálním číslům. Podle rovnice~\eqref{eq:order_rationals_1}
 	make_test_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
 		'order_rationals_positive',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', NonzeroNumbers,
-				equiv(
-					greater_than(A / B, 0),
-					greater_than(A * B, 0)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', NonzeroNumbers)],
+			equiv(
+				greater_than(A / B, 0),
+				greater_than(A * B, 0)
 			)
 		)
 	).
@@ -1418,12 +1347,10 @@ Přejděme k~racionálním číslům. Podle rovnice~\eqref{eq:order_rationals_1}
 	make_test_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
 		'order_rationals_negative',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', NonzeroNumbers,
-				equiv(
-					less_than(A / B, 0),
-					less_than(A * B, 0)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', NonzeroNumbers)],
+			equiv(
+				less_than(A / B, 0),
+				less_than(A * B, 0)
 			)
 		)
 	).
@@ -1459,15 +1386,13 @@ Z~definic~\eqref{eq:order_less_than} a~\eqref{eq:order_at_least_one} také plyno
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_at_least_one',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			or(
 				or(
-					or(
-						less_than(A, B),
-						equal(A, B)
-					),
-					greater_than(A, B)
-				)
+					less_than(A, B),
+					equal(A, B)
+				),
+				greater_than(A, B)
 			)
 		)
 	).
@@ -1478,12 +1403,10 @@ Z~definic~\eqref{eq:order_less_than} a~\eqref{eq:order_at_least_one} také plyno
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_not_less_than',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				equiv(
-					not(less_than(A, B)),
-					greater_or_equal(A, B)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			equiv(
+				not(less_than(A, B)),
+				greater_or_equal(A, B)
 			)
 		)
 	).
@@ -1494,12 +1417,10 @@ Z~definic~\eqref{eq:order_less_than} a~\eqref{eq:order_at_least_one} také plyno
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_not_greater_than',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				equiv(
-					not(greater_than(A, B)),
-					less_or_equal(A, B)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			equiv(
+				not(greater_than(A, B)),
+				less_or_equal(A, B)
 			)
 		)
 	).
@@ -1510,12 +1431,10 @@ Z~definic~\eqref{eq:order_less_than} a~\eqref{eq:order_at_least_one} také plyno
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_less_than_opposite',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				equiv(
-					less_than(A, B),
-					greater_than(B, A)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			equiv(
+				less_than(A, B),
+				greater_than(B, A)
 			)
 		)
 	).
@@ -1526,12 +1445,10 @@ Z~definic~\eqref{eq:order_less_than} a~\eqref{eq:order_at_least_one} také plyno
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_less_or_equal_opposite',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				equiv(
-					less_or_equal(A, B),
-					greater_or_equal(B, A)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			equiv(
+				less_or_equal(A, B),
+				greater_or_equal(B, A)
 			)
 		)
 	).
@@ -1545,22 +1462,18 @@ Předpokládejme dále, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_transitivity_proof',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Numbers,
-					proof([
-						greater_than(A, B),
-						greater_than(B, C)
-					],
-					[
-						greater_than(A - B, 0),
-						greater_than(B - C, 0),
-						greater_than(par(A - B) + par(B - C), 0),
-						greater_than(A - C, 0),
-						greater_than(A, C)
-					])
-				)
-			)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers), variable(C, 'c', Numbers)],
+			proof([
+				greater_than(A, B),
+				greater_than(B, C)
+			],
+			[
+				greater_than(A - B, 0),
+				greater_than(B - C, 0),
+				greater_than(par(A - B) + par(B - C), 0),
+				greater_than(A - C, 0),
+				greater_than(A, C)
+			])
 		)
 	).
 \end{prolog}
@@ -1571,17 +1484,13 @@ Předpokládejme dále, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_transitivity_greater_than',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Numbers,
-					impl(
-						and(
-							greater_than(A, B),
-							greater_than(B, C)
-						),
-						greater_than(A, C)
-					)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers), variable(C, 'c', Numbers)],
+			impl(
+				and(
+					greater_than(A, B),
+					greater_than(B, C)
+				),
+				greater_than(A, C)
 			)
 		)
 	).
@@ -1592,17 +1501,13 @@ Předpokládejme dále, že platí \(a > b\) a \(b > c\). Tyto relace nejdříve
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'order_transitivity_less_than',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Numbers,
-					impl(
-						and(
-							less_than(A, B),
-							less_than(B, C)
-						),
-						less_than(A, C)
-					)
-				)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers), variable(C, 'c', Numbers)],
+			impl(
+				and(
+					less_than(A, B),
+					less_than(B, C)
+				),
+				less_than(A, C)
 			)
 		)
 	).
@@ -1638,7 +1543,7 @@ Minimem množiny rozumíme její nejmenší prvek, maximem její nejvyšší prv
 ?-	make_test_nonempty_sets(Sets),
 	print_validated_formula(
 		'min_definition_1',
-		declare_variable(M, 'M', Sets,
+		declare([variable(M, 'M', Sets)],
 			in(min(M), M)
 		)
 	).
@@ -1650,7 +1555,7 @@ Minimem množiny rozumíme její nejmenší prvek, maximem její nejvyšší prv
 	make_test_nonempty_sets(Sets),
 	print_validated_formula(
 		'min_definition_2',
-		declare_variable(M, 'M', Sets,
+		declare([variable(M, 'M', Sets)],
 			forall_in(X, 'x', M, Numbers, greater_or_equal(X, min(M)))
 		)
 	).
@@ -1661,7 +1566,7 @@ Minimem množiny rozumíme její nejmenší prvek, maximem její nejvyšší prv
 ?-	make_test_nonempty_sets(Sets),
 	print_validated_formula(
 		'max_definition_1',
-		declare_variable(M, 'M', Sets,
+		declare([variable(M, 'M', Sets)],
 			in(max(M), M)
 		)
 	).
@@ -1673,7 +1578,7 @@ Minimem množiny rozumíme její nejmenší prvek, maximem její nejvyšší prv
 	make_test_nonempty_sets(Sets),
 	print_validated_formula(
 		'max_definition_2',
-		declare_variable(M, 'M', Sets,
+		declare([variable(M, 'M', Sets)],
 			forall_in(X, 'x', M, Numbers, less_or_equal(X, max(M)))
 		)
 	).
@@ -1691,7 +1596,7 @@ Infimum množiny \(M\) je nejvyšší číslo menší nebo rovno všem prvkům m
 	make_test_nonempty_sets(Sets),
 	print_validated_formula(
 		'inf_definition',
-		declare_variable(M, 'M', Sets,
+		declare([variable(M, 'M', Sets)],
 			equal(
 				inf(M),
 				max(
@@ -1712,7 +1617,7 @@ Infimum množiny \(M\) je nejvyšší číslo menší nebo rovno všem prvkům m
 	make_test_nonempty_sets(Sets),
 	print_validated_formula(
 		'sup_definition',
-		declare_variable(M, 'M', Sets,
+		declare([variable(M, 'M', Sets)],
 			equal(
 				sup(M),
 				min(
@@ -1736,7 +1641,7 @@ Prozkoumejme vztah mezi infimem a~minimem. Nejdříve srovnejme větu~\eqref{eq:
 	make_test_nonempty_sets(Sets),
 	print_validated_formula(
 		'inf_max_proof_1',
-		declare_variable(M, 'M', Sets,
+		declare([variable(M, 'M', Sets)],
 			in(
 				min(M),
 				set_by(X, 'x', Numbers, 
@@ -1757,7 +1662,7 @@ Zároveň toto minimum je nejvyšší prvek uvedené množiny, protože všechny
 	make_test_nonempty_sets(Sets),
 	print_validated_formula(
 		'inf_max_proof_2',
-		declare_variable(M, 'M', Sets,
+		declare([variable(M, 'M', Sets)],
 			equal([
 				inf(M),
 				max(
@@ -2008,15 +1913,13 @@ Zkusme dále rozšířit exponent na racionální čísla. Začněme identitou~\
 	make_test_natural_numbers(Exponents),
 	print_validated_formula(
 		'sqrt_rational_proof',
-		declare_variable(A, 'a', Bases,
-			declare_variable(B, 'b', Exponents,
-				equal([
-					A,
-					A^1,
-					A^(B / B),
-					(A^(1 / B))^B
-				])
-			)
+		declare([variable(A, 'a', Bases), variable(B, 'b', Exponents)],
+			equal([
+				A,
+				A^1,
+				A^(B / B),
+				(A^(1 / B))^B
+			])
 		)
 	).				
 \end{prolog}
@@ -2136,19 +2039,15 @@ Odvoďme vztah pro logaritmus součinu. Při odvození využijeme identitu~\eqre
 	make_test_log_bases(Bases),
 	print_validated_formula(
 		'log_product_proof',
-		declare_variable(A, 'a', Bases,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Numbers,
-					proof(
-					[],
-					[
-						equal(B * C, B * C),
-						equal(A^log(A, B * C), A^log(A, B) * A^log(A, C)),
-						equal(A^log(A, B * C), A^(log(A, B) + log(A, C))),
-						equal(log(A, B * C), log(A, B) + log(A, C))
-					])
-				)
-			)
+		declare([variable(A, 'a', Bases), variable(B, 'b', Numbers), variable(C, 'c', Numbers)],
+			proof(
+			[],
+			[
+				equal(B * C, B * C),
+				equal(A^log(A, B * C), A^log(A, B) * A^log(A, C)),
+				equal(A^log(A, B * C), A^(log(A, B) + log(A, C))),
+				equal(log(A, B * C), log(A, B) + log(A, C))
+			])
 		)
 	).				
 \end{prolog}
@@ -2161,19 +2060,15 @@ Obdobně můžeme odvodit vztah pro logaritmus podílu.
 	make_test_log_bases(Bases),
 	print_validated_formula(
 		'log_fraction_proof',
-		declare_variable(A, 'a', Bases,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Numbers,
-					proof(
-					[],
-					[
-						equal(B / C, B / C),
-						equal(A^log(A, B / C), A^log(A, B) / A^log(A, C)),
-						equal(A^log(A, B / C), A^(log(A, B) - log(A, C))),
-						equal(log(A, B / C), log(A, B) - log(A, C))
-					])
-				)
-			)
+		declare([variable(A, 'a', Bases), variable(B, 'b', Numbers), variable(C, 'c', Numbers)],
+			proof(
+			[],
+			[
+				equal(B / C, B / C),
+				equal(A^log(A, B / C), A^log(A, B) / A^log(A, C)),
+				equal(A^log(A, B / C), A^(log(A, B) - log(A, C))),
+				equal(log(A, B / C), log(A, B) - log(A, C))
+			])
 		)
 	).				
 \end{prolog}
@@ -2187,19 +2082,15 @@ Dále odvoďme vztah pro logaritmus mocniny.
 	make_test_positive_numbers(Numbers),
 	print_validated_formula(
 		'log_power_proof',
-		declare_variable(A, 'a', Bases,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Exponents,
-					proof(
-					[],
-					[
-						equal(B^C, B^C),
-						equal(B^C, (A^log(A, B))^C),
-						equal(A^log(A, B^C), A^(C * log(A, B))),
-						equal(log(A, B^C), C * log(A, B))
-					])
-				)
-			)
+		declare([variable(A, 'a', Bases), variable(B, 'b', Numbers), variable(C, 'c', Exponents)],
+			proof(
+			[],
+			[
+				equal(B^C, B^C),
+				equal(B^C, (A^log(A, B))^C),
+				equal(A^log(A, B^C), A^(C * log(A, B))),
+				equal(log(A, B^C), C * log(A, B))
+			])
 		)
 	).				
 \end{prolog}
@@ -2212,20 +2103,16 @@ Vidíme, že logaritmus snižuje \uv{řád operace}. Z~umocňování dělá nás
 	make_test_positive_numbers(Numbers),
 	print_validated_formula(
 		'log_base_proof',
-		declare_variable(A, 'a', Bases,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Bases,
-					proof(
-					[],
-					[
-						equal(B, B),
-						equal(A^log(A, B), B),
-						equal(log(C, A^log(A, B)), log(C, B)),
-						equal(log(A, B) * log(C, A), log(C, B)),
-						equal(log(A, B), log(C, B) / log(C, A))
-					])
-				)
-			)
+		declare([variable(A, 'a', Bases), variable(B, 'b', Numbers), variable(C, 'c', Bases)],
+			proof(
+			[],
+			[
+				equal(B, B),
+				equal(A^log(A, B), B),
+				equal(log(C, A^log(A, B)), log(C, B)),
+				equal(log(A, B) * log(C, A), log(C, B)),
+				equal(log(A, B), log(C, B) / log(C, A))
+			])
 		)
 	).				
 \end{prolog}
@@ -2390,7 +2277,7 @@ Nakonec uvedeme shrnutí užitečných vztahů pro počítání s~reálnými č�
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'real_division_distributivity',
-		declare_plus_minus(PM,
+		declare([plus_minus(PM)],
 			forall_in([A, B], ['a', 'b'], real_numbers, Numbers,
 				forall_in(C, 'c', difference(real_numbers, set_of([0])), Numbers,
 					equal(plus_minus(A, B, PM) / C, plus_minus(A / C, B / C, PM))
@@ -2405,7 +2292,7 @@ Nakonec uvedeme shrnutí užitečných vztahů pro počítání s~reálnými č�
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'sum_of_fractions',
-		declare_plus_minus(PM,
+		declare([plus_minus(PM)],
 			forall_in([A, C], ['a', 'c'], real_numbers, Numbers,
 				forall_in([B, D], ['b', 'd'], difference(real_numbers, set_of([0])), Numbers,
 					equal(

@@ -33,18 +33,16 @@ Uvažujme dvě reálná čísla \(a\) a~\(b\), z~nichž alespoň jedno je nenulo
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'complex_units_ortogonality',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				proof([
-					equal(A * 1 + B * imag, 0)
-				],
-				[
-					equal(A * 1, -B * imag),
-					equal(A^2 * 1^2, B^2 * imag^2),
-					equal(A^2, -B^2),
-					equal(A^2 + B^2, 0)
-				])
-			)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
+			proof([
+				equal(A * 1 + B * imag, 0)
+			],
+			[
+				equal(A * 1, -B * imag),
+				equal(A^2 * 1^2, B^2 * imag^2),
+				equal(A^2, -B^2),
+				equal(A^2 + B^2, 0)
+			])
 		)
 	).
 \end{prolog}
@@ -71,18 +69,13 @@ Vyjádřeme operace s~komplexními čísly. Využijeme přitom faktu, že se slo
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'complex_add',
-		declare_plus_minus(PM,
-			declare_variable(A, 'a', Numbers,
-				declare_variable(B, 'b', Numbers,
-					declare_variable(C, 'c', Numbers,
-						declare_variable(D, 'd', Numbers,
-							equal(
-								plus_minus(par(A + B * imag), par(C + D * imag), PM),
-								par(plus_minus(A, C, PM)) + par(plus_minus(B, D, PM)) * imag
-							)
-						)
-					)
-				)
+		declare([
+			plus_minus(PM), variable(A, 'a', Numbers), variable(B, 'b', Numbers),
+			variable(C, 'c', Numbers), variable(D, 'd', Numbers)
+		],
+			equal(
+				plus_minus(par(A + B * imag), par(C + D * imag), PM),
+				par(plus_minus(A, C, PM)) + par(plus_minus(B, D, PM)) * imag
 			)
 		)
 	).
@@ -95,19 +88,13 @@ Součin dvou komplexních čísel můžeme vyjádřit pomocí roznásobení výr
 ?-	make_test_numbers(Numbers),
 	print_validated_formula(
 		'complex_times',
-		declare_variable(A, 'a', Numbers,
-			declare_variable(B, 'b', Numbers,
-				declare_variable(C, 'c', Numbers,
-					declare_variable(D, 'd', Numbers,
-						equal([
-							(A + B * imag) * (C + D * imag),
-							A * C + A * D * imag + B * C * imag + B * D * imag^2,
-							linebreak,
-							par(A * C - B * D) + (A * D  + B * C) * imag
-						])
-					)
-				)
-			)
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers), variable(C, 'c', Numbers), variable(D, 'd', Numbers)],
+			equal([
+				(A + B * imag) * (C + D * imag),
+				A * C + A * D * imag + B * C * imag + B * D * imag^2,
+				linebreak,
+				par(A * C - B * D) + (A * D  + B * C) * imag
+			])
 		)
 	).
 \end{prolog}
@@ -119,7 +106,7 @@ Ke každému komplexnímu číslu \(a + b \cdot \imag\) můžeme zavést komplex
 ?-	make_test_real_pairs(Numbers),
 	print_validated_formula(
 		'complex_multiply_by_conjugate',
-		declare_variable([A, B], ['a', 'b'], Numbers,
+		declare([variable([A, B], ['a', 'b'], Numbers)],
 			equal(
 				(A + B * imag) * (A - B * imag),
 				A^2 + B^2
@@ -136,16 +123,14 @@ Toho můžeme využít pro vyjádření podílu dvou komplexních čísel:
 	make_test_nonzero_real_pairs(NonzeroPairs),
 	print_validated_formula(
 		'complex_fraction',
-		declare_variable([A, B], ['a', 'b'], Pairs,
-			declare_variable([C, D], ['c', 'd'], NonzeroPairs,
-				equal([
-					(A + B * imag) / (C + D * imag),
-					((A + B * imag) * (C - D * imag)) / ((C + D * imag) * (C - D * imag)),
-					linebreak,
-					(A * C + B * D + B * C * imag - A * D * imag) / (C^2 + D^2),
-					(A * C + B * D) / (C^2 + D^2) + (B * C - A * D) / (C^2 + D^2) * imag
-				])
-			)
+		declare([variable([A, B], ['a', 'b'], Pairs), variable([C, D], ['c', 'd'], NonzeroPairs)],
+			equal([
+				(A + B * imag) / (C + D * imag),
+				((A + B * imag) * (C - D * imag)) / ((C + D * imag) * (C - D * imag)),
+				linebreak,
+				(A * C + B * D + B * C * imag - A * D * imag) / (C^2 + D^2),
+				(A * C + B * D) / (C^2 + D^2) + (B * C - A * D) / (C^2 + D^2) * imag
+			])
 		)
 	).
 \end{prolog}
@@ -157,7 +142,7 @@ Absolutní hodnota komplexního čísla \(x + Y \cdot \imag\) je dána výrazem 
 ?-	make_test_real_pairs(Pairs),
 	print_validated_formula(
 		'complex_abs',
-		declare_variable([X, Y], ['x', 'y'], Pairs,
+		declare([variable([X, Y], ['x', 'y'], Pairs)],
 			equal(abs(X + Y * imag), sqrt(X^2 + Y^2))
 		)
 	).
@@ -185,12 +170,10 @@ Limitu komplexní funkce definujeme jako limitu funkce dvou parametrů. Znamená
 	make_test_complex_functions(P, Functions),
 	print_validated_formula(
 		'complex_lim',
-		declare_variable([X0, Y0], ['x_0', 'y_0'], Pairs,
-			declare_variable(F, '\\func{f}', Functions,
-				equal(
-					lim(Z, 'z', complex, X0 + Y0 * imag, apply(F, [P], [Z])),
-					lim([X, Y], ['x', 'y'], [real, real], [X0, Y0], apply(F, [P], [X + Y * imag]))
-				)
+		declare([variable([X0, Y0], ['x_0', 'y_0'], Pairs), function(F, '\\func{f}', Functions)],
+			equal(
+				lim(Z, 'z', complex, X0 + Y0 * imag, apply(F, [P], [Z])),
+				lim([X, Y], ['x', 'y'], [real, real], [X0, Y0], apply(F, [P], [X + Y * imag]))
 			)
 		)
 	).
@@ -204,12 +187,10 @@ Derivaci komplexní funkce definujeme obdobně jako derivaci reálné funkce pom
 	make_test_complex_functions(P, Functions),
 	print_validated_formula(
 		"complex_derivative",
-		declare_function(F, "\\func{f}", Functions,
-			declare_variable(Z, 'z', Numbers,
-				equal(
-					derivative(Z, apply(F, [P], [Z])),
-					lim(DZ, "\\mathrm{d}z", complex, 0, (apply(F, [P], [Z + DZ]) - apply(F, [P], [Z])) / DZ)
-				)
+		declare([function(F, "\\func{f}", Functions), variable(Z, 'z', Numbers)],
+			equal(
+				derivative(Z, apply(F, [P], [Z])),
+				lim(DZ, "\\mathrm{d}z", complex, 0, (apply(F, [P], [Z + DZ]) - apply(F, [P], [Z])) / DZ)
 			)
 		)
 	).
@@ -223,29 +204,27 @@ Zabývejme se otázkou, kdy tato derivace existuje. Nejdříve rozepišme defini
 	make_test_real_pairs(Pairs),
 	print_validated_formula(
 		"complex_derivative_conditions_1",
-		declare_variable([X, Y], ["x", "y"], Pairs,
-			declare_function(U, "u", Functions,
-				declare_function(V, "v", Functions,
-					declare_substitution(DU, "\\mathrm{d}u", apply(U, [FX, FY], [X + DX, Y + DY]) - apply(U, [FX, FY], [X, Y]),
-						declare_substitution(DV, "\\mathrm{d}v", apply(V, [FX, FY], [X + DX, Y + DY]) - apply(V, [FX, FY], [X, Y]),
-							equal([
-								lim(
-									[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
-									(DU + DV * imag) / (DX + DY * imag)
-								),
-								lim([DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
-									((DU + DV * imag) / (DX + DY * imag)) * ((DX - DY * imag) / (DX - DY * imag))	
-								),
-								linebreak,
-								lim(
-									[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
-									(DU * DX + DV * DY + (DV * DX - DU * DY) * imag) / (DX^2 + DY^2)
-								)
-							])
-						)
-					)
+		declare([
+			variable([X, Y], ["x", "y"], Pairs),
+			function(U, "u", Functions),
+			function(V, "v", Functions),
+			substitution(DU, "\\mathrm{d}u", apply(U, [FX, FY], [X + DX, Y + DY]) - apply(U, [FX, FY], [X, Y])),
+			substitution(DV, "\\mathrm{d}v", apply(V, [FX, FY], [X + DX, Y + DY]) - apply(V, [FX, FY], [X, Y]))
+		],
+			equal([
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					(DU + DV * imag) / (DX + DY * imag)
+				),
+				lim([DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					((DU + DV * imag) / (DX + DY * imag)) * ((DX - DY * imag) / (DX - DY * imag))	
+				),
+				linebreak,
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					(DU * DX + DV * DY + (DV * DX - DU * DY) * imag) / (DX^2 + DY^2)
 				)
-			)
+			])
 		)
 	).
 \end{prolog}
