@@ -628,7 +628,7 @@ evaluate_declaration(variable(Variable, Label, TestedValues), SubFormula, Value)
 
 evaluate_declaration(function(Variable, Label, TestedFunctions), SubFormula, Value) :-
 	!,
-	verify_variable_free(Variable, Label),
+	verify_free_variable_or_list(Variable, Label),
 	findall(
 		SubFormulaValue,
 		(member(Variable, TestedFunctions), log_choice(Variable, Label), rewrite_expression(SubFormula, RewrittenSubFormula), evaluate_expression_or_fail(RewrittenSubFormula, SubFormulaValue)),

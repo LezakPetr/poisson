@@ -141,13 +141,23 @@ verify_variable_free(Variable, Label) :-
 
 
 
-verify_free_variable_or_list(VariableOrList, LabelOrList) :-
-	verify_variable_free(VariableOrList, LabelOrList).
+verify_free_variable_or_list(VariableOrList, _) :-
+	var(VariableOrList),
+	!.
 
-verify_free_variable_or_list([], []).
+verify_free_variable_or_list([], []) :-
+	!.
 
 verify_free_variable_or_list([Variable | VariableTail], [Label | LabelTail]) :-
-	verify_variable_free(Variable, Label),
+	!,
+	verify_free_variable_or_list(Variable, Label),
 	verify_free_variable_or_list(VariableTail, LabelTail).
+
+verify_free_variable_or_list(Variable, Label) :-
+	write("Variable "),
+	write(Label),
+	write(" is already bound to "),
+	writeln(Variable),
+	fail.
 
 

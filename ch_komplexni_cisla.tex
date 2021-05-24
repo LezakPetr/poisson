@@ -7,11 +7,18 @@
 :- ensure_loaded("../equations/draw_1d_function").
 
 make_test_numbers([-1, 0, 0.5, 1, 2, 3, 1.5, complex(0, 1), complex(0, -1), complex(1, 1)]).
-%make_test_real_numbers([-2, -1, 0, 1, 1.5, 2]).
-make_test_real_numbers([1]).
+make_test_real_numbers([-2, -1, 0, 1, 1.5, 2]).
 make_test_real_nonzero_numbers([-2, -1, 1, 1.5, 2]).
 make_test_complex_functions(Z, [Z + 2, Z - imag, (1 - imag) * Z, Z^2]).
-make_test_real_binary_functions(X, Y, [X + Y]).%[X, Y, X + Y, X * Y, X^2 * Y, Y^2 * X]).
+make_test_real_binary_functions(X, Y, [X + Y, X * Y, X^2 * Y, Y^2 * X]).
+
+make_test_harmonic_functions(
+	UX, UY, VX, VY,
+	[
+		[UX^2 - UY^2, 2 * VX * VY],
+		[UX^3 - 3 * UX * UY^2, 3 * VX^2 * VY - VY^3]
+	]
+).
 \end{prolog}
 
 \section{Zavedení komplexních čísel}
@@ -205,13 +212,13 @@ Zabývejme se otázkou, kdy tato derivace existuje. Nejdříve rozepišme defini
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
+	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_1",
 		declare([
 			variable(X, "x", Numbers),
 			variable(Y, "y", Numbers),
-			substitution(U, "\\func{u}", UX^2 - UY^2),
-			substitution(V, "\\func{v}", 2 * VX * VY),
+			function([U, V], ["\\func{u}", "\\func{v}"], Functions), 
 			substitution(DU, "\\mathrm{d}u", apply(U, [UX, UY], [X + DX, Y + DY]) - apply(U, [UX, UY], [X, Y])),
 			substitution(DV, "\\mathrm{d}v", apply(V, [VX, VY], [X + DX, Y + DY]) - apply(V, [VX, VY], [X, Y]))
 		],
@@ -238,13 +245,13 @@ Uvědomme si, že limita~\eqref{eq:complex_derivative_conditions_1} je definová
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
+	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_2",
 		declare([
+			function([U, V], ["\\func{u}", "\\func{v}"], Functions), 
 			variable(X, "x", Numbers),
 			variable(Y, "y", Numbers),
-			substitution(U, "\\func{u}", UX^2 - UY^2),
-			substitution(V, "\\func{v}", 2 * VX * VY),
 			substitution(DU, "\\mathrm{d}u", apply(U, [UX, UY], [X + DX, Y + DY]) - apply(U, [UX, UY], [X, Y])),
 			substitution(DV, "\\mathrm{d}v", apply(V, [VX, VY], [X + DX, Y + DY]) - apply(V, [VX, VY], [X, Y]))
 		],
@@ -277,13 +284,13 @@ Obdobně můžeme zvolit \(\mathrm{d}y = 0\) a~získáme:
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
+	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_3",
 		declare([
+			function([U, V], ["\\func{u}", "\\func{v}"], Functions), 
 			variable(X, "x", Numbers),
 			variable(Y, "y", Numbers),
-			substitution(U, "\\func{u}", UX^2 - UY^2),
-			substitution(V, "\\func{v}", 2 * VX * VY),
 			substitution(DU, "\\mathrm{d}u", apply(U, [UX, UY], [X + DX, Y + DY]) - apply(U, [UX, UY], [X, Y])),
 			substitution(DV, "\\mathrm{d}v", apply(V, [VX, VY], [X + DX, Y + DY]) - apply(V, [VX, VY], [X, Y]))
 		],
@@ -316,13 +323,13 @@ Srovnejme vztahy~\eqref{eq:complex_derivative_conditions_2} a~\eqref{eq:complex_
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
+	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_4",
 		declare([
+			function([U, V], ["\\func{u}", "\\func{v}"], Functions),
 			variable(X, "x", Numbers),
-			variable(Y, "y", Numbers),
-			substitution(U, "\\func{u}", UX^2 - UY^2),
-			substitution(V, "\\func{v}", 2 * VX * VY)
+			variable(Y, "y", Numbers)
 		],
 			and(
 				equal(derivative(X, apply(U, [UX, UY], [X, Y])), derivative(Y, apply(V, [VX, VY], [X, Y]))),
@@ -341,13 +348,13 @@ Zabývejme se otázkou, zda je splnění podmínek~\eqref{eq:complex_derivative_
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
+	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_5",
 		declare([
+			function([U, V], ["\\func{u}", "\\func{v}"], Functions), 
 			variable(X, "x", Numbers),
 			variable(Y, "y", Numbers),
-			substitution(U, "\\func{u}", UX^2 - UY^2),
-			substitution(V, "\\func{v}", 2 * VX * VY),
 			substitution(DU, "\\mathrm{d}u", apply(U, [UX, UY], [X + DX, Y + DY]) - apply(U, [UX, UY], [X, Y])),
 			substitution(DV, "\\mathrm{d}v", apply(V, [VX, VY], [X + DX, Y + DY]) - apply(V, [VX, VY], [X, Y]))
 		],
