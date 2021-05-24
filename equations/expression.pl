@@ -539,8 +539,14 @@ function_derivative(A - B, [[A, 1], [B, -1]]).
 function_derivative(A * B, [[A, B], [B, A]]).
 function_derivative(A^B, [[A, B * A^(B - 1)], [B, log(e, A) * e^(B * log(e, A))]]).
 
-expression_derivative(X, X, 1) :-
-	var(X),
+expression_derivative(X, Expression, 1) :-
+	var(Expression),
+	X == Expression,
+	!.
+
+expression_derivative(X, Expression, 0) :-
+	var(Expression),
+	X \== Expression,
 	!.
 
 expression_derivative(X, apply(Function, Args, Values), Derivative) :-
@@ -574,62 +580,99 @@ evaluate_list([Expression | Tail], EvaluatedTail) :-
 	evaluate_list(Tail, EvaluatedTail).
 
 evaluate_list([Expression | Tail], [EvaluatedExpression | EvaluatedTail]) :-
-	evaluate_expression(Expression, EvaluatedExpression),
+	evaluate_sub_expression(Expression, EvaluatedExpression),
 	evaluate_list(Tail, EvaluatedTail).
 
 
 evaluate_expression_or_fail(Expression, Value) :-
-	evaluate_expression(Expression, Value),
+	evaluate_sub_expression(Expression, Value),
 	!.
 
 evaluate_expression_or_fail(_, failed).
 
 
+log_choice(Variable, Label) :-
+	verbose,
+	write("Trying "),
+	write(Label),
+	write(" = "),
+	writeln(Variable),
+	fail.
 
-evaluate_declaration(statement(StatementVariable, _), SubFormula, Value) :-
+log_choice(_, _).
+
+
+evaluate_declaration(statement(StatementVariable, Label), SubFormula, Value) :-
 	!,
-	findall(SubFormulaValue, (boolean(StatementVariable), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [EF1, EF2]),
+	verify_variable_free(StatementVariable, Label),
+	findall(SubFormulaValue, (boolean(StatementVariable), log_choice(StatementVariable, Label), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [EF1, EF2]),
 	log_and(EF1, EF2, Value).
 
-evaluate_declaration(set(SetVariable, _, TestedSets), SubFormula, Value) :-
+evaluate_declaration(set(SetVariable, Label, TestedSets), SubFormula, Value) :-
 	!,
-	findall(SubFormulaValue, (member(SetVariable, TestedSets), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
+	verify_variable_free(SetVariable, Label),
+	findall(SubFormulaValue, (member(SetVariable, TestedSets), log_choice(SetVariable, Label), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
 
-evaluate_declaration(predicate(PredicateVariable, _, TestedPredicates), SubFormula, Value) :-
+evaluate_declaration(predicate(PredicateVariable, Label, TestedPredicates), SubFormula, Value) :-
 	!,
-	findall(SubFormulaValue, (member(PredicateVariable, TestedPredicates), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
+	verify_variable_free(PredicateVariable, Label),
+	findall(SubFormulaValue, (member(PredicateVariable, TestedPredicates), log_choice(PredicateVariable, Label), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
 
-evaluate_declaration(variable(Variable, _, TestedValues), SubFormula, Value) :-
+evaluate_declaration(variable(Variable, Label, TestedValues), SubFormula, Value) :-
 	!,
-	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
+	verify_free_variable_or_list(Variable, Label),
+	findall(SubFormulaValue, (member(Variable, TestedValues), log_choice(Variable, Label), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
 
-evaluate_declaration(function(Variable, _, TestedFunctions), SubFormula, Value) :-
+evaluate_declaration(function(Variable, Label, TestedFunctions), SubFormula, Value) :-
 	!,
+	verify_variable_free(Variable, Label),
 	findall(
 		SubFormulaValue,
-		(member(Variable, TestedFunctions), rewrite_expression(SubFormula, RewrittenSubFormula), evaluate_expression_or_fail(RewrittenSubFormula, SubFormulaValue)),
+		(member(Variable, TestedFunctions), log_choice(Variable, Label), rewrite_expression(SubFormula, RewrittenSubFormula), evaluate_expression_or_fail(RewrittenSubFormula, SubFormulaValue)),
 		Results
 	),
 	log_and_all(Results, Value).
 
 evaluate_declaration(plus_minus(Variable), SubFormula, Value) :-
 	!,
-	findall(SubFormulaValue, (member(Variable, [+1, -1]), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [EF1, EF2]),
+	verify_variable_free(Variable, "+-"),
+	findall(SubFormulaValue, (member(Variable, [+1, -1]), log_choice(Variable, "+-"), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [EF1, EF2]),
 	log_and(EF1, EF2, Value).
 
-evaluate_declaration(substitution(Variable, _, Substitution), SubFormula, Value) :-
+evaluate_declaration(substitution(Variable, Label, Substitution), SubFormula, Value) :-
 	!,
-	Variable = Substitution,
-	evaluate_expression(SubFormula, Value).
+	verify_variable_free(Variable, Label),
+	findall(SubFormulaValue, (Variable = Substitution, log_choice(Variable, Label), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), [Value]).
 
 
+evaluate_sub_expression(Expression, Value) :-
+	evaluate_expression(Expression, SubValue),
+	!,
+	Value = SubValue.
+
+evaluate_sub_expression(Expression, _) :-
+	write("Expression evaluation failed: "),
+	writeln(Expression),
+	fail.
+
+
+evaluate_expression(Expression, _) :-
+	verbose,
+	write("Evaluating expression: "),
+	writeln(Expression),
+	fail.
+
+evaluate_expression(Variable, _) :-
+	var(Variable),
+	writeln("Cannout evaluate free variable"),
+	fail.
 
 evaluate_expression(declare([], SubFormula), Value) :-
 	!,
-	evaluate_expression(SubFormula, Value).
+	evaluate_sub_expression(SubFormula, Value).
 
 evaluate_expression(declare([Declaration | Tail], SubFormula), Value) :-
 	!,
@@ -641,6 +684,7 @@ evaluate_expression(apply(Predicate, Args, ArgValues), Value) :-
 
 evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
+	var(Variable),
 	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_and_all(Results, Value).
 
@@ -651,7 +695,7 @@ evaluate_expression(forall_in(Variable, _, Set, TestedValues, SubFormula), Value
 		SubFormulaValue,
 		(
 			member(Variable, TestedValues),
-			evaluate_expression(in(Variable, Set), log_true),
+			evaluate_sub_expression(in(Variable, Set), log_true),
 			evaluate_expression_or_fail(SubFormula, SubFormulaValue)
 		),
 		Results
@@ -660,14 +704,16 @@ evaluate_expression(forall_in(Variable, _, Set, TestedValues, SubFormula), Value
 
 evaluate_expression(forall_in([Variable], [Label], Set, TestedValues, SubFormula), Value) :-
 	!,
-	evaluate_expression(
+	var(Variable),
+	evaluate_sub_expression(
 		forall_in(Variable, Label, Set, TestedValues, SubFormula),
 		Value
 	).
 
 evaluate_expression(forall_in([Variable | VariableTail], [Label | LabelTail], Set, TestedValues, SubFormula), Value) :-
 	!,
-	evaluate_expression(
+	var(Variable),
+	evaluate_sub_expression(
 		forall_in(Variable, Label, Set, TestedValues,
 			forall_in(VariableTail, LabelTail, Set, TestedValues, SubFormula)
 		),
@@ -676,14 +722,18 @@ evaluate_expression(forall_in([Variable | VariableTail], [Label | LabelTail], Se
 
 evaluate_expression(exists(Variable, _, TestedValues, SubFormula), Value) :-
 	!,
+	var(Variable),
 	findall(SubFormulaValue, (member(Variable, TestedValues), evaluate_expression_or_fail(SubFormula, SubFormulaValue)), Results),
 	log_or_all(Results, Value).
 
 evaluate_expression(exists_in(Variable, _, Set, TestedValues, SubFormula), Value) :-
-	evaluate_expression(exists(Variable, _, TestedValues, and(in(Variable, Set), SubFormula)), Value).
+	!,
+	var(Variable),
+	evaluate_sub_expression(exists(Variable, _, TestedValues, and(in(Variable, Set), SubFormula)), Value).
 
 evaluate_expression(set_by(Variable, _, Values, Formula), Value) :-
 	!,
+	var(Variable),
 	findall(Variable, (member(Variable, Values), evaluate_expression_or_fail(Formula, log_true)), Results),
 	make_set(Results, ResultsSet),
 	Value = set(ResultsSet).
@@ -694,12 +744,12 @@ evaluate_expression(List, EvaluatedList) :-
 	evaluate_list(List, EvaluatedList).
 
 evaluate_expression(in(X, difference(A, B)), Value) :-
-	evaluate_expression(and(in(X, A), not_in(X, B)), Value),
+	evaluate_sub_expression(and(in(X, A), not_in(X, B)), Value),
 	!.
 
 evaluate_expression(lim(VariableOrList, _, Domain, Point, Function), Value) :-
 	!,
-	evaluate_expression(Point, EvaluatedPoint),
+	evaluate_sub_expression(Point, EvaluatedPoint),
 	calculate_lim(VariableOrList, Domain, EvaluatedPoint, Function, Value).
 
 evaluate_expression(Expression, Value) :-
@@ -832,12 +882,13 @@ calculate_lim(Variable, Domain, Point, Function, Value) :-
 	calculate_lim([Variable], [Domain], [Point], Function, Value).
 
 calculate_lim(VariableList, Domain, Point, Function, Value) :-
-	findall(Value, (generate_lim_value_list(VariableList, Domain, Point), evaluate_expression_or_fail(Function, Value)), ValueList),
+	is_list(VariableList),
+	findall(FunctionValue, (generate_lim_value_list(VariableList, Domain, Point), evaluate_expression_or_fail(Function, FunctionValue)), ValueList),
+	complex_all_equal(ValueList),
 	complex_sum(ValueList, ValueSum),
 	length(ValueList, Length),
 	Coeff is 1.0 / Length, 
 	complex_multiply(Coeff, ValueSum, Value).
-
 
 generate_lim_value_list([], [], []).
 
@@ -893,8 +944,23 @@ rewrite_expression(X, X) :-
 	var(X),
 	!.
 
+rewrite_expression(declare([], Expression), declare([], RewrittenExpression)) :-
+	!,
+	rewrite_expression(Expression, RewrittenExpression).
+
 rewrite_expression(declare([function(Variable, Label, Functions) | Tail], Expression), declare([function(Variable, Label, Functions) | Tail], Expression)) :-
 	!.
+
+rewrite_expression(declare([substitution(Variable, _,  Value) | Tail], Expression), RewrittenExpression) :-
+	!,
+	var(Variable),
+	copy_variable(Variable, [Tail, Expression], CopiedVariable, [CopiedTail, CopiedExpression]),
+	CopiedVariable = Value,
+	rewrite_expression(declare(CopiedTail, CopiedExpression), RewrittenExpression).
+
+rewrite_expression(declare([Declaration | Tail], Expression), declare([Declaration | RewrittenTail], RewrittenExpression)) :-
+	!,
+	rewrite_expression(declare(Tail, Expression), declare(RewrittenTail, RewrittenExpression)).
 
 rewrite_expression(derivative(X, F), Derivative) :-
 	!,
@@ -958,8 +1024,9 @@ print_declaration(Stream, variable(Variable, Label, _), SubFormula, PR) :-
 	print_expression_term(Stream, SubFormula, PR).
 
 print_declaration(Stream, substitution(Variable, Label, _), SubFormula, PR) :-
-	Variable = Label,
-	print_expression_term(Stream, SubFormula, PR).
+	copy_term([Variable, SubFormula], [CopiedVariable, CopiedSubFormula]),
+	CopiedVariable = Label,
+	print_expression_term(Stream, CopiedSubFormula, PR).
 
 print_declaration(Stream, function(Variable, Label, _), SubFormula, PR) :-
 	Variable = Label,
@@ -1270,15 +1337,26 @@ print_expression_term(Stream, lim(VariableOrList, LabelOrList, _, Point, Func), 
 	write(Stream, ' \\to '),
 	print_expression_or_list(Stream, Point),
 	write(Stream, '} '),
-	print_expression_term(Stream, Func).
+	print_expression_term(Stream, Func, lim).
+
+print_expression_term(Stream, derivative(Variable, apply(Function, _, _)), PR) :-
+	atomic(Function),
+	!,
+	print_bracket_if_needed(Stream, '(', PR, function_derivative),
+	write(Stream, "\\frac{\\partial "),
+	write(Stream, Function),
+	write(Stream, "}{\\partial "),
+	write(Stream, Variable),
+	write(Stream, "}"),
+	print_bracket_if_needed(Stream, ')', PR, function_derivative).
 
 print_expression_term(Stream, derivative(Variable, Function), PR) :-
-	print_bracket_if_needed(Stream, '(', PR, derivative),
+	print_bracket_if_needed(Stream, '(', PR, expression_derivative),
 	write(Stream, "\\frac{\\partial}{\\partial "),
 	write(Stream, Variable),
 	write(Stream, "}"),
-	print_expression_term(Stream, Function, derivative),
-	print_bracket_if_needed(Stream, ')', PR, derivative).
+	print_expression_term(Stream, Function, expression_derivative),
+	print_bracket_if_needed(Stream, ')', PR, expression_derivative).
 
 print_prefix_operator(Stream, A, SuperOperator, SubOperator, Label) :-
 	print_bracket_if_needed(Stream, '(', SuperOperator, SubOperator),
@@ -1365,12 +1443,14 @@ print_bracket_if_needed(Stream, ')', _, _) :-
 	write(Stream, '\\right)').
 
 
+operator_priority(function_derivative, 206).
 operator_priority(pow, 205).
 operator_priority(sqrt, 205).
 operator_priority(log, 205).
 operator_priority(div, 204).
 operator_priority(multiply, 203).
-operator_priority(derivative, 202).
+operator_priority(expression_derivative, 202).
+operator_priority(lim, 202).
 operator_priority(opposite, 201).
 operator_priority(plus, 200).
 operator_priority(minus(_), 200).

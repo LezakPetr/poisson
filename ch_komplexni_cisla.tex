@@ -7,8 +7,9 @@
 :- ensure_loaded("../equations/draw_1d_function").
 
 make_test_numbers([-1, 0, 0.5, 1, 2, 3, 1.5, complex(0, 1), complex(0, -1), complex(1, 1)]).
-make_test_real_pairs([[0, 1]]).%, [0, -1], [1, 1], [0, 0], [3, 5], [-7, 4]]).
-make_test_nonzero_real_pairs([[0, 1], [0, -1], [1, 1], [3, 5], [-7, 4]]).
+%make_test_real_numbers([-2, -1, 0, 1, 1.5, 2]).
+make_test_real_numbers([1]).
+make_test_real_nonzero_numbers([-2, -1, 1, 1.5, 2]).
 make_test_complex_functions(Z, [Z + 2, Z - imag, (1 - imag) * Z, Z^2]).
 make_test_real_binary_functions(X, Y, [X + Y]).%[X, Y, X + Y, X * Y, X^2 * Y, Y^2 * X]).
 \end{prolog}
@@ -103,10 +104,10 @@ Součin dvou komplexních čísel můžeme vyjádřit pomocí roznásobení výr
 Ke každému komplexnímu číslu \(a + b \cdot \imag\) můžeme zavést komplexně sdružené číslo \(a - b \cdot \imag\). Povšimněme si, že jejich součin daný vztahem~\eqref{eq:complex_multiply_by_conjugate} je reálný.
 
 \begin{prolog}
-?-	make_test_real_pairs(Numbers),
+?-	make_test_real_numbers(Numbers),
 	print_validated_formula(
 		'complex_multiply_by_conjugate',
-		declare([variable([A, B], ['a', 'b'], Numbers)],
+		declare([variable(A, 'a', Numbers), variable(B, 'b', Numbers)],
 			equal(
 				(A + B * imag) * (A - B * imag),
 				A^2 + B^2
@@ -119,11 +120,14 @@ Ke každému komplexnímu číslu \(a + b \cdot \imag\) můžeme zavést komplex
 Toho můžeme využít pro vyjádření podílu dvou komplexních čísel:
 
 \begin{prolog}
-?-	make_test_real_pairs(Pairs),
-	make_test_nonzero_real_pairs(NonzeroPairs),
+?-	make_test_real_numbers(Numbers),
+	make_test_real_nonzero_numbers(NonzeroNumbers),
 	print_validated_formula(
 		'complex_fraction',
-		declare([variable([A, B], ['a', 'b'], Pairs), variable([C, D], ['c', 'd'], NonzeroPairs)],
+		declare([
+			variable(A, 'a', Numbers), variable(B, 'b', Numbers),
+			variable(C, 'c', NonzeroNumbers), variable(D, 'd', NonzeroNumbers)
+		],
 			equal([
 				(A + B * imag) / (C + D * imag),
 				((A + B * imag) * (C - D * imag)) / ((C + D * imag) * (C - D * imag)),
@@ -139,10 +143,10 @@ Toho můžeme využít pro vyjádření podílu dvou komplexních čísel:
 Absolutní hodnota komplexního čísla \(x + Y \cdot \imag\) je dána výrazem \eqref{eq:complex_abs}. Jeho srovnáním se vztahem \eqref{eq:euklidovsky_prostor_metrika} dospějeme k~závěru, že komplexní rovina odpovídá dvojrozměrnému Euklidovskému prostoru.
 
 \begin{prolog}
-?-	make_test_real_pairs(Pairs),
+?-	make_test_real_numbers(Numbers),
 	print_validated_formula(
 		'complex_abs',
-		declare([variable([X, Y], ['x', 'y'], Pairs)],
+		declare([variable(X, 'x', Numbers), variable(Y, 'y', Numbers)],
 			equal(abs(X + Y * imag), sqrt(X^2 + Y^2))
 		)
 	).
@@ -166,11 +170,11 @@ Tuto funkci můžeme rozepsat na dvě reálné funkce dvou reálných proměnný
 Limitu komplexní funkce definujeme jako limitu funkce dvou parametrů. Znamená to tedy, že funkční hodnota se limitě musí blížit \uv{ze všech směrů}.
 
 \begin{prolog}
-?-	make_test_real_pairs(Pairs),
+?-	make_test_real_numbers(Numbers),
 	make_test_complex_functions(P, Functions),
 	print_validated_formula(
 		'complex_lim',
-		declare([variable([X0, Y0], ['x_0', 'y_0'], Pairs), function(F, '\\func{f}', Functions)],
+		declare([variable(X0, 'x_0', Numbers), variable(Y0, 'y_0', Numbers), function(F, '\\func{f}', Functions)],
 			equal(
 				lim(Z, 'z', complex, X0 + Y0 * imag, apply(F, [P], [Z])),
 				lim([X, Y], ['x', 'y'], [real, real], [X0, Y0], apply(F, [P], [X + Y * imag]))
@@ -200,16 +204,16 @@ Derivaci komplexní funkce definujeme obdobně jako derivaci reálné funkce pom
 Zabývejme se otázkou, kdy tato derivace existuje. Nejdříve rozepišme definici derivace~\eqref{eq:complex_derivative} na podíl diferenciálů. Zavedeme tedy označení \(\func{f}(z + \mathrm{d}z) - \func{f}(z) = \mathrm{d}u + \mathrm{d}v \cdot \imag\) a~\(\mathrm{d}z = \mathrm{d}x + \mathrm{d}y \cdot \imag\):
 
 \begin{prolog}
-?-	make_test_real_binary_functions(FX, FY, Functions),
-	make_test_real_pairs(Pairs),
+?-	make_test_real_numbers(Numbers),
 	print_validated_formula(
 		"complex_derivative_conditions_1",
 		declare([
-			variable([X, Y], ["x", "y"], Pairs),
-			function(U, "u", Functions),
-			function(V, "v", Functions),
-			substitution(DU, "\\mathrm{d}u", apply(U, [FX, FY], [X + DX, Y + DY]) - apply(U, [FX, FY], [X, Y])),
-			substitution(DV, "\\mathrm{d}v", apply(V, [FX, FY], [X + DX, Y + DY]) - apply(V, [FX, FY], [X, Y]))
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers),
+			substitution(U, "\\func{u}", UX^2 - UY^2),
+			substitution(V, "\\func{v}", 2 * VX * VY),
+			substitution(DU, "\\mathrm{d}u", apply(U, [UX, UY], [X + DX, Y + DY]) - apply(U, [UX, UY], [X, Y])),
+			substitution(DV, "\\mathrm{d}v", apply(V, [VX, VY], [X + DX, Y + DY]) - apply(V, [VX, VY], [X, Y]))
 		],
 			equal([
 				lim(
@@ -230,6 +234,159 @@ Zabývejme se otázkou, kdy tato derivace existuje. Nejdříve rozepišme defini
 \end{prolog}
 \eeq{complex_derivative_conditions_1}
 
-Uvědomme si, že limita je definována pro 
+Uvědomme si, že limita~\eqref{eq:complex_derivative_conditions_1} je definována pro dvojici proměnných~\(\mathrm{d}x\) a~\(\mathrm{d}y\). Proto můžeme zvolit \(\mathrm{d}x = 0\) a~limita se tím nezmění:
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"complex_derivative_conditions_2",
+		declare([
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers),
+			substitution(U, "\\func{u}", UX^2 - UY^2),
+			substitution(V, "\\func{v}", 2 * VX * VY),
+			substitution(DU, "\\mathrm{d}u", apply(U, [UX, UY], [X + DX, Y + DY]) - apply(U, [UX, UY], [X, Y])),
+			substitution(DV, "\\mathrm{d}v", apply(V, [VX, VY], [X + DX, Y + DY]) - apply(V, [VX, VY], [X, Y]))
+		],
+			equal([
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					(DU + DV * imag) / (DX + DY * imag)
+				),
+				declare([substitution(DX, "\\mathrm{d}x", 0)],
+					lim(
+						DY, "\\mathrm{d}y", real, 0,
+						(DV * DY - DU * DY * imag) / DY^2
+					)
+				),
+				linebreak,
+				declare([substitution(DX, "\\mathrm{d}x", 0)],
+					lim(
+						DY, "\\mathrm{d}y", real, 0,
+						(DV - DU * imag) / DY
+					)
+				),
+				derivative(Y, apply(V, [VX, VY], [X, Y])) - derivative(Y, apply(U, [UX, UY], [X, Y])) * imag
+			])
+		)
+	).
+\end{prolog}
+\eeq{complex_derivative_conditions_2}
+
+Obdobně můžeme zvolit \(\mathrm{d}y = 0\) a~získáme:
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"complex_derivative_conditions_3",
+		declare([
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers),
+			substitution(U, "\\func{u}", UX^2 - UY^2),
+			substitution(V, "\\func{v}", 2 * VX * VY),
+			substitution(DU, "\\mathrm{d}u", apply(U, [UX, UY], [X + DX, Y + DY]) - apply(U, [UX, UY], [X, Y])),
+			substitution(DV, "\\mathrm{d}v", apply(V, [VX, VY], [X + DX, Y + DY]) - apply(V, [VX, VY], [X, Y]))
+		],
+			equal([
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					(DU + DV * imag) / (DX + DY * imag)
+				),
+				declare([substitution(DY, "\\mathrm{d}y", 0)],
+					lim(
+						DX, "\\mathrm{d}x", real, 0,
+						(DU * DX + DV * DX * imag) / DX^2
+					)
+				),
+				linebreak,
+				declare([substitution(DY, "\\mathrm{d}y", 0)],
+					lim(
+						DX, "\\mathrm{d}x", real, 0,
+						(DU + DV * imag) / DX
+					)
+				),
+				derivative(X, apply(U, [UX, UY], [X, Y])) + derivative(X, apply(V, [VX, VY], [X, Y])) * imag
+			])
+		)
+	).
+\end{prolog}
+\eeq{complex_derivative_conditions_3}
+
+Srovnejme vztahy~\eqref{eq:complex_derivative_conditions_2} a~\eqref{eq:complex_derivative_conditions_3}. Dvě komplexní čísla jsou shodná, pokud mají stejnou reálnou i~imaginární složku. Proto má-li komplexní funkce derivaci, tak bude platit:
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"complex_derivative_conditions_4",
+		declare([
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers),
+			substitution(U, "\\func{u}", UX^2 - UY^2),
+			substitution(V, "\\func{v}", 2 * VX * VY)
+		],
+			and(
+				equal(derivative(X, apply(U, [UX, UY], [X, Y])), derivative(Y, apply(V, [VX, VY], [X, Y]))),
+				equal(derivative(Y, apply(U, [UX, UY], [X, Y])), -derivative(X, apply(V, [VX, VY], [X, Y])))
+			)
+		)
+	).
+\end{prolog}
+\eeq{complex_derivative_conditions_4}
+
+Podmínky~\eqref{eq:complex_derivative_conditions_4} se nazývají Cauchyovy-Riemannovy podmínky. 
+Má-li komplexní funkce derivaci v~každém bodě určité oblasti, pak říkáme, že je v~této oblasti analytická.
+
+Zabývejme se otázkou, zda je splnění podmínek~\eqref{eq:complex_derivative_conditions_4} postačující k~existenci derivace komplexní funkce. Ve vztazích~\eqref{eq:complex_derivative_conditions_2} a~\eqref{eq:complex_derivative_conditions_3} jsme položili \(\mathrm{d}x = 0\) respektive \(\mathrm{d}y = 0\), uvažovali jsme tedy pouze okolní body se stejnou reálnou respektive imaginární složkou. Potřebujeme ale ověřit, že všechny okolní body se blíží k~limitě~\eqref{eq:complex_derivative_conditions_1}. Pokračujme proto upravováním vztahu
+~\eqref{eq:complex_derivative_conditions_1}
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"complex_derivative_conditions_5",
+		declare([
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers),
+			substitution(U, "\\func{u}", UX^2 - UY^2),
+			substitution(V, "\\func{v}", 2 * VX * VY),
+			substitution(DU, "\\mathrm{d}u", apply(U, [UX, UY], [X + DX, Y + DY]) - apply(U, [UX, UY], [X, Y])),
+			substitution(DV, "\\mathrm{d}v", apply(V, [VX, VY], [X + DX, Y + DY]) - apply(V, [VX, VY], [X, Y]))
+		],
+			equal([
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					(DU * DX + DV * DY + (DV * DX - DU * DY) * imag) / (DX^2 + DY^2)
+				),
+				linebreak,
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					((DU / DX) * DX^2 + (DV / DY) * DY^2 + ((DV / DX) * DX^2 - (DU / DY) * DY^2) * imag) / (DX^2 + DY^2)
+				),
+				linebreak,
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					(derivative(X, apply(U, [UX, UY], [X, Y])) * DX^2 + derivative(Y, apply(V, [VX, VY], [X, Y])) * DY^2 + (derivative(X, apply(V, [VX, VY], [X, Y])) * DX^2 - derivative(Y, apply(U, [UX, UY], [X, Y])) * DY^2) * imag) / (DX^2 + DY^2)
+				),
+				linebreak,
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					(derivative(X, apply(U, [UX, UY], [X, Y])) * DX^2 + derivative(X, apply(U, [UX, UY], [X, Y])) * DY^2 + (derivative(X, apply(V, [VX, VY], [X, Y])) * DX^2 + derivative(X, apply(V, [VX, VY], [X, Y])) * DY^2) * imag) / (DX^2 + DY^2)
+				),
+				linebreak,
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					(derivative(X, apply(U, [UX, UY], [X, Y])) * (DX^2 + DY^2) + (derivative(X, apply(V, [VX, VY], [X, Y])) * (DX^2 + DY^2)) * imag) / (DX^2 + DY^2)
+				),
+				linebreak,
+				lim(
+					[DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real, real], [0, 0],
+					derivative(X, apply(U, [UX, UY], [X, Y])) + derivative(X, apply(V, [VX, VY], [X, Y])) * imag
+				)
+			])
+		)
+	).
+\end{prolog}
+\eeq{complex_derivative_conditions_5}
+
+Vidíme, že podmínky~\eqref{eq:complex_derivative_conditions_4} jsou podmínky nutné i~postačující.
 
 \section{Funkce sinus a~kosinus}

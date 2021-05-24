@@ -1,6 +1,22 @@
 
-num_tolerance(1e-7).
+num_tolerance(1e-5).
 
+
+verbose :- fail.
+
+
+log([]) :-
+	verbose,
+	!,
+	writeln("").
+
+log([V | Tail]) :-
+	verbose,
+	!,
+	write(V),
+	log(Tail).
+
+log(_).
 
 
 % Casts given number to real number.
@@ -34,7 +50,10 @@ complex_equal(A, B) :-
 	as_complex(B, complex(ReB, ImB)),
 	num_tolerance(Tolerance),
 	abs(ReA - ReB) =< Tolerance,
-	abs(ImA - ImB) =< Tolerance.
+	abs(ImA - ImB) =< Tolerance,
+	!.
+
+complex_equal(A, B) :- verbose, write("Equal failed: "), writeln([A, B]), fail.
 
 ?-	complex_equal(2, 2).
 ?-	complex_equal(-1, complex(-1, 0)).
@@ -42,6 +61,14 @@ complex_equal(A, B) :-
 ?-	complex_equal(complex(5, 3), complex(5, 3)).
 ?-	\+ complex_equal(complex(7, 3), complex(5, 3)).
 ?-	\+ complex_equal(complex(5, -3), complex(5, 3)).
+
+
+complex_all_equal([_]).
+
+complex_all_equal([A, B | Tail]) :-
+	complex_equal(A, B),
+	complex_all_equal([B | Tail]).
+
 
 complex_negate(A, Y) :-
 	number(A),

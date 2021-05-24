@@ -109,3 +109,45 @@ write_list(_, []).
 
 
 
+copy_variable(OrigVar, OrigTerm, CopiedVar, CopiedTerm) :-
+	term_variables(OrigTerm, OrigVariableList),
+	copy_term([OrigVar, OrigVariableList, OrigTerm], [CopiedVar, CopiedVariableList, CopiedTerm]),
+	unify_other_vars(OrigVar, OrigVariableList, CopiedVariableList).
+
+
+unify_other_vars(_, [], []).
+
+
+unify_other_vars(OrigVar, [HeadOrigVar | TailOrigVar], [_ | TailCopiedVar]) :-
+	OrigVar == HeadOrigVar,
+	!,
+	unify_other_vars(OrigVar, TailOrigVar, TailCopiedVar).
+
+unify_other_vars(OrigVar, [HeadOrigVar | TailOrigVar], [HeadCopiedVar | TailCopiedVar]) :-
+	HeadOrigVar = HeadCopiedVar,
+	unify_other_vars(OrigVar, TailOrigVar, TailCopiedVar).
+
+
+verify_variable_free(Variable, _) :-
+	var(Variable),
+	!.
+
+verify_variable_free(Variable, Label) :-
+	write("Variable "),
+	write(Label),
+	write(" is already bound to "),
+	writeln(Variable),
+	fail.
+
+
+
+verify_free_variable_or_list(VariableOrList, LabelOrList) :-
+	verify_variable_free(VariableOrList, LabelOrList).
+
+verify_free_variable_or_list([], []).
+
+verify_free_variable_or_list([Variable | VariableTail], [Label | LabelTail]) :-
+	verify_variable_free(Variable, Label),
+	verify_free_variable_or_list(VariableTail, LabelTail).
+
+
