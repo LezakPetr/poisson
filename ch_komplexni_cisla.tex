@@ -397,3 +397,104 @@ Zabývejme se otázkou, zda je splnění podmínek~\eqref{eq:complex_derivative_
 Vidíme, že podmínky~\eqref{eq:complex_derivative_conditions_4} jsou podmínky nutné i~postačující.
 
 \section{Funkce sinus a~kosinus}
+
+Úhel sevřený dvěma polopřímkami se společným bodem v~obloukové míře je udáván délkou oblouku, které tyto dvě polopřímky vytknou na jednotkové kruřnici. Udává se v~radiánech. Plný úhel má proto velikost \(2 \pi \ \rad\), přímý úhel \(\pi \ \rad\) a~pravý úhel \(\frac{\pi}{2} \ \rad\).
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}
+
+\pgfmathsetmacro{\ang}{45}
+\pgfmathsetmacro{\r}{4}
+\pgfmathsetmacro{\p}{5}
+\pgfmathsetmacro{\x}{cos(\ang)}
+\pgfmathsetmacro{\y}{sin(\ang)}
+
+\draw (0, 0) -- (\r, 0);
+\draw[dashed] (\r, 0) -- (\p, 0);
+\draw (\r / 2, 0) node[anchor=north]{1};
+
+\draw (0, 0) -- (\r * \x, \r * \y);
+\draw[dashed] (\r * \x, \r * \y) -- (\p * \x, \p * \y);
+\draw (\r / 2 * \x, \r / 2 * \y) node[anchor=south east]{1};
+
+\draw[->] (\r, 0) arc(0:\ang:\r);
+\draw (\r * 0.92388, \r * 0.38268) node[anchor=west]{\(\alpha\)};
+\end{tikzpicture}
+\caption{Oblouková míra úhlu}
+\end{center}
+\label{img:rad_def}
+\end{figure}
+
+Mějme nyní pravoúhlý trojúhelník s~přeponou délky 1.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}
+
+\pgfmathsetmacro{\r}{4}
+
+\pgfmathsetmacro{\ang}{30}
+\pgfmathsetmacro{\x}{cos(\ang)}
+\pgfmathsetmacro{\y}{sin(\ang)}
+
+\draw (0, 0) -- (\r * \x, 0) -- (\r * \x, \r * \y) -- (0, 0);
+
+\draw (\r * \x / 2, 0) node[anchor=north]{\(\cos \alpha\)};
+\draw (\r * \x, \r * \y / 2) node[anchor=west]{\(\sin \alpha\)};
+\draw (\r / 2 * \x, \r / 2 * \y) node[anchor=south]{1};
+
+\draw[<->] (1, 0) arc(0:\ang:1);
+\draw (0.96593, 0.2) node[anchor=east]{\(\alpha\)};
+\drawrightangle{\r * \x}{0}{0.3}{90};
+\end{tikzpicture}
+\caption{Definice sinu a~kosinu}
+\end{center}
+\label{img:sin_cos_def}
+\end{figure}
+
+
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}
+
+\pgfmathsetmacro{\r}{10}
+
+\pgfmathsetmacro{\ang}{30}
+\pgfmathsetmacro{\x}{cos(\ang)}
+\pgfmathsetmacro{\y}{sin(\ang)}
+
+\pgfmathsetmacro{\angb}{40}
+\pgfmathsetmacro{\xb}{cos(\angb)}
+\pgfmathsetmacro{\yb}{sin(\angb)}
+
+\draw (0, 0) -- (\r * \x, 0) -- (\r * \x, \r * \y) -- (0, 0);
+
+\draw[dashed] (\r * \x, 0) -- (\r, 0);
+\draw (\r * \x / 2, 0) node[anchor=north]{\(\cos \alpha\)};
+\draw (\r * \x, \r * \y / 2) node[anchor=west]{\(\sin \alpha\)};
+\draw (\r / 2 * \x, \r / 2 * \y) node[anchor=north]{1};
+
+\draw (0, 0) -- (\r * \xb, \r * \yb) -- (\r * \x, \r * \y) -- (\r * \xb, \r * \y) -- (\r * \xb, \r * \yb);
+\draw[dashed] (\r * \xb, \r * \y) -- (\r * \xb, 0);
+
+\draw(\r, 0) arc(0:50:\r);
+
+\draw[<->] (1, 0) arc(0:\ang:1);
+\draw (0.96593, 0.2) node[anchor=east]{\(\alpha\)};
+
+\drawsmallangle{0}{0}{1.5}{\ang}{\angb}{\(\mathrm{d}\alpha\)};
+\drawrightangle{\r * \xb}{\r * \y}{0.3}{0};
+
+\draw (\r * \x / 2 + \r * \xb / 2, \r * \y / 2 + \r * \yb / 2) node[anchor=west]{\(\mathrm{d}\alpha\)};
+\draw (\r * \xb, \r * \y / 2 + \r * \yb / 2) node[anchor=east]{\(\cos \mathrm{d}\alpha\)};
+\draw (\r * \x / 2 + \r * \xb / 2, \r * \y) node[anchor=north]{\(\sin \mathrm{d}\alpha\)};
+
+\drawsmallangle{\r * \xb}{\r * \yb}{0.5}{270}{270 + \angb}{\(\alpha\)};
+\drawrightangle{\r * \x}{0}{0.3}{90};
+\end{tikzpicture}
+\caption{Oblouková míra úhlu}
+\end{center}
+\label{img:sin_cos_derivative}
+\end{figure}

@@ -76,6 +76,7 @@
 \newcommand{\rot}{\mathrm{rot}}
 \newcommand{\tg}{\mathrm{tg}}
 \newcommand{\arctg}{\mathrm{arctg}}
+\newcommand{\rad}{\mathrm{rad}}
 
 \NewEnviron{fact}{
 	\fbox{\parbox{\textwidth}{\BODY}}
@@ -239,6 +240,17 @@
 
 \newcommand{\drawinfopenset}[4]{   -- x1, y1, x2, y2
 	\drawopeninfset{#3}{#4}{#1}{#2};
+}
+
+\newcommand{\drawsmallangle}[6] {   -- x, y, r, from, to
+	\draw[<-] (#1, #2) ++(#4:#3) arc(#4:#4-10:#3);
+	\draw (#1, #2) ++(#4:#3) arc(#4:#5:#3);
+	\draw[<-] (#1, #2) ++(#5:#3) arc(#5:#5+10:#3) node[anchor=south]{#6};
+}
+
+\newcommand{\drawrightangle}[4] {   -- x, y, r, from
+	\draw (#1, #2) ++(#4:#3) arc(#4:#4 + 90:#3);
+	\filldraw (#1, #2) ++(#4 + 45:#3 / 2) circle(#3 / 16);
 }
 
 
