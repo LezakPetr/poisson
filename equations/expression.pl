@@ -428,6 +428,12 @@ evaluate_function(log(A, B), Y) :-
 evaluate_function(abs(Z), Y) :-
 	complex_abs(Z, Y).
 
+evaluate_function(sin(X), Y) :-
+	Y is sin(X).
+
+evaluate_function(cos(X), Y) :-
+	Y is cos(X).
+
 evaluate_function(equal([_]), log_true).
 
 evaluate_function(equal([A, B | Tail]), Value) :-
@@ -1284,6 +1290,18 @@ print_expression_term(Stream, log(A, B), PR) :-
 	write(Stream, '}'),
 	print_bracket_if_needed(Stream, ')', PR, log).
 
+print_expression_term(Stream, sin(X), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, goniom),
+	write(Stream, '\\sin '),
+	print_expression_term(Stream, X, goniom),
+	print_bracket_if_needed(Stream, ')', PR, goniom).
+
+print_expression_term(Stream, cos(X), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, goniom),
+	write(Stream, '\\cos '),
+	print_expression_term(Stream, X, goniom),
+	print_bracket_if_needed(Stream, ')', PR, goniom).
+
 print_expression_term(Stream, abs(Z), _) :-
 	write(Stream, '\\left|'),
 	print_expression_term(Stream, Z, root),
@@ -1443,15 +1461,16 @@ print_bracket_if_needed(Stream, ')', _, _) :-
 	write(Stream, '\\right)').
 
 
-operator_priority(function_derivative, 206).
-operator_priority(pow, 205).
-operator_priority(sqrt, 205).
-operator_priority(log, 205).
-operator_priority(div, 204).
-operator_priority(multiply, 203).
-operator_priority(expression_derivative, 202).
-operator_priority(lim, 202).
-operator_priority(opposite, 201).
+operator_priority(function_derivative, 207).
+operator_priority(pow, 206).
+operator_priority(sqrt, 206).
+operator_priority(log, 206).
+operator_priority(div, 205).
+operator_priority(multiply, 204).
+operator_priority(expression_derivative, 203).
+operator_priority(lim, 203).
+operator_priority(opposite, 202).
+operator_priority(goniom, 201).
 operator_priority(plus, 200).
 operator_priority(minus(_), 200).
 

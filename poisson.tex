@@ -250,7 +250,7 @@
 
 \newcommand{\drawrightangle}[4] {   -- x, y, r, from
 	\draw (#1, #2) ++(#4:#3) arc(#4:#4 + 90:#3);
-	\filldraw (#1, #2) ++(#4 + 45:#3 / 2) circle(#3 / 16);
+	\filldraw (#1, #2) ++(#4 + 45:#3 / 2) circle[radius=#3 / 16];
 }
 
 

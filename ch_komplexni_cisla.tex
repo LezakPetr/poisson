@@ -426,31 +426,61 @@ Vidíme, že podmínky~\eqref{eq:complex_derivative_conditions_4} jsou podmínky
 \label{img:rad_def}
 \end{figure}
 
-Mějme nyní pravoúhlý trojúhelník s~přeponou délky 1.
+Mějme kartézský souřadný systém v~rovině, jak je zobrazeno na obrázku~\ref{img:sin_cos_def}. Dále mějme úsečku s~počátečním bodem v~počátku souřadného systému délkou 1. Tato úsečka bude svírat s~osou \(x\) orientovaný úhel \(\alpha\). Potom koncový bod této úsečky bude mít souřadnice \([x, y] = [\cos \alpha, \sin \alpha]\). Funkce jsou zobrazeny na obrázcích~\ref{img:sin_function} a~\ref{img:cos_function}.
+
+\begin{prolog}
+?-	draw_1d_function(
+		'sin_function',
+		X,
+		'x',
+		sin(X),
+		-2*pi, +2*pi
+	).				
+\end{prolog}
+\eimg{sin_function}{Graf funkce sinus}
+
+\begin{prolog}
+?-	draw_1d_function(
+		'cos_function',
+		X,
+		'x',
+		cos(X),
+		-2*pi, +2*pi
+	).				
+\end{prolog}
+\eimg{cos_function}{Graf funkce kosinus}
 
 \begin{figure}[ht]
+\label{img:sin_cos_def}
 \begin{center}
 \begin{tikzpicture}
 
-\pgfmathsetmacro{\r}{4}
+\pgfmathsetmacro{\r}{2.5}
+\pgfmathsetmacro{\axr}{1.2 * \r}
 
 \pgfmathsetmacro{\ang}{30}
 \pgfmathsetmacro{\x}{cos(\ang)}
 \pgfmathsetmacro{\y}{sin(\ang)}
 
-\draw (0, 0) -- (\r * \x, 0) -- (\r * \x, \r * \y) -- (0, 0);
+\drawaxesxy{0}{0}{-\axr}{-\axr}{+\axr}{+\axr};
+\draw (0, 0) circle[radius=\r];
+
+\draw[->] (0, 0) -- (\r * \x, \r * \y);
+
+\draw[dashed] (0, \r * \y) -- (\r * \x, \r * \y) -- (\r * \x, 0);
 
 \draw (\r * \x / 2, 0) node[anchor=north]{\(\cos \alpha\)};
-\draw (\r * \x, \r * \y / 2) node[anchor=west]{\(\sin \alpha\)};
+\draw (0, \r * \y / 2) node[anchor=east]{\(\sin \alpha\)};
 \draw (\r / 2 * \x, \r / 2 * \y) node[anchor=south]{1};
 
-\draw[<->] (1, 0) arc(0:\ang:1);
+\draw[->] (1, 0) arc(0:\ang:1);
 \draw (0.96593, 0.2) node[anchor=east]{\(\alpha\)};
+
 \drawrightangle{\r * \x}{0}{0.3}{90};
+\drawrightangle{0}{\r * \y}{0.3}{270};
 \end{tikzpicture}
 \caption{Definice sinu a~kosinu}
 \end{center}
-\label{img:sin_cos_def}
 \end{figure}
 
 
@@ -460,6 +490,7 @@ Mějme nyní pravoúhlý trojúhelník s~přeponou délky 1.
 \begin{tikzpicture}
 
 \pgfmathsetmacro{\r}{10}
+\pgfmathsetmacro{\axr}{1.2 * \r}
 
 \pgfmathsetmacro{\ang}{30}
 \pgfmathsetmacro{\x}{cos(\ang)}
@@ -469,17 +500,24 @@ Mějme nyní pravoúhlý trojúhelník s~přeponou délky 1.
 \pgfmathsetmacro{\xb}{cos(\angb)}
 \pgfmathsetmacro{\yb}{sin(\angb)}
 
-\draw (0, 0) -- (\r * \x, 0) -- (\r * \x, \r * \y) -- (0, 0);
+\draw[->] (0, 0) -- (\r * \x, \r * \y);
+\draw[dashed] (0, \r * \y) -- (\r * \x, \r * \y) -- (\r * \x, 0);
 
-\draw[dashed] (\r * \x, 0) -- (\r, 0);
-\draw (\r * \x / 2, 0) node[anchor=north]{\(\cos \alpha\)};
-\draw (\r * \x, \r * \y / 2) node[anchor=west]{\(\sin \alpha\)};
+\draw (\r * \x, 0) node[anchor=north]{\(\cos \alpha\)};
+\draw (\r * \xb, 0) node[anchor=north east]{\(\cos(\alpha + \mathrm{d}\alpha)\)};
+
+\draw (0, \r * \y) node[anchor=east]{\(\sin \alpha\)};
+\draw (0, \r * \yb) node[anchor=east]{\(\sin(\alpha + \mathrm{d}\alpha)\)};
+
 \draw (\r / 2 * \x, \r / 2 * \y) node[anchor=north]{1};
 
-\draw (0, 0) -- (\r * \xb, \r * \yb) -- (\r * \x, \r * \y) -- (\r * \xb, \r * \y) -- (\r * \xb, \r * \yb);
-\draw[dashed] (\r * \xb, \r * \y) -- (\r * \xb, 0);
+\draw[->] (0, 0) -- (\r * \xb, \r * \yb);
 
-\draw(\r, 0) arc(0:50:\r);
+\draw (\r * \xb, \r * \yb) -- (\r * \x, \r * \y) -- (\r * \xb, \r * \y) -- (\r * \xb, \r * \yb);
+\draw[dashed] (0, \r * \yb) -- (\r * \xb, \r * \yb) -- (\r * \xb, 0);
+
+\draw(\r, 0) arc(-0:90:\r);
+\drawaxesxy{0}{0}{-0.5}{-0.5}{+\axr}{+\axr};
 
 \draw[<->] (1, 0) arc(0:\ang:1);
 \draw (0.96593, 0.2) node[anchor=east]{\(\alpha\)};
@@ -488,11 +526,15 @@ Mějme nyní pravoúhlý trojúhelník s~přeponou délky 1.
 \drawrightangle{\r * \xb}{\r * \y}{0.3}{0};
 
 \draw (\r * \x / 2 + \r * \xb / 2, \r * \y / 2 + \r * \yb / 2) node[anchor=west]{\(\mathrm{d}\alpha\)};
-\draw (\r * \xb, \r * \y / 2 + \r * \yb / 2) node[anchor=east]{\(\cos \mathrm{d}\alpha\)};
-\draw (\r * \x / 2 + \r * \xb / 2, \r * \y) node[anchor=north]{\(\sin \mathrm{d}\alpha\)};
+\draw (\r * \xb, \r * \y / 2 + \r * \yb / 2) node[anchor=east]{\(\mathrm{d}\alpha \cdot \cos \alpha\)};
+\draw (\r * \x / 2 + \r * \xb / 2, \r * \y) node[anchor=north]{\(\mathrm{d}\alpha \cdot \sin \alpha\)};
 
 \drawsmallangle{\r * \xb}{\r * \yb}{0.5}{270}{270 + \angb}{\(\alpha\)};
+
 \drawrightangle{\r * \x}{0}{0.3}{90};
+\drawrightangle{\r * \xb}{0}{0.3}{90};
+\drawrightangle{0}{\r * \y}{0.3}{270};
+\drawrightangle{0}{\r * \yb}{0.3}{270};
 \end{tikzpicture}
 \caption{Oblouková míra úhlu}
 \end{center}

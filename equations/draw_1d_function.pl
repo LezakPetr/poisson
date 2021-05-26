@@ -9,8 +9,8 @@ draw_1d_function(Label, X, LabelX, Formula, MinX, MaxX) :-
 	max_list(CoordsY, MaxY),
 	UpdatedMinX is min(MinX, 0),
 	UpdatedMaxX is max(MaxX, 0),
-	UpdatedMinY is min(MinY, 0),
-	UpdatedMaxY is max(MaxY, 0),
+	UpdatedMinY is min(MinY - 1e-2, 0),
+	UpdatedMaxY is max(MaxY + 1e-2, 0),
 	identity_transform(TransformAxisX),
 	flip_xy_transform(TransformAxisY),
 	draw_marks(TransformAxisX, UpdatedMinX, UpdatedMaxX, UpdatedMinY, UpdatedMaxY, MarksElementsX),
@@ -34,7 +34,7 @@ calculate_label_y(Formula, LabelY) :-
 
 
 sample_1d(MinX, MaxX, X) :-
-	Count = 50,
+	Count = 100,
 	between(0, Count, N),
 	X is MinX + (MaxX - MinX) * N / Count.
 
