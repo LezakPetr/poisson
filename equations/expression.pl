@@ -544,6 +544,8 @@ function_derivative(A + B, [[A, 1], [B, 1]]).
 function_derivative(A - B, [[A, 1], [B, -1]]).
 function_derivative(A * B, [[A, B], [B, A]]).
 function_derivative(A^B, [[A, B * A^(B - 1)], [B, log(e, A) * e^(B * log(e, A))]]).
+function_derivative(sin(X), [[X, cos(X)]]).
+function_derivative(cos(X), [[X, -sin(X)]]).
 
 expression_derivative(X, Expression, 1) :-
 	var(Expression),
@@ -1466,11 +1468,11 @@ operator_priority(pow, 206).
 operator_priority(sqrt, 206).
 operator_priority(log, 206).
 operator_priority(div, 205).
-operator_priority(multiply, 204).
-operator_priority(expression_derivative, 203).
-operator_priority(lim, 203).
-operator_priority(opposite, 202).
-operator_priority(goniom, 201).
+operator_priority(goniom, 204).
+operator_priority(multiply, 203).
+operator_priority(expression_derivative, 202).
+operator_priority(lim, 202).
+operator_priority(opposite, 201).
 operator_priority(plus, 200).
 operator_priority(minus(_), 200).
 

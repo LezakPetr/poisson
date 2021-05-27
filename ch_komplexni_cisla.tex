@@ -422,11 +422,11 @@ Vidíme, že podmínky~\eqref{eq:complex_derivative_conditions_4} jsou podmínky
 \draw (\r * 0.92388, \r * 0.38268) node[anchor=west]{\(\alpha\)};
 \end{tikzpicture}
 \caption{Oblouková míra úhlu}
-\end{center}
 \label{img:rad_def}
+\end{center}
 \end{figure}
 
-Mějme kartézský souřadný systém v~rovině, jak je zobrazeno na obrázku~\ref{img:sin_cos_def}. Dále mějme úsečku s~počátečním bodem v~počátku souřadného systému délkou 1. Tato úsečka bude svírat s~osou \(x\) orientovaný úhel \(\alpha\). Potom koncový bod této úsečky bude mít souřadnice \([x, y] = [\cos \alpha, \sin \alpha]\). Funkce jsou zobrazeny na obrázcích~\ref{img:sin_function} a~\ref{img:cos_function}.
+Mějme kartézský souřadný systém v~rovině, jak je zobrazeno na obrázku~\ref{img:sin_cos_def}. Dále mějme úsečku s~počátečním bodem v~počátku souřadného systému délkou 1. Tato úsečka bude svírat s~osou \(x\) orientovaný úhel \(\alpha\). Potom koncový bod této úsečky bude mít souřadnice \([x, y] = [\cos \alpha, \sin \alpha]\). Pokud by úsečka měla obecně délku \(r\), pak bz souřadnice bodu byly proporcionálně větší, tedy \([x, y] = [r \cdot \cos \alpha, r \cdot \sin \alpha]\). Funkce jsou zobrazeny na obrázcích~\ref{img:sin_function} a~\ref{img:cos_function}.
 
 \begin{prolog}
 ?-	draw_1d_function(
@@ -451,7 +451,6 @@ Mějme kartézský souřadný systém v~rovině, jak je zobrazeno na obrázku~\r
 \eimg{cos_function}{Graf funkce kosinus}
 
 \begin{figure}[ht]
-\label{img:sin_cos_def}
 \begin{center}
 \begin{tikzpicture}
 
@@ -480,15 +479,58 @@ Mějme kartézský souřadný systém v~rovině, jak je zobrazeno na obrázku~\r
 \drawrightangle{0}{\r * \y}{0.3}{270};
 \end{tikzpicture}
 \caption{Definice sinu a~kosinu}
+\label{img:sin_cos_def}
 \end{center}
 \end{figure}
 
 
+Odvoďme nyní derivaci funkcí sinus a~kosinus. Mějme opět jednotkovou úsečku OA s~jedním koncem v~počátku soustavy souřadnic, jak je zobrazeno na obrázku \eqref{img:sin_cos_derivative}. Tato úsečka svírá s~osou \(x\) orientovaný úhel \(\alpha\) a~její koncový bod A má tedy souřadnice \([\cos \alpha, \sin \alpha]\). Mějme další úsečku OB, která svírá s~osou \(x\) úhel o~\(\mathrm{d}\alpha\) větší. Její koncový bod B má tedy souřadnice \([\cos (\alpha + \mathrm{d}\alpha), \sin (\alpha + \mathrm{d}\alpha)]\). Oblouk kružnice mezi body A a~B má podle definice obloukové míry délku~\(\mathrm{d}\alpha\). Pro \(\mathrm{d}\alpha \to 0\) tento oblouk přechází v~úsečku. Proto pro \(\mathrm{d}\alpha\) je délka sečny \(|AB| = \mathrm{d}\alpha\). Dále si uvědomme, že pro \(\mathrm{d}\alpha \to 0\) sečna AB přechází v~tečnu a~je proto kolmá na úsečku OA, která je poloměrem kružnice. Díky tomu úsečka BA svírá s~(opačnou) osou y úhel \(\alpha\). Proto v~bodě B můžeme zavést lokální souřadný systém s~osou x mířící směrem dolů a~odvodit:
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"sin_derivative_proof",
+		declare([
+			variable(A, "\\alpha", Numbers) 
+		],
+			proof([],
+			[
+				declare(
+					[substitution(DA, "\\mathrm{d}\\alpha", 1e-8)],
+					equal(sin(A + DA) - sin(A), DA * cos(A))
+				),
+				equal(lim(DA, "\\mathrm{d}\\alpha", real, 0, (sin(A + DA) - sin(A)) / DA), cos(A)),
+				equal(derivative(A, sin(A)), cos(A))
+			])
+		)
+	).
+\end{prolog}
+\eeq{sin_derivative_proof}
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"cos_derivative_proof",
+		declare([
+			variable(A, "\\alpha", Numbers) 
+		],
+			proof([],
+			[
+				declare(
+					[substitution(DA, "\\mathrm{d}\\alpha", 1e-8)],
+					equal(cos(A + DA) - cos(A), -(DA * sin(A)))
+				),
+				equal(lim(DA, "\\mathrm{d}\\alpha", real, 0, (cos(A + DA) - cos(A)) / DA), -sin(A)),
+				equal(derivative(A, cos(A)), -sin(A))
+			])
+		)
+	).
+\end{prolog}
+\eeq{cos_derivative_proof}
 
 \begin{figure}[ht]
 \begin{center}
 \begin{tikzpicture}
-
 \pgfmathsetmacro{\r}{10}
 \pgfmathsetmacro{\axr}{1.2 * \r}
 
@@ -500,7 +542,10 @@ Mějme kartézský souřadný systém v~rovině, jak je zobrazeno na obrázku~\r
 \pgfmathsetmacro{\xb}{cos(\angb)}
 \pgfmathsetmacro{\yb}{sin(\angb)}
 
-\draw[->] (0, 0) -- (\r * \x, \r * \y);
+\pgfmathsetmacro{\angd}{atan((\xb - \x) / (\y - \yb))}
+
+\draw (0, 0) node[anchor=north east]{O};
+\draw[->] (0, 0) -- (\r * \x, \r * \y) node[anchor=south west]{A};
 \draw[dashed] (0, \r * \y) -- (\r * \x, \r * \y) -- (\r * \x, 0);
 
 \draw (\r * \x, 0) node[anchor=north]{\(\cos \alpha\)};
@@ -511,32 +556,39 @@ Mějme kartézský souřadný systém v~rovině, jak je zobrazeno na obrázku~\r
 
 \draw (\r / 2 * \x, \r / 2 * \y) node[anchor=north]{1};
 
-\draw[->] (0, 0) -- (\r * \xb, \r * \yb);
+\draw[->] (0, 0) -- (\r * \xb, \r * \yb) node[anchor=south west]{B};
 
-\draw (\r * \xb, \r * \yb) -- (\r * \x, \r * \y) -- (\r * \xb, \r * \y) -- (\r * \xb, \r * \yb);
+\draw (\r * \xb, \r * \yb) -- (\r * \x, \r * \y);
 \draw[dashed] (0, \r * \yb) -- (\r * \xb, \r * \yb) -- (\r * \xb, 0);
 
 \draw(\r, 0) arc(-0:90:\r);
 \drawaxesxy{0}{0}{-0.5}{-0.5}{+\axr}{+\axr};
 
-\draw[<->] (1, 0) arc(0:\ang:1);
+\draw[->] (1, 0) arc(0:\ang:1);
 \draw (0.96593, 0.2) node[anchor=east]{\(\alpha\)};
+\draw (\r * \xb, \r * \yb - 0.5) node[anchor=north west]{\(\alpha\)};
 
 \drawsmallangle{0}{0}{1.5}{\ang}{\angb}{\(\mathrm{d}\alpha\)};
 \drawrightangle{\r * \xb}{\r * \y}{0.3}{0};
 
 \draw (\r * \x / 2 + \r * \xb / 2, \r * \y / 2 + \r * \yb / 2) node[anchor=west]{\(\mathrm{d}\alpha\)};
-\draw (\r * \xb, \r * \y / 2 + \r * \yb / 2) node[anchor=east]{\(\mathrm{d}\alpha \cdot \cos \alpha\)};
-\draw (\r * \x / 2 + \r * \xb / 2, \r * \y) node[anchor=north]{\(\mathrm{d}\alpha \cdot \sin \alpha\)};
 
-\drawsmallangle{\r * \xb}{\r * \yb}{0.5}{270}{270 + \angb}{\(\alpha\)};
+\draw[->] (\r * \xb - 1.8, 2) -- (\r * \xb, 2);
+\draw (\r * \xb, 2) -- (\r * \x, 2);
+\draw[<-] (\r * \x, 2) -- (\r * \x + 0.3, 2);
+\draw (\r * \xb - 0.2, 2) node[anchor=south east]{\(\mathrm{d}\alpha \cdot \cos \alpha\)};
+
+\draw[<->] (2, \r * \yb) -- (2, \r * \y);
+\draw (2, \r * \yb / 2 + \r * \y / 2) node[anchor=west]{\(\mathrm{d}\alpha \cdot \sin \alpha\)};
+
+\draw[->] (\r * \xb, \r * \yb - 1) arc(270:270+\angd:1);
 
 \drawrightangle{\r * \x}{0}{0.3}{90};
 \drawrightangle{\r * \xb}{0}{0.3}{90};
 \drawrightangle{0}{\r * \y}{0.3}{270};
 \drawrightangle{0}{\r * \yb}{0.3}{270};
 \end{tikzpicture}
-\caption{Oblouková míra úhlu}
-\end{center}
+\caption{Derivace funkcí sinus a~kosinus}
 \label{img:sin_cos_derivative}
+\end{center}
 \end{figure}
