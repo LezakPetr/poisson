@@ -396,7 +396,7 @@ Zabývejme se otázkou, zda je splnění podmínek~\eqref{eq:complex_derivative_
 
 Vidíme, že podmínky~\eqref{eq:complex_derivative_conditions_4} jsou podmínky nutné i~postačující.
 
-\section{Funkce sinus a~kosinus}
+\section{Funkce sinus a~kosinus, Eulerův vzorec}
 
 Úhel sevřený dvěma polopřímkami se společným bodem v~obloukové míře je udáván délkou oblouku, které tyto dvě polopřímky vytknou na jednotkové kruřnici. Udává se v~radiánech. Plný úhel má proto velikost \(2 \pi \ \rad\), přímý úhel \(\pi \ \rad\) a~pravý úhel \(\frac{\pi}{2} \ \rad\).
 
@@ -592,3 +592,234 @@ Odvoďme nyní derivaci funkcí sinus a~kosinus. Mějme opět jednotkovou úseč
 \label{img:sin_cos_derivative}
 \end{center}
 \end{figure}
+
+Zabývejme se dále exponenciální funkcí \(e^{x \cdot \imag}\). Její derivace je
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"exp_sin_cos_proof_1",
+		declare([
+			variable(X, "x", Numbers),
+			substitution(U, "\\mathrm{u}", cos(UX)),
+			substitution(V, "\\mathrm{v}", sin(VX)) 
+		],
+			proof([],
+			[
+				equal(e^(X * imag), apply(U, [UX], [X]) + apply(V, [VX], [X]) * imag),
+				equal(derivative(X, e^(X * imag)), e^(X * imag) * imag),
+				equal(
+					derivative(X, apply(U, [UX], [X]) + apply(V, [VX], [X]) * imag),
+					(apply(U, [UX], [X]) + apply(V, [VX], [X]) * imag) * imag
+				),
+				equal(
+					derivative(X, apply(U, [UX], [X])) + derivative(X, apply(V, [VX], [X])) * imag,
+					-apply(V, [VX], [X]) + apply(U, [UX], [X]) * imag
+				),
+				and(
+					equal(derivative(X, apply(U, [UX], [X])), -apply(V, [VX], [X])),
+					equal(derivative(X, apply(V, [VX], [X])), apply(U, [UX], [X]))
+				)
+			])
+		)
+	).
+\end{prolog}
+\eeq{exp_sin_cos_proof_1}
+
+Obdobně můžeme odvodit hodnoty funkcí pro \(x = 0\):
+
+
+\begin{prolog}
+?-	print_validated_formula(
+		"exp_sin_cos_proof_2",
+		declare([
+			substitution(U, "\\mathrm{u}", cos(UX)),
+			substitution(V, "\\mathrm{v}", sin(VX)) 
+		],
+			proof([],
+			[
+				equal(e^(0 * imag), 1),
+				equal(
+					apply(U, [UX], [0]) + apply(V, [VX], [0]) * imag,
+					1 + 0 * imag
+				),
+				and(
+					equal(apply(U, [UX], [0]), 1),
+					equal(apply(V, [VX], [0]), 0)
+				)
+			])
+		)
+	).
+\end{prolog}
+\eeq{exp_sin_cos_proof_2}
+
+Už víme, že platí
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"exp_sin_cos_proof_3",
+		declare([
+			variable(X, "x", Numbers)
+		],
+			and(
+				equal(derivative(X, cos(X)), -sin(X)),
+				equal(derivative(X, sin(X)), cos(X))
+			)
+		)
+	).
+\end{prolog}
+\eeq{exp_sin_cos_proof_3}
+
+
+a~z~obrázku~\ref{img:sin_cos_def} jsou také vidět hodnoty: 
+
+\begin{prolog}
+?-	print_validated_formula(
+		"exp_sin_cos_proof_4",
+			and(
+				equal(cos(0), 1),
+				equal(sin(0), 0)
+		)
+	).
+\end{prolog}
+\eeq{exp_sin_cos_proof_4}
+
+Jak vztahy~\eqref{eq:exp_sin_cos_proof_1} a~\eqref{eq:exp_sin_cos_proof_2}, tak i~vztahy~\eqref{eq:exp_sin_cos_proof_3} a~\eqref{eq:exp_sin_cos_proof_4} představují sosutavy dvou obyčejných diferenciálních rovnic prvního řádu.
+Protože hodnoty v~počátku i~průběh prvních derivací jsou si rovny, tak platí
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"exp_sin_cos_proof_5",
+		declare([
+			variable(X, "x", Numbers),
+			substitution(U, "\\mathrm{u}", cos(UX)),
+			substitution(V, "\\mathrm{v}", sin(VX)) 
+		],
+			proof([],
+			[
+				and(
+					equal(apply(U, [UX], [X]), cos(X)),
+					equal(apply(V, [VX], [X]), sin(X))
+				),
+				equal(e^(X * imag), cos(X) + imag * sin(X))
+			])
+		)
+	).
+\end{prolog}
+\eeq{exp_sin_cos_proof_5}
+
+To je známý Eulerův vzorec udávající vztah mezi exponenciální funkcí komplexního čísla a~goniometrickými funkcemi.
+
+Eulerův vzorec můžeme využít pro odvození některých goniometrických identit. Například odvodíme vztah pro sinus a~kosinus součtu úhlů:
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"cos_sin_a_plus_b",
+		declare([
+			variable(A, "\\alpha", Numbers),
+			variable(B, "\\beta", Numbers)
+		],
+			equal([
+				cos(A + B) + imag * sin(A + B),
+				e^(imag * (A + B)),
+				e^(imag * A) * e^(imag * B),
+				linebreak,
+				(cos(A) + imag * sin(A)) * (cos(B) + imag * sin(B)),
+				linebreak,
+				cos(A) * cos(B) - sin(A) * sin(B) + imag * (cos(A) * sin(B) + sin(A) * cos(B))
+			])
+		)
+	).
+\end{prolog}
+\eeq{cos_sin_a_plus_b}
+
+Dvě komplexní čísla jsou shodná, pokud mají stejnou reálnou i~imaginární složku. Proto
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"cos_a_plus_b",
+		declare([
+			variable(A, "\\alpha", Numbers),
+			variable(B, "\\beta", Numbers)
+		],
+			equal(cos(A + B), cos(A) * cos(B) - sin(A) * sin(B))
+		)
+	).
+\end{prolog}
+\eeq{cos_a_plus_b}
+%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"sin_a_plus_b",
+		declare([
+			variable(A, "\\alpha", Numbers),
+			variable(B, "\\beta", Numbers)
+		],
+			equal(sin(A + B), cos(A) * sin(B) + sin(A) * cos(B))
+		)
+	).
+\end{prolog}
+\eeq{sin_a_plus_b}
+
+Substitucí \(\beta \leftarrow -\beta\) a~využitím faktu, že sinus je lichá funkce a~kosinus sudá, získáme:
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"cos_a_minus_b",
+		declare([
+			variable(A, "\\alpha", Numbers),
+			variable(B, "\\beta", Numbers)
+		],
+			equal(cos(A - B), cos(A) * cos(B) + sin(A) * sin(B))
+		)
+	).
+\end{prolog}
+\eeq{cos_a_minus_b}
+%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"sin_a_minus_b",
+		declare([
+			variable(A, "\\alpha", Numbers),
+			variable(B, "\\beta", Numbers)
+		],
+			equal(sin(A - B), sin(A) * cos(B) - cos(A) * sin(B))
+		)
+	).
+\end{prolog}
+\eeq{sin_a_minus_b}
+
+a~obdobně substitucí \(\beta \leftarrow \alpha\) získáme:
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"cos_2a",
+		declare([
+			variable(A, "\\alpha", Numbers)
+		],
+			equal(cos(2*A), (cos(A))^2 - (sin(A))^2)
+		)
+	).
+\end{prolog}
+\eeq{cos_2a}
+%%%%%%%%%%%%%%%%%%%%
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"sin_2a",
+		declare([
+			variable(A, "\\alpha", Numbers)
+		],
+			equal(sin(2 * A), 2 * cos(A) * sin(A))
+		)
+	).
+\end{prolog}
+\eeq{sin_2a}

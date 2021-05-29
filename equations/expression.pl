@@ -540,6 +540,8 @@ function_derivative(F, []) :-
 	number(F).
 
 function_derivative(imag, []).
+function_derivative(e, []).
+function_derivative(pi, []).
 function_derivative(A + B, [[A, 1], [B, 1]]).
 function_derivative(A - B, [[A, 1], [B, -1]]).
 function_derivative(A * B, [[A, B], [B, A]]).
