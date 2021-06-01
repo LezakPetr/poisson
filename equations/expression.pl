@@ -428,11 +428,17 @@ evaluate_function(log(A, B), Y) :-
 evaluate_function(abs(Z), Y) :-
 	complex_abs(Z, Y).
 
+evaluate_function(arg(Z), Y) :-
+	complex_arg(Z, Y).
+
 evaluate_function(sin(X), Y) :-
 	Y is sin(X).
 
 evaluate_function(cos(X), Y) :-
 	Y is cos(X).
+
+evaluate_function(tg(X), Y) :-
+	Y is tan(X).
 
 evaluate_function(equal([_]), log_true).
 
@@ -1306,10 +1312,22 @@ print_expression_term(Stream, cos(X), PR) :-
 	print_expression_term(Stream, X, goniom),
 	print_bracket_if_needed(Stream, ')', PR, goniom).
 
+print_expression_term(Stream, tg(X), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, goniom),
+	write(Stream, '\\tg '),
+	print_expression_term(Stream, X, goniom),
+	print_bracket_if_needed(Stream, ')', PR, goniom).
+
 print_expression_term(Stream, abs(Z), _) :-
 	write(Stream, '\\left|'),
 	print_expression_term(Stream, Z, root),
 	write(Stream, '\\right|').
+
+print_expression_term(Stream, arg(X), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, goniom),
+	write(Stream, '\\arg '),
+	print_expression_term(Stream, X, goniom),
+	print_bracket_if_needed(Stream, ')', PR, goniom).
 
 print_expression_term(Stream, equal(List), PR) :-
 	is_list(List),

@@ -221,6 +221,11 @@ complex_abs(Z, Abs) :-
 ?-	complex_abs(-2, 2.0).
 ?-	complex_abs(complex(3, -4), 5.0).
 
+complex_arg(Z, Arg) :-
+	as_complex(Z, complex(X, Y)),
+	Arg is atan2(Y, X).
+
+
 % Calculates symbolic sum of two numbers, but optimizes situation where one or both arguments are known.
 % symbolic_add(A, B, Y) :-
 % Y = A + B.
