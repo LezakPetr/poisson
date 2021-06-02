@@ -692,7 +692,7 @@ Protože hodnoty v~počátku i~průběh prvních derivací jsou si rovny, tak pl
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
 	print_validated_formula(
-		"exp_sin_cos_proof_5",
+		"exp_sin_cos_proof_result",
 		declare([
 			variable(X, "x", Numbers),
 			substitution(U, "\\mathrm{u}", cos(UX)),
@@ -709,7 +709,7 @@ Protože hodnoty v~počátku i~průběh prvních derivací jsou si rovny, tak pl
 		)
 	).
 \end{prolog}
-\eeq{exp_sin_cos_proof_5}
+\eeq{exp_sin_cos_proof_result}
 
 To je známý Eulerův vzorec udávající vztah mezi exponenciální funkcí komplexního čísla a~goniometrickými funkcemi.
 
@@ -851,8 +851,8 @@ Komplexní čísla si můžeme představit jako body v~komplexní (Gaussově) ro
 
 \draw[->] (1.5, 0) arc(0:\ang:1.5);
 
-\draw (1, 0.4) node{\(\alpha\)};
-\draw (\x / 2, \y / 2) node[anchor=south]{\(|z|\)};
+\draw (1, 0.4) node{\(\varphi\)};
+\draw (\x / 2, \y / 2) node[anchor=south]{\(r\)};
 \end{tikzpicture}
 \caption{Zobrazení čísla \(z = 4 + 3 \cdot i\) v~komplexní rovině}
 \label{img:complex_plane}
@@ -868,22 +868,48 @@ Totéž číslo můžeme také zapsat v~tzv. goniometrickém tvaru
 		"complex_goniometric",
 		declare([
 			variable(R, "r", NonnegativeNumbers),
-			variable(A, "\\alpha", Numbers),
-			substitution(X, "x", R * cos(A)),
-			substitution(Y, "y", R * sin(A)),
+			variable(Phi, "\\varphi", Numbers),
+			substitution(X, "x", R * cos(Phi)),
+			substitution(Y, "y", R * sin(Phi)),
 			substitution(Z, "z", X + Y * imag)
 		],
 			equal([
 				Z,
 				X + Y * imag,
-				sqrt(X^2 + Y^2) * cos(A) + sqrt(X^2 + Y^2) * sin(A) * imag,
+				R * cos(Phi) + imag * R * sin(Phi),
 				linebreak,
-				abs(Z) * cos(arg(Z)) + abs(Z) * sin(arg(Z)) * imag
+				abs(Z) * cos(arg(Z)) + imag * abs(Z) * sin(arg(Z))
 			])
 		)
 	).
 \end{prolog}
 \eeq{complex_goniometric}
 
-přičemž \(\arg z\) je tzv. argument komplexního čísla. Lze jej spočítat jako \(\arctg \frac{y}{x}\), který je ale definován ve všech čtyřech kvadrantech. V~běžných programovacích jazycích jej implementuje funkce atan2.
-  
+přičemž \(\alpha = \arg z\) je tzv. argument komplexního čísla. Lze jej spočítat jako \(\arctg \frac{y}{x}\), který je ale definován ve všech čtyřech kvadrantech. V~běžných programovacích jazycích jej implementuje funkce atan2.
+
+Goniometrický tvar můžeme zapsat kompaktněji v~exponenciálním tvaru. Využíváme při tom Eulerův vzorec~\eqref{eq:exp_sin_cos_proof_result}.
+
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_nonnegative_real_numbers(NonnegativeNumbers),
+	print_validated_formula(
+		"complex_exponential",
+		declare([
+			variable(R, "r", NonnegativeNumbers),
+			variable(Phi, "\\varphi", Numbers),
+			substitution(X, "x", R * cos(Phi)),
+			substitution(Y, "y", R * sin(Phi)),
+			substitution(Z, "z", X + Y * imag)
+		],
+			equal([
+				Z,
+				R * cos(Phi) + imag * R * sin(Phi),
+				linebreak,
+				R * e^(Phi * imag),
+				abs(Z) * e^(arg(Z) * imag)
+			])
+		)
+	).
+\end{prolog}
+\eeq{complex_exponential}
