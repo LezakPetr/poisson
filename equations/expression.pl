@@ -431,6 +431,12 @@ evaluate_function(abs(Z), Y) :-
 evaluate_function(arg(Z), Y) :-
 	complex_arg(Z, Y).
 
+evaluate_function(real_part(Z), X) :-
+	as_complex(Z, complex(X, _)).
+
+evaluate_function(imag_part(Z), Y) :-
+	as_complex(Z, complex(_, Y)).
+
 evaluate_function(sin(X), Y) :-
 	Y is sin(X).
 
@@ -564,6 +570,12 @@ expression_derivative(X, Expression, 0) :-
 	var(Expression),
 	X \== Expression,
 	!.
+
+expression_derivative(X, real_part(Expression), real_part(Derivative)) :-
+	expression_derivative(X, Expression, Derivative).
+
+expression_derivative(X, imag_part(Expression), imag_part(Derivative)) :-
+	expression_derivative(X, Expression, Derivative).
 
 expression_derivative(X, apply(Function, Args, Values), Derivative) :-
 	!,
@@ -1326,6 +1338,18 @@ print_expression_term(Stream, abs(Z), _) :-
 print_expression_term(Stream, arg(X), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, goniom),
 	write(Stream, '\\arg '),
+	print_expression_term(Stream, X, goniom),
+	print_bracket_if_needed(Stream, ')', PR, goniom).
+
+print_expression_term(Stream, real_part(X), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, goniom),
+	write(Stream, '\\realpart '),
+	print_expression_term(Stream, X, goniom),
+	print_bracket_if_needed(Stream, ')', PR, goniom).
+
+print_expression_term(Stream, imag_part(X), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, goniom),
+	write(Stream, '\\imagpart '),
 	print_expression_term(Stream, X, goniom),
 	print_bracket_if_needed(Stream, ')', PR, goniom).
 

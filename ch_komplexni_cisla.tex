@@ -913,3 +913,149 @@ Goniometrický tvar můžeme zapsat kompaktněji v~exponenciálním tvaru. Využ
 	).
 \end{prolog}
 \eeq{complex_exponential}
+
+\section{Využití komplexních čísel pro reprezentaci harmonických funkcí}
+
+Mějme obecnou harmonickou funkci ve tvaru \(\func{f}(t) = A \cdot \sin(\omega \cdot t + \varphi)\). Představuje-li tato funkce časový průběh nějakého děje, pak \(A\) je amplituda, \(\omega\) je úhlový kmitočet, \(t\) je čas a~\(\varphi\) je fázový posun. Podle Eulerova vzorce~\eqref{eq:exp_sin_cos_proof_result} platí:
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"harmonic_as_complex",
+		declare([
+			variable(A, "A", Numbers),
+			variable(Omega, "\\omega", Numbers),
+			variable(Phi, "\\varphi", Numbers),
+			variable(T, "t", Numbers),
+			substitution(Z, "z", A * e^(imag * Phi))
+		],
+			equal([
+				A * sin(Omega * T + Phi),
+				imag_part(A * e^(imag * (Omega * T + Phi))),
+				linebreak,
+				imag_part(A * e^(imag * Phi) * e^(imag * Omega * T)),
+				imag_part(Z * e^(imag * Omega * T))
+			])
+		)
+	).
+\end{prolog}
+\eeq{harmonic_as_complex}
+
+Každou harmonickou funkci proto můžeme zapsat jako imaginární složku součinu komplexního čísla \(z\) a~členu \(e^{\imag \cdot \omega \cdot t}\). V~komplexním čísle \(z\) je obsažena jak amplituda \(A\) tak i~fázový posun \(\varphi\). Proto pro daný úhlový kmitočet \(\omega\) komplexní číslo \(z\) plně reprezentuje harmonickou funkci~\eqref{eq:harmonic_as_complex}, říkáme, že je jeho obrazem. Namísto počítání s~harmonickými funkcemi proto můžeme počítat s~jejich obrazy - komplexními čísly - a~velmi si tak výpočty zjednodušit. 
+
+Především si všimněme, že zobrazení harmonické funkce na její obraz je lineární. Proto platí:
+
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"harmonic_sum",
+		declare([
+			plus_minus(PM),
+			variable(A, "A", Numbers),
+			variable(B, "B", Numbers),
+			variable(Omega, "\\omega", Numbers),
+			variable(Phi, "\\varphi", Numbers),
+			variable(Psi, "\\psi", Numbers),
+			variable(T, "t", Numbers),
+			substitution(ZA, "z_a", A * e^(imag * Phi)),
+			substitution(ZB, "z_b", B * e^(imag * Psi)),
+			substitution(ZY, "z_y", plus_minus(ZA, ZB, PM))
+		],
+			proof([],
+			[
+				equal([
+					plus_minus(A * sin(Omega * T + Phi), B * sin(Omega * T + Psi), PM),
+					linebreak,
+					plus_minus(imag_part(A * e^(imag * Phi) * e^(imag * Omega * T)), imag_part(B * e^(imag * Psi) * e^(imag * Omega * T)), PM),
+					linebreak,
+					imag_part(plus_minus(A * e^(imag * Phi), B * e^(imag * Psi), PM) * e^(imag * Omega * T))
+				]),
+				equal(
+					imag_part(ZY * e^(imag * Omega * T)),
+					plus_minus(imag_part(ZA * e^(imag * Omega * T)), imag_part(ZB * e^(imag * Omega * T)), PM)
+				),
+				equal(
+					ZY,
+					plus_minus(ZA, ZB, PM)
+				)
+			])
+				
+		)
+	).
+\end{prolog}
+\eeq{harmonic_sum}
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"harmonic_multiply",
+		declare([
+			variable(K, "k", Numbers),
+			variable(A, "A", Numbers),
+			variable(Omega, "\\omega", Numbers),
+			variable(Phi, "\\varphi", Numbers),
+			variable(T, "t", Numbers),
+			substitution(ZA, "z_a", A * e^(imag * Phi)),
+			substitution(ZY, "z_y", K * ZA)
+		],
+			proof([],
+			[
+				equal([
+					K * A * sin(Omega * T + Phi),
+					linebreak,
+					K * imag_part(A * e^(imag * Phi) * e^(imag * Omega * T)),
+					linebreak,
+					imag_part(K * A * e^(imag * Phi) * e^(imag * Omega * T))
+				]),
+				equal(
+					imag_part(ZY * e^(imag * Omega * T)),
+					K * imag_part(ZA * e^(imag * Omega * T))
+				),
+				equal(
+					ZY,
+					K * ZA
+				)
+			])
+		)
+	).
+\end{prolog}
+\eeq{harmonic_multiply}
+
+Tedy součet a~rozdíl harmonických funkcí odpovídá součtu a~rozdílu jejich obrazů. Násobení harmonické funkce reálným koeficientem odpovídá násobení jejího obrazu tímž koeficientem.
+
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"harmonic_multiply",
+		declare([
+			variable(A, "A", Numbers),
+			variable(Omega, "\\omega", Numbers),
+			variable(Phi, "\\varphi", Numbers),
+			variable(T, "t", Numbers),
+			substitution(ZA, "z_a", A * e^(imag * Phi)),
+			substitution(ZY, "z_y", imag * Omega * ZA)
+		],
+			proof([],
+			[
+				equal([
+					derivative(T, A * sin(Omega * T + Phi)),
+					linebreak,
+					derivative(T, imag_part(A * e^(imag * Phi) * e^(imag * Omega * T))),
+					linebreak,
+					imag_part(A * e^(imag * Phi) * imag * Omega * e^(imag * Omega * T))
+				]),
+				equal(
+					imag_part(ZY * e^(imag * Omega * T)),
+					imag_part(imag * Omega * ZA * e^(imag * Omega * T))
+				),
+				equal(
+					ZY,
+					imag * Omega * ZA
+				)
+			])
+		)
+	).
+\end{prolog}
+\eeq{harmonic_multiply}
