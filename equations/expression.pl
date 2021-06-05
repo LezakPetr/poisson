@@ -557,6 +557,7 @@ function_derivative(pi, []).
 function_derivative(A + B, [[A, 1], [B, 1]]).
 function_derivative(A - B, [[A, 1], [B, -1]]).
 function_derivative(A * B, [[A, B], [B, A]]).
+function_derivative(A / B, [[A, 1 / B], [B, -A / B^2]]).
 function_derivative(A^B, [[A, B * A^(B - 1)], [B, log(e, A) * e^(B * log(e, A))]]).
 function_derivative(sin(X), [[X, cos(X)]]).
 function_derivative(cos(X), [[X, -sin(X)]]).
@@ -571,10 +572,23 @@ expression_derivative(X, Expression, 0) :-
 	X \== Expression,
 	!.
 
+expression_derivative(X, integral(X, Expression), Expression) :-
+	!.
+
+expression_derivative(_, [], []) :-
+	!.
+
+expression_derivative(X, [Expression | ExpressionTail], [Derivative | DerivativeTail]) :-
+	!,
+	expression_derivative(X, Expression, Derivative),
+	expression_derivative(X, ExpressionTail, DerivativeTail).
+
 expression_derivative(X, real_part(Expression), real_part(Derivative)) :-
+	!,
 	expression_derivative(X, Expression, Derivative).
 
 expression_derivative(X, imag_part(Expression), imag_part(Derivative)) :-
+	!,
 	expression_derivative(X, Expression, Derivative).
 
 expression_derivative(X, apply(Function, Args, Values), Derivative) :-
@@ -994,6 +1008,11 @@ rewrite_expression(derivative(X, F), Derivative) :-
 	!,
 	expression_derivative(X, F, Derivative).
 
+rewrite_expression(equal_transform(Transformation, ExpressionList), equal(Derivative)) :-
+	is_list(ExpressionList),
+	!,
+	transform_expression_list(Transformation, ExpressionList, Derivative).
+
 rewrite_expression(Expression, RewrittenExpression) :-
 	Expression =.. [Functor | Args],
 	rewrite_expression_list(Args, RewrittenArgs),
@@ -1006,6 +1025,28 @@ rewrite_expression_list([Expression | ExpressionTail], [RewrittenExpression | Re
 	rewrite_expression(Expression, RewrittenExpression),
 	rewrite_expression_list(ExpressionTail, RewrittenTail).
 
+
+transform_expression_list([], Expression, Expression).
+
+transform_expression_list([Transformation | TransformationTail], Expression, TransformedExpression) :-
+	single_transform_expression_list(Transformation, Expression, HeadTransformedExpression),
+	transform_expression_list(TransformationTail, HeadTransformedExpression, TransformedExpression).
+
+
+single_transform_expression_list(_, [], []).
+
+single_transform_expression_list(Transformation, [Expression | ExpressionTail], TransformedExpressionTail) :-
+	hint(Expression),
+	!,
+	single_transform_expression_list(Transformation, ExpressionTail, TransformedExpressionTail).
+
+single_transform_expression_list(Transformation, [Expression | ExpressionTail], [TransformedExpression | TransformedExpressionTail]) :-
+	single_transform_expression(Transformation, Expression, TransformedExpression),
+	single_transform_expression_list(Transformation, ExpressionTail, TransformedExpressionTail).
+
+
+single_transform_expression(derivative(X), Expression, Derivative) :-
+	rewrite_expression(derivative(X, Expression), Derivative).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Formula print %%%%%
@@ -1362,6 +1403,13 @@ print_expression_term(Stream, equal(List), PR) :-
 print_expression_term(Stream, equal(A, B), PR) :-
 	print_binary_operator(Stream, A, B, PR, equal, ' = ').
 
+print_expression_term(Stream, equal_transform(_, List), PR) :-
+	is_list(List),
+	print_expression_term(Stream, equal(List), PR).
+
+print_expression_term(Stream, equal_transform(_, A, B), PR) :-
+	print_expression_term(Stream, equal(A, B), PR).
+
 print_expression_term(Stream, not_equal(A, B), PR) :-
 	print_binary_operator(Stream, A, B, PR, equal, ' \\neq ').
 
@@ -1413,6 +1461,15 @@ print_expression_term(Stream, derivative(Variable, apply(Function, _, _)), PR) :
 	write(Stream, Variable),
 	write(Stream, "}"),
 	print_bracket_if_needed(Stream, ')', PR, function_derivative).
+
+print_expression_term(Stream, integral(Variable, Expression), PR) :-
+	!,
+	print_bracket_if_needed(Stream, '(', PR, integral),
+	write(Stream, "\\int "),
+	print_expression_term(Stream, Expression, integral),
+	write(Stream, " \\cdot \\mathrm{d}"),
+	write(Stream, Variable),
+	print_bracket_if_needed(Stream, ')', PR, integral).
 
 print_expression_term(Stream, derivative(Variable, Function), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, expression_derivative),
@@ -1515,6 +1572,7 @@ operator_priority(div, 205).
 operator_priority(goniom, 204).
 operator_priority(multiply, 203).
 operator_priority(expression_derivative, 202).
+operator_priority(integral, 202).
 operator_priority(lim, 202).
 operator_priority(opposite, 201).
 operator_priority(plus, 200).

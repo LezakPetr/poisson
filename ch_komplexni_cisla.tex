@@ -9,6 +9,7 @@
 make_test_numbers([-1, 0, 0.5, 1, 2, 3, 1.5, complex(0, 1), complex(0, -1), complex(1, 1)]).
 make_test_real_numbers([-2, -1, 0, 1, 1.5, 2]).
 make_test_nonnegative_real_numbers([0, 1, 1.5, 2]).
+make_test_positive_real_numbers([1, 1.5, 2]).
 make_test_real_nonzero_numbers([-2, -1, 1, 1.5, 2]).
 make_test_complex_functions(Z, [Z + 2, Z - imag, (1 - imag) * Z, Z^2]).
 make_test_real_binary_functions(X, Y, [X + Y, X * Y, X^2 * Y, Y^2 * X]).
@@ -920,11 +921,12 @@ Mějme obecnou harmonickou funkci ve tvaru \(\func{f}(t) = A \cdot \sin(\omega \
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
+	make_test_positive_real_numbers(PositiveNumbers),
 	print_validated_formula(
 		"harmonic_as_complex",
 		declare([
 			variable(A, "A", Numbers),
-			variable(Omega, "\\omega", Numbers),
+			variable(Omega, "\\omega", PositiveNumbers),
 			variable(Phi, "\\varphi", Numbers),
 			variable(T, "t", Numbers),
 			substitution(Z, "z", A * e^(imag * Phi))
@@ -948,13 +950,14 @@ Především si všimněme, že zobrazení harmonické funkce na její obraz je 
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
+	make_test_positive_real_numbers(PositiveNumbers),
 	print_validated_formula(
 		"harmonic_sum",
 		declare([
 			plus_minus(PM),
 			variable(A, "A", Numbers),
 			variable(B, "B", Numbers),
-			variable(Omega, "\\omega", Numbers),
+			variable(Omega, "\\omega", PositiveNumbers),
 			variable(Phi, "\\varphi", Numbers),
 			variable(Psi, "\\psi", Numbers),
 			variable(T, "t", Numbers),
@@ -988,12 +991,13 @@ Především si všimněme, že zobrazení harmonické funkce na její obraz je 
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
+	make_test_positive_real_numbers(PositiveNumbers),
 	print_validated_formula(
 		"harmonic_multiply",
 		declare([
 			variable(K, "k", Numbers),
 			variable(A, "A", Numbers),
-			variable(Omega, "\\omega", Numbers),
+			variable(Omega, "\\omega", PositiveNumbers),
 			variable(Phi, "\\varphi", Numbers),
 			variable(T, "t", Numbers),
 			substitution(ZA, "z_a", A * e^(imag * Phi)),
@@ -1024,14 +1028,16 @@ Především si všimněme, že zobrazení harmonické funkce na její obraz je 
 
 Tedy součet a~rozdíl harmonických funkcí odpovídá součtu a~rozdílu jejich obrazů. Násobení harmonické funkce reálným koeficientem odpovídá násobení jejího obrazu tímž koeficientem.
 
+Hlavní důvod, proč harmonické funkce reprezentujeme pomocí jejich komplexních obrazů je, že můžeme jejich derivace a~integrály podle času reprezentovat jako násobení respektive dělení obrazů členem \(\imag \cdot \omega\): 
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
+	make_test_positive_real_numbers(PositiveNumbers),
 	print_validated_formula(
-		"harmonic_multiply",
+		"harmonic_derivative",
 		declare([
 			variable(A, "A", Numbers),
-			variable(Omega, "\\omega", Numbers),
+			variable(Omega, "\\omega", PositiveNumbers),
 			variable(Phi, "\\varphi", Numbers),
 			variable(T, "t", Numbers),
 			substitution(ZA, "z_a", A * e^(imag * Phi)),
@@ -1058,4 +1064,41 @@ Tedy součet a~rozdíl harmonických funkcí odpovídá součtu a~rozdílu jejic
 		)
 	).
 \end{prolog}
-\eeq{harmonic_multiply}
+\eeq{harmonic_derivative}
+
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_positive_real_numbers(PositiveNumbers),
+	print_validated_formula(
+		"harmonic_integral",
+		declare([
+			variable(A, "A", Numbers),
+			variable(Omega, "\\omega", PositiveNumbers),
+			variable(Phi, "\\varphi", Numbers),
+			variable(T, "t", Numbers),
+			substitution(ZA, "z_a", A * e^(imag * Phi)),
+			substitution(ZY, "z_y", ZA / (imag * Omega))
+		],
+			proof([],
+			[
+				equal_transform([derivative(T)], [
+					integral(T, A * sin(Omega * T + Phi)),
+					linebreak,
+					integral(T, imag_part(A * e^(imag * Phi) * e^(imag * Omega * T))),
+					linebreak,
+					imag_part(A * e^(imag * Phi) * e^(imag * Omega * T) / (imag * Omega))
+				]),
+				equal(
+					imag_part(ZY * e^(imag * Omega * T)),
+					imag_part(ZA * e^(imag * Omega * T) / (imag * Omega))
+				),
+				equal(
+					ZY,
+					ZA / (imag * Omega)
+				)
+			])
+		)
+	).
+\end{prolog}
+\eeq{harmonic_integral}
