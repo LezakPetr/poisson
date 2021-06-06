@@ -945,8 +945,29 @@ Mějme obecnou harmonickou funkci ve tvaru \(\func{f}(t) = A \cdot \sin(\omega \
 
 Každou harmonickou funkci proto můžeme zapsat jako imaginární složku součinu komplexního čísla \(z\) a~členu \(e^{\imag \cdot \omega \cdot t}\). V~komplexním čísle \(z\) je obsažena jak amplituda \(A\) tak i~fázový posun \(\varphi\). Proto pro daný úhlový kmitočet \(\omega\) komplexní číslo \(z\) plně reprezentuje harmonickou funkci~\eqref{eq:harmonic_as_complex}, říkáme, že je jeho obrazem. Namísto počítání s~harmonickými funkcemi proto můžeme počítat s~jejich obrazy - komplexními čísly - a~velmi si tak výpočty zjednodušit. 
 
-Především si všimněme, že zobrazení harmonické funkce na její obraz je lineární. Proto platí:
+Na obrázku~\ref{img:harmonic_function} je vidět význam obrazu harmonické funkce. Máme-li obraz zapsaný jako komplexní číslo v~exponenciálním tvaru \(z = A \cdot e^{\imag \cdot \varphi}\), pak \(A\) je amplituda harmonické funkce a~\(\varphi\) je fázový posun harmonické funkce.
 
+\begin{prolog}
+?-	calculate_1d_function_image(
+		T,
+		't',
+		2 * sin(T + 1),
+		-4, 4,
+		Function
+	),
+	identity_transform(Transform),
+	MaxX is pi/2 - 1,
+	draw_line(Transform, [MaxX, 0], [MaxX, 2], [arrows(none, arrow)], AmplitudeArrow),
+	draw_text(Transform, [MaxX, 1], "\\(A\\)", [anchor(-1, 0)], AmplitudeLabel),
+	draw_line(Transform, [0, -0.75], [-1, -0.75], [arrows(none, arrow)], PhaseArrow),
+	draw_text(Transform, [-0.5, -0.75], "\\(\\varphi\\)", [anchor(0, -1)], PhaseLabel),
+	append([Function, AmplitudeArrow, AmplitudeLabel, PhaseArrow, PhaseLabel], Elements),
+	print_image_to_file('harmonic_function', Elements).
+\end{prolog}
+\eimg{harmonic_function}{Graf harmonické funkce \(A \cdot \sin(t + \varphi) = 2 \cdot \sin(t + 1)\)}
+
+Prozkoumejme, jak můžeme s~harmonickými funkcemi počítat.
+Především si všimněme, že zobrazení harmonické funkce na její obraz je lineární. Proto platí vztahy~\eqref{eq:harmonic_sum} a~\eqref{eq:harmonic_multiply}.
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
@@ -1028,7 +1049,7 @@ Především si všimněme, že zobrazení harmonické funkce na její obraz je 
 
 Tedy součet a~rozdíl harmonických funkcí odpovídá součtu a~rozdílu jejich obrazů. Násobení harmonické funkce reálným koeficientem odpovídá násobení jejího obrazu tímž koeficientem.
 
-Hlavní důvod, proč harmonické funkce reprezentujeme pomocí jejich komplexních obrazů je, že můžeme jejich derivace a~integrály podle času reprezentovat jako násobení respektive dělení obrazů členem \(\imag \cdot \omega\): 
+Hlavní důvod, proč harmonické funkce reprezentujeme pomocí jejich komplexních obrazů je, že můžeme jejich derivace a~integrály podle času reprezentovat jako násobení respektive dělení obrazů členem \(\imag \cdot \omega\), jak je vidět ve vztazích~\eqref{eq:harmonic_derivative} a~\eqref{eq:harmonic_integral}. Derivování tedy posune fázi o~\(+\frac{\pi}{2}\) a~integrování \(-\frac{\pi}{2}\).
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),

@@ -3,6 +3,10 @@
 
 
 draw_1d_function(Label, X, LabelX, Formula, MinX, MaxX) :-
+	calculate_1d_function_image(X, LabelX, Formula, MinX, MaxX, ElementList),
+	print_image_to_file(Label, ElementList).
+
+calculate_1d_function_image(X, LabelX, Formula, MinX, MaxX, ElementList) :-
 	calculate_function_points(X, Formula, MinX, MaxX, PointList),
 	all_nth0(1, PointList, CoordsY),
 	min_list(CoordsY, MinY),
@@ -19,9 +23,8 @@ draw_1d_function(Label, X, LabelX, Formula, MinX, MaxX) :-
 	calculate_label_y(declare([variable(X, LabelX, [])], Formula), LabelY),
 	draw_axis(TransformAxisY, UpdatedMinY, UpdatedMaxY, LabelY, AxisYElements),
 	draw_function_points(PointList, PointElements),
-	append([MarksElementsX, MarksElementsY, AxisXElements, AxisYElements, PointElements], ElementList),
-	print_image_to_file(Label, ElementList).
-
+	append([MarksElementsX, MarksElementsY, AxisXElements, AxisYElements, PointElements], ElementList).
+	
 calculate_label_y(Formula, LabelY) :-
 	tmp_file_stream('text', File, OutStream),
 	print_expression_term(OutStream, Formula),
