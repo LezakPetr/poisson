@@ -915,15 +915,15 @@ Goniometrický tvar můžeme zapsat kompaktněji v~exponenciálním tvaru. Využ
 \end{prolog}
 \eeq{complex_exponential}
 
-\section{Využití komplexních čísel pro reprezentaci harmonických funkcí}
+\section{Využití komplexních čísel pro reprezentaci sinusoid}
 
-Mějme obecnou harmonickou funkci ve tvaru \(\func{f}(t) = A \cdot \sin(\omega \cdot t + \varphi)\). Představuje-li tato funkce časový průběh nějakého děje, pak \(A\) je amplituda, \(\omega\) je úhlový kmitočet, \(t\) je čas a~\(\varphi\) je fázový posun. Podle Eulerova vzorce~\eqref{eq:exp_sin_cos_proof_result} platí:
+Mějme obecnou sinusoidu (sinusovku) ve tvaru \(\func{f}(t) = A \cdot \sin(\omega \cdot t + \varphi)\), kde \(A\) je amplituda, \(\omega\) je úhlový kmitočet, \(t\) je čas a~\(\varphi\) je fázový posun. Tato sinusoida představuje časový průběh nějakého děje.  Podle Eulerova vzorce~\eqref{eq:exp_sin_cos_proof_result} platí:
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
 	make_test_positive_real_numbers(PositiveNumbers),
 	print_validated_formula(
-		"harmonic_as_complex",
+		"sinusoid_as_complex",
 		declare([
 			variable(A, "A", Numbers),
 			variable(Omega, "\\omega", PositiveNumbers),
@@ -941,11 +941,11 @@ Mějme obecnou harmonickou funkci ve tvaru \(\func{f}(t) = A \cdot \sin(\omega \
 		)
 	).
 \end{prolog}
-\eeq{harmonic_as_complex}
+\eeq{sinusoid_as_complex}
 
-Každou harmonickou funkci proto můžeme zapsat jako imaginární složku součinu komplexního čísla \(z\) a~členu \(e^{\imag \cdot \omega \cdot t}\). V~komplexním čísle \(z\) je obsažena jak amplituda \(A\) tak i~fázový posun \(\varphi\). Proto pro daný úhlový kmitočet \(\omega\) komplexní číslo \(z\) plně reprezentuje harmonickou funkci~\eqref{eq:harmonic_as_complex}, říkáme, že je jeho obrazem. Namísto počítání s~harmonickými funkcemi proto můžeme počítat s~jejich obrazy - komplexními čísly - a~velmi si tak výpočty zjednodušit. 
+Každou sinusoidu proto můžeme zapsat jako imaginární složku součinu komplexního čísla \(z\) a~členu \(e^{\imag \cdot \omega \cdot t}\). V~komplexním čísle \(z\) je obsažena jak amplituda \(A\) tak i~fázový posun \(\varphi\). Proto pro daný úhlový kmitočet \(\omega\) komplexní číslo \(z\) plně reprezentuje sinusoidu~\eqref{eq:sinusoid_as_complex}, říkáme, že je jeho obrazem. Namísto počítání se sinusoidami proto můžeme počítat s~jejich obrazy - komplexními čísly - a~velmi si tak výpočty zjednodušit. 
 
-Na obrázku~\ref{img:harmonic_function} je vidět význam obrazu harmonické funkce. Máme-li obraz zapsaný jako komplexní číslo v~exponenciálním tvaru \(z = A \cdot e^{\imag \cdot \varphi}\), pak \(A\) je amplituda harmonické funkce a~\(\varphi\) je fázový posun harmonické funkce.
+Na obrázku~\ref{img:sinusoid} je vidět význam obrazu sinusoidy. Máme-li obraz zapsaný jako komplexní číslo v~exponenciálním tvaru \(z = A \cdot e^{\imag \cdot \varphi}\), pak \(A\) je amplituda sinusoidy a~\(\varphi\) je fázový posun sinusoidy.
 
 \begin{prolog}
 ?-	calculate_1d_function_image(
@@ -962,18 +962,18 @@ Na obrázku~\ref{img:harmonic_function} je vidět význam obrazu harmonické fun
 	draw_line(Transform, [0, -0.75], [-1, -0.75], [arrows(none, arrow)], PhaseArrow),
 	draw_text(Transform, [-0.5, -0.75], "\\(\\varphi\\)", [anchor(0, -1)], PhaseLabel),
 	append([Function, AmplitudeArrow, AmplitudeLabel, PhaseArrow, PhaseLabel], Elements),
-	print_image_to_file('harmonic_function', Elements).
+	print_image_to_file('sinusoid', Elements).
 \end{prolog}
-\eimg{harmonic_function}{Graf harmonické funkce \(A \cdot \sin(t + \varphi) = 2 \cdot \sin(t + 1)\)}
+\eimg{sinusoid}{Graf sinusoidy \(A \cdot \sin(t + \varphi) = 2 \cdot \sin(t + 1)\)}
 
-Prozkoumejme, jak můžeme s~harmonickými funkcemi počítat.
-Především si všimněme, že zobrazení harmonické funkce na její obraz je lineární. Proto platí vztahy~\eqref{eq:harmonic_sum} a~\eqref{eq:harmonic_multiply}.
+Prozkoumejme, jak můžeme se sinusoidami počítat.
+Především si všimněme, že zobrazení sinusoidy na její obraz je lineární. Proto platí vztahy~\eqref{eq:sinusoid_sum} a~\eqref{eq:sinusoid_multiply}.
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
 	make_test_positive_real_numbers(PositiveNumbers),
 	print_validated_formula(
-		"harmonic_sum",
+		"sinusoid_sum",
 		declare([
 			plus_minus(PM),
 			variable(A, "A", Numbers),
@@ -1008,13 +1008,13 @@ Především si všimněme, že zobrazení harmonické funkce na její obraz je 
 		)
 	).
 \end{prolog}
-\eeq{harmonic_sum}
+\eeq{sinusoid_sum}
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
 	make_test_positive_real_numbers(PositiveNumbers),
 	print_validated_formula(
-		"harmonic_multiply",
+		"sinusoid_multiply",
 		declare([
 			variable(K, "k", Numbers),
 			variable(A, "A", Numbers),
@@ -1045,17 +1045,17 @@ Především si všimněme, že zobrazení harmonické funkce na její obraz je 
 		)
 	).
 \end{prolog}
-\eeq{harmonic_multiply}
+\eeq{sinusoid_multiply}
 
-Tedy součet a~rozdíl harmonických funkcí odpovídá součtu a~rozdílu jejich obrazů. Násobení harmonické funkce reálným koeficientem odpovídá násobení jejího obrazu tímž koeficientem.
+Tedy součet a~rozdíl sinusoid odpovídá součtu a~rozdílu jejich obrazů. Násobení sinusoidy reálným koeficientem odpovídá násobení jejího obrazu tímž koeficientem.
 
-Hlavní důvod, proč harmonické funkce reprezentujeme pomocí jejich komplexních obrazů je, že můžeme jejich derivace a~integrály podle času reprezentovat jako násobení respektive dělení obrazů členem \(\imag \cdot \omega\), jak je vidět ve vztazích~\eqref{eq:harmonic_derivative} a~\eqref{eq:harmonic_integral}. Derivování tedy posune fázi o~\(+\frac{\pi}{2}\) a~integrování \(-\frac{\pi}{2}\).
+Hlavní důvod, proč sinusoidy reprezentujeme pomocí jejich komplexních obrazů je, že můžeme jejich derivace a~integrály podle času reprezentovat jako násobení respektive dělení obrazů členem \(\imag \cdot \omega\), jak je vidět ve vztazích~\eqref{eq:sinusoid_derivative} a~\eqref{eq:sinusoid_integral}. Derivování tedy posune fázi o~\(+\frac{\pi}{2}\) a~integrování \(-\frac{\pi}{2}\).
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
 	make_test_positive_real_numbers(PositiveNumbers),
 	print_validated_formula(
-		"harmonic_derivative",
+		"sinusoid_derivative",
 		declare([
 			variable(A, "A", Numbers),
 			variable(Omega, "\\omega", PositiveNumbers),
@@ -1085,14 +1085,14 @@ Hlavní důvod, proč harmonické funkce reprezentujeme pomocí jejich komplexn�
 		)
 	).
 \end{prolog}
-\eeq{harmonic_derivative}
+\eeq{sinusoid_derivative}
 
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
 	make_test_positive_real_numbers(PositiveNumbers),
 	print_validated_formula(
-		"harmonic_integral",
+		"sinusoid_integral",
 		declare([
 			variable(A, "A", Numbers),
 			variable(Omega, "\\omega", PositiveNumbers),
@@ -1122,4 +1122,4 @@ Hlavní důvod, proč harmonické funkce reprezentujeme pomocí jejich komplexn�
 		)
 	).
 \end{prolog}
-\eeq{harmonic_integral}
+\eeq{sinusoid_integral}
