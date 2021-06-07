@@ -1123,3 +1123,33 @@ Hlavní důvod, proč sinusoidy reprezentujeme pomocí jejich komplexních obraz
 	).
 \end{prolog}
 \eeq{sinusoid_integral}
+
+\subsection{Příklad - sériový rezonanční obvod}
+
+Na příkladu sériového rezonančního obvodu si ukážeme, jak lze pomocí komplexních čísel řešit lineární elektrické obvody. Mějme sériový rezonanční obvod zobrazený na obrázku~\ref{img:serial_resonance}.
+
+\begin{figure}[ht]
+\begin{center}
+\begin{tikzpicture}
+
+% R
+\draw (0, 0) -- (1, 0);
+\draw (1, -0.2) -- (1, 0.2) -- (2.5, 0.2) -- (2.5, -0.2) -- (1, -0.2);
+
+% L
+\draw (2.5, 0) -- (3.5, 0);
+
+\foreach \i in {0, ..., 4}
+	\draw (3.5 + 0.2 * \i, 0) arc(180:0:0.1);
+
+% C
+\draw (4.5, 0) -- (5.6, 0);
+\draw (5.6, -0.5) -- (5.6, 0.5);
+\draw (5.8, -0.5) -- (5.8, 0.5);
+\draw (5.8, 0) -- (6.5, 0);
+
+\end{tikzpicture}
+\caption{Zobrazení čísla \(z = 4 + 3 \cdot i\) v~komplexní rovině}
+\label{img:serial_resonance}
+\end{center}
+\end{figure}
