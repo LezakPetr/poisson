@@ -7,6 +7,7 @@
 :- ensure_loaded("../equations/draw_1d_function").
 
 make_test_numbers([-1, 0, 0.5, 1, 2, 3, 1.5, complex(0, 1), complex(0, -1), complex(1, 1)]).
+make_test_nonzero_complex_numbers([-1, 0.5, 1, 2, complex(0, 1), complex(0, -1), complex(1, 1), complex(0.2, -1.5)]).
 make_test_real_numbers([-2, -1, 0, 1, 1.5, 2]).
 make_test_nonnegative_real_numbers([0, 1, 1.5, 2]).
 make_test_positive_real_numbers([1, 1.5, 2]).
@@ -1135,6 +1136,7 @@ Na příkladu sériového rezonančního obvodu si ukážeme, jak lze pomocí ko
 % R
 \draw (0, 0) -- (1, 0);
 \draw (1, -0.2) -- (1, 0.2) -- (2.5, 0.2) -- (2.5, -0.2) -- (1, -0.2);
+\draw (1.75, 0.2) node[anchor=south]{R};
 
 % L
 \draw (2.5, 0) -- (3.5, 0);
@@ -1142,14 +1144,164 @@ Na příkladu sériového rezonančního obvodu si ukážeme, jak lze pomocí ko
 \foreach \i in {0, ..., 4}
 	\draw (3.5 + 0.2 * \i, 0) arc(180:0:0.1);
 
+\draw (4, 0.2) node[anchor=south]{L};
+
 % C
 \draw (4.5, 0) -- (5.6, 0);
 \draw (5.6, -0.5) -- (5.6, 0.5);
 \draw (5.8, -0.5) -- (5.8, 0.5);
 \draw (5.8, 0) -- (6.5, 0);
+\draw (5.7, 0.5) node[anchor=south]{C};
 
+% U, I
+\draw[-{Triangle[open]}] (0, 0.2) -- (0.8, 0.2); 
+\draw (0.4, 0.2) node[anchor=south]{\(i(t)\)};
+
+\draw[-{Straight Barb}] (0.8, -0.4) -- (2.7, -0.4); 
+\draw (1.75, -0.4) node[anchor=north]{\(u_R(t)\)};
+
+\draw[-{Straight Barb}] (3.3, -0.4) -- (4.7, -0.4); 
+\draw (4, -0.4) node[anchor=north]{\(u_L(t)\)};
+
+\draw[-{Straight Barb}] (5, -0.7) -- (6.4, -0.7); 
+\draw (5.7, -0.7) node[anchor=north]{\(u_C(t)\)};
+
+\draw[-{Straight Barb}] (0.8, -1.5) -- (6.4, -1.5); 
+\draw (3.6, -1.5) node[anchor=north]{\(u(t)\)};
 \end{tikzpicture}
-\caption{Zobrazení čísla \(z = 4 + 3 \cdot i\) v~komplexní rovině}
+\caption{Schéma sériového rezonančního obvodu}
 \label{img:serial_resonance}
 \end{center}
 \end{figure}
+
+Sériový rezonanční obvod je tvořen sériovou kombinací rezistoru R, cívky L a~kondenzátoru C. Na těchto součástkách jsou průběhy napětí \(u_R(t)\), \(u_L(t)\) a~\(u_C(t)\), všemi součástkami protéká stejný proud \(i(t)\). V~následujícím textu je průběh proudu důsledně označován \(i(t)\), aby nedošlo k~jeho záměně s~imaginární jednotkou \(\imag\). V~elektrotechnické literatuře se to řeší označováním imaginární jednotky \(j\), ale zde nebudeme kvůli jednomu příkladu zavádět novou konvenci. 
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_positive_real_numbers(PositiveNumbers),
+	make_test_nonzero_complex_numbers(ComplexNumbers),
+	print_validated_multiformula(
+		[
+			variable(R, "R", PositiveNumbers),
+			variable(L, "L", PositiveNumbers),
+			variable(C, "C", PositiveNumbers),
+			variable(Omega, "\\omega", PositiveNumbers),
+			variable(T, "t", Numbers),
+			variable(I, "I", ComplexNumbers),
+			substitution(IT, "i(t)", imag_part(I * e^(imag * Omega * T))),
+			substitution(UR, "U_R", R * I),
+			substitution(URT, "u(t)", imag_part(UR * e^(imag * Omega * T))),
+			substitution(ZL, "Z_L", imag * Omega * L),
+			substitution(UL, "U_L", ZL * I),
+			substitution(ULT, "u_L(t)", imag_part(UL * e^(imag * Omega * T))),
+			substitution(ZC, "Z_C", 1 / (C * imag * Omega)),			
+			substitution(UC, "U_C", ZC * I),
+			substitution(UCT, "u_C(t)", imag_part(UC * e^(imag * Omega * T))),
+			substitution(U, "U", UR + UL + UC),
+			substitution(UT, "u(t)", imag_part(U * e^(imag * Omega * T))),
+			substitution(Z, "Z", R + ZL + ZC)
+		],
+		[
+			formula("serial_resonance_urt", equal(URT, R * IT)),
+			formula("serial_resonance_ur", equal(UR, R * I)),
+			
+			formula("serial_resonance_ult", equal(ULT, L * derivative(T, IT))),
+			formula("serial_resonance_ul", equal(UL, L * imag * Omega * I)),
+			formula("serial_resonance_zl", equal(ZL, imag * Omega * L)),
+			formula("serial_resonance_ulz", equal(UL, ZL * I)),
+			
+			formula("serial_resonance_uct", equal_transform([derivative(T)], [UCT, 1 / C * integral(T, IT)])),
+			formula("serial_resonance_uc", equal(UC, I / (imag * Omega * C))),
+			formula("serial_resonance_zc", equal(ZC, 1 / (imag * Omega * C))),
+			formula("serial_resonance_ucz", equal(UC, ZC * I)),
+			
+			formula("serial_resonance_ut", equal(UT, URT + ULT + UCT)),
+			formula("serial_resonance_u", equal([U, UR + UL + UC, R * I + ZL * I + ZC * I, (R + ZL + ZC) * I])),
+			formula("serial_resonance_z", equal([
+				Z, U / I, R + ZL + ZC, R + imag * Omega * L + 1 / (imag * Omega * C),
+				linebreak,
+				R + imag * Omega * L - imag / (Omega * C)
+			]))
+		]
+	).
+\end{prolog}
+
+Podle Ohmova zákona pro napětí na rezistoru platí
+
+\eeq{serial_resonance_urt}
+
+a~tato rovnice má obraz
+
+\eeq{serial_resonance_ur}
+
+Na cívce se indukuje napětí úměrné změně proudu
+
+\eeq{serial_resonance_ult}
+
+a~tato rovnice má obraz~\eqref{eq:serial_resonance_ul}.
+
+\eeq{serial_resonance_ul}
+
+Povšimněme si, že rovnice~\eqref{eq:serial_resonance_coil_img} připomíná Ohmův zákon s~odporem \(L \cdot \imag \cdot \omega\). Tomuto \uv{komplexnímu odporu} se říká impedance, rovnici~\eqref{eq:serial_resonance_coil_img} proto můžeme přepsat do tvaru
+
+\eeq{serial_resonance_zl}
+\eeq{serial_resonance_ulz}
+
+Na kondenzátoru je napětí úměrné celkovému náboji, který je integrálem proudu
+
+\eeq{serial_resonance_uct}
+
+a~tato rovnice má obraz~\eqref{eq:serial_resonance_uc}.
+
+\eeq{serial_resonance_uc}
+
+Opět můžeme zavést impedanci kondenzátoru a~rovnici~\eqref{eq:serial_resonance_capacitance_img} přepsat do tvaru
+
+\eeq{serial_resonance_zc}
+\eeq{serial_resonance_ucz}
+
+Celkové napětí na rezonančním obvodu je dáno součtem napětí na jednotlivých součástkách
+
+\eeq{serial_resonance_ut}
+
+a~jeho obraz je
+
+\eeq{serial_resonance_u}
+
+Celková impedance rezonančního obvodu je proto
+
+\eeq{serial_resonance_z}
+
+Na obrázcích~\ref{img:serial_resonance_abs} a~\ref{img:serial_resonance_arg} je zobrazena absolutní hodnota a~argument impedance pro hodnoty~\(R = 1\Omega\), \(L = 1\mathrm{H}\) a~\(C = 1\mathrm{F}\). Povšimněme si, že fáze je pro nízké kmitočty záporná - převládá impedance od kondenzátoru. Pro vysoké kmitočty je fáze kladná - převládá impedance od cívky. Pro kmitočet \(1 \rad s^{-1}\) je fáze nulová. Imaginární složky impedancí kondenzátoru a~cívky se vyruší a~absolutní hodnota impedance je minimální - je dána pouze odporem rezistoru.
+
+\begin{prolog}
+?-	draw_1d_function(
+		'serial_resonance_abs',
+		Omega,
+		"\\omega",
+		declare(
+			[
+				substitution(Z, "Z", 1 + imag * Omega * 1 + 1 / (imag * Omega * 1))
+			],
+			abs(Z)
+		),
+		0.2, 3
+	).				
+\end{prolog}
+\eimg{serial_resonance_abs}{Absolutní hodnota impedance rezonančního obvodu}
+
+\begin{prolog}
+?-	draw_1d_function(
+		'serial_resonance_arg',
+		Omega,
+		"\\omega",
+		declare(
+			[
+				substitution(Z, "Z", 1 + imag * Omega * 1 + 1 / (imag * Omega * 1))
+			],
+			arg(Z)
+		),
+		0.01, 3
+	).				
+\end{prolog}
+\eimg{serial_resonance_arg}{Argument (fáze) impedance rezonančního obvodu}
