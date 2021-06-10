@@ -1119,6 +1119,10 @@ print_expression_term(Stream, N, _) :-
 	!,
 	write(Stream, N).
 
+print_expression_term(Stream, pi, _) :-
+	!,
+	write(Stream, "\\pi").
+
 print_expression_term(Stream, S, _) :-
 	string(S),
 	!,

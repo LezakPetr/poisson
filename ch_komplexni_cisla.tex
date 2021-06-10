@@ -1174,7 +1174,7 @@ Na příkladu sériového rezonančního obvodu si ukážeme, jak lze pomocí ko
 \end{center}
 \end{figure}
 
-Sériový rezonanční obvod je tvořen sériovou kombinací rezistoru R, cívky L a~kondenzátoru C. Na těchto součástkách jsou průběhy napětí \(u_R(t)\), \(u_L(t)\) a~\(u_C(t)\), všemi součástkami protéká stejný proud \(i(t)\). V~následujícím textu je průběh proudu důsledně označován \(i(t)\), aby nedošlo k~jeho záměně s~imaginární jednotkou \(\imag\). V~elektrotechnické literatuře se to řeší označováním imaginární jednotky \(j\), ale zde nebudeme kvůli jednomu příkladu zavádět novou konvenci. 
+Sériový rezonanční obvod je tvořen sériovou kombinací rezistoru R, cívky L a~kondenzátoru C. Na těchto součástkách jsou průběhy napětí \(u_R(t)\), \(u_L(t)\) a~\(u_C(t)\), všemi součástkami protéká stejný proud \(i(t)\). V~následujícím textu je průběh proudu důsledně označován \(i(t)\), aby nedošlo k~jeho záměně s~imaginární jednotkou \(\imag\). V~elektrotechnické literatuře se to řeší označováním imaginární jednotky \(\mathrm{j}\), ale zde nebudeme kvůli jednomu příkladu zavádět novou konvenci. 
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
@@ -1190,7 +1190,7 @@ Sériový rezonanční obvod je tvořen sériovou kombinací rezistoru R, cívky
 			variable(I, "I", ComplexNumbers),
 			substitution(IT, "i(t)", imag_part(I * e^(imag * Omega * T))),
 			substitution(UR, "U_R", R * I),
-			substitution(URT, "u(t)", imag_part(UR * e^(imag * Omega * T))),
+			substitution(URT, "u_R(t)", imag_part(UR * e^(imag * Omega * T))),
 			substitution(ZL, "Z_L", imag * Omega * L),
 			substitution(UL, "U_L", ZL * I),
 			substitution(ULT, "u_L(t)", imag_part(UL * e^(imag * Omega * T))),
@@ -1230,7 +1230,7 @@ Podle Ohmova zákona pro napětí na rezistoru platí
 
 \eeq{serial_resonance_urt}
 
-a~tato rovnice má obraz
+a~tato rovnice má obraz~\eqref{eq:serial_resonance_ur}.
 
 \eeq{serial_resonance_ur}
 
@@ -1242,7 +1242,7 @@ a~tato rovnice má obraz~\eqref{eq:serial_resonance_ul}.
 
 \eeq{serial_resonance_ul}
 
-Povšimněme si, že rovnice~\eqref{eq:serial_resonance_coil_img} připomíná Ohmův zákon s~odporem \(L \cdot \imag \cdot \omega\). Tomuto \uv{komplexnímu odporu} se říká impedance, rovnici~\eqref{eq:serial_resonance_coil_img} proto můžeme přepsat do tvaru
+Povšimněme si, že rovnice~\eqref{eq:serial_resonance_ul} připomíná Ohmův zákon s~odporem \(L \cdot \imag \cdot \omega\). Tomuto \uv{komplexnímu odporu} se říká impedance, rovnici~\eqref{eq:serial_resonance_ul} proto můžeme přepsat do tvaru
 
 \eeq{serial_resonance_zl}
 \eeq{serial_resonance_ulz}
@@ -1255,7 +1255,7 @@ a~tato rovnice má obraz~\eqref{eq:serial_resonance_uc}.
 
 \eeq{serial_resonance_uc}
 
-Opět můžeme zavést impedanci kondenzátoru a~rovnici~\eqref{eq:serial_resonance_capacitance_img} přepsat do tvaru
+Opět můžeme zavést impedanci kondenzátoru a~rovnici~\eqref{eq:serial_resonance_uc} přepsat do tvaru
 
 \eeq{serial_resonance_zc}
 \eeq{serial_resonance_ucz}
@@ -1272,7 +1272,32 @@ Celková impedance rezonančního obvodu je proto
 
 \eeq{serial_resonance_z}
 
-Na obrázcích~\ref{img:serial_resonance_abs} a~\ref{img:serial_resonance_arg} je zobrazena absolutní hodnota a~argument impedance pro hodnoty~\(R = 1\Omega\), \(L = 1\mathrm{H}\) a~\(C = 1\mathrm{F}\). Povšimněme si, že fáze je pro nízké kmitočty záporná - převládá impedance od kondenzátoru. Pro vysoké kmitočty je fáze kladná - převládá impedance od cívky. Pro kmitočet \(1 \rad s^{-1}\) je fáze nulová. Imaginární složky impedancí kondenzátoru a~cívky se vyruší a~absolutní hodnota impedance je minimální - je dána pouze odporem rezistoru.
+Na obrázcích~\ref{img:serial_resonance_abs} a~\ref{img:serial_resonance_arg} je zobrazena absolutní hodnota a~argument impedance pro hodnoty~\(R = 1\Omega\), \(L = 1\mathrm{H}\) a~\(C = 1\mathrm{F}\). Povšimněme si, že fáze je pro nízké kmitočty záporná - převládá impedance od kondenzátoru. Pro vysoké kmitočty je fáze kladná - převládá impedance od cívky. Pro kmitočet \(1 \ \rad \ s^{-1}\) je fáze nulová. Imaginární složky impedancí kondenzátoru a~cívky se vyruší a~absolutní hodnota impedance je minimální - je dána pouze odporem rezistoru. Tomuto stavu se říká rezonance. Rezonanční frekvenci můžeme vypočítat podle vztahu~\eqref{eq:serial_resonance_freq}.
+
+\begin{prolog}
+?-	make_test_positive_real_numbers(PositiveNumbers),
+	print_validated_formula(
+		"serial_resonance_freq",
+		declare(
+			[
+				variable(L, "L", PositiveNumbers),
+				variable(C, "C", PositiveNumbers),
+				substitution(F, "f_r", 1 / (2 * pi * sqrt(L * C))),
+				substitution(Omega, "\\omega_r", 2 * pi * F)
+			],
+			proof([],
+			[
+				equal(Omega * L - 1 / (Omega * C), 0),
+				equal(Omega * L, 1 / (Omega * C)),
+				equal(Omega^2, 1 / (L * C)),
+				equal(Omega, 1 / sqrt(L * C)),
+				equal(F, 1 / (2 * pi * sqrt(L * C)))
+			])
+		)
+	).
+\end{prolog}
+\eeq{serial_resonance_freq}
+
 
 \begin{prolog}
 ?-	draw_1d_function(
@@ -1305,3 +1330,4 @@ Na obrázcích~\ref{img:serial_resonance_abs} a~\ref{img:serial_resonance_arg} j
 	).				
 \end{prolog}
 \eimg{serial_resonance_arg}{Argument (fáze) impedance rezonančního obvodu}
+
