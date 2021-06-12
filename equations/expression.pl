@@ -614,6 +614,29 @@ compound_derivative(X, [[SubExpression, Der] | Tail], Result) :-
 ?-	F = Z^2, expression_derivative(X, apply(F, [Z], [3*X+4]), 2 * (3*X + 4)^(2-1) * 3).
 
 
+expression_derivative_multiorder(X, Expression, Derivative) :-
+	var(X),
+	!,
+	expression_derivative(X, Expression, Derivative).
+
+expression_derivative_multiorder(A * B, Expression, Derivative) :-
+	!,
+	expression_derivative_multiorder(A, Expression, DerivativeA),
+	expression_derivative_multiorder(B, DerivativeA, Derivative).
+
+expression_derivative_multiorder(X^1, Expression, Derivative) :-
+	var(X),
+	!,
+	expression_derivative(X, Expression, Derivative).
+
+expression_derivative_multiorder(X^N, Expression, Derivative) :-
+	var(X),
+	N > 1,
+	!,
+	M is N - 1,
+	expression_derivative(X, Expression, SubDerivative),
+	expression_derivative_multiorder(X^M, SubDerivative, Derivative).
+
 evaluate_list([], []).
 
 evaluate_list([Expression | Tail], EvaluatedTail) :-
@@ -1006,7 +1029,7 @@ rewrite_expression(declare([Declaration | Tail], Expression), declare([Declarati
 
 rewrite_expression(derivative(X, F), Derivative) :-
 	!,
-	expression_derivative(X, F, Derivative).
+	expression_derivative_multiorder(X, F, Derivative).
 
 rewrite_expression(equal_transform(Transformation, ExpressionList), equal(Derivative)) :-
 	is_list(ExpressionList),
@@ -1459,12 +1482,26 @@ print_expression_term(Stream, derivative(Variable, apply(Function, _, _)), PR) :
 	atomic(Function),
 	!,
 	print_bracket_if_needed(Stream, '(', PR, function_derivative),
-	write(Stream, "\\frac{\\partial "),
+	write(Stream, "\\frac{\\partial"),
+	polynom_total_order(Variable, Order),
+	write_exponent_if_needed(Stream, Order),
+	write(Stream, " "),
 	write(Stream, Function),
 	write(Stream, "}{\\partial "),
 	write(Stream, Variable),
 	write(Stream, "}"),
 	print_bracket_if_needed(Stream, ')', PR, function_derivative).
+
+print_expression_term(Stream, derivative(Variable, Function), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, expression_derivative),
+	write(Stream, "\\frac{\\partial"),
+	polynom_total_order(Variable, Order),
+	write_exponent_if_needed(Stream, Order),
+	write(Stream, "}{\\partial "),
+	write(Stream, Variable),
+	write(Stream, "}"),
+	print_expression_term(Stream, Function, expression_derivative),
+	print_bracket_if_needed(Stream, ')', PR, expression_derivative).
 
 print_expression_term(Stream, integral(Variable, Expression), PR) :-
 	!,
@@ -1474,14 +1511,6 @@ print_expression_term(Stream, integral(Variable, Expression), PR) :-
 	write(Stream, " \\cdot \\mathrm{d}"),
 	write(Stream, Variable),
 	print_bracket_if_needed(Stream, ')', PR, integral).
-
-print_expression_term(Stream, derivative(Variable, Function), PR) :-
-	print_bracket_if_needed(Stream, '(', PR, expression_derivative),
-	write(Stream, "\\frac{\\partial}{\\partial "),
-	write(Stream, Variable),
-	write(Stream, "}"),
-	print_expression_term(Stream, Function, expression_derivative),
-	print_bracket_if_needed(Stream, ')', PR, expression_derivative).
 
 print_prefix_operator(Stream, A, SuperOperator, SubOperator, Label) :-
 	print_bracket_if_needed(Stream, '(', SuperOperator, SubOperator),
@@ -1566,6 +1595,28 @@ print_bracket_if_needed(Stream, '(', _, _) :-
 
 print_bracket_if_needed(Stream, ')', _, _) :-
 	write(Stream, '\\right)').
+
+
+write_exponent_if_needed(_, 1) :-
+	!.
+
+write_exponent_if_needed(Stream, N) :-
+	write(Stream, "^"),
+	write(Stream, N).
+
+
+polynom_total_order(Var, 1) :-
+	var(Var).
+
+polynom_total_order(Var, 1) :-
+	atomic(Var).
+
+polynom_total_order(_^N, N).
+
+polynom_total_order(A * B, Order) :-
+	polynom_total_order(A, OrderA),
+	polynom_total_order(B, OrderB),
+	Order is OrderA + OrderB.
 
 
 operator_priority(function_derivative, 207).

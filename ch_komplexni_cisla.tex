@@ -1331,3 +1331,55 @@ Na obrázcích~\ref{img:serial_resonance_abs} a~\ref{img:serial_resonance_arg} j
 \end{prolog}
 \eimg{serial_resonance_arg}{Argument (fáze) impedance rezonančního obvodu}
 
+\subsection{Příklad - vlnová rovnice}
+
+V~následujícím příkladu si ukážeme, jak využít komplexní čísla pro řešení parciálních diferenciálních rovnic s~časem. Mějme vlnovou rovnici~\eqref{eq:wave_equation_time}.  Jedná se o~parciální diferenciální rovnici, která kromě prostorových souřadnic \(x\), \(y\) a~\(z\) závisí i~na čase \(t\). Rovnice je lineární, proto pokud budeme předpokládat že všechny veličiny v~rovnici jsou sinusoidální, tak můžeme vyjádřit obraz rovnice~\eqref{eq:wave_equation_frequency}. Díky tomu se zbavíme časové složky v~rovnici.
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_positive_real_numbers(PositiveNumbers),
+	Solutions = [
+		% Reseni v podobe rovinne vlny ve tvaru e^((a * x + b * y + c * z) * i * omega / c); a^2 + b^2 + c^2 = 1
+		e^(SX * imag * Omega / C),
+		e^(SY * imag * Omega / C),
+		e^(SZ * imag * Omega / C),
+		e^((1 / sqrt(2)) * (SX + SY) * imag * Omega / C),
+		e^(sqrt(14) * (1*SX + 2*SY - 3*SZ) * imag * Omega / C)
+	],
+	print_validated_multiformula(
+		[
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers),
+			variable(Z, "z", Numbers),
+			variable(Omega, "\\omega", PositiveNumbers),
+			variable(C, "c", PositiveNumbers),
+			variable(T, "t", Numbers),
+			function(FO, "F", Solutions),
+			substitution(FT, "f", FO * e^(imag * Omega * T))
+		],
+		[
+			formula(
+				"wave_equation_time",
+				equal(
+					derivative(X^2, apply(FT, [SX, SY, SZ, ST], [X, Y, Z, T])) +
+					derivative(Y^2, apply(FT, [SX, SY, SZ, ST], [X, Y, Z, T])) +
+					derivative(Z^2, apply(FT, [SX, SY, SZ, ST], [X, Y, Z, T])),
+					derivative(T^2, apply(FT, [SX, SY, SZ, ST], [X, Y, Z, T]))
+				)
+			),
+			formula(
+				"wave_equation_frequency",
+				equal(
+					derivative(X^2, apply(FO, [SX, SY, SZ], [X, Y, Z])) +
+					derivative(Y^2, apply(FO, [SX, SY, SZ], [X, Y, Z])) +
+					derivative(Z^2, apply(FO, [SX, SY, SZ], [X, Y, Z])),
+					-apply(FO, [SX, SY, SZ], [X, Y, Z]) * (Omega^2 / C^2)
+				)
+			)
+		]
+	).
+\end{prolog}
+
+
+\eeq{wave_equation_time}
+\eeq{wave_equation_frequency}
