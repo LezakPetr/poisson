@@ -1383,3 +1383,81 @@ V~následujícím příkladu si ukážeme, jak využít komplexní čísla pro �
 
 \eeq{wave_equation_time}
 \eeq{wave_equation_frequency}
+
+\section{Analytická funkce jako řešení Laplaceovy rovnice}
+
+Vyjděme z~Cauchyových-Riemannových podmínkek.
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
+	print_validated_multiformula(
+		[
+			function([U, V], ["\\func{u}", "\\func{v}"], Functions),
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers)
+		],
+		[
+			% Cauchyovy-Riemannovy podminky 
+			formula(
+				"analytic_function_laplace_cr1",
+				equal(derivative(X, apply(U, [UX, UY], [X, Y])), derivative(Y, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_cr2",
+				equal(derivative(Y, apply(U, [UX, UY], [X, Y])), -derivative(X, apply(V, [VX, VY], [X, Y])))
+			),
+			
+			% Laplace U
+			formula(
+				"analytic_function_laplace_u1",
+				equal(derivative(X^2, apply(U, [UX, UY], [X, Y])), derivative(X * Y, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_u2",
+				equal(derivative(Y^2, apply(U, [UX, UY], [X, Y])), -derivative(X * Y, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_u_sum",
+				equal(derivative(X^2, apply(U, [UX, UY], [X, Y])) + derivative(Y^2, apply(U, [UX, UY], [X, Y])), 0)
+			),
+			
+			% Laplace V
+			formula(
+				"analytic_function_laplace_v1",
+				equal(derivative(X * Y, apply(U, [UX, UY], [X, Y])), derivative(Y^2, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_v2",
+				equal(derivative(X * Y, apply(U, [UX, UY], [X, Y])), -derivative(X^2, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_v_sum",
+				equal(derivative(X^2, apply(V, [VX, VY], [X, Y])) + derivative(Y^2, apply(V, [VX, VY], [X, Y])), 0)
+			)
+		]
+	).
+\end{prolog}
+
+\eeq{analytic_function_laplace_cr1}
+\eeq{analytic_function_laplace_cr2}
+
+Zderivujme rovnici~\eqref{eq:analytic_function_laplace_cr1} podle \(x\) a~rovnici~\eqref{eq:analytic_function_laplace_cr2} podle \(y\). Získáme:
+
+\eeq{analytic_function_laplace_u1}
+\eeq{analytic_function_laplace_u2}
+
+Jejich sečtením získáme rovnici
+
+\eeq{analytic_function_laplace_u_sum}
+
+Zderivujme rovnici~\eqref{eq:analytic_function_laplace_cr1} podle \(y\) a~rovnici~\eqref{eq:analytic_function_laplace_cr2} podle \(x\). Získáme:
+
+\eeq{analytic_function_laplace_v1}
+\eeq{analytic_function_laplace_v2}
+
+Jejich sloučením získáme rovnici
+
+\eeq{analytic_function_laplace_v_sum}
+
+Vidíme tedy, že funkce \(\func{u}\) i~\(\func{v}\) jsou řešením Laplaceovy rovnice v~rovině. Reálná i~imaginární složka analytické funkce je proto řešením Laplaceovy rovnice v~rovině.

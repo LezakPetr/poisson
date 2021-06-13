@@ -1484,11 +1484,11 @@ print_expression_term(Stream, derivative(Variable, apply(Function, _, _)), PR) :
 	print_bracket_if_needed(Stream, '(', PR, function_derivative),
 	write(Stream, "\\frac{\\partial"),
 	polynom_total_order(Variable, Order),
-	write_exponent_if_needed(Stream, Order),
+	print_exponent_if_needed(Stream, Order),
 	write(Stream, " "),
 	write(Stream, Function),
-	write(Stream, "}{\\partial "),
-	write(Stream, Variable),
+	write(Stream, "}{"),
+	print_partial(Stream, Variable),
 	write(Stream, "}"),
 	print_bracket_if_needed(Stream, ')', PR, function_derivative).
 
@@ -1496,9 +1496,9 @@ print_expression_term(Stream, derivative(Variable, Function), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, expression_derivative),
 	write(Stream, "\\frac{\\partial"),
 	polynom_total_order(Variable, Order),
-	write_exponent_if_needed(Stream, Order),
-	write(Stream, "}{\\partial "),
-	write(Stream, Variable),
+	print_exponent_if_needed(Stream, Order),
+	write(Stream, "}{"),
+	print_partial(Stream, Variable),
 	write(Stream, "}"),
 	print_expression_term(Stream, Function, expression_derivative),
 	print_bracket_if_needed(Stream, ')', PR, expression_derivative).
@@ -1597,12 +1597,27 @@ print_bracket_if_needed(Stream, ')', _, _) :-
 	write(Stream, '\\right)').
 
 
-write_exponent_if_needed(_, 1) :-
+print_exponent_if_needed(_, 1) :-
 	!.
 
-write_exponent_if_needed(Stream, N) :-
+print_exponent_if_needed(Stream, N) :-
 	write(Stream, "^"),
 	write(Stream, N).
+
+
+print_partial(Stream, X) :-
+	atomic(X),
+	write(Stream, "\\partial "),
+	write(Stream, X).
+
+print_partial(Stream, X^N) :-
+	write(Stream, "\\partial "),
+	write(Stream, X^N).
+
+print_partial(Stream, A * B) :-
+	print_partial(Stream, A),
+	write(Stream, " "),
+	print_partial(Stream, B).
 
 
 polynom_total_order(Var, 1) :-
