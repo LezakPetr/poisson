@@ -281,6 +281,7 @@ evaluate_function(X, X) :-
 	hint(X).
 
 evaluate_function(par(X), X).
+evaluate_function(line(X), X).
 
 evaluate_function(set(S), set(S)).
 
@@ -1193,6 +1194,11 @@ print_expression_term(Stream, F, _) :-
 	atom(F),
 	write(Stream, F).
 
+print_expression_term(Stream, line(X), _) :-
+	!,
+	print_expression_term(Stream, X),
+	writeln(Stream, " \\\\").
+
 print_expression_term(Stream, impl(A, B), PR) :-
 	print_binary_operator(Stream, A, B, PR, impl, ' \\impl ').
 
@@ -1271,10 +1277,9 @@ print_expression_term(Stream, exists_in(Variable, Label, Set, _, SubFormula), PR
 	print_expression_term(Stream, SubFormula, exists),
 	print_bracket_if_needed(Stream, ')', PR, exists).
 
-print_expression_term(Stream, apply(Predicate, _, ArgValues), _) :-
-	write(Stream, '\\predicate{'),
-	write(Stream, Predicate),
-	write(Stream, '}('),
+print_expression_term(Stream, apply(Expression, _, ArgValues), _) :-
+	print_expression_term(Stream, Expression),
+	write(Stream, '('),
 	print_predicate_args(Stream, ArgValues),
 	write(Stream, ')').
 
@@ -1634,9 +1639,9 @@ polynom_total_order(A * B, Order) :-
 	Order is OrderA + OrderB.
 
 
-operator_priority(function_derivative, 207).
-operator_priority(pow, 206).
-operator_priority(sqrt, 206).
+operator_priority(pow, 207).
+operator_priority(sqrt, 207).
+operator_priority(function_derivative, 206).
 operator_priority(log, 206).
 operator_priority(div, 205).
 operator_priority(goniom, 204).
@@ -1676,6 +1681,7 @@ bracket_not_needed(or, or).
 bracket_not_needed(and, and).
 bracket_not_needed(plus, plus).
 bracket_not_needed(minus(left), plus).
+bracket_not_needed(plus, minus(_)).
 bracket_not_needed(multiply, multiply).
 
 bracket_not_needed(SuperOperator, SubOperator) :-

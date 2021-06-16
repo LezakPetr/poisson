@@ -15,12 +15,16 @@ make_test_real_nonzero_numbers([-2, -1, 1, 1.5, 2]).
 make_test_complex_functions(Z, [Z + 2, Z - imag, (1 - imag) * Z, Z^2]).
 make_test_real_binary_functions(X, Y, [X + Y, X * Y, X^2 * Y, Y^2 * X]).
 
-make_test_harmonic_functions(
+make_test_analytic_functions(
 	UX, UY, VX, VY,
 	[
 		[UX^2 - UY^2, 2 * VX * VY],
 		[UX^3 - 3 * UX * UY^2, 3 * VX^2 * VY - VY^3]
 	]
+).
+
+make_test_harmonic_functions(
+	UX, UY, [UX^2 - UY^2, 2 * UX * UY, UX^3 - 3 * UX * UY^2, 3 * UX^2 * UY - UY^3]
 ).
 \end{prolog}
 
@@ -215,7 +219,7 @@ Zabývejme se otázkou, kdy tato derivace existuje. Nejdříve rozepišme defini
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
-	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
+	make_test_analytic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_1",
 		declare([
@@ -248,7 +252,7 @@ Uvědomme si, že limita~\eqref{eq:complex_derivative_conditions_1} je definová
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
-	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
+	make_test_analytic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_2",
 		declare([
@@ -287,7 +291,7 @@ Obdobně můžeme zvolit \(\mathrm{d}y = 0\) a~získáme:
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
-	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
+	make_test_analytic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_3",
 		declare([
@@ -326,7 +330,7 @@ Srovnejme vztahy~\eqref{eq:complex_derivative_conditions_2} a~\eqref{eq:complex_
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
-	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
+	make_test_analytic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_4",
 		declare([
@@ -351,7 +355,7 @@ Zabývejme se otázkou, zda je splnění podmínek~\eqref{eq:complex_derivative_
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
-	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
+	make_test_analytic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
 		"complex_derivative_conditions_5",
 		declare([
@@ -1390,7 +1394,7 @@ Vyjděme z~Cauchyových-Riemannových podmínkek.
 
 \begin{prolog}
 ?-	make_test_real_numbers(Numbers),
-	make_test_harmonic_functions(UX, UY, VX, VY, Functions),
+	make_test_analytic_functions(UX, UY, VX, VY, Functions),
 	print_validated_multiformula(
 		[
 			function([U, V], ["\\func{u}", "\\func{v}"], Functions),
@@ -1461,3 +1465,195 @@ Jejich sloučením získáme rovnici
 \eeq{analytic_function_laplace_v_sum}
 
 Vidíme tedy, že funkce \(\func{u}\) i~\(\func{v}\) jsou řešením Laplaceovy rovnice v~rovině. Reálná i~imaginární složka analytické funkce je proto řešením Laplaceovy rovnice v~rovině.
+
+
+\section{Analytická funkce jako transformace souřadnic v~rovině - konformní zobrazení}
+
+Dvojici funkcí \(\func{u}(x, y)\) a~\(\func{v}(x, y)\) můžeme chápat jako transformaci souřadnic \(x\), \(y\) do \(u\), \(v\), viz kapitola \ref{sec:krivocare_systemy_souradnic}. Uvažujme, jak tato analytická funcke trasformuje funkci \(\func{f}(u, v)\), která řeší Laplaceovu rovnici. Mějme tedy harmonickou funkci \(\func{f}(u, v)\) splňující rovnici~\eqref{eq:conformal_mapping_harmonic_f}
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_harmonic_functions(UF, VF, HarmonicFunctions),
+	print_validated_formula(
+		"conformal_mapping_harmonic_f",
+		declare(
+			[
+				function(F, "\\func{f}", HarmonicFunctions),
+				variable(U, "u", Numbers),
+				variable(V, "v", Numbers)
+			],
+			equal(derivative(U^2, apply(F, [UF, VF], [U, V])) + derivative(V^2, apply(F, [UF, VF], [U, V])), 0)
+		)
+	).
+\end{prolog}
+\eeq{conformal_mapping_harmonic_f}
+
+a~analytickou funkci \(\func{u}(x, y) + \imag \cdot \func{v}(x, y)\) splňující rovnice~\eqref{eq:conformal_mapping_cauchy_rieman_1} a~\eqref{eq:conformal_mapping_cauchy_rieman_2}.
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_analytic_functions(UX, UY, VX, VY, AnalyticFunctions),
+	print_validated_multiformula(
+		[
+			function([U, V], ["\\func{u}", "\\func{v}"], AnalyticFunctions),
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers)
+		],
+		[
+			% Cauchyovy-Riemannovy podminky 
+			formula(
+				"conformal_mapping_cauchy_rieman_1",
+				equal(derivative(X, apply(U, [UX, UY], [X, Y])), derivative(Y, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"conformal_mapping_cauchy_rieman_2",
+				equal(derivative(Y, apply(U, [UX, UY], [X, Y])), -derivative(X, apply(V, [VX, VY], [X, Y])))
+			)
+		]
+	).
+\end{prolog}
+\eeq{conformal_mapping_cauchy_rieman_1}
+\eeq{conformal_mapping_cauchy_rieman_2}
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_harmonic_functions(UF, VF, HarmonicFunctions),
+	make_test_analytic_functions(UX, UY, VX, VY, AnalyticFunctions),
+	print_validated_multiformula(
+		[
+			function(F, "\\func{f}", HarmonicFunctions),
+			function([U, V], ["\\func{u}", "\\func{v}"], AnalyticFunctions),
+			substitution(UFN, "u", UF),   % "Pojmenovana" promenna "u" kvuli derivaci funkce f 
+			substitution(VFN, "v", VF),   % "Pojmenovana" promenna "v" kvuli derivaci funkce f
+			substitution(UFS, "u", apply(U, [UX, UY], [X, Y])),   % Promenna "u" se substituci funkce u(x, y)
+			substitution(VFS, "v", apply(V, [VX, VY], [X, Y])),   % Promenna "v" se substituci funkce v(x, y)
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers)
+		],
+		[
+			formula(
+				"conformal_mapping_f",
+				equal(
+					apply(F, [UFN, VFN], [UFS, VFS]),
+					apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])
+				)
+			),
+			formula(
+				"conformal_mapping_dx",
+				equal(
+					derivative(X, apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])),
+					apply(
+						derivative(UFN, F),
+						[UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])]
+					) * derivative(X, apply(U, [UX, UY], [X, Y])) +
+					apply(
+						derivative(VFN, F),
+						[UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])]
+					) * derivative(X, apply(V, [VX, VY], [X, Y]))
+				)
+			),
+			formula(
+				"conformal_mapping_dx2",
+				equal(
+					derivative(X^2, apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])),
+					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (derivative(X, apply(U, [UX, UY], [X, Y])))^2 +
+					derivative(UFS, apply(F, [UFN, VFN], [UFS, VFS])) * derivative(X^2, apply(U, [UX, UY], [X, Y])) +
+					derivative(VFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
+					derivative(VFS, apply(F, [UFN, VFN], [UFS, VFS])) * derivative(X^2, apply(V, [VX, VY], [X, Y]))
+				)
+			),
+			formula(
+				"conformal_mapping_dy",
+				equal(
+					derivative(Y, apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])),
+					apply(
+						derivative(UFN, F),
+						[UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])]
+					) * derivative(Y, apply(U, [UX, UY], [X, Y])) +
+					apply(
+						derivative(VFN, F),
+						[UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])]
+					) * derivative(Y, apply(V, [VX, VY], [X, Y]))
+				)
+			),
+			formula(
+				"conformal_mapping_dy2",
+				equal(
+					derivative(Y^2, apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])),
+					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (derivative(Y, apply(U, [UX, UY], [X, Y])))^2 +
+					derivative(UFS, apply(F, [UFN, VFN], [UFS, VFS])) * derivative(Y^2, apply(U, [UX, UY], [X, Y])) +
+					derivative(VFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (derivative(Y, apply(V, [VX, VY], [X, Y])))^2 +
+					derivative(VFS, apply(F, [UFN, VFN], [UFS, VFS])) * derivative(Y^2, apply(V, [VX, VY], [X, Y]))
+				)
+			),
+			formula(
+				"conformal_mapping_dx2_plus_dy2",
+				equal([
+					derivative(X^2, apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])) +
+					derivative(Y^2, apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])),
+					linebreak,
+					line(
+						derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
+							(derivative(X, apply(U, [UX, UY], [X, Y])))^2 +
+							(derivative(Y, apply(U, [UX, UY], [X, Y])))^2
+						) +
+						derivative(UFS, apply(F, [UFN, VFN], [UFS, VFS])) * (
+							derivative(X^2, apply(U, [UX, UY], [X, Y])) +
+							derivative(Y^2, apply(U, [UX, UY], [X, Y]))
+						)
+					) +
+					derivative(VFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
+						(derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
+						(derivative(Y, apply(V, [VX, VY], [X, Y])))^2
+					) +
+					derivative(VFS, apply(F, [UFN, VFN], [UFS, VFS])) * (
+						derivative(X^2, apply(V, [VX, VY], [X, Y])) + 
+						derivative(Y^2, apply(V, [VX, VY], [X, Y]))
+					),
+					linebreak,
+					line(
+						derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
+							(derivative(X, apply(U, [UX, UY], [X, Y])))^2 +
+							(derivative(Y, apply(U, [UX, UY], [X, Y])))^2
+						) +
+						derivative(UFS, apply(F, [UFN, VFN], [UFS, VFS])) * 0
+					) -
+					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
+						(derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
+						(derivative(Y, apply(V, [VX, VY], [X, Y])))^2
+					) +
+					derivative(VFS, apply(F, [UFN, VFN], [UFS, VFS])) * 0,
+					linebreak,
+					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
+						par(
+							(derivative(X, apply(U, [UX, UY], [X, Y])))^2 -
+							(derivative(Y, apply(V, [VX, VY], [X, Y])))^2
+						)
+						+
+						par(
+							(derivative(Y, apply(U, [UX, UY], [X, Y])))^2 -
+							(derivative(X, apply(V, [VX, VY], [X, Y])))^2
+						)
+					),
+					linebreak,
+					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (0 + 0),
+					0
+				])
+			)
+		]
+	).
+\end{prolog}
+
+Transformovaná funkce bude definovaná vztahem~\eqref{eq:conformal_mapping_f}.
+\eeq{conformal_mapping_f}
+
+Vyjádříme její první a~druhé derivace~\eqref{eq:conformal_mapping_dx}, \eqref{eq:conformal_mapping_dx2}, \eqref{eq:conformal_mapping_dy} a~\eqref{eq:conformal_mapping_dy2}.
+
+\eeq{conformal_mapping_dx}
+\eeq{conformal_mapping_dx2}
+\eeq{conformal_mapping_dy}
+\eeq{conformal_mapping_dy2}
+
+Nakonec sečteme rovnice~\eqref{eq:conformal_mapping_dx2} a~\eqref{eq:conformal_mapping_dy2}. Získáme tak rovnici~\eqref{eq:conformal_mapping_dx2_plus_dy2}, kterou dále upravujeme. Nejdříve vytkneme společné derivace funkce \(\func{f}\). Na dva získané členy použijeme vztahy~\eqref{eq:analytic_function_laplace_u_sum} a~\eqref{eq:analytic_function_laplace_v_sum}. Podle předpokladu~\eqref{eq:conformal_mapping_harmonic_f} můžeme člen \(\frac{\partial^2 \func{f}}{\partial v^2}\) nahradit členem \(-\frac{\partial^2 \func{f}}{\partial u^2}\) a~následně ho vytknout. Nakonec si uvědomme, že z~předpokladů~\eqref{eq:conformal_mapping_cauchy_rieman_1} a~\eqref{eq:conformal_mapping_cauchy_rieman_2} plyne shodnost druhých mocnin jejich levých a~pravých stran. Celá rovnice~\eqref{eq:conformal_mapping_dx2_plus_dy2} je proto rovna 0. I~transformovaná rovnice je tak řešením Laplaceovy rovnice.
+
+\eeq{conformal_mapping_dx2_plus_dy2}
