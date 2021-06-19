@@ -23,9 +23,18 @@ make_test_analytic_functions(
 	]
 ).
 
+make_test_real_analytic_functions(   % Komplexni analyticke funkce, ktere jsou na realne osa realne
+	UX, UY, VX, VY,
+	[
+		[UX^2 - UY^2, 2 * VX * VY],
+		[UX^3 - 3 * UX * UY^2, 3 * VX^2 * VY - VY^3]
+	]
+).
+
 make_test_harmonic_functions(
 	UX, UY, [UX^2 - UY^2, 2 * UX * UY, UX^3 - 3 * UX * UY^2, 3 * UX^2 * UY - UY^3]
 ).
+
 \end{prolog}
 
 \section{Zavedení komplexních čísel}
@@ -332,7 +341,7 @@ Srovnejme vztahy~\eqref{eq:complex_derivative_conditions_2} a~\eqref{eq:complex_
 ?-	make_test_real_numbers(Numbers),
 	make_test_analytic_functions(UX, UY, VX, VY, Functions),
 	print_validated_formula(
-		"complex_derivative_conditions_4",
+		"complex_derivative_conditions_cauchy_riemann",
 		declare([
 			function([U, V], ["\\func{u}", "\\func{v}"], Functions),
 			variable(X, "x", Numbers),
@@ -345,12 +354,12 @@ Srovnejme vztahy~\eqref{eq:complex_derivative_conditions_2} a~\eqref{eq:complex_
 		)
 	).
 \end{prolog}
-\eeq{complex_derivative_conditions_4}
+\eeq{complex_derivative_conditions_cauchy_riemann}
 
-Podmínky~\eqref{eq:complex_derivative_conditions_4} se nazývají Cauchyovy-Riemannovy podmínky. 
+Podmínky~\eqref{eq:complex_derivative_conditions_cauchy_riemann} se nazývají Cauchyovy-Riemannovy podmínky. 
 Má-li komplexní funkce derivaci v~každém bodě určité oblasti, pak říkáme, že je v~této oblasti analytická.
 
-Zabývejme se otázkou, zda je splnění podmínek~\eqref{eq:complex_derivative_conditions_4} postačující k~existenci derivace komplexní funkce. Ve vztazích~\eqref{eq:complex_derivative_conditions_2} a~\eqref{eq:complex_derivative_conditions_3} jsme položili \(\mathrm{d}x = 0\) respektive \(\mathrm{d}y = 0\), uvažovali jsme tedy pouze okolní body se stejnou reálnou respektive imaginární složkou. Potřebujeme ale ověřit, že všechny okolní body se blíží k~limitě~\eqref{eq:complex_derivative_conditions_1}. Pokračujme proto upravováním vztahu
+Zabývejme se otázkou, zda je splnění podmínek~\eqref{eq:complex_derivative_conditions_cauchy_riemann} postačující k~existenci derivace komplexní funkce. Ve vztazích~\eqref{eq:complex_derivative_conditions_2} a~\eqref{eq:complex_derivative_conditions_3} jsme položili \(\mathrm{d}x = 0\) respektive \(\mathrm{d}y = 0\), uvažovali jsme tedy pouze okolní body se stejnou reálnou respektive imaginární složkou. Potřebujeme ale ověřit, že všechny okolní body se blíží k~limitě~\eqref{eq:complex_derivative_conditions_1}. Pokračujme proto upravováním vztahu
 ~\eqref{eq:complex_derivative_conditions_1}
 
 \begin{prolog}
@@ -401,7 +410,219 @@ Zabývejme se otázkou, zda je splnění podmínek~\eqref{eq:complex_derivative_
 \end{prolog}
 \eeq{complex_derivative_conditions_5}
 
-Vidíme, že podmínky~\eqref{eq:complex_derivative_conditions_4} jsou podmínky nutné i~postačující.
+Vidíme, že podmínky~\eqref{eq:complex_derivative_conditions_cauchy_riemann} jsou podmínky nutné i~postačující.
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_analytic_functions(UX, UY, VX, VY, Functions),
+	print_validated_multiformula(
+		[
+			function([U, V], ["\\func{u}", "\\func{v}"], Functions), 
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers),
+			substitution(DU, "\\func{u'}", derivative(DUX, apply(U, [UX, UY], [DUX, DUY]))),
+			substitution(DV, "\\func{v'}", derivative(DVX, apply(V, [VX, VY], [DVX, DVY])))
+		],
+		[
+			formula(
+				"complex_derivative_analytic_1",
+				equal([
+					apply(DU, [DUX, DUY], [X, Y]),
+					derivative(X, apply(U, [UX, UY], [X, Y])),
+					derivative(Y, apply(V, [VX, VY], [X, Y]))
+				])
+			),
+			formula(
+				"complex_derivative_analytic_2",
+				equal([
+					apply(DV, [DVX, DVY], [X, Y]),
+					derivative(X, apply(V, [VX, VY], [X, Y])),
+					-derivative(Y, apply(U, [UX, UY], [X, Y]))
+				])
+			),
+			formula(
+				"complex_derivative_analytic_3",
+				equal([
+					derivative(X, apply(DU, [DUX, DUY], [X, Y])),
+					derivative(X * Y, apply(V, [VX, VY], [X, Y])),
+					derivative(Y, apply(DV, [DVX, DVY], [X, Y]))	
+				])
+			),
+			formula(
+				"complex_derivative_analytic_4",
+				equal([
+					derivative(Y, apply(DU, [DUX, DUY], [X, Y])),
+					derivative(X * Y, apply(U, [VX, VY], [X, Y])),
+					-derivative(X, apply(DV, [DVX, DVY], [X, Y]))	
+				])
+			)
+		]
+	).
+\end{prolog}
+
+Uvažujme dále. Mějme analytickou funkci \(\func{u}(x, y) + \func{v}(x, y) \cdot \imag\). Její derivaci označme \(\func{u'}(x, y) + \func{v'}(x, y) \cdot \imag\). Platí tedy
+\eeq{complex_derivative_analytic_1}
+\eeq{complex_derivative_analytic_2}
+
+Vidíme, že platí
+\eeq{complex_derivative_analytic_3}
+\eeq{complex_derivative_analytic_4}
+a~derivace analytické funkce je tedy opět analytická funkce.
+
+\section{Analytická funkce jako řešení Laplaceovy rovnice}
+\label{sec:complex_analytical_laplace}
+
+Vyjděme z~Cauchyových-Riemannových podmínkek.
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_analytic_functions(UX, UY, VX, VY, Functions),
+	print_validated_multiformula(
+		[
+			function([U, V], ["\\func{u}", "\\func{v}"], Functions),
+			variable(X, "x", Numbers),
+			variable(Y, "y", Numbers)
+		],
+		[
+			% Cauchyovy-Riemannovy podminky 
+			formula(
+				"analytic_function_laplace_cr1",
+				equal(derivative(X, apply(U, [UX, UY], [X, Y])), derivative(Y, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_cr2",
+				equal(derivative(Y, apply(U, [UX, UY], [X, Y])), -derivative(X, apply(V, [VX, VY], [X, Y])))
+			),
+			
+			% Laplace U
+			formula(
+				"analytic_function_laplace_u1",
+				equal(derivative(X^2, apply(U, [UX, UY], [X, Y])), derivative(X * Y, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_u2",
+				equal(derivative(Y^2, apply(U, [UX, UY], [X, Y])), -derivative(X * Y, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_u_sum",
+				equal(derivative(X^2, apply(U, [UX, UY], [X, Y])) + derivative(Y^2, apply(U, [UX, UY], [X, Y])), 0)
+			),
+			
+			% Laplace V
+			formula(
+				"analytic_function_laplace_v1",
+				equal(derivative(X * Y, apply(U, [UX, UY], [X, Y])), derivative(Y^2, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_v2",
+				equal(derivative(X * Y, apply(U, [UX, UY], [X, Y])), -derivative(X^2, apply(V, [VX, VY], [X, Y])))
+			),
+			formula(
+				"analytic_function_laplace_v_sum",
+				equal(derivative(X^2, apply(V, [VX, VY], [X, Y])) + derivative(Y^2, apply(V, [VX, VY], [X, Y])), 0)
+			)
+		]
+	).
+\end{prolog}
+
+\eeq{analytic_function_laplace_cr1}
+\eeq{analytic_function_laplace_cr2}
+
+Zderivujme rovnici~\eqref{eq:analytic_function_laplace_cr1} podle \(x\) a~rovnici~\eqref{eq:analytic_function_laplace_cr2} podle \(y\). Získáme:
+
+\eeq{analytic_function_laplace_u1}
+\eeq{analytic_function_laplace_u2}
+
+Jejich sečtením získáme rovnici
+
+\eeq{analytic_function_laplace_u_sum}
+
+Zderivujme rovnici~\eqref{eq:analytic_function_laplace_cr1} podle \(y\) a~rovnici~\eqref{eq:analytic_function_laplace_cr2} podle \(x\). Získáme:
+
+\eeq{analytic_function_laplace_v1}
+\eeq{analytic_function_laplace_v2}
+
+Jejich sloučením získáme rovnici
+
+\eeq{analytic_function_laplace_v_sum}
+
+Vidíme tedy, že funkce \(\func{u}\) i~\(\func{v}\) jsou řešením Laplaceovy rovnice v~rovině. Reálná i~imaginární složka analytické funkce je proto řešením Laplaceovy rovnice v~rovině.
+
+\section{Rozšíření reálných funkcí do komplexního oboru}
+
+Mějme reálnou funkci reálné proměnné \(\func{f_r}(x)\) . Uvažujme, že chceme rozšířit její definiční obor na komplexní čísla a~to tak, aby výsledná funkce byla analytická. Předpokládejme, že existují dvě různé rozšířené komplexní funkce komplexních proměnných, označme je \(\func{f_1}(z)\) a~\(\func{f_2}(z)\). Jejich rozdíl - také analytickou funkci - označme \(\func{\Delta f}(z) = \func{f_2}(z) - \func{f_1}(z) = u(x, y) + v(x, y) \cdot \imag\). Víme tedy, že \(u(x, 0) = 0\), protože na reálné ose si musejí být obě funkce \(\func{f_1}\) a~\(\func{f_2}\) sobě rovny. Dále víme, že \(v(x, 0) = 0\), protože na reálné ose nemohou mít funkce \(\func{f_1}\) a~\(\func{f_2}\) imaginární složky. Platí tedy \(\frac{\partial v}{\partial x}(x, 0) = -\frac{\partial u}{\partial y}(x, 0) = 0\), stejně jako \(\frac{\partial u}{\partial x}(x, 0) = \frac{\partial v}{\partial y}(x, 0) = 0\). Shrňme si tedy poznatky, které víme o~funkci \(u\):
+
+\begin{equation}
+\begin{split}
+u(x, 0) = 0 \\
+\frac{\partial u}{\partial y}(x, 0) = 0 \\
+\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0
+\end{split}
+\end{equation}
+
+Poslední rovnice je Laplaceova rovnice, jejíž platnost pro komplexní čísla jsme odvodili v~sekci \ref{sec:complex_analytical_laplace}. Laplaceova rovnice je invariantní vůčí posunutí (je ve všech bodech stejná). Stejně tak počáteční podmínky jsou pro všechny souřadnice \(x\) stejné. Můžeme tedy předpokládat, že řešení bude ve tvaru \(u(x, y) = u(y)\). Rovnice se nám tak zjednoduší na obyčejnou diferenciální rovnici druhého řádu
+
+\begin{equation}
+\begin{split}
+u(0) = 0 \\
+\frac{\partial u}{\partial y}(0) = 0 \\
+\frac{\partial^2 u}{\partial y^2} = 0
+\end{split}
+\end{equation}
+
+s~jediným řešením \(u(y) = u(x, y) = 0\). Obdobně můžeme sestavit rovnici
+
+\begin{equation}
+\begin{split}
+v(x, 0) = 0 \\
+\frac{\partial v}{\partial y}(x, 0) = 0 \\
+\frac{\partial^2 v}{\partial x^2} + \frac{\partial^2 v}{\partial y^2} = 0
+\end{split}
+\end{equation}
+
+s~jediným řešením \(v(x, y) = 0\). Víme tedy, že platí \(\func{\Delta f}(z) = 0\), funkce \(\func{f_1}(z)\) a~\(\func{f_2}(z)\) tedy musejí být shodné. Z toho plyne fakt:
+
+\begin{fact}
+Rozšíříme-li definiční obor funkce \(y = \func{f_r}(x); x \in \real, y \in \real\) na komplexní funkci \(w = \func{f_c}(z); z \in \complex, w \in \complex\) tak, aby komplexní funkce byla analytická, pak je tato funkce \(\func{f_c}\) plně určena funkcí \(\func{f_r}\).
+\end{fact}
+
+Víme, že derivací analytické funkce získáme opět analytickou funkci. Dále víme, že rozšíření reálné funkce na komplexní analytickou funkci je jednoznačně určeno onou reálnou funkcí. Z~toho plyne závěr:
+
+\begin{fact}
+Rozšíříme-li reálné funkce na komplexní analytické funkce, pak se tyto komplexní analytické funkce derivují stejně jako reálné.
+\end{fact}
+
+Například následující komplexní funkci můžeme zderivovat 
+
+\begin{prolog}
+?-	make_test_numbers(Numbers),
+	print_validated_formula(
+		"complex_real_analytic_1",
+		declare(	[variable(Z, "z", Numbers)],
+			equal(
+				derivative(Z, Z^2 * e^(2*Z + 1)),
+				2 * Z * e^(2*Z + 1) + 2 * Z^2 * e^(2*Z + 1)
+			)
+		)
+	).
+\end{prolog}
+\eeq{complex_real_analytic_1}
+
+protože odpovídající reálná funkce má derivaci:
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"complex_real_analytic_2",
+		declare(	[variable(X, "x", Numbers)],
+			equal(
+				derivative(X, X^2 * e^(2*X + 1)),
+				2 * X * e^(2*X + 1) + 2 * X^2 * e^(2*X + 1)
+			)
+		)
+	).
+\end{prolog}
+\eeq{complex_real_analytic_2}
 
 \section{Funkce sinus a~kosinus, Eulerův vzorec}
 
@@ -1387,85 +1608,6 @@ V~následujícím příkladu si ukážeme, jak využít komplexní čísla pro �
 
 \eeq{wave_equation_time}
 \eeq{wave_equation_frequency}
-
-\section{Analytická funkce jako řešení Laplaceovy rovnice}
-
-Vyjděme z~Cauchyových-Riemannových podmínkek.
-
-\begin{prolog}
-?-	make_test_real_numbers(Numbers),
-	make_test_analytic_functions(UX, UY, VX, VY, Functions),
-	print_validated_multiformula(
-		[
-			function([U, V], ["\\func{u}", "\\func{v}"], Functions),
-			variable(X, "x", Numbers),
-			variable(Y, "y", Numbers)
-		],
-		[
-			% Cauchyovy-Riemannovy podminky 
-			formula(
-				"analytic_function_laplace_cr1",
-				equal(derivative(X, apply(U, [UX, UY], [X, Y])), derivative(Y, apply(V, [VX, VY], [X, Y])))
-			),
-			formula(
-				"analytic_function_laplace_cr2",
-				equal(derivative(Y, apply(U, [UX, UY], [X, Y])), -derivative(X, apply(V, [VX, VY], [X, Y])))
-			),
-			
-			% Laplace U
-			formula(
-				"analytic_function_laplace_u1",
-				equal(derivative(X^2, apply(U, [UX, UY], [X, Y])), derivative(X * Y, apply(V, [VX, VY], [X, Y])))
-			),
-			formula(
-				"analytic_function_laplace_u2",
-				equal(derivative(Y^2, apply(U, [UX, UY], [X, Y])), -derivative(X * Y, apply(V, [VX, VY], [X, Y])))
-			),
-			formula(
-				"analytic_function_laplace_u_sum",
-				equal(derivative(X^2, apply(U, [UX, UY], [X, Y])) + derivative(Y^2, apply(U, [UX, UY], [X, Y])), 0)
-			),
-			
-			% Laplace V
-			formula(
-				"analytic_function_laplace_v1",
-				equal(derivative(X * Y, apply(U, [UX, UY], [X, Y])), derivative(Y^2, apply(V, [VX, VY], [X, Y])))
-			),
-			formula(
-				"analytic_function_laplace_v2",
-				equal(derivative(X * Y, apply(U, [UX, UY], [X, Y])), -derivative(X^2, apply(V, [VX, VY], [X, Y])))
-			),
-			formula(
-				"analytic_function_laplace_v_sum",
-				equal(derivative(X^2, apply(V, [VX, VY], [X, Y])) + derivative(Y^2, apply(V, [VX, VY], [X, Y])), 0)
-			)
-		]
-	).
-\end{prolog}
-
-\eeq{analytic_function_laplace_cr1}
-\eeq{analytic_function_laplace_cr2}
-
-Zderivujme rovnici~\eqref{eq:analytic_function_laplace_cr1} podle \(x\) a~rovnici~\eqref{eq:analytic_function_laplace_cr2} podle \(y\). Získáme:
-
-\eeq{analytic_function_laplace_u1}
-\eeq{analytic_function_laplace_u2}
-
-Jejich sečtením získáme rovnici
-
-\eeq{analytic_function_laplace_u_sum}
-
-Zderivujme rovnici~\eqref{eq:analytic_function_laplace_cr1} podle \(y\) a~rovnici~\eqref{eq:analytic_function_laplace_cr2} podle \(x\). Získáme:
-
-\eeq{analytic_function_laplace_v1}
-\eeq{analytic_function_laplace_v2}
-
-Jejich sloučením získáme rovnici
-
-\eeq{analytic_function_laplace_v_sum}
-
-Vidíme tedy, že funkce \(\func{u}\) i~\(\func{v}\) jsou řešením Laplaceovy rovnice v~rovině. Reálná i~imaginární složka analytické funkce je proto řešením Laplaceovy rovnice v~rovině.
-
 
 \section{Analytická funkce jako transformace souřadnic v~rovině - konformní zobrazení}
 
