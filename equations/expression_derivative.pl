@@ -11,6 +11,7 @@ function_derivative(A / B, [[A, 1 / B], [B, -A / B^2]]).
 function_derivative(A^B, [[A, B * A^(B - 1)], [B, log(e, A) * e^(B * log(e, A))]]).
 function_derivative(sin(X), [[X, cos(X)]]).
 function_derivative(cos(X), [[X, -sin(X)]]).
+function_derivative(ln(X), [[X, 1 / X]]).
 
 expression_derivative(X, Expression, 1) :-
 	var(Expression),

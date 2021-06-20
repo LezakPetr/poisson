@@ -1,47 +1,198 @@
 \chapter{Derivace základních funkcí}
 \label{ap:derivace_zakladnich_funkci}
 
+\begin{prolog}
+:- ensure_loaded("../equations/formula").
+
+make_test_real_numbers([-2, -1, 0, 1, 1.5, 2]).
+make_test_natural_numbers([1, 2, 3, 4, 5]).
+make_test_real_functions(FX, [FX, FX^2, FX + 1, (FX + 1) * FX^5]).
+\end{prolog}
+
+
 V~této příloze jsou sespsány derivace základních funkcí, které byly odvozeny v~sekci~\ref{sec:derivace_zakladnich_funkci}.
 
-\begin{equation}
-\frac{\partial k}{\partial x} = 0
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_constant",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(K, "k", Numbers)
+			],
+			equal(derivative(X, K), 0)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_constant}
 
-\begin{equation}
-\frac{\partial}{\partial x} x = 1
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_variable",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			equal(derivative(X, X), 1)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_variable}
 
-\begin{equation}
-\frac{\partial}{\partial x} (\mathrm{f}(x) \pm \mathrm{g}(x)) = \frac{\partial \mathrm{f}}{\partial x} \pm \frac{\partial \mathrm{g}}{\partial x}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_functions(FX, FunctionsF),
+	make_test_real_functions(GX, FunctionsG),
+	print_validated_formula(
+		"ap_derivative_plus_minus",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG),
+				plus_minus(PM)
+			],
+			equal(
+				derivative(X, plus_minus(apply(F, [FX], [X]), apply(G, [GX], [X]), PM)),
+				plus_minus(derivative(X, apply(F, [FX], [X])), derivative(X, apply(G, [GX], [X])), PM)
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_plus_minus}
 
-\begin{equation}
-\frac{\partial}{\partial x} (\mathrm{f}(x) \cdot \mathrm{g}(x)) = \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} + \mathrm{f}(x) \cdot \frac{\partial \mathrm{g}}{\partial x}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_functions(FX, FunctionsF),
+	make_test_real_functions(GX, FunctionsG),
+	print_validated_formula(
+		"ap_derivative_multiply",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG)
+			],
+			equal(
+				derivative(X, apply(F, [FX], [X]) * apply(G, [GX], [X])),
+				derivative(X, apply(F, [FX], [X])) * apply(G, [GX], [X]) + 
+				apply(F, [FX], [X]) * derivative(X, apply(G, [GX], [X]))
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_multiply}
 
-\begin{equation}
-\frac{\partial}{\partial x} (k \cdot \mathrm{f}(x)) = k \cdot \frac{\partial \mathrm{f}}{\partial x}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_functions(FX, FunctionsF),
+	print_validated_formula(
+		"ap_derivative_multiply_by_constant",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				function(F, "f", FunctionsF),
+				variable(K, "k", Numbers)
+			],
+			equal(
+				derivative(X, K * apply(F, [FX], [X])),
+				K * derivative(X, apply(F, [FX], [X]))
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_multiply_by_constant}
 
-\begin{equation}
-\frac{\partial}{\partial x} x^n = n \cdot x^{n-1}; n \in \mathbb{N}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_natural_numbers(NaturalNumbers),
+	print_validated_formula(
+		"ap_derivative_power_by_natural",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			forall_in(N, "n", natural_numbers, NaturalNumbers, 
+				equal(
+					derivative(X, X^N),
+					N * X^(N - 1)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_power_by_natural}
 
-\begin{equation}
-\frac{\partial}{\partial x} x^r = r \cdot x^{r-1}; x > 0
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_power_by_real",
+		declare(
+			[
+				variable(R, "r", Numbers)
+			],
+			forall_in(X, "x", positive_real_numbers, Numbers, 
+				equal(
+					derivative(X, X^R),
+					R * X^(R - 1)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_power_by_real}
 
-\begin{equation}
-\frac{\partial}{\partial x} e^x = e^x
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_exp",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			equal(
+				derivative(X, e^X),
+				e^X
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_exp}
 
-\begin{equation}
-\frac{\partial}{\partial x} a^x = \ln a \cdot a^x
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_general_power",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			forall_in(A, "a", positive_real_numbers, Numbers, 
+				equal(
+					derivative(X, A^X),
+					ln(A) * A^X
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_general_power}
 
-\begin{equation}
-\frac{\partial}{\partial x} \ln x = \frac{1}{x}; x > 0
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_ln",
+		forall_in(X, "x", positive_real_numbers, Numbers, 
+			equal(
+				derivative(X, ln(X)),
+				1 / X
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_ln}
 
 \begin{equation}
 \frac{\partial}{\partial x} \mathrm{f} (\mathrm{g}_1(x, y, ...), \mathrm{g}_2(x, y, ...), ..., \mathrm{g}_n(x, y, ...)) = \sum_{i=1}^n \frac{\partial \mathrm{f}}{\partial g_i}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}_i}{\partial x}

@@ -314,6 +314,13 @@ print_expression_term(Stream, log(A, B), PR) :-
 	write(Stream, '}'),
 	print_bracket_if_needed(Stream, ')', PR, log).
 
+print_expression_term(Stream, ln(X), PR) :-
+	print_bracket_if_needed(Stream, '(', PR, log),
+	write(Stream, '\\ln{'),
+	print_expression_term(Stream, X, log),
+	write(Stream, '}'),
+	print_bracket_if_needed(Stream, ')', PR, log).
+
 print_expression_term(Stream, sin(X), PR) :-
 	print_bracket_if_needed(Stream, '(', PR, goniom),
 	write(Stream, '\\sin '),

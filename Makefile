@@ -18,7 +18,11 @@ out/ch_komplexni_cisla.tex: ch_komplexni_cisla.tex
 	(cd equations && swi-prolog.swipl --stack-limit=100M preprocess_komplexni_cisla.pl)
 	(cd out/ && swi-prolog.swipl --stack-limit=100M ch_komplexni_cisla.pl)
 
-equations: out/ch_logika.tex out/ch_cisla.tex out/ch_komplexni_cisla.tex
+out/ap_derivace_zakladnich_funkci.tex: ap_derivace_zakladnich_funkci.tex
+	(cd equations && swi-prolog.swipl --stack-limit=100M preprocess_derivace_zakladnich_funkci.pl)
+	(cd out/ && swi-prolog.swipl --stack-limit=100M ap_derivace_zakladnich_funkci.pl)
+
+equations: out/ch_logika.tex out/ch_cisla.tex out/ch_komplexni_cisla.tex out/ap_derivace_zakladnich_funkci.tex
 
 poisson.pdf: poisson.tex equations ch_*.tex ap_*.tex
 	pdflatex $<

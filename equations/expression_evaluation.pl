@@ -166,6 +166,10 @@ evaluate_function(log(A, B), Y) :-
 	number(B),
 	Y is log(B) / log(A).
 
+evaluate_function(ln(X), Y) :-
+	number(X),
+	Y is log(X).
+
 evaluate_function(abs(Z), Y) :-
 	complex_abs(Z, Y).
 
