@@ -285,3 +285,4 @@ symbolic_multiply(A, B, Y) :-
 
 symbolic_multiply(A, B, A * B).
 
+
