@@ -13,6 +13,12 @@ preprocess_file(InputDir, OutputDir, Name) :-
 	close(InputFile).
 
 
+preprocess_file(Name) :-
+	InputDir = '../',
+	OutputDir = '../out/',
+	preprocess_file(InputDir, OutputDir, Name).
+
+
 preprocess_tex(InputFile, TexFile, PlFile) :-
 	read_line_to_string(InputFile, Line),
 	process_tex_line(InputFile, TexFile, PlFile, Line).
@@ -46,12 +52,3 @@ process_pl_line(InputFile, TexFile, PlFile, Line) :-
 	writeln(PlFile, Line),
 	preprocess_pl(InputFile, TexFile, PlFile).
 
-
-
-?- 	InputDir = '../',
-	OutputDir = '../out/',
-	preprocess_file(InputDir, OutputDir, 'ch_logika'),
-	preprocess_file(InputDir, OutputDir, 'ch_cisla'),
-	preprocess_file(InputDir, OutputDir, 'ch_komplexni_cisla').
-
-?- halt.
