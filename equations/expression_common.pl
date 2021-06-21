@@ -1,3 +1,5 @@
 
 
-hint(linebreak).
+hint(X) :-
+	atom(X),
+	X = linebreak.

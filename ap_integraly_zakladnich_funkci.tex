@@ -1,44 +1,209 @@
 \chapter{Integrály základních funkcí}
 \label{ap:integraly_zakladnich_funkci}
 
+\begin{prolog}
+:- ensure_loaded("../equations/formula").
+
+make_test_real_numbers([-2, -1, 0, 1, 1.5, 2, 3]).
+make_test_natural_numbers([1, 2, 3, 4, 5]).
+make_test_real_functions(FX, [FX, FX^2, FX + 1, (FX + 1) * FX^5]).
+\end{prolog}
+
 V~této příloze jsou sespsány integrály základních funkcí. Jedná se o~inverzní vztahy ke vztahům uvedeným v~příloze~\ref{ap:derivace_zakladnich_funkci}.
 
-\begin{equation}
-\int 0 \cdot \mathrm{d}x = \mathrm{C}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_integral_zero",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(C, "C", Numbers)
+			],
+			equal_transform([derivative(X)], [
+				integral(X, 0), C
+			])
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_zero}
 
-\begin{equation}
-\int 1 \cdot \mathrm{d}x = x + \mathrm{C}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_integral_one",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(C, "C", Numbers)
+			],
+			equal_transform([derivative(X)], [
+				integral(X, 1), X + C
+			])
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_one}
 
-\begin{equation}
-\int (\mathrm{f}(x) \pm \mathrm{g}(x)) \cdot \mathrm{d}x = \int \mathrm{f}(x) \cdot \mathrm{d}x \pm \int \mathrm{g}(x) \cdot \mathrm{d}x
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_functions(FX, FunctionsF),
+	make_test_real_functions(GX, FunctionsG),
+	print_validated_formula(
+		"ap_integral_plus_minus",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG),
+				plus_minus(PM)
+			],
+			equal_transform([derivative(X)], [
+				integral(X, plus_minus(apply(F, [FX], [X]), apply(G, [GX], [X]), PM)),
+				plus_minus(integral(X, apply(F, [FX], [X])), integral(X, apply(G, [GX], [X])), PM)
+			])
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_plus_minus}
 
-\begin{equation}
-\int \mathrm{f}(x) \cdot \frac{\partial \mathrm{g}}{\partial x} \cdot \mathrm{d}x = \mathrm{f}(x) \cdot \mathrm{g}(x) - \int \mathrm{g}(x) \cdot \frac{\partial \mathrm{f}}{\partial x} \cdot \mathrm{d}x
-\end{equation}
 
-\begin{equation}
-\int k \cdot \mathrm{f}(x) \cdot \mathrm{d}x = k \cdot \int \mathrm{f}(x) \cdot \mathrm{d}x
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_functions(FX, FunctionsF),
+	make_test_real_functions(GX, FunctionsG),
+	print_validated_formula(
+		"ap_integral_multiply",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG)
+			],
+			equal_transform([derivative(X)], [
+				integral(X, apply(F, [FX], [X]) * derivative(X, apply(G, [GX], [X]))),
+				apply(F, [FX], [X]) * apply(G, [GX], [X]) - integral(X, derivative(X, apply(F, [FX], [X])) * apply(G, [GX], [X]))
+			])
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_multiply}
 
-\begin{equation}
-\int x^n \cdot \mathrm{d}x = \frac{x^{n + 1}}{n + 1} + \mathrm{C}; n \in \mathbb{N}_0
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_functions(FX, FunctionsF),
+	print_validated_formula(
+		"ap_integral_multiply_by_constant",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(K, "k", Numbers),
+				function(F, "f", FunctionsF)
+			],
+			equal_transform([derivative(X)], [
+				integral(X, K * apply(F, [FX], [X])),
+				K * integral(X, apply(F, [FX], [X]))
+			])
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_multiply_by_constant}
 
-\begin{equation}
-\int x^r \cdot \mathrm{d}x = \frac{x^{r + 1}}{r + 1} + \mathrm{C}; x > 0, r \neq -1
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_integral_power_by_natural",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(C, "C", Numbers)
+			],
+			forall_in(N, "n", nonnegative_integers, Numbers,
+				equal_transform([derivative(X)], [
+					integral(X, X^N),
+					X^(N + 1) / (N + 1) + C
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_power_by_natural}
 
-\begin{equation}
-\int e^x \cdot \mathrm{d}x = e^x + \mathrm{C}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_integral_power_by_real",
+		declare(
+			[
+				variable(C, "C", Numbers)
+			],
+			forall_in(X, "x", positive_real_numbers, Numbers,
+				forall_in(R, "r", difference(real_numbers, set_of([-1])), Numbers,
+					equal_transform([derivative(X)], [
+						integral(X, X^R),
+						X^(R + 1) / (R + 1) + C
+					])
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_power_by_real}
 
-\begin{equation}
-\int a^x \cdot \mathrm{d}x = \frac{a^x}{\ln a} + \mathrm{C}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_integral_exp",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(C, "C", Numbers)
+			],
+			equal_transform([derivative(X)], [
+				integral(X, e^X),
+				e^X + C
+			])
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_exp}
 
-\begin{equation}
-\int \frac{1}{x} \cdot \mathrm{d}x = \ln x  + \mathrm{C}; x > 0
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_integral_general_power",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(C, "C", Numbers)
+			],
+			forall_in(A, "a", difference(positive_real_numbers, set_of([1])), Numbers,
+				equal_transform([derivative(X)], [
+					integral(X, A^X),
+					A^X / ln(A) + C
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_general_power}
+
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_integral_inverse",
+		declare(
+			[
+				variable(C, "C", Numbers)
+			],
+			forall_in(X, "x", positive_real_numbers, Numbers,
+				equal_transform([derivative(X)], [
+					integral(X, 1 / X),
+					ln(X) + C
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_integral_inverse}

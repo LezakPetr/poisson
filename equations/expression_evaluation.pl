@@ -69,6 +69,7 @@ evaluate_function(empty_set, set(Value)) :-
 
 evaluate_function(natural_numbers, natural_numbers).
 evaluate_function(integers, integers).
+evaluate_function(nonnegative_integers, nonnegative_integers).
 evaluate_function(rational_numbers, rational_numbers).
 evaluate_function(real_numbers, real_numbers).
 evaluate_function(positive_real_numbers, positive_real_numbers).
@@ -82,6 +83,9 @@ evaluate_function(in(X, natural_numbers), Value) :-
 
 evaluate_function(in(X, integers), Value) :-
 	log_in_integers(X, Value).
+
+evaluate_function(in(X, nonnegative_integers), Value) :-
+	log_in_nonnegative_integers(X, Value).
 
 evaluate_function(in(X, rational_numbers), Value) :-
 	log_in_reals(X, Value).

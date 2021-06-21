@@ -44,6 +44,16 @@ log_in_naturals(_, log_false).
 ?- log_in_naturals(1.25, log_false).
 ?- log_in_naturals(something, log_false).
 
+
+% Checks if value is in set of natural numbers
+log_in_nonnegative_integers(X, log_true) :-
+	integer(X),
+	X >= 0,
+	!.
+
+log_in_nonnegative_integers(_, log_false).
+
+
 % Checks if value is in set of integers
 log_in_integers(X, log_true) :-
 	integer(X),

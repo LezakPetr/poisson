@@ -97,6 +97,10 @@ print_expression_term(Stream, integers, _) :-
 	!,
 	write(Stream, ' \\integers ').
 
+print_expression_term(Stream, nonnegative_integers, _) :-
+	!,
+	write(Stream, '  \\naturalnumbers_0 ').
+
 print_expression_term(Stream, rational_numbers, _) :-
 	!,
 	write(Stream, ' \\rationals ').
