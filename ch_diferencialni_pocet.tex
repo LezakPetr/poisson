@@ -1,5 +1,14 @@
 \chapter{Diferenciální počet}
 
+\begin{prolog}
+:- ensure_loaded("../equations/formula").
+
+make_test_real_numbers([-2, -1, 0, 1, 1.5, 2]).
+make_test_real_nonzero_numbers([-2, -1, 1, 1.5, 2]).
+make_test_natural_numbers([1, 2, 3, 4, 5]).
+make_test_real_functions(FX, [FX, FX^2, FX + 1, (FX + 1) * FX^5]).
+\end{prolog}
+
 Diferenciální počet se zabývá chováním funkcí při malých změnách jejich parametrů. Budeme tedy zkoumat, jak se funkce chovají v~okolí nějakého bodu.
 
 \section{Limita funkce}
@@ -164,24 +173,89 @@ Funkci nazveme spojitou v~daném bodě pokud je limita v~tomto bodě rovna funk�
 
 Není-li funkce v daném bodě definovaná, ale je možné ji upravit tak, že se v~okolí bodu nezmění a~po úpravě bude spojitá, pak můžeme její limitu vypočítat jako hodnotu této upravené funkce. Příklad:
 
-\begin{equation}
-\lim_{x \to 0} \frac{2x}{x} = \lim_{x \to 0} 2 = 2
-\end{equation}
+\begin{prolog}
+?-	print_validated_formula(
+		"lim_continuity_example",
+		equal([
+			lim(X, "x", real, 0, (2 * X) / X),
+			lim(X, "x", real, 0, 2),
+			2
+		])
+	).
+\end{prolog}
+\eeq{lim_continuity_example}
 
 \subsection{Příklad}
 
-Dokažme \(\lim_{[x, y] \to [0, 2]} \frac{x^2 + x y}{x} = 2\).
+Dokažme
 
-Vyjádřeme vzdálenost od \(y\):
+\begin{prolog}
+?-	print_validated_formula(
+		"lim_proof_example_1",
+		equal([
+			lim([X, Y], ["x", "y"], [real, real], [0, 2], (X^2 + X * Y) / X),
+			2
+		])
+	).
+\end{prolog}
+\eeq{lim_proof_example_1}
 
-\begin{equation}
-\begin{split}
-|\mathrm{f}(P) - y| = \left|\frac{x^2 + x y}{x} - 2 \right| = \left|x + y - 2 \right| = \\
-\left|dx + ( 2+ dy) - 2 \right| = \left|dx + dy\right| \leq 2 \cdot \delta
-\end{split}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_nonzero_numbers(NonzeroNumbers),
+	print_validated_multiformula(
+		[
+			variable(DX, "\\mathrm{d}x", NonzeroNumbers),
+			variable(DY, "\\mathrm{d}y", Numbers),
+			substitution(X, "x", 0 + DX),
+			substitution(Y, "y", 2 + DY),
+			substitution(DELTA1, "\\Delta", abs(DX + DY)),
+			substitution(DELTA2, "\\delta", max(set_of([abs(DX), abs(DY)]))),
+			substitution(EPSILON, "\\varepsilon", 2 * DELTA2)
+		],
+		[
+			formula(
+				"lim_proof_example_2",
+				equal([
+					DELTA1,
+					abs((X^2 + X * Y) / X - 2),
+					abs(X + Y - 2),
+					abs(DX + (2 + DY) - 2),
+					abs(DX + DY)
+				])
+			),
+			formula(
+				"lim_proof_example_3",
+				less_or_equal(
+					DELTA1,
+					2 * DELTA2
+				)
+			),
+			formula(
+				"lim_proof_example_3",
+				equal(DELTA2, EPSILON / 2)
+			),
+			formula(
+				"lim_proof_example_4",
+				impl(
+					less_than(sqrt(DX^2 + DY^2), DELTA2),
+					less_than(DELTA1, EPSILON)
+				)
+			)
+		]
+	).
+\end{prolog}
 
-Vidíme, že zvolíme-li \(\delta = \frac{\varepsilon}{2}\), pak pro \(\sqrt{x^2 + y^2} < \delta\) bude \(|\mathrm{f}(P) - y| = |x| < \varepsilon\).
+Nejdříve vyjádřeme vzdálenost funkce od předpokládané limity 2:
+\eeq{lim_proof_example_2}
+
+Vidíme, že pokud zvolíme
+\eeq{lim_proof_example_3}
+
+pak bude platit
+\eeq{lim_proof_example_4}
+
+a~hodnota limity je tak dokázána.
 
 \subsection{Limita složené funkce}
 
