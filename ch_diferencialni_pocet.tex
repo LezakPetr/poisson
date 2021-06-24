@@ -575,13 +575,27 @@ Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity pod
 
 Derivací funkce rozumíme poměr změny funkční hodnoty vůči změne jejího parametru:
 
-\begin{equation}
-\label{eq:definice_derivace}
-\begin{split}
-z = \mathrm{f}(x) \\
-\frac{\partial z}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(x + \mathrm{d}x) - \mathrm{f}(x)}{\mathrm{d}x}
-\end{split}
-\end{equation}
+\begin{prolog}
+?-	make_test_continuous_functions(FX, Functions),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"real_derivative_definition",
+		declare(
+			[
+				function(F, "f", Functions),
+				variable(X, "x", Numbers),
+				substitution(Z, "z", apply(F, [FX], [X]))
+			],
+			proof([],
+				[
+					equal(Z, apply(F, [FX], [X])),
+					equal(derivative(X, Z), lim(DX, "\\mathrm{d}x", real, 0, (apply(F, [FX], [X + DX]) - apply(F, [FX], [X])) / DX))
+				]
+			)
+		)
+	).
+\end{prolog}
+\eeq{real_derivative_definition}
 
 V~literatuře se často derivace funkce jedné proměnné označuje \(\frac{\mathrm{d}z}{\mathrm{d}x}\), my se ale budeme držet výše uvedeného označení. 
 
