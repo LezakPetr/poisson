@@ -32,6 +32,14 @@ generate_lim_value(Variable, real, Coordinate) :-
 	as_real(Coordinate, X),
 	Variable is X + Dx.
 
+generate_lim_value(Variable, real(Dx), Coordinate) :-
+	as_real(Coordinate, X),
+	Variable is X - Dx.
+
+generate_lim_value(Variable, real(Dx), Coordinate) :-
+	as_real(Coordinate, X),
+	Variable is X + Dx.
+
 generate_lim_value(Variable, complex, Coordinate) :-
 	lim_dx(Dx),
 	Difference is -Dx,

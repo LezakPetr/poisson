@@ -16,6 +16,22 @@ make_test_functions_with_limit(
 	]
 ).
 
+make_test_nonzero_functions_with_limit(
+	X,
+	[
+		(X^2 + 1) * X / X,
+		(-(X+2)^2 - 3) * (X^2 - 4) / (X^2 - 4)
+	]
+).
+
+make_test_positive_functions_with_limit(
+	X,
+	[
+		(X^2 + 1) * X / X,
+		((X+2)^2 + 3) * (X^2 - 4) / (X^2 - 4)
+	]
+).
+
 make_test_continuous_functions(
 	X,
 	[
@@ -443,25 +459,117 @@ Důkaz je zřejmý, okolí bodů u~limit vpravo je podmnožinou okolí bodů u~l
 
 Níže jsou uvedeny základní limity. Předpokládáme při tom, že limity podvýrazů existují. Vztahy jsou odvozeny ze vztahu~\eqref{eq:limita_spojite_slozene_funkce}.
 
-\begin{equation}
-\lim_{P \to P_0} \left(\mathrm{f}(P) \pm \mathrm{g}(P) \right) = \lim_{P \to P_0} \mathrm{f}(P) \pm \lim_{P \to P_0} \mathrm{g}(P)
-\end{equation}
+\begin{prolog}
+?-	make_test_functions_with_limit(FX, FunctionsF),
+	make_test_functions_with_limit(GX, FunctionsG),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"lim_sum",
+		declare(
+			[
+				variable(P0, "P_0", Numbers),
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG),
+				plus_minus(PM)
+			],
+			equal(
+				lim(P, "P", real, P0, plus_minus(apply(F, [FX], [P]), apply(G, [GX], [P]), PM)),
+				plus_minus(lim(P, "P", real, P0, apply(F, [FX], [P])), lim(P, "P", real, P0, apply(G, [GX], [P])), PM)
+			)
+		)
+	).
+\end{prolog}
+\eeq{lim_sum}
 
-\begin{equation}
-\lim_{P \to P_0} \left(\mathrm{f}(P) \cdot \mathrm{g}(P) \right) = \lim_{P \to P_0} \mathrm{f}(P) \cdot \lim_{P \to P_0} \mathrm{g}(P)
-\end{equation}
+\begin{prolog}
+?-	make_test_functions_with_limit(FX, FunctionsF),
+	make_test_functions_with_limit(GX, FunctionsG),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"lim_multiply",
+		declare(
+			[
+				variable(P0, "P_0", Numbers),
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG)
+			],
+			equal(
+				lim(P, "P", real, P0, apply(F, [FX], [P]) * apply(G, [GX], [P])),
+				lim(P, "P", real, P0, apply(F, [FX], [P])) * lim(P, "P", real, P0, apply(G, [GX], [P]))
+			)
+		)
+	).
+\end{prolog}
+\eeq{lim_multiply}
 
-\begin{equation}
-\lim_{P \to P_0} \frac{\mathrm{f}(P)}{\mathrm{g}(P)} = \frac{\lim_{P \to P_0} \mathrm{f}(P)}{\lim_{P \to P_0} \mathrm{g}(P)}; \lim_{P \to P_0} \mathrm{g}(P) \neq 0
-\end{equation}
+\begin{prolog}
+?-	make_test_functions_with_limit(FX, Functions),
+	make_test_nonzero_functions_with_limit(GX, NonzeroFunctions),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"lim_divide",
+		declare(
+			[
+				variable(P0, "P_0", Numbers),
+				function(F, "f", Functions),
+				function(G, "g", NonzeroFunctions)
+			],
+			impl(
+				not_equal(lim(P, "P", real, P0, apply(G, [GX], [P])), 0),
+				equal(
+					lim(P, "P", real, P0, apply(F, [FX], [P]) / apply(G, [GX], [P])),
+					lim(P, "P", real, P0, apply(F, [FX], [P])) / lim(P, "P", real, P0, apply(G, [GX], [P]))
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{lim_divide}
 
-\begin{equation}
-\lim_{P \to P_0} \left(\mathrm{f}(P)\right)^n = \left(\lim_{P \to P_0} \mathrm{f}(P)\right)^n; n > 0
-\end{equation}
+\begin{prolog}
+?-	make_test_functions_with_limit(FX, Functions),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"lim_power_by_natural",
+		declare(
+			[
+				variable(P0, "P_0", Numbers),
+				function(F, "f", Functions)
+			],
+			forall_in(N, "n", natural_numbers, Numbers,
+				equal(
+					lim(P, "P", real, P0, apply(F, [FX], [P])^N),
+					lim(P, "P", real, P0, apply(F, [FX], [P]))^N
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{lim_power_by_natural}
 
-\begin{equation}
-\lim_{P \to P_0} \left(\mathrm{f}(P)\right)^{\mathrm{g}(P)} = \left(\lim_{P \to P_0} \mathrm{f}(P)\right)^{\lim_{P \to P_0} \mathrm{g}(P)}; \lim_{P \to P_0} \mathrm{f}(P) > 0
-\end{equation}
+\begin{prolog}
+?-	make_test_positive_functions_with_limit(FX, PositiveFunctions),
+	make_test_functions_with_limit(GX, Functions),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"lim_power_by_real",
+		declare(
+			[
+				variable(P0, "P_0", Numbers),
+				function(F, "f", PositiveFunctions),
+				function(G, "g", Functions)
+			],
+			impl(
+				greater_than(lim(P, "P", real, P0, apply(F, [FX], [P])), 0),
+				equal(
+					lim(P, "P", real(1e-10), P0, apply(F, [FX], [P])^apply(G, [GX], [P])),
+					lim(P, "P", real, P0, apply(F, [FX], [P]))^lim(P, "P", real, P0, apply(G, [GX], [P]))
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{lim_power_by_real}
 
 \section{Derivace}
 
