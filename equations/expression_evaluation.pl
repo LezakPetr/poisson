@@ -21,6 +21,7 @@ evaluate_function(X, X) :-
 	hint(X).
 
 evaluate_function(par(X), X).
+evaluate_function(nopar(X), X).
 evaluate_function(line(X), X).
 
 evaluate_function(set(S), set(S)).

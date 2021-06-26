@@ -41,6 +41,23 @@ make_test_continuous_functions(
 	]
 ).
 
+make_test_continuous_functions_nonzero_derivative(
+	X,
+	[
+		sin(X) + 2*X,
+		cos(X) - 3*X
+	]
+).
+
+make_test_continuous_2d_functions(
+	X, Y,
+	[
+		X^2 * Y,
+		sin(X) * cos(Y),
+		cos(X) * sin(2 * Y)
+	]
+).
+
 make_test_2d_functions_with_limit(
 	X, Y,
 	[
@@ -579,7 +596,7 @@ Derivací funkce rozumíme poměr změny funkční hodnoty vůči změne jejího
 ?-	make_test_continuous_functions(FX, Functions),
 	make_test_real_numbers(Numbers),
 	print_validated_formula(
-		"real_derivative_definition",
+		"definice_derivace",
 		declare(
 			[
 				function(F, "f", Functions),
@@ -595,19 +612,35 @@ Derivací funkce rozumíme poměr změny funkční hodnoty vůči změne jejího
 		)
 	).
 \end{prolog}
-\eeq{real_derivative_definition}
+\eeq{definice_derivace}
 
 V~literatuře se často derivace funkce jedné proměnné označuje \(\frac{\mathrm{d}z}{\mathrm{d}x}\), my se ale budeme držet výše uvedeného označení. 
 
 Máme-li funkci více parametrů, pak ostatní parametry považujeme za konstantní. Takovou derivaci nazýváme parciální. Samozřejmě je možné vypočítat parciální derivace vůči všem parametrům:
 
-\begin{equation}
-\begin{split}
-z =\mathrm{f}(x, y) \\
-\frac{\partial z}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(x + \mathrm{d}x, y) - \mathrm{f}(x, y)}{\mathrm{d}x} \\
-\frac{\partial z}{\partial y} = \lim_{\mathrm{d}y \to 0} \frac{\mathrm{f}(x, y + \mathrm{d}y) - \mathrm{f}(x, y)}{\mathrm{d}y}
-\end{split}
-\end{equation}
+\begin{prolog}
+?-	make_test_continuous_2d_functions(FX, FY, Functions),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"definice_parcialni_derivace",
+		declare(
+			[
+				function(F, "f", Functions),
+				variable(X, "x", Numbers),
+				variable(Y, "y", Numbers),
+				substitution(Z, "z", apply(F, [FX, FY], [X, Y]))
+			],
+			proof([],
+				[
+					equal(Z, apply(F, [FX, FY], [X, Y])),
+					equal(derivative(X, Z), lim(DX, "\\mathrm{d}x", real, 0, (apply(F, [FX, FY], [X + DX, Y]) - apply(F, [FX, FY], [X, Y])) / DX)),
+					equal(derivative(Y, Z), lim(DY, "\\mathrm{d}y", real, 0, (apply(F, [FX, FY], [X, Y + DY]) - apply(F, [FX, FY], [X, Y])) / DY))
+				]
+			)
+		)
+	).
+\end{prolog}
+\eeq{definice_parcialni_derivace}
 
 Je nutné mít na paměti, že \(\frac{\partial z}{\partial x}\) není podíl nebo zlomek, jedná se o symbol pro derivaci. Později sice uvidíme, že například derivace složené funkce vypadá jako krácení zlomků, ale ve skutečnosti je to opět jen symbolika zápisu.
 
@@ -668,24 +701,102 @@ y = \mathrm{f}(\mathrm{g}(x))
 
 a~chtějme vypočítat její derivaci. Derivaci můžeme vypočítat podle definice~\eqref{eq:definice_derivace}:
 
-\begin{equation}
-\label{eq:derivace_slozene_funkce_vypocet}
-\begin{split}
-\frac{\partial y}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}x} = \\
-\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}x} \cdot \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} = \\
-\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x) + \mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} \cdot \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{d}x} = \\
-\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x) + \mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)} \cdot \lim_{\mathrm{d}x \to 0} \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{d}x} = \\
-\lim_{\mathrm{d}g \to 0} \frac{\mathrm{f}(\mathrm{g}(x) + \mathrm{d}g) - \mathrm{f}(\mathrm{g}(x))}{\mathrm{d}g} \cdot \lim_{\mathrm{d}x \to 0} \frac{\mathrm{g}(x + \mathrm{d}x) - \mathrm{g}(x)}{\mathrm{d}x} = \\
-\frac{\partial \mathrm{f}}{\partial g}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x}
-\end{split}
-\end{equation}
+\begin{prolog}
+?-	make_test_continuous_functions(FX, FunctionsF),
+	make_test_continuous_functions_nonzero_derivative(GX, FunctionsG),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"derivace_slozene_funkce_vypocet",
+		declare(
+			[
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG),
+				variable(X, "x", Numbers),
+				substitution(Y, "y", apply(F, [FX], [apply(G, [GX], [X])])),
+				substitution(GV, "g", FX)   % Pojmenovany parametr funkce F kvuli derivaci
+			],
+			equal([
+				derivative(X, Y),
+				lim(DX, "\\mathrm{d}x", real, 0,
+					(apply(F, [FX], [apply(G, [GX], [X + DX])]) - apply(F, [FX], [apply(G, [GX], [X])])) / DX
+				),
+				linebreak,
+				lim(DX, "\\mathrm{d}x", real, 0, 
+					((apply(F, [FX], [apply(G, [GX], [X + DX])]) - apply(F, [FX], [apply(G, [GX], [X])])) / DX) *
+					(
+						(apply(G, [GX], [X + DX]) - apply(G, [GX], [X])) / 
+						(apply(G, [GX], [X + DX]) - apply(G, [GX], [X]))
+					)
+				),
+				linebreak,
+				lim(DX, "\\mathrm{d}x", real, 0, 
+					((apply(F, [FX], [apply(G, [GX], [X + DX])]) - apply(F, [FX], [apply(G, [GX], [X])])) / (apply(G, [GX], [X + DX]) - apply(G, [GX], [X]))
+				) *
+					(
+						(apply(G, [GX], [X + DX]) - apply(G, [GX], [X])) / 
+						DX
+					)
+				),
+				linebreak,
+				lim(DX, "\\mathrm{d}x", real, 0, 
+					((apply(F, [FX], [apply(G, [GX], [X + DX])]) - apply(F, [FX], [apply(G, [GX], [X])])) / (apply(G, [GX], [X + DX]) - apply(G, [GX], [X])))
+				) *
+				lim(DX, "\\mathrm{d}x", real, 0,
+					(apply(G, [GX], [X + DX]) - apply(G, [GX], [X])) / 
+					DX
+				),
+				linebreak,
+				lim(DX, "\\mathrm{d}x", real, 0, 
+					((apply(F, [FX], [apply(G, [GX], [X]) + apply(G, [GX], [X + DX]) - apply(G, [GX], [X])]) - apply(F, [FX], [apply(G, [GX], [X])])) / (apply(G, [GX], [X + DX]) - apply(G, [GX], [X])))
+				) *
+				lim(DX, "\\mathrm{d}x", real, 0,
+					(apply(G, [GX], [X + DX]) - apply(G, [GX], [X])) / 
+					DX
+				),
+				linebreak,
+				lim(DG, "\\mathrm{d}g", real, 0, 
+					(apply(F, [FX], [apply(G, [GX], [X]) + DG]) - apply(F, [FX], [apply(G, [GX], [X])])) / DG
+				) *
+				lim(DX, "\\mathrm{d}x", real, 0,
+					(apply(G, [GX], [X + DX]) - apply(G, [GX], [X])) / 
+					DX
+				),
+				linebreak,
+				apply(derivative(GV, F), [FX], [apply(G, [GX], [X])]) * derivative(X, apply(G, [GX], [X]))
+			])
+		)
+	).
+\end{prolog}
+\eeq{derivace_slozene_funkce_vypocet}
 
-Několikrát jsme využili vztah pro limitu složené funkce~\eqref{eq:limita_slozene_funkce}. Zapišme odvozený vztah ještě jednou, protože se jedná o~velmi důležitý vztah:
+V~důkazu předpokládáme, že funkce \(g\) není v~okolí uvažovaného bodu konstantní a~proto \(g(x + \mathrm{d}x) \neq g(x)\). Pokud by funkce  \(g\) byla konstantní, pak by i~složená funkce \(f(g(x))\) byla konstantní a~uvedený vztah by také platil, protože jak funkce \(g\), tak složená funkce by měly nulové derivace. Několikrát jsme využili vztah pro limitu složené funkce~\eqref{eq:limita_slozene_funkce}.
+
+Zapišme odvozený vztah ještě jednou, protože se jedná o~velmi důležitý vztah:
 
 \begin{fact}
-\begin{equation}
-\frac{\partial y}{\partial x} = \frac{\partial}{\partial x}\mathrm{f}(\mathrm{g}(x)) = \frac{\partial \mathrm{f}}{\partial g}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x}
-\end{equation}
+\begin{prolog}
+?-	make_test_continuous_functions(FX, FunctionsF),
+	make_test_continuous_functions(GX, FunctionsG),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"derivace_slozene_funkce",
+		declare(
+			[
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG),
+				variable(X, "x", Numbers),
+				substitution(Y, "y", apply(F, [FX], [apply(G, [GX], [X])])),
+				substitution(GV, "g", FX)   % Pojmenovany parametr funkce F kvuli derivaci
+			],
+			equal([
+				derivative(X, Y),
+				derivative(X, nopar(apply(F, [FX], [apply(G, [GX], [X])]))),
+				apply(derivative(GV, F), [FX], [apply(G, [GX], [X])]) * derivative(X, apply(G, [GX], [X]))
+			])
+		)
+	).
+\end{prolog}
+\eeq{derivace_slozene_funkce}
 \end{fact}
 
 Derivaci složené funkce \(\mathrm{f}(\mathrm{g}(x))\) tedy vypočítáme tak, že vypočítáme derivaci vnější funkce \(\mathrm{f}\) vůči jejímu parametru \(g\) vyhodnocenou v~bodě \(\mathrm{g}(x)\) a~vynásobíme ji derivací vnitřní funkce \(\mathrm{g}\). Vnitřní funkce je vyhodnocena v~bodě \(x\), ale to není nutné explicitně zapisovat.

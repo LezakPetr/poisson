@@ -154,6 +154,9 @@ print_expression_term(Stream, par(F), _) :-
 	print_expression_term(Stream, F, root),
 	write(Stream, ')').
 
+print_expression_term(Stream, nopar(F), _) :-
+	print_expression_term(Stream, F, root).
+
 print_expression_term(Stream, not(F), _) :-
 	write(Stream, '\\overline{'),
 	print_expression_term(Stream, F, root),
