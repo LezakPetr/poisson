@@ -42,6 +42,14 @@ expression_derivative(X, imag_part(Expression), imag_part(Derivative)) :-
 	!,
 	expression_derivative(X, Expression, Derivative).
 
+expression_derivative(X, par(Expression), Derivative) :-
+	!,
+	expression_derivative(X, Expression, Derivative).
+
+expression_derivative(X, nopar(Expression), Derivative) :-
+	!,
+	expression_derivative(X, Expression, Derivative).
+
 expression_derivative(X, apply(Function, Args, Values), Derivative) :-
 	!,
 	copy_term([Function, Args], [CopiedFunction, CopiedArgs]),

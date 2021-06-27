@@ -65,3 +65,11 @@ single_transform_expression(derivative(X), Expression, Derivative) :-
 	rewrite_expression(derivative(X, Expression), Derivative).
 
 
+rewrite_expression_or_exception(Orig, Rewritten) :-
+	rewrite_expression(Orig, Rewritten),
+	!.
+
+
+rewrite_expression_or_exception(_, _) :-
+	throw("Expression cannot be rewritten").
+

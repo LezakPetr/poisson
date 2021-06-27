@@ -54,7 +54,8 @@ make_test_continuous_2d_functions(
 	[
 		X^2 * Y,
 		sin(X) * cos(Y),
-		cos(X) * sin(2 * Y)
+		cos(X) * sin(2 * Y),
+		sin(X) + cos(Y)
 	]
 ).
 
@@ -811,25 +812,113 @@ y = \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))
 
 Její derivace je určena vztahem
 
-\begin{equation}
-\frac{\partial y}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))}{\mathrm{d}x}
-\end{equation}
+\begin{prolog}
+?-	make_test_continuous_2d_functions(FG, FH, FunctionsF),
+	make_test_continuous_functions(GX, FunctionsG),
+	make_test_continuous_functions(HX, FunctionsH),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"derivace_slozene_funkce_vice_promennych_definice",
+		declare(
+			[
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG),
+				function(H, "h", FunctionsH),
+				variable(X, "x", Numbers),
+				substitution(Y, "y", apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X])]))
+			],
+			equal([
+				derivative(X, Y),
+				derivative(X, nopar(apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X])]))),
+				lim(DX, "\\mathrm{d}x", real, 0,
+					(
+						apply(F, [FG, FH], [apply(G, [GX], [X + DX]), apply(H, [HX], [X + DX])]) -
+						apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X])])
+					) / DX
+				)
+			])
+		)
+	).
+\end{prolog}
+\eeq{derivace_slozene_funkce_vice_promennych_definice}
 
 Nyní využijeme triku, který je v~této knize využit několikrát. Jednou z~možností, jak se z~bodu \(A\) dostat do bodu \(B\) je podél souřadnicových os. Nejdříve podél osy \(x\), pak podél osy \(y\) atd. V~našem případě to znamená:
 
 
-\begin{equation}
-\begin{split}
-\frac{\partial y}{\partial x} = \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x))}{\mathrm{d}x} + \\
-\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))}{\mathrm{d}x} = \\
-\lim_{\varepsilon \to 0} \lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x + \mathrm{d}x), \mathrm{h}(x + \varepsilon)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \varepsilon))}{\mathrm{d}x} + \\
-\lim_{\mathrm{d}x \to 0} \frac{\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x)) - \mathrm{f}(\mathrm{g}(x), \mathrm{h}(x))}{\mathrm{d}x} = \\
-\lim_{\varepsilon \to 0} \frac{\partial \mathrm{f}}{\partial g}(\mathrm{g}(x), \mathrm{h}(x + \varepsilon)) \cdot \frac{\partial \mathrm{g}}{\partial x} +
-\frac{\partial \mathrm{f}}{\partial h}(\mathrm{g}(x), \mathrm{h}(x)) \cdot \frac{\partial \mathrm{h}}{\partial x} = \\
-\frac{\partial \mathrm{f}}{\partial g}(\mathrm{g}(x), \mathrm{h}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} +
-\frac{\partial \mathrm{f}}{\partial h}(\mathrm{g}(x), \mathrm{h}(x)) \cdot \frac{\partial \mathrm{h}}{\partial x}
-\end{split}
-\end{equation}
+\begin{prolog}
+?-	make_test_continuous_2d_functions(FG, FH, FunctionsF),
+	make_test_continuous_functions(GX, FunctionsG),
+	make_test_continuous_functions(HX, FunctionsH),
+	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"derivace_slozene_funkce_vice_promennych_dukaz",
+		declare(
+			[
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG),
+				function(H, "h", FunctionsH),
+				variable(X, "x", Numbers),
+				substitution(Y, "y", apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X])])),
+				substitution(GV, "g", FG),   % Pojmenovany parametr funkce F kvuli derivaci
+				substitution(HV, "h", FH)   % Pojmenovany parametr funkce F kvuli derivaci
+			],
+			equal([
+				derivative(X, Y),
+				lim(DX, "\\mathrm{d}x", real, 0,
+					(
+						apply(F, [FG, FH], [apply(G, [GX], [X + DX]), apply(H, [HX], [X + DX])]) -
+						apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X])])
+					) / DX
+				),
+				linebreak,
+				line(
+					lim(DX, "\\mathrm{d}x", real, 0,
+						(
+							apply(F, [FG, FH], [apply(G, [GX], [X + DX]), apply(H, [HX], [X + DX])]) -
+							apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X + DX])])
+						) / DX
+					)
+				) + 
+				lim(DX, "\\mathrm{d}x", real, 0,
+					(
+						apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X + DX])]) -
+						apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X])])
+					) / DX
+				),
+				linebreak,
+				line(
+					lim(EPS, "\\varepsilon", real, 0,
+						lim(DX, "\\mathrm{d}x", real, 0,
+							(
+								apply(F, [FG, FH], [apply(G, [GX], [X + DX]), apply(H, [HX], [X + EPS])]) -
+								apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X + EPS])])
+							) / DX
+						)
+					)
+				) + 
+				lim(DX, "\\mathrm{d}x", real, 0,
+					(
+						apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X + DX])]) -
+						apply(F, [FG, FH], [apply(G, [GX], [X]), apply(H, [HX], [X])])
+					) / DX
+				),
+				linebreak,
+				lim(EPS, "\\varepsilon", real, 0,
+					apply(derivative(GV, F), [GV, HV], [apply(G, [GX], [X]), apply(H, [HX], [X + EPS])]) *
+					derivative(X, apply(G, [GX], [X]))
+				) + 
+				apply(derivative(HV, F), [GV, HV], [apply(G, [GX], [X]), apply(H, [HX], [X])]) *
+				derivative(X, apply(H, [HX], [X])),
+				linebreak,
+				apply(derivative(GV, F), [GV, HV], [apply(G, [GX], [X]), apply(H, [HX], [X])]) *
+				derivative(X, apply(G, [GX], [X])) +
+				apply(derivative(HV, F), [GV, HV], [apply(G, [GX], [X]), apply(H, [HX], [X])]) *
+				derivative(X, apply(H, [HX], [X]))
+			])
+		)
+	).
+\end{prolog}
+\eeq{derivace_slozene_funkce_vice_promennych_dukaz}
 
 Nejdříve jsme k~výrazu přičetli a~odečetli člen \(\mathrm{f}(\mathrm{g}(x), \mathrm{h}(x + \mathrm{d}x))\) a~limitu rozdělili na dvě. Dále jsme jeden člen \(d_x\) nahradili nově zavedeným členem \(\varepsilon\). Využili jsme při tom vztahu \eqref{eq:zuzeni_limity_stejne_promenne}.
 Nakonec jsme limity nahradili derivacemi podle vztahu~\eqref{eq:derivace_slozene_funkce_vypocet}, jen funkci dvou proměnných s~jednou proměnnou konstantní chápeme jako funkci jedné proměnné.
