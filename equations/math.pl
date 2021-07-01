@@ -1,5 +1,5 @@
 
-num_tolerance(1e-5).
+num_tolerance(1e-4).
 
 
 verbose :- fail.
@@ -285,4 +285,14 @@ symbolic_multiply(A, B, Y) :-
 
 symbolic_multiply(A, B, A * B).
 
+
+sqrt(A, B, Y) :-
+	integer(A),
+	A < 0,
+	A mod 2 =:= 1,
+	Y is -((-B)^(1 / A)),
+	!.
+
+sqrt(A, B, Y) :-
+	Y is B^(1 / A).
 

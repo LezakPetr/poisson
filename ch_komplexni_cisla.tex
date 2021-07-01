@@ -452,7 +452,7 @@ Vidíme, že podmínky~\eqref{eq:complex_derivative_conditions_cauchy_riemann} j
 				"complex_derivative_analytic_4",
 				equal([
 					derivative(Y, apply(DU, [DUX, DUY], [X, Y])),
-					derivative(X * Y, apply(U, [VX, VY], [X, Y])),
+					derivative(X * Y, apply(U, [UX, UY], [X, Y])),
 					-derivative(X, apply(DV, [DVX, DVY], [X, Y]))	
 				])
 			)
@@ -1569,27 +1569,27 @@ V~následujícím příkladu si ukážeme, jak využít komplexní čísla pro �
 		e^(SY * imag * Omega / C),
 		e^(SZ * imag * Omega / C),
 		e^((1 / sqrt(2)) * (SX + SY) * imag * Omega / C),
-		e^(sqrt(14) * (1*SX + 2*SY - 3*SZ) * imag * Omega / C)
+		e^((1 / sqrt(14)) * (1*SX + 2*SY - 3*SZ) * imag * Omega / C)
 	],
 	print_validated_multiformula(
 		[
+			variable(Omega, "\\omega", PositiveNumbers),
+			substitution(FT, "f", imag_part(FO * e^(imag * Omega * T))),
+			function(FO, "F", Solutions),
 			variable(X, "x", Numbers),
 			variable(Y, "y", Numbers),
 			variable(Z, "z", Numbers),
-			variable(Omega, "\\omega", PositiveNumbers),
 			variable(C, "c", PositiveNumbers),
-			variable(T, "t", Numbers),
-			function(FO, "F", Solutions),
-			substitution(FT, "f", FO * e^(imag * Omega * T))
+			variable(T, "t", Numbers)		
 		],
 		[
 			formula(
 				"wave_equation_time",
 				equal(
-					derivative(X^2, apply(FT, [SX, SY, SZ, ST], [X, Y, Z, T])) +
-					derivative(Y^2, apply(FT, [SX, SY, SZ, ST], [X, Y, Z, T])) +
-					derivative(Z^2, apply(FT, [SX, SY, SZ, ST], [X, Y, Z, T])),
-					derivative(T^2, apply(FT, [SX, SY, SZ, ST], [X, Y, Z, T]))
+					derivative(X^2, apply(FT, [SX, SY, SZ], [X, Y, Z])) +
+					derivative(Y^2, apply(FT, [SX, SY, SZ], [X, Y, Z])) +
+					derivative(Z^2, apply(FT, [SX, SY, SZ], [X, Y, Z])),
+					(1 / C^2) * derivative(T^2, apply(FT, [SX, SY, SZ], [X, Y, Z]))
 				)
 			),
 			formula(
@@ -1598,7 +1598,7 @@ V~následujícím příkladu si ukážeme, jak využít komplexní čísla pro �
 					derivative(X^2, apply(FO, [SX, SY, SZ], [X, Y, Z])) +
 					derivative(Y^2, apply(FO, [SX, SY, SZ], [X, Y, Z])) +
 					derivative(Z^2, apply(FO, [SX, SY, SZ], [X, Y, Z])),
-					-apply(FO, [SX, SY, SZ], [X, Y, Z]) * (Omega^2 / C^2)
+					-((Omega^2 / C^2) * apply(FO, [SX, SY, SZ], [X, Y, Z]))
 				)
 			)
 		]
@@ -1608,6 +1608,7 @@ V~následujícím příkladu si ukážeme, jak využít komplexní čísla pro �
 
 \eeq{wave_equation_time}
 \eeq{wave_equation_frequency}
+
 
 \section{Analytická funkce jako transformace souřadnic v~rovině - konformní zobrazení}
 
@@ -1663,12 +1664,12 @@ a~analytickou funkci \(\func{u}(x, y) + \imag \cdot \func{v}(x, y)\) splňujíc�
 	make_test_analytic_functions(UX, UY, VX, VY, AnalyticFunctions),
 	print_validated_multiformula(
 		[
-			function(F, "\\func{f}", HarmonicFunctions),
-			function([U, V], ["\\func{u}", "\\func{v}"], AnalyticFunctions),
 			substitution(UFN, "u", UF),   % "Pojmenovana" promenna "u" kvuli derivaci funkce f 
 			substitution(VFN, "v", VF),   % "Pojmenovana" promenna "v" kvuli derivaci funkce f
 			substitution(UFS, "u", apply(U, [UX, UY], [X, Y])),   % Promenna "u" se substituci funkce u(x, y)
 			substitution(VFS, "v", apply(V, [VX, VY], [X, Y])),   % Promenna "v" se substituci funkce v(x, y)
+			function(F, "\\func{f}", HarmonicFunctions),
+			function([U, V], ["\\func{u}", "\\func{v}"], AnalyticFunctions),
 			variable(X, "x", Numbers),
 			variable(Y, "y", Numbers)
 		],
@@ -1696,13 +1697,70 @@ a~analytickou funkci \(\func{u}(x, y) + \imag \cdot \func{v}(x, y)\) splňujíc�
 			),
 			formula(
 				"conformal_mapping_dx2",
-				equal(
+				equal([
 					derivative(X^2, apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])),
-					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (derivative(X, apply(U, [UX, UY], [X, Y])))^2 +
-					derivative(UFS, apply(F, [UFN, VFN], [UFS, VFS])) * derivative(X^2, apply(U, [UX, UY], [X, Y])) +
-					derivative(VFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
-					derivative(VFS, apply(F, [UFN, VFN], [UFS, VFS])) * derivative(X^2, apply(V, [VX, VY], [X, Y]))
-				)
+					linebreak,
+					line(
+						hidden_apply(
+							derivative(UFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (derivative(X, apply(U, [UX, UY], [X, Y])))^2 +
+						hidden_apply(
+							derivative(UFN * VFN, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * derivative(X, apply(U, [UX, UY], [X, Y])) * derivative(X, apply(V, [VX, VY], [X, Y])) +
+						hidden_apply(
+							derivative(UFN, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * derivative(X^2, apply(U, [UX, UY], [X, Y]))
+					) +
+					hidden_apply(
+						derivative(VFN^2, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * (derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
+					hidden_apply(
+						derivative(UFN * VFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * derivative(X, apply(U, [UX, UY], [X, Y])) * derivative(X, apply(V, [VX, VY], [X, Y])) +
+					hidden_apply(
+						derivative(VFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * derivative(X^2, apply(V, [VX, VY], [X, Y])),
+					linebreak,
+					line(
+						hidden_apply(
+							derivative(UFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (derivative(X, apply(U, [UX, UY], [X, Y])))^2 +
+						hidden_apply(
+							derivative(VFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
+						2 * hidden_apply(
+							derivative(UFN * VFN, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * derivative(X, apply(U, [UX, UY], [X, Y])) * derivative(X, apply(V, [VX, VY], [X, Y]))
+					) +
+					hidden_apply(
+						derivative(UFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * derivative(X^2, apply(U, [UX, UY], [X, Y])) +					
+					hidden_apply(
+						derivative(VFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * derivative(X^2, apply(V, [VX, VY], [X, Y]))
+				])
 			),
 			formula(
 				"conformal_mapping_dy",
@@ -1720,13 +1778,70 @@ a~analytickou funkci \(\func{u}(x, y) + \imag \cdot \func{v}(x, y)\) splňujíc�
 			),
 			formula(
 				"conformal_mapping_dy2",
-				equal(
+				equal([
 					derivative(Y^2, apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])),
-					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (derivative(Y, apply(U, [UX, UY], [X, Y])))^2 +
-					derivative(UFS, apply(F, [UFN, VFN], [UFS, VFS])) * derivative(Y^2, apply(U, [UX, UY], [X, Y])) +
-					derivative(VFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (derivative(Y, apply(V, [VX, VY], [X, Y])))^2 +
-					derivative(VFS, apply(F, [UFN, VFN], [UFS, VFS])) * derivative(Y^2, apply(V, [VX, VY], [X, Y]))
-				)
+					linebreak,
+					line(
+						hidden_apply(
+							derivative(UFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (derivative(Y, apply(U, [UX, UY], [X, Y])))^2 +
+						hidden_apply(
+							derivative(UFN * VFN, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * derivative(Y, apply(U, [UX, UY], [X, Y])) * derivative(Y, apply(V, [VX, VY], [X, Y])) +
+						hidden_apply(
+							derivative(UFN, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * derivative(Y^2, apply(U, [UX, UY], [X, Y]))
+					) +
+					hidden_apply(
+						derivative(VFN^2, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * (derivative(Y, apply(V, [VX, VY], [X, Y])))^2 +
+					hidden_apply(
+						derivative(UFN * VFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * derivative(Y, apply(U, [UX, UY], [X, Y])) * derivative(Y, apply(V, [VX, VY], [X, Y])) +
+					hidden_apply(
+						derivative(VFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * derivative(Y^2, apply(V, [VX, VY], [X, Y])),
+					linebreak,
+					line(
+						hidden_apply(
+							derivative(UFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (derivative(Y, apply(U, [UX, UY], [X, Y])))^2 +
+						hidden_apply(
+							derivative(VFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (derivative(Y, apply(V, [VX, VY], [X, Y])))^2 +
+						2 * hidden_apply(
+							derivative(UFN * VFN, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * derivative(Y, apply(U, [UX, UY], [X, Y])) * derivative(Y, apply(V, [VX, VY], [X, Y]))
+					) +
+					hidden_apply(
+						derivative(VFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * derivative(Y^2, apply(V, [VX, VY], [X, Y])) +
+					hidden_apply(
+						derivative(UFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * derivative(Y^2, apply(U, [UX, UY], [X, Y]))
+				])
 			),
 			formula(
 				"conformal_mapping_dx2_plus_dy2",
@@ -1735,38 +1850,90 @@ a~analytickou funkci \(\func{u}(x, y) + \imag \cdot \func{v}(x, y)\) splňujíc�
 					derivative(Y^2, apply(F, [UFN, VFN], [apply(U, [UX, UY], [X, Y]), apply(V, [VX, VY], [X, Y])])),
 					linebreak,
 					line(
-						derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
+						hidden_apply(
+							derivative(UFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (
 							(derivative(X, apply(U, [UX, UY], [X, Y])))^2 +
 							(derivative(Y, apply(U, [UX, UY], [X, Y])))^2
 						) +
-						derivative(UFS, apply(F, [UFN, VFN], [UFS, VFS])) * (
-							derivative(X^2, apply(U, [UX, UY], [X, Y])) +
-							derivative(Y^2, apply(U, [UX, UY], [X, Y]))
+						hidden_apply(
+							derivative(VFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (
+							(derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
+							(derivative(Y, apply(V, [VX, VY], [X, Y])))^2
 						)
 					) +
-					derivative(VFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
-						(derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
-						(derivative(Y, apply(V, [VX, VY], [X, Y])))^2
+					line(
+						2 * hidden_apply(
+							derivative(UFN * VFN, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (
+							derivative(X, apply(U, [UX, UY], [X, Y])) * derivative(X, apply(V, [VX, VY], [X, Y])) +
+							derivative(Y, apply(U, [UX, UY], [X, Y])) * derivative(Y, apply(V, [VX, VY], [X, Y]))
+						)
 					) +
-					derivative(VFS, apply(F, [UFN, VFN], [UFS, VFS])) * (
-						derivative(X^2, apply(V, [VX, VY], [X, Y])) + 
+					hidden_apply(
+						derivative(UFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * (
+						derivative(X^2, apply(U, [UX, UY], [X, Y])) +
+						derivative(Y^2, apply(U, [UX, UY], [X, Y]))
+					) +					
+					hidden_apply(
+						derivative(VFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * (
+						derivative(X^2, apply(V, [VX, VY], [X, Y])) +
 						derivative(Y^2, apply(V, [VX, VY], [X, Y]))
 					),
 					linebreak,
 					line(
-						derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
+						hidden_apply(
+							derivative(UFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (
 							(derivative(X, apply(U, [UX, UY], [X, Y])))^2 +
 							(derivative(Y, apply(U, [UX, UY], [X, Y])))^2
-						) +
-						derivative(UFS, apply(F, [UFN, VFN], [UFS, VFS])) * 0
-					) -
-					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
-						(derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
-						(derivative(Y, apply(V, [VX, VY], [X, Y])))^2
+						) -
+						hidden_apply(
+							derivative(UFN^2, F),
+							[UFN, VFN],
+							[UFS, VFS]
+						) * (
+							(derivative(X, apply(V, [VX, VY], [X, Y])))^2 +
+							(derivative(Y, apply(V, [VX, VY], [X, Y])))^2
+						)
 					) +
-					derivative(VFS, apply(F, [UFN, VFN], [UFS, VFS])) * 0,
+					2 * hidden_apply(
+						derivative(UFN * VFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * 0 +
+					hidden_apply(
+						derivative(UFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * 0
+					+					
+					hidden_apply(
+						derivative(VFN, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * 0,
 					linebreak,
-					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (
+					hidden_apply(
+						derivative(UFN^2, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * (
 						par(
 							(derivative(X, apply(U, [UX, UY], [X, Y])))^2 -
 							(derivative(Y, apply(V, [VX, VY], [X, Y])))^2
@@ -1775,10 +1942,14 @@ a~analytickou funkci \(\func{u}(x, y) + \imag \cdot \func{v}(x, y)\) splňujíc�
 						par(
 							(derivative(Y, apply(U, [UX, UY], [X, Y])))^2 -
 							(derivative(X, apply(V, [VX, VY], [X, Y])))^2
-						)
+						)						
 					),
 					linebreak,
-					derivative(UFS^2, apply(F, [UFN, VFN], [UFS, VFS])) * (0 + 0),
+					hidden_apply(
+						derivative(UFN^2, F),
+						[UFN, VFN],
+						[UFS, VFS]
+					) * (0 + 0),
 					0
 				])
 			)

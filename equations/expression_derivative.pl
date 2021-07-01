@@ -1,3 +1,6 @@
+:- ensure_loaded(expression_rewrite).
+
+
 function_derivative(F, []) :-
 	number(F).
 
@@ -8,10 +11,13 @@ function_derivative(A + B, [[A, 1], [B, 1]]).
 function_derivative(A - B, [[A, 1], [B, -1]]).
 function_derivative(A * B, [[A, B], [B, A]]).
 function_derivative(A / B, [[A, 1 / B], [B, -A / B^2]]).
-function_derivative(A^B, [[A, B * A^(B - 1)], [B, log(e, A) * e^(B * log(e, A))]]).
+function_derivative(A^B, [[A, B * A^(B - 1)], [B,  ln(A) * e^(B * ln(A))]]).
+function_derivative(sqrt(A, B), [[A, -(sqrt(A, B) * ln(B)) / A^2], [B, B^(1 / A - 1) / A]]).
+function_derivative(sqrt(X), [[X, 1 / (2 * sqrt(X))]]).
 function_derivative(sin(X), [[X, cos(X)]]).
 function_derivative(cos(X), [[X, -sin(X)]]).
 function_derivative(ln(X), [[X, 1 / X]]).
+
 
 expression_derivative(X, Expression, 1) :-
 	var(Expression),
@@ -23,8 +29,13 @@ expression_derivative(X, Expression, 0) :-
 	X \== Expression,
 	!.
 
-expression_derivative(X, integral(X, Expression), Expression) :-
-	!.
+expression_derivative(X, integral(X, Expression), RewrittenExpression) :-
+	!,
+	rewrite_expression(Expression, RewrittenExpression).
+
+expression_derivative(X, derivative(Y, Expression), SecondDerivative) :-
+	expression_derivative(Y, Expression, FirstDerivative),
+	expression_derivative(X, FirstDerivative, SecondDerivative).
 
 expression_derivative(_, [], []) :-
 	!.
@@ -50,9 +61,14 @@ expression_derivative(X, nopar(Expression), Derivative) :-
 	!,
 	expression_derivative(X, Expression, Derivative).
 
+expression_derivative(X, plus_minus(A, B, PM), plus_minus(DA, DB, PM)) :-
+	!,
+	expression_derivative(X, A, DA),
+	expression_derivative(X, B, DB).
+
 expression_derivative(X, apply(Function, Args, Values), Derivative) :-
 	!,
-	copy_term([Function, Args], [CopiedFunction, CopiedArgs]),
+	copy_variable_list(Args, Function, CopiedArgs, CopiedFunction),
 	CopiedArgs = Values,
 	expression_derivative(X, CopiedFunction, Derivative).
 
@@ -65,8 +81,9 @@ compound_derivative(_, [], 0).
 
 compound_derivative(X, [[SubExpression, Der] | Tail], Result) :-
 	expression_derivative(X, SubExpression, SubDerivative),
+	rewrite_expression(Der, RewrittenDer),
 	compound_derivative(X, Tail, TailDerivative),
-	symbolic_multiply(Der, SubDerivative, CompoundDerivative),
+	symbolic_multiply(RewrittenDer, SubDerivative, CompoundDerivative),
 	symbolic_add(CompoundDerivative, TailDerivative, Result).
 
 ?- 	expression_derivative(X, (2*X + 1)^3, 3 * (2*X + 1)^(3 - 1) * 2).

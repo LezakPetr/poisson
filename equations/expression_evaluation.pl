@@ -164,7 +164,7 @@ evaluate_function(sqrt(X), Y) :-
 evaluate_function(sqrt(A, B), Y) :-
 	number(A),
 	number(B),
-	Y is B^(1 / A).
+	sqrt(A, B, Y).
 
 evaluate_function(log(A, B), Y) :-
 	number(A),
@@ -393,7 +393,8 @@ evaluate_expression(Expression, _) :-
 
 evaluate_expression(Variable, _) :-
 	var(Variable),
-	writeln("Cannout evaluate free variable"),
+	writeln("Cannot evaluate free variable"),
+	!,
 	fail.
 
 evaluate_expression(declare([], SubFormula), Value) :-
@@ -407,6 +408,10 @@ evaluate_expression(declare([Declaration | Tail], SubFormula), Value) :-
 evaluate_expression(apply(Predicate, Args, ArgValues), Value) :-
 	!,
 	findall(SubFormulaValue, (Args = ArgValues, evaluate_expression_or_fail(Predicate, SubFormulaValue)), [Value]).
+
+evaluate_expression(hidden_apply(Predicate, Args, ArgValues), Value) :-
+	!,
+	evaluate_expression(apply(Predicate, Args, ArgValues), Value).
 
 evaluate_expression(forall(Variable, _, TestedValues, SubFormula), Value) :-
 	!,

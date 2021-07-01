@@ -70,6 +70,7 @@ rewrite_expression_or_exception(Orig, Rewritten) :-
 	!.
 
 
-rewrite_expression_or_exception(_, _) :-
+rewrite_expression_or_exception(Orig, _) :-
+	writeln(Orig),
 	throw("Expression cannot be rewritten").
 

@@ -114,18 +114,35 @@ copy_variable(OrigVar, OrigTerm, CopiedVar, CopiedTerm) :-
 	copy_term([OrigVar, OrigVariableList, OrigTerm], [CopiedVar, CopiedVariableList, CopiedTerm]),
 	unify_other_vars(OrigVar, OrigVariableList, CopiedVariableList).
 
+copy_variable_list(OrigVars, OrigTerm, CopiedVars, CopiedTerm) :-
+	term_variables(OrigTerm, OrigVariableList),
+	copy_term([OrigVars, OrigVariableList, OrigTerm], [CopiedVars, CopiedVariableList, CopiedTerm]),
+	unify_other_vars_by_list(OrigVars, OrigVariableList, CopiedVariableList).
 
-unify_other_vars(_, [], []).
+
+variable_in_list(Variable, [Head | _]) :-
+	Variable == Head,
+	!.
+
+variable_in_list(Variable, [_ | Tail]) :-
+	variable_in_list(Variable, Tail).
 
 
-unify_other_vars(OrigVar, [HeadOrigVar | TailOrigVar], [_ | TailCopiedVar]) :-
-	OrigVar == HeadOrigVar,
+unify_other_vars(OrigVar, OrigVarList, CopiedVarList) :-
+	unify_other_vars_by_list([OrigVar], OrigVarList, CopiedVarList).
+
+
+unify_other_vars_by_list(_, [], []).
+
+
+unify_other_vars_by_list(OrigVarList, [HeadOrigVar | TailOrigVar], [_ | TailCopiedVar]) :-
+	variable_in_list(HeadOrigVar, OrigVarList),
 	!,
-	unify_other_vars(OrigVar, TailOrigVar, TailCopiedVar).
+	unify_other_vars_by_list(OrigVarList, TailOrigVar, TailCopiedVar).
 
-unify_other_vars(OrigVar, [HeadOrigVar | TailOrigVar], [HeadCopiedVar | TailCopiedVar]) :-
+unify_other_vars_by_list(OrigVarList, [HeadOrigVar | TailOrigVar], [HeadCopiedVar | TailCopiedVar]) :-
 	HeadOrigVar = HeadCopiedVar,
-	unify_other_vars(OrigVar, TailOrigVar, TailCopiedVar).
+	unify_other_vars_by_list(OrigVarList, TailOrigVar, TailCopiedVar).
 
 
 verify_variable_free(Variable, _) :-

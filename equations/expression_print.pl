@@ -150,9 +150,9 @@ print_expression_term(Stream, and(A, B), PR) :-
 	print_binary_operator(Stream, A, B, PR, and, ' \\land ').
 
 print_expression_term(Stream, par(F), _) :-
-	write(Stream, '('),
+	print_bracket(Stream, '('),
 	print_expression_term(Stream, F, root),
-	write(Stream, ')').
+	print_bracket(Stream, ')').
 
 print_expression_term(Stream, nopar(F), _) :-
 	print_expression_term(Stream, F, root).
@@ -218,6 +218,9 @@ print_expression_term(Stream, apply(Expression, _, ArgValues), _) :-
 	write(Stream, '('),
 	print_predicate_args(Stream, ArgValues),
 	write(Stream, ')').
+
+print_expression_term(Stream, hidden_apply(Expression, _, _), _) :-
+	print_expression_term(Stream, Expression).
 
 print_expression_term(Stream, set_by(Variable, Label, _, Formula), _) :-
 	Variable = Label,
@@ -549,10 +552,14 @@ print_bracket_if_needed(_, _, SuperOperator, SubOperator) :-
 	bracket_not_needed(SuperOperator, SubOperator),
 	!.
 
-print_bracket_if_needed(Stream, '(', _, _) :-
+print_bracket_if_needed(Stream, Bracket, _, _) :-
+	print_bracket(Stream, Bracket).
+
+
+print_bracket(Stream, '(') :-
 	write(Stream, '\\left(').
 
-print_bracket_if_needed(Stream, ')', _, _) :-
+print_bracket(Stream, ')') :-
 	write(Stream, '\\right)').
 
 

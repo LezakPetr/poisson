@@ -53,10 +53,10 @@ V~této příloze jsou sespsány integrály základních funkcí. Jedná se o~in
 		"ap_integral_plus_minus",
 		declare(
 			[
-				variable(X, "x", Numbers),
 				function(F, "f", FunctionsF),
 				function(G, "g", FunctionsG),
-				plus_minus(PM)
+				plus_minus(PM),
+				variable(X, "x", Numbers)
 			],
 			equal_transform([derivative(X)], [
 				integral(X, plus_minus(apply(F, [FX], [X]), apply(G, [GX], [X]), PM)),
@@ -76,9 +76,9 @@ V~této příloze jsou sespsány integrály základních funkcí. Jedná se o~in
 		"ap_integral_multiply",
 		declare(
 			[
-				variable(X, "x", Numbers),
 				function(F, "f", FunctionsF),
-				function(G, "g", FunctionsG)
+				function(G, "g", FunctionsG),
+				variable(X, "x", Numbers)
 			],
 			equal_transform([derivative(X)], [
 				integral(X, apply(F, [FX], [X]) * derivative(X, apply(G, [GX], [X]))),
@@ -96,9 +96,9 @@ V~této příloze jsou sespsány integrály základních funkcí. Jedná se o~in
 		"ap_integral_multiply_by_constant",
 		declare(
 			[
+				function(F, "f", FunctionsF),
 				variable(X, "x", Numbers),
-				variable(K, "k", Numbers),
-				function(F, "f", FunctionsF)
+				variable(K, "k", Numbers)
 			],
 			equal_transform([derivative(X)], [
 				integral(X, K * apply(F, [FX], [X])),

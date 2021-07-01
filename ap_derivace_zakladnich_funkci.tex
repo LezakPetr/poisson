@@ -49,9 +49,9 @@ V~této příloze jsou sespsány derivace základních funkcí, které byly odvo
 		"ap_derivative_plus_minus",
 		declare(
 			[
-				variable(X, "x", Numbers),
 				function(F, "f", FunctionsF),
 				function(G, "g", FunctionsG),
+				variable(X, "x", Numbers),
 				plus_minus(PM)
 			],
 			equal(
@@ -71,9 +71,9 @@ V~této příloze jsou sespsány derivace základních funkcí, které byly odvo
 		"ap_derivative_multiply",
 		declare(
 			[
-				variable(X, "x", Numbers),
 				function(F, "f", FunctionsF),
-				function(G, "g", FunctionsG)
+				function(G, "g", FunctionsG),
+				variable(X, "x", Numbers)
 			],
 			equal(
 				derivative(X, apply(F, [FX], [X]) * apply(G, [GX], [X])),
@@ -92,9 +92,9 @@ V~této příloze jsou sespsány derivace základních funkcí, které byly odvo
 		"ap_derivative_multiply_by_constant",
 		declare(
 			[
-				variable(X, "x", Numbers),
 				function(F, "f", FunctionsF),
-				variable(K, "k", Numbers)
+				variable(K, "k", Numbers),
+				variable(X, "x", Numbers)
 			],
 			equal(
 				derivative(X, K * apply(F, [FX], [X])),
