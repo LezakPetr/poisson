@@ -35,9 +35,6 @@ evaluate_function(or(A, B), Value) :-
 evaluate_function(and(A, B), Value) :-
 	log_and(A, B, Value).
 
-evaluate_function(impl(A, B), Value) :-
-	log_impl(A, B, Value).
-
 evaluate_function(equiv(A, B), Value) :-
 	log_equiv(A, B, Value).
 
@@ -483,12 +480,25 @@ evaluate_expression(lim(VariableOrList, _, Domain, Point, Function), Value) :-
 	evaluate_sub_expression(Point, EvaluatedPoint),
 	calculate_lim(VariableOrList, Domain, EvaluatedPoint, Function, Value).
 
+evaluate_expression(impl(A, B), Value) :-
+	!,
+	evaluate_impl(A, B, Value).
+
 evaluate_expression(Expression, Value) :-
 	Expression =.. [Functor | Args],
 	evaluate_list(Args, EvaluatedArgs),
 	SubEvaluatedExpression =.. [Functor | EvaluatedArgs],
 	evaluate_function(SubEvaluatedExpression, Value).
 
+
+evaluate_impl(A, _, Value) :-
+	evaluate_expression(A, ValueA),
+	ValueA = log_false,
+	!,
+	Value = log_true.
+
+evaluate_impl(_, B, Value) :-
+	evaluate_expression(B, Value).
 
 ?-	evaluate_list([log_true, linebreak, log_false], [log_true, log_false]).
 ?-	evaluate_expression([log_true, linebreak, log_false], [log_true, log_false]).

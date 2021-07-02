@@ -1,5 +1,9 @@
 
 num_tolerance(1e-4).
+num_equal_abs_tolerance(8e-6).
+num_equal_rel_tolerance(1e-6).
+
+num_imag_tolerance(1e-4).
 
 
 verbose :- fail.
@@ -25,7 +29,7 @@ as_real(X, X) :-
 
 as_real(complex(Re, Im), Re) :-	
 	number(Re),
-	num_tolerance(Tolerance),
+	num_imag_tolerance(Tolerance),
 	abs(Im) =< Tolerance.
 
 
@@ -44,24 +48,6 @@ as_complex(complex(Re, Im), complex(Re, Im)) :-
 
 ?- as_complex(2.5, complex(2.5, 0)).
 ?- as_complex(complex(-1.3, 5), complex(-1.3, 5)).
-
-complex_equal(A, B) :-
-	as_complex(A, complex(ReA, ImA)),
-	as_complex(B, complex(ReB, ImB)),
-	num_tolerance(Tolerance),
-	abs(ReA - ReB) =< Tolerance,
-	abs(ImA - ImB) =< Tolerance,
-	!.
-
-complex_equal(A, B) :- verbose, write("Equal failed: "), writeln([A, B]), fail.
-
-?-	complex_equal(2, 2).
-?-	complex_equal(-1, complex(-1, 0)).
-?-	complex_equal(complex(5, 0), 5).
-?-	complex_equal(complex(5, 3), complex(5, 3)).
-?-	\+ complex_equal(complex(7, 3), complex(5, 3)).
-?-	\+ complex_equal(complex(5, -3), complex(5, 3)).
-
 
 complex_all_equal([_]).
 
@@ -118,6 +104,39 @@ complex_subtract(A, B, complex(ReY, ImY)) :-
 ?-	complex_subtract(5, complex(3, 4), complex(2, -4)).
 ?-	complex_subtract(complex(3, 4), 5, complex(-2, 4)).
 ?-	complex_subtract(complex(1, 2), complex(3, 4), complex(-2, -2)).
+
+
+complex_abs(Z, Abs) :-
+	as_complex(Z, complex(X, Y)),
+	Abs is sqrt(X^2 + Y^2).
+
+?-	complex_abs(-2, 2.0).
+?-	complex_abs(complex(3, -4), 5.0).
+
+complex_arg(Z, Arg) :-
+	as_complex(Z, complex(X, Y)),
+	Arg is atan2(Y, X).
+
+
+complex_equal(A, B) :-
+	complex_abs(A, AbsA),
+	complex_abs(B, AbsB),
+	num_equal_abs_tolerance(AbsTolerance),
+	num_equal_rel_tolerance(RelTolerance),
+	Tolerance is max(AbsTolerance, RelTolerance * max(AbsA, AbsB)),
+	complex_subtract(A, B, Diff),
+	complex_abs(Diff, AbsDiff),
+	AbsDiff =< Tolerance,
+	!.
+
+complex_equal(A, B) :- verbose, write("Equal failed: "), writeln([A, B]), fail.
+
+?-	complex_equal(2, 2).
+?-	complex_equal(-1, complex(-1, 0)).
+?-	complex_equal(complex(5, 0), 5).
+?-	complex_equal(complex(5, 3), complex(5, 3)).
+?-	\+ complex_equal(complex(7, 3), complex(5, 3)).
+?-	\+ complex_equal(complex(5, -3), complex(5, 3)).
 
 
 complex_multiply(A, B, Y) :-
@@ -214,18 +233,6 @@ complex_sum([Value | Tail], Sum) :-
 ?-	complex_sum([1, 2, 3], 6).
 
 
-complex_abs(Z, Abs) :-
-	as_complex(Z, complex(X, Y)),
-	Abs is sqrt(X^2 + Y^2).
-
-?-	complex_abs(-2, 2.0).
-?-	complex_abs(complex(3, -4), 5.0).
-
-complex_arg(Z, Arg) :-
-	as_complex(Z, complex(X, Y)),
-	Arg is atan2(Y, X).
-
-
 % Calculates symbolic sum of two numbers, but optimizes situation where one or both arguments are known.
 % symbolic_add(A, B, Y) :-
 % Y = A + B.
@@ -288,7 +295,7 @@ symbolic_multiply(A, B, A * B).
 
 sqrt(A, B, Y) :-
 	integer(A),
-	A < 0,
+	B < 0,
 	A mod 2 =:= 1,
 	Y is -((-B)^(1 / A)),
 	!.
@@ -296,3 +303,12 @@ sqrt(A, B, Y) :-
 sqrt(A, B, Y) :-
 	Y is B^(1 / A).
 
+
+?-	sqrt(3, 8, Y),
+	complex_equal(Y, 2).
+
+?-	sqrt(3, -8, Y),
+	complex_equal(Y, -2).
+
+?-	sqrt(2, 16, Y),
+	complex_equal(Y, 4).

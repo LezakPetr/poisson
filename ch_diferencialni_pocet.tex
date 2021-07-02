@@ -40,7 +40,6 @@ make_test_continuous_functions(
 		X / 2,
 		X^2,
 		X^3,
-%		sqrt(3, X),
 		sin(X),
 		cos(X)
 	]
@@ -938,12 +937,6 @@ Tento vztah lze zobecnit na složenou funkci libovolného počtu proměnných:
 
 Mějme navzájem inverzní funkce \(\mathrm{f}(x)\) a~\(\mathrm{g}(x)\). Pak pro ně musí platit:
 
-\begin{equation}
-\mathrm{f}(\mathrm{g}(x)) = x
-\end{equation}
-
-Derivace stejných funkcí musí být stejná, to vyplývá z~definice derivace. To znamená, že můžeme zderivovat obě strany rovnice, protože rovnost zůstane zachována. Získáme tak rovnici:
-
 \begin{prolog}
 ?-	make_test_continuous_functions(FX, FunctionsF),
 	make_test_continuous_functions(GX, FunctionsG),
@@ -954,13 +947,33 @@ Derivace stejných funkcí musí být stejná, to vyplývá z~definice derivace.
 			[
 				function(F, "f", FunctionsF),
 				function(G, "g", FunctionsG),
-				variable(X, "x", Numbers)
+				substitution(FN, "x", FX)
 			],
 			proof(
 				[
-					equal(apply(F, [FX], [apply(G, [GX], [X])]), X)
+					declare(
+						[variable(X, "x", Numbers)],
+						equal(apply(F, [FX], [apply(G, [GX], [X])]), X)
+					)
 				],
 				[
+					declare(
+						[variable(X, "x", Numbers)],
+						equal(
+							apply(derivative(FN, F), [FX], [apply(G, [GX], [X])]) * derivative(X, apply(G, [GX], [X])),
+							1
+						)
+					),
+					declare(
+						[variable(X, "x", Numbers)],
+						impl(
+							not_equal(apply(derivative(FN, F), [FX], [apply(G, [GX], [X])]), 0),
+							equal(
+								derivative(X, apply(G, [GX], [X])),
+								1 / apply(derivative(FN, F), [FX], [apply(G, [GX], [X])])
+							)
+						)
+					)
 				]
 			)
 		)
@@ -968,30 +981,78 @@ Derivace stejných funkcí musí být stejná, to vyplývá z~definice derivace.
 \end{prolog}
 \eeq{derivace_inverzni_funkce}
 
-\begin{equation}
-\label{eq:derivace_inverzni_funkce}
-\begin{split}
-\frac{\partial \mathrm{f}}{\partial x}(\mathrm{g}(x)) \cdot \frac{\partial \mathrm{g}}{\partial x} = 1 \\
-\frac{\partial \mathrm{g}}{\partial x} = \frac{1}{\frac{\partial \mathrm{f}}{\partial x}(\mathrm{g}(x))}
-\end{split}
-\end{equation}
+Derivace stejných funkcí musí být stejná, to vyplývá z~definice derivace. Mohli jsme tak zderivovat obě strany rovnice protože rovnost zůstane zachována.
 
 \subsection{Derivace základních funkcí}
 \label{sec:derivace_zakladnich_funkci}
 
 Vypočítejme derivace různých funkcí. Začněme derivací konstantní funkce, přesněji funkce nezávislé na proměnné, podle které derivujeme:
 
-\begin{equation}
-\frac{\partial k}{\partial x} = \lim_{dx \to 0} \frac{k - k}{dx} = \lim_{dx \to 0} 0 = 0
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"derivace_konstanty",
+		declare(	
+			[
+				variable(K, "k", Numbers),
+				variable(X, "x", Numbers)
+			],
+			equal([
+				derivative(X, K),
+				lim(DX, "\\mathrm{d}x", real, 0, (K - K) / DX),
+				lim(DX, "\\mathrm{d}x", real, 0, 0),
+				0
+			])
+		)
+	).
+\end{prolog}
+\eeq{derivace_konstanty}
 
 Pokračujme derivací součtu a~rozdílu funkcí. K~tomu budeme potřebovat derivaci přímé úměry:
 
-\begin{equation}
-\frac{\partial}{\partial x} kx = \lim_{dx \to 0} \frac{k \cdot (x + dx) - kx}{dx} = \lim_{dx \to 0} k = k
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"derivace_prime_umery",
+		declare(	
+			[
+				variable(K, "k", Numbers),
+				variable(X, "x", Numbers)
+			],
+			equal([
+				derivative(X, K * X),
+				lim(DX, "\\mathrm{d}x", real, 0, (K * (X + DX) - K * X) / DX),
+				lim(DX, "\\mathrm{d}x", real, 0, K),
+				K
+			])
+		)
+	).
+\end{prolog}
+\eeq{derivace_prime_umery}
 
 Derivaci součtu a~rozdílu funkcí vypočítáme jako derivaci složené funkce. Označme vnější funkci \(\mathrm{s}(f, g) = f \pm g\). Ta je vůči svým parametrům \(f\) a~\(g\) přímo úměrná s~koeficientem 1 pro parametr \(f\) a \(\pm1\) pro parametr \(g\), tedy \(\frac{\partial \mathrm{s}}{\partial f} = 1\) a~\(\frac{\partial \mathrm{s}}{\partial g} = \pm1\):
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_functions(FX, FunctionsF),
+	make_test_real_functions(GX, FunctionsG),
+	print_validated_formula(
+		"ap_derivative_plus_minus_proof",
+		declare(
+			[
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG),
+				variable(X, "x", Numbers),
+				plus_minus(PM)  
+			],
+			equal(
+				derivative(X, plus_minus(apply(F, [FX], [X]), apply(G, [GX], [X]), PM)),
+				plus_minus(derivative(X, apply(F, [FX], [X])), derivative(X, apply(G, [GX], [X])), PM)
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_plus_minus_proof}
 
 \begin{equation}
 \frac{\partial}{\partial x} (\mathrm{f}(x) \pm \mathrm{g}(x)) = \frac{\partial}{\partial x} \mathrm{s}(\mathrm{f}(x), \mathrm{g}(x)) = \frac{\partial \mathrm{s}}{\partial f} \cdot \frac{\partial \mathrm{f}}{\partial x} + \frac{\partial \mathrm{s}}{\partial g} \cdot \frac{\partial \mathrm{g}}{\partial x} = \frac{\partial \mathrm{f}}{\partial x} \pm \frac{\partial \mathrm{g}}{\partial x}

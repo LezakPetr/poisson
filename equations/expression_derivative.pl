@@ -12,7 +12,7 @@ function_derivative(A - B, [[A, 1], [B, -1]]).
 function_derivative(A * B, [[A, B], [B, A]]).
 function_derivative(A / B, [[A, 1 / B], [B, -A / B^2]]).
 function_derivative(A^B, [[A, B * A^(B - 1)], [B,  ln(A) * e^(B * ln(A))]]).
-function_derivative(sqrt(A, B), [[A, -(sqrt(A, B) * ln(B)) / A^2], [B, B^(1 / A - 1) / A]]).
+function_derivative(sqrt(A, B), [[A, -(sqrt(A, B) * ln(B)) / A^2], [B, sqrt(A, B) / (A * B)]]).
 function_derivative(sqrt(X), [[X, 1 / (2 * sqrt(X))]]).
 function_derivative(sin(X), [[X, cos(X)]]).
 function_derivative(cos(X), [[X, -sin(X)]]).
