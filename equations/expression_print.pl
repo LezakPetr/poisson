@@ -600,14 +600,14 @@ polynom_total_order(A * B, Order) :-
 	Order is OrderA + OrderB.
 
 
-operator_priority(pow, 207).
-operator_priority(sqrt, 207).
-operator_priority(function_derivative, 206).
-operator_priority(log, 206).
-operator_priority(div, 205).
-operator_priority(goniom, 204).
+operator_priority(pow, 208).
+operator_priority(sqrt, 208).
+operator_priority(function_derivative, 207).
+operator_priority(log, 207).
+operator_priority(div, 206).
+operator_priority(goniom, 205).
+operator_priority(expression_derivative, 204).
 operator_priority(multiply, 203).
-operator_priority(expression_derivative, 202).
 operator_priority(integral, 202).
 operator_priority(lim, 202).
 operator_priority(opposite, 201).
