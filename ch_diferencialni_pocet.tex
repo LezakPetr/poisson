@@ -1094,32 +1094,88 @@ Derivaci součinu funkcí vypočítáme opět jako derivaci složené funkce. Oz
 
 Pokud je jeden ze součinitelů nezávislý na proměnné, vůči které se derivuje, pak se vztah zjednodušší:
 
-\begin{equation}
-\begin{split}
-\frac{\partial}{\partial x} (k \cdot \mathrm{f}(x)) = k \cdot \frac{\partial \mathrm{f}}{\partial x}
-\end{split}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_functions(FX, FunctionsF),
+	print_validated_formula(
+		"ap_derivative_multiply_by_constant_proof",
+		declare(
+			[
+				function(F, "f", FunctionsF),
+				variable(K, "k", Numbers),
+				variable(X, "x", Numbers)
+			],
+			equal(
+				derivative(X, K * apply(F, [FX], [X])),
+				K * derivative(X, apply(F, [FX], [X]))
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_multiply_by_constant_proof}
 
-Pro výpočet derivace podílu funkcí budeme znát derivaci inverzní funkce \(\frac{1}{x}\):
+Pro výpočet derivace podílu funkcí potřebujeme znát derivaci inverzní funkce \(\frac{1}{x}\):
 
-\begin{equation}
-\begin{split}
-\frac{\mathrm{d}}{\mathrm{d}x} \frac{1}{x} = \lim_{dx \to 0} \frac{\frac{1}{x + dx} - \frac{1}{x}}{dx} = \\
-\lim_{dx \to 0} \frac{\frac{x - x - dx}{(x + dx) \cdot x}}{dx} = \lim_{dx \to 0} \frac{\frac{-dx}{(x + dx) \cdot x}}{dx} = \\
-\lim_{dx \to 0} \frac{-1}{(x + dx) \cdot x} = -\frac{1}{x^2}
-\end{split}
-\end{equation}
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_inv_x",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			impl(
+				not_equal(X, 0),
+				equal([
+					derivative(X, 1 / X),
+					lim(DX, "\\mathrm{d}x", real, 0, (1 / (X + DX) - 1 / X) / DX),
+					lim(DX, "\\mathrm{d}x", real, 0, ((X - X - DX) / ((X + DX) * X)) / DX),
+					linebreak,				
+					lim(DX, "\\mathrm{d}x", real, 0, ((-DX) / ((X + DX) * X)) / DX),
+					lim(DX, "\\mathrm{d}x", real, 0, (-1) / ((X + DX) * X)),
+					-(1 / X^2)
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_inv_x}
 
 Derivaci podílu funkcí vypočítáme opět jako derivaci složené funkce. Označme vnější funkci \(\mathrm{s}(f, g) = \frac{f}{g}\). Pak \(\frac{\mathrm{ds}}{\mathrm{d}f} = \frac{1}{g}\) a~\(\frac{\mathrm{ds}}{\mathrm{d}g} = -\frac{f}{g^2}\):
 
-\begin{equation}
-\begin{split}
-\frac{\mathrm{d}}{\mathrm{d}x} \frac{\mathrm{f}(x)}{\mathrm{g}(x)} = \frac{\mathrm{d}}{\mathrm{d}x} \mathrm{s}({f}(x), \mathrm{g}(x)) = \\
-\frac{\mathrm{ds}}{\mathrm{d}f} (\mathrm{f}(x), \mathrm{g}(x)) \cdot \frac{\mathrm{df}}{\mathrm{d}x} + \frac{\mathrm{ds}}{\mathrm{d}g}(\mathrm{f}(x), \mathrm{g}(x)) \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = \\
-\frac{1}{\mathrm{g}(x)} \cdot \frac{\mathrm{df}}{\mathrm{d}x} -\frac{\mathrm{f}(x)}{\mathrm{g}^2(x)} \cdot \frac{\mathrm{dg}}{\mathrm{d}x} = \\
-\frac{\frac{\mathrm{df}}{\mathrm{d}x} \cdot \mathrm{g}(x) - \mathrm{f}(x) \cdot \frac{\mathrm{dg}}{\mathrm{d}x}}{\mathrm{g}^2(x)}
-\end{split}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_real_functions(FX, FunctionsF),
+	make_test_real_functions(GX, FunctionsG),
+	print_validated_formula(
+		"ap_derivative_division_proof",
+		declare(
+			[
+				substitution(S, "s", SF / SG),
+				substitution(SFN, "f", SF),
+				substitution(SGN, "g", SG),
+				function(F, "f", FunctionsF),
+				function(G, "g", FunctionsG),
+				variable(X, "x", Numbers)
+			],
+			impl(
+				not_equal(apply(G, [GX], [X]), 0),
+				equal([
+					derivative(X, apply(F, [FX], [X]) / apply(G, [GX], [X])),
+					derivative(X, nopar(apply(S, [SF, SG], [apply(F, [FX], [X]), apply(G, [GX], [X])]))),
+					hidden_apply(derivative(SFN, S), [SF, SG], [apply(F, [FX], [X]), apply(G, [GX], [X])]) * derivative(X, apply(F, [FX], [X])) +
+					hidden_apply(derivative(SGN, S), [SF, SG], [apply(F, [FX], [X]), apply(G, [GX], [X])]) * derivative(X, apply(G, [GX], [X])),
+					linebreak,
+					(1 / apply(G, [GX], [X])) * derivative(X, apply(F, [FX], [X])) -
+					(apply(F, [FX], [X]) / apply(G^2, [GX], [X])) * derivative(X, apply(G, [GX], [X])),
+					(derivative(X, apply(F, [FX], [X])) * apply(G, [GX], [X]) - apply(F, [FX], [X]) * derivative(X, apply(G, [GX], [X]))) / apply(G^2, [GX], [X])
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_division_proof}
 
 Dále dokážeme matematickou indukcí vztah
 
