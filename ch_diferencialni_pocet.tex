@@ -1179,33 +1179,99 @@ Derivaci podílu funkcí vypočítáme opět jako derivaci složené funkce. Ozn
 
 Dále dokážeme matematickou indukcí vztah
 
-\begin{equation}
-\label{eq:derivace_mocniny_n}
-\frac{\mathrm{d}}{\mathrm{d}x} x^n = n \cdot x^{n-1}; n \in \mathbb{N}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_natural_numbers(NaturalNumbers),
+	print_validated_formula(
+		"ap_derivative_power_by_natural_proof",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			forall_in(N, "n", natural_numbers, NaturalNumbers, 
+				equal(
+					derivative(X, X^N),
+					N * X^(N - 1)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_power_by_natural_proof}
 
 Pro \(n = 1\) získáme vztah 
 
-\begin{equation}
-\frac{\mathrm{d}}{\mathrm{d}x} x = 1
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_power_by_natural_proof_1",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			equal(
+				derivative(X, X),
+				1
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_power_by_natural_proof_1}
 
 který jsme už dokázaly. Dále, pokud platí 
 
-\begin{equation}
-\frac{\mathrm{d}}{\mathrm{d}x} x^{n-1} = (n - 1) \cdot x^{n-2}; n \geq 2
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_natural_numbers(NaturalNumbers),
+	print_validated_formula(
+		"ap_derivative_power_by_natural_proof_2",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(N, "n", NaturalNumbers)
+			],
+			impl(
+				greater_or_equal(N, 2),
+				equal(
+					derivative(X, X^(N - 1)),
+					(N - 1) * X^(N - 2)
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_power_by_natural_proof_2}
 
 pak
 
-\begin{equation}
-\begin{split}
-\frac{\mathrm{d}}{\mathrm{d}x} x^n = \frac{\mathrm{d}}{\mathrm{d}x} (x \cdot x^{n-1}) = x^{n-1} \cdot \frac{\mathrm{d}}{\mathrm{d}x} x + x \cdot \frac{\mathrm{d}}{\mathrm{d}x} x^{n-1} = \\
-x^{n-1} + x \cdot (n - 1) \cdot x^{n-2} = x^{n-1} + (n - 1) \cdot x^{n-1} = n \cdot x^{n-1}
-\end{split}
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_natural_numbers(NaturalNumbers),
+	print_validated_formula(
+		"ap_derivative_power_by_natural_proof_3",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(N, "n", NaturalNumbers)
+			],
+			impl(
+				greater_or_equal(N, 2),
+				equal([
+					derivative(X, X^N),
+					derivative(X, X * X^(N - 1)),
+					X^(N - 1) * derivative(X, X) + X * derivative(X, X^(N - 1)),
+					linebreak,				
+					X^(N - 1) + X * (N - 1) * X^(N - 2),
+					X^(N - 1) + (N - 1) * X^(N - 1),
+					N * X^(N - 1)
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_power_by_natural_proof_3}
 
-a~proto vztah \eqref{eq:derivace_mocniny_n} platí pro všechna přirozená čísla.
+a~proto vztah \eqref{eq:ap_derivative_power_by_natural_proof} platí pro všechna přirozená čísla.
 
 \subsubsection{Derivace exponenciální funkce}
 
