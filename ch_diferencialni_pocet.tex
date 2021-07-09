@@ -1330,19 +1330,44 @@ Vidíme, že derivace funkce \(a^x\) je rovna \(a^x\) násobené derivací v~bod
 
 Na obrázku~\ref{img:derivace_exponencialni_funkce} vidíme několik různých exponenciálních funkcí, všechny procházejí budem \([0, 1]\) protože \(a^0 = 1\). Na obrázku je také čárkovaně zakreslena přímka odpovídající v~tomto bodě tečně funkce s~derivací 1. Vidíme, že existuje základ mocniny, pro kterou bude tato přímka tečnou a~že leží mezi čísly 2 a~3. Tento základ nazveme Eulerovým číslem po slavném matematikovy a~označíme jej \(e\). Pro Eulerovo číslo tedy musí platit:
 
-\begin{equation}
-\lim_{dx \to 0} \frac{e^{dx} - 1}{dx} = 1
-\end{equation}
+
+\begin{prolog}
+?-	print_validated_formula(
+		"ap_euler_number_1",
+		equal(
+			lim(DX, "\\mathrm{d}x", real, 0, (e^DX - 1) / DX),
+			1
+		)
+	).
+\end{prolog}
+\eeq{ap_euler_number_1}
 
 Z~něj můžeme Eulerovo číslo vyjádřit:
 
-\begin{equation}
-\begin{split}
-\lim_{dx \to 0} e^{dx} - 1 = \lim_{dx \to 0} dx \\
-\lim_{dx \to 0} e^{dx} = \lim_{dx \to 0} (1 + dx) \\
-e = \lim_{dx \to 0} \sqrt[dx]{1 + dx}
-\end{split}
-\end{equation}
+
+\begin{prolog}
+?-	print_validated_formula(
+		"ap_euler_number_2",
+		proof(
+			[],
+			[
+				equal(
+					lim(DX, "\\mathrm{d}x", real, 0, e^DX - 1),
+					lim(DX, "\\mathrm{d}x", real, 0, DX)					
+				),
+				equal(
+					lim(DX, "\\mathrm{d}x", real, 0, e^DX),
+					lim(DX, "\\mathrm{d}x", real, 0, 1 + DX)					
+				),
+				equal(
+					lim(DX, "\\mathrm{d}x", real, 0, e),
+					lim(DX, "\\mathrm{d}x", real, 0, sqrt(DX, 1 + DX))					
+				)
+			]
+		)
+	).
+\end{prolog}
+\eeq{ap_euler_number_2}
 
 Zavedeme-li substituci \(dx = \frac{1}{n}\), pak dostaneme známý vztah pro výpočet Eulerova čísla:
 
@@ -1354,31 +1379,111 @@ Uvedená limita znamená, že \(n\) roste nade všechny meze, přesnou definici 
 
 Proto platí:
 
-\begin{equation}
-\frac{\mathrm{d}}{\mathrm{d}x} e^x = e^x
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_exp_proof",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			equal(
+				derivative(X, e^X),
+				e^X
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_exp_proof}
 
 Inverzní funkcí je přirozený logaritmus \(\ln x\). Proto platí:
 
-\begin{equation}
-\ln e^x = x
-\end{equation}
 
-\begin{equation}
-e^{\ln x} = x; x > 0
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_ln_exp",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			equal(
+				ln(e^X), X
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_ln_exp}
+
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_exp_ln",
+		declare(
+			[
+				variable(X, "x", Numbers)
+			],
+			impl(
+				greater_than(X, 0),
+				equal(
+					e^ln(X), X
+				)
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_exp_ln}
 
 Obecnou exponenciální funkci proto můžeme zapsat
 
-\begin{equation}
-a^x = e^{\ln a^x} = e^{x \cdot \ln a}; a > 0
-\end{equation}
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_general_power_by_exp",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(A, "a", Numbers)
+			],
+			impl(
+				greater_than(A, 0),
+				equal([
+					A^X,
+					e^ln(A^X),
+					e^(X * ln(A))
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_general_power_by_exp}
 
 a~proto
 
-\begin{equation}
-\frac{\mathrm{d}}{\mathrm{d}x} a^x = \frac{\mathrm{d}}{\mathrm{d}x} e^{x \cdot \ln a} = e^{x \cdot \ln a} \cdot \ln a = \ln a \cdot a^x
-\end{equation}
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	print_validated_formula(
+		"ap_derivative_general_power_proof",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(A, "a", Numbers)
+			],
+			impl(
+				greater_than(A, 0),
+				equal([
+					derivative(X, A^X),
+					derivative(X, e^(X * ln(A))),
+					e^(X * ln(A)) * ln(A),
+					ln(A) * A^X
+				])
+			)
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_general_power_proof}
 
 \subsubsection{Derivace přirozeného logaritmu}
 
