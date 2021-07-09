@@ -4,6 +4,7 @@
 :- ensure_loaded("../equations/formula").
 
 make_test_real_numbers([-2, -1, 0, 1, 1.5, 2]).
+make_test_positive_real_numbers([0.3, 1, 1.5, 2]).
 make_test_real_nonzero_numbers([-2, -1, 1, 1.5, 2]).
 make_test_natural_numbers([1, 2, 3, 4, 5]).
 make_test_real_functions(FX, [FX, FX^2, FX + 1, (FX + 1) * FX^5]).
@@ -1277,12 +1278,32 @@ a~proto vztah \eqref{eq:ap_derivative_power_by_natural_proof} platí pro všechn
 
 Mějme funkci \(y = a^x\) pro \(a > 0\). Její derivace je:
 
-\begin{equation}
-\begin{split}
-\frac{\mathrm{d}y}{\mathrm{d}x} = \frac{\mathrm{d}}{\mathrm{d}x} a^x = \lim_{dx \to 0} \frac{a^{x+dx} - a^x}{dx} = \lim_{dx \to 0} \frac{a^x \cdot a^{dx} - a^x}{dx} = \\
-a^x \cdot \lim_{dx \to 0} \frac{a^{dx} - 1}{dx} = y \cdot \frac{\mathrm{d}y}{\mathrm{d}x}(0)
-\end{split}
-\end{equation}
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_positive_real_numbers(PositiveNumbers),
+	print_validated_formula(
+		"ap_derivative_general_power_proof",
+		declare(
+			[
+				variable(X, "x", Numbers),
+				variable(A, "a", PositiveNumbers),
+				substitution(XN, "x", _),
+				substitution(Y, "y", A^XN)
+			],
+			equal([
+				derivative(X, apply(Y, [XN], [X])),
+				derivative(X, A^X),
+				lim(DX, "\\mathrm{d}x", real, 0, (A^(X + DX) - A^X) / DX),
+				lim(DX, "\\mathrm{d}x", real, 0, (A^X * A^DX - A^X) / DX),
+				linebreak,
+				A^X * lim(DX, "\\mathrm{d}x", real, 0, (A^DX - 1) / DX),
+				A^X * apply(derivative(XN, Y), [XN], [0])
+			])
+		)
+	).
+\end{prolog}
+\eeq{ap_derivative_general_power_proof}
 
 Vidíme, že derivace funkce \(a^x\) je rovna \(a^x\) násobené derivací v~bodě \(x = 0\).
 
