@@ -6,7 +6,8 @@ calculate_lim(Variable, Domain, Point, Function, Value) :-
 calculate_lim(VariableList, Domain, Point, Function, Value) :-
 	is_list(VariableList),
 	findall(FunctionValue, (generate_lim_value_list(VariableList, Domain, Point), evaluate_expression_or_fail(Function, FunctionValue)), ValueList),
-	complex_all_equal(ValueList),
+	lim_tolerances(Tolerances),
+	complex_all_equal(ValueList, Tolerances),
 	complex_sum(ValueList, ValueSum),
 	length(ValueList, Length),
 	Coeff is 1.0 / Length, 
@@ -20,6 +21,7 @@ generate_lim_value_list([Variable | VariableTail], [Domain | DomainTail], [Coord
 
 
 lim_dx(1e-8).
+lim_tolerances(tolerances(1e-4, 1e-4)).
 
 
 generate_lim_value(Variable, real, Coordinate) :-

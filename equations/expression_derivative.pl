@@ -9,6 +9,7 @@ function_derivative(e, []).
 function_derivative(pi, []).
 function_derivative(A + B, [[A, 1], [B, 1]]).
 function_derivative(A - B, [[A, 1], [B, -1]]).
+function_derivative(-A, [[A, -1]]).
 function_derivative(A * B, [[A, B], [B, A]]).
 function_derivative(A / B, [[A, 1 / B], [B, -A / B^2]]).
 function_derivative(A^B, [[A, B * A^(B - 1)], [B,  ln(A) * e^(B * ln(A))]]).

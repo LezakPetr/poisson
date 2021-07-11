@@ -1619,15 +1619,57 @@ Funkci \(f\) můžeme také derivovat podle \(y\) a~získáme \(\frac{\partial \
 
 Povšimněme si, že \(\frac{\partial^2 \mathrm{f}}{\partial xy} = \frac{\partial^2 \mathrm{f}}{\partial yx}\). To, že nezáleží na pořadí derivování, nyní dokážeme obecně:
 
-\begin{equation}
-\begin{split}
-\frac{\partial^2 \mathrm{f}}{\partial yx} = \\
-\lim_{dx \to 0} \frac{\lim_{dy \to 0} \frac{\mathrm{f}(x+dx, y+dy) - \mathrm{f}(x+dx, y)}{dy} - \lim_{dy \to 0} \frac{\mathrm{f}(x, y+dy) - \mathrm{f}(x, y)}{dy}}{dx} = \\
-\lim_{dx \to 0, dy \to 0} \frac{\mathrm{f}(x+dx, y+dy) - \mathrm{f}(x+dx, y) - \mathrm{f}(x, y+dy) + \mathrm{f}(x, y)}{dx \cdot dy} = \\
-\lim_{dx \to 0} \frac{\lim_{dy \to 0} \frac{\mathrm{f}(x+dx, y+dy) - \mathrm{f}(x, y+dy)}{dx} - \lim_{dy \to 0} \frac{\mathrm{f}(x+dx, y) - \mathrm{f}(x, y)}{dx}}{dy} = \\
-\frac{\partial^2 \mathrm{f}}{\partial xy}
-\end{split}
-\end{equation}
+
+\begin{prolog}
+?-	make_test_real_numbers(Numbers),
+	make_test_continuous_2d_functions(FX, FY, Functions),
+	print_validated_formula(
+		"derivative_order_equal_proof",
+		declare(
+			[
+				function(F, "f", Functions),
+				variable(X, "x", Numbers),
+				variable(Y, "y", Numbers)
+			],
+			equal([
+				derivative(Y * X, apply(F, [FX, FY], [X, Y])),
+				linebreak,
+				lim(DX, "\\mathrm{d}x", real(1e-5), 0,
+					(
+						lim(DY, "\\mathrm{d}y", real(1e-5), 0,
+							(apply(F, [FX, FY], [X + DX, Y + DY]) - apply(F, [FX, FY], [X + DX, Y])) / DY
+						) -
+						lim(DY, "\\mathrm{d}y", real(1e-5), 0,
+							(apply(F, [FX, FY], [X, Y + DY]) - apply(F, [FX, FY], [X, Y])) / DY
+						)
+					) / DX
+				),
+				linebreak,
+				lim([DX, DY], ["\\mathrm{d}x", "\\mathrm{d}y"], [real(1e-5), real(1e-5)], [0, 0],
+					(
+						nopar(apply(F, [FX, FY], [X + DX, Y + DY]) - apply(F, [FX, FY], [X + DX, Y]))
+						- apply(F, [FX, FY], [X, Y + DY]) + apply(F, [FX, FY], [X, Y])
+					) / (DX * DY) 
+				),						
+				linebreak,
+				lim(DY, "\\mathrm{d}y", real(1e-5), 0,
+					(
+						lim(DX, "\\mathrm{d}x", real(1e-5), 0,
+							(apply(F, [FX, FY], [X + DX, Y + DY]) - apply(F, [FX, FY], [X, Y + DY])) / DX
+						) -
+						lim(DX, "\\mathrm{d}x", real(1e-5), 0,
+							(apply(F, [FX, FY], [X + DX, Y]) - apply(F, [FX, FY], [X, Y])) / DX
+						)
+					) / DY
+				),
+				linebreak,
+				derivative(X * Y, apply(F, [FX, FY], [X, Y]))
+			])
+		)
+	).
+\end{prolog}
+\eeq{derivative_order_equal_proof}
+
 
 \subsection{Extrémy funkce}
 

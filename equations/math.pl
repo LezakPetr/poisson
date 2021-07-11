@@ -1,8 +1,6 @@
 
 num_tolerance(1e-4).
-num_equal_abs_tolerance(8e-6).
-num_equal_rel_tolerance(1e-6).
-
+num_equal_tolerances(tolerances(8e-6, 1e-6)).
 num_imag_tolerance(1e-4).
 
 
@@ -49,11 +47,16 @@ as_complex(complex(Re, Im), complex(Re, Im)) :-
 ?- as_complex(2.5, complex(2.5, 0)).
 ?- as_complex(complex(-1.3, 5), complex(-1.3, 5)).
 
-complex_all_equal([_]).
+complex_all_equal(Values) :-
+	num_equal_tolerances(Tolerances),
+	complex_all_equal(Values, Tolerances).
 
-complex_all_equal([A, B | Tail]) :-
-	complex_equal(A, B),
-	complex_all_equal([B | Tail]).
+
+complex_all_equal([_], _).
+
+complex_all_equal([A, B | Tail], Tolerances) :-
+	complex_equal(A, B, Tolerances),
+	complex_all_equal([B | Tail], Tolerances).
 
 
 complex_negate(A, Y) :-
@@ -119,17 +122,20 @@ complex_arg(Z, Arg) :-
 
 
 complex_equal(A, B) :-
+	num_equal_tolerances(Tolerances),
+	complex_equal(A, B, Tolerances).
+
+
+complex_equal(A, B, tolerances(AbsTolerance, RelTolerance)) :-
 	complex_abs(A, AbsA),
 	complex_abs(B, AbsB),
-	num_equal_abs_tolerance(AbsTolerance),
-	num_equal_rel_tolerance(RelTolerance),
 	Tolerance is max(AbsTolerance, RelTolerance * max(AbsA, AbsB)),
 	complex_subtract(A, B, Diff),
 	complex_abs(Diff, AbsDiff),
 	AbsDiff =< Tolerance,
 	!.
 
-complex_equal(A, B) :- verbose, write("Equal failed: "), writeln([A, B]), fail.
+complex_equal(A, B, _) :- verbose, write("Equal failed: "), writeln([A, B]), fail.
 
 ?-	complex_equal(2, 2).
 ?-	complex_equal(-1, complex(-1, 0)).
